@@ -16,6 +16,8 @@ EXTRA_DIST = \
 	INSTALL \
 	LGPL.txt \
 	Makefile.am \
+	Makefile.svn \
+	NEWS \
 	odbc.pri \
 	qt.m4 \
 	README \

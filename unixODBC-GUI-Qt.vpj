@@ -54,7 +54,9 @@
 			Filters="*.c;*.C;*.cc;*.cpp;*.cp;*.cxx;*.c++;*.prg;*.pas;*.dpr;*.asm;*.s;*.bas;*.java;*.cs;*.sc;*.e;*.cob;*.html;*.rc;*.tcl;*.py;*.pl"/>
 		<Folder
 			Name="Header Files"
-			Filters="*.h;*.H;*.hh;*.hpp;*.hxx;*.inc;*.sh;*.cpy;*.if"/>
+			Filters="*.h;*.H;*.hh;*.hpp;*.hxx;*.inc;*.sh;*.cpy;*.if">
+			<F N="ltmain.sh"/>
+		</Folder>
 		<Folder
 			Name="Resource Files"
 			Filters="*.ico;*.cur;*.dlg"/>
@@ -64,6 +66,7 @@
 		<Folder
 			Name="Other Files"
 			Filters="">
+			<F N="acinclude.m4"/>
 			<F N="AUTHORS"/>
 			<F N="ChangeLog"/>
 			<F N="common.pri"/>
@@ -76,6 +79,7 @@
 			<F N="LGPL.txt"/>
 			<F N="Makefile.am"/>
 			<F N="Makefile.cvs"/>
+			<F N="NEWS"/>
 			<F N="odbc.pri"/>
 			<F N="qt.m4"/>
 			<F N="README"/>
