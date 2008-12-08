@@ -1,0 +1,156 @@
+<!DOCTYPE Project SYSTEM "http://www.slickedit.com/dtd/vse/10.0/vpj.dtd">
+<Project
+	Version="10.0"
+	VendorName="SlickEdit"
+	WorkingDir=".">
+	<Config
+		Name="Release"
+		OutputFile=""
+		CompilerConfigName="Latest Version">
+		<Menu>
+			<Target
+				Name="Compile"
+				MenuCaption="&amp;Compile"
+				CaptureOutputWith="ProcessBuffer"
+				SaveOption="SaveCurrent"
+				RunFromDir="%rw">
+				<Exec/>
+			</Target>
+			<Target
+				Name="Build"
+				MenuCaption="&amp;Build"
+				CaptureOutputWith="ProcessBuffer"
+				SaveOption="SaveWorkspaceFiles"
+				RunFromDir="%rw">
+				<Exec CmdLine="make"/>
+			</Target>
+			<Target
+				Name="Rebuild"
+				MenuCaption="&amp;Rebuild"
+				CaptureOutputWith="ProcessBuffer"
+				SaveOption="SaveWorkspaceFiles"
+				RunFromDir="%rw">
+				<Exec/>
+			</Target>
+			<Target
+				Name="Debug"
+				MenuCaption="&amp;Debug"
+				SaveOption="SaveNone"
+				RunFromDir="%rw">
+				<Exec/>
+			</Target>
+			<Target
+				Name="Execute"
+				MenuCaption="E&amp;xecute"
+				SaveOption="SaveNone"
+				RunFromDir="%rw">
+				<Exec CmdLine='"odbcinstQ4.exe"'/>
+			</Target>
+		</Menu>
+	</Config>
+	<Files>
+		<Folder
+			Name="Source Files"
+			Filters="*.c;*.C;*.cc;*.cpp;*.cp;*.cxx;*.prg;*.pas;*.dpr;*.asm;*.s;*.bas;*.java;*.cs;*.sc;*.e;*.cob;*.html;*.rc;*.tcl;*.py;*.pl">
+			<F N="CAbout.cpp"/>
+			<F N="CAdvanced.cpp"/>
+			<F N="CDataSourceNameList.cpp"/>
+			<F N="CDataSourceNames.cpp"/>
+			<F N="CDataSourceNamesFile.cpp"/>
+			<F N="CDataSourceNamesFileModel.cpp"/>
+			<F N="CDriverList.cpp"/>
+			<F N="CDriverPrompt.cpp"/>
+			<F N="CDSNWizard.cpp"/>
+			<F N="CDSNWizardDriver.cpp"/>
+			<F N="CDSNWizardEntre.cpp"/>
+			<F N="CDSNWizardFini.cpp"/>
+			<F N="CDSNWizardProperties.cpp"/>
+			<F N="CDSNWizardType.cpp"/>
+			<F N="CFileSelector.cpp"/>
+			<F N="CHelp.cpp"/>
+			<F N="CManageDataSourceNames.cpp"/>
+			<F N="CManageDrivers.cpp"/>
+			<F N="CMonitor.cpp"/>
+			<F N="CMonitorHandleCounts.cpp"/>
+			<F N="CMonitorProcesses.cpp"/>
+			<F N="CODBCConfig.cpp"/>
+			<F N="CODBCInst.cpp"/>
+			<F N="CPage.cpp"/>
+			<F N="CPooling.cpp"/>
+			<F N="CPropertiesDelegate.cpp"/>
+			<F N="CPropertiesDialog.cpp"/>
+			<F N="CPropertiesModel.cpp"/>
+			<F N="CThreading.cpp"/>
+			<F N="CTracing.cpp"/>
+			<F N="SQLManageDataSources.cpp"/>
+		</Folder>
+		<Folder
+			Name="Header Files"
+			Filters="*.h;*.H;*.hh;*.hpp;*.hxx;*.inc;*.sh;*.cpy;*.if">
+			<F N="CAbout.h"/>
+			<F N="CAdvanced.h"/>
+			<F N="CDataSourceNameList.h"/>
+			<F N="CDataSourceNames.h"/>
+			<F N="CDataSourceNamesFile.h"/>
+			<F N="CDataSourceNamesFileModel.h"/>
+			<F N="CDriverList.h"/>
+			<F N="CDriverPrompt.h"/>
+			<F N="CDSNWizard.h"/>
+			<F N="CDSNWizardDriver.h"/>
+			<F N="CDSNWizardEntre.h"/>
+			<F N="CDSNWizardFini.h"/>
+			<F N="CDSNWizardProperties.h"/>
+			<F N="CDSNWizardType.h"/>
+			<F N="CFileSelector.h"/>
+			<F N="CHelp.h"/>
+			<F N="CManageDataSourceNames.h"/>
+			<F N="CManageDrivers.h"/>
+			<F N="CMonitor.h"/>
+			<F N="CMonitorHandleCounts.h"/>
+			<F N="CMonitorProcesses.h"/>
+			<F N="CODBCConfig.h"/>
+			<F N="CODBCInst.h"/>
+			<F N="CPage.h"/>
+			<F N="CPooling.h"/>
+			<F N="CPropertiesDelegate.h"/>
+			<F N="CPropertiesDialog.h"/>
+			<F N="CPropertiesModel.h"/>
+			<F N="CThreading.h"/>
+			<F N="CTracing.h"/>
+		</Folder>
+		<Folder
+			Name="Resource Files"
+			Filters="*.ico;*.cur;*.dlg"/>
+		<Folder
+			Name="Bitmaps"
+			Filters="*.bmp"/>
+		<Folder
+			Name="Other Files"
+			Filters="">
+			<F N="About48.xpm"/>
+			<F N="Advanced48.xpm"/>
+			<F N="Canada.xpm"/>
+			<F N="DataSourceName48.xpm"/>
+			<F N="DataSourceNameFile48.xpm"/>
+			<F N="DataSourceNameSystem48.xpm"/>
+			<F N="DataSourceNameUser48.xpm"/>
+			<F N="Driver128.xpm"/>
+			<F N="Driver48.xpm"/>
+			<F N="GreatBritain.xpm"/>
+			<F N="Info16.xpm"/>
+			<F N="InfoArrow16.xpm"/>
+			<F N="Makefile.am"/>
+			<F N="NoFlag.xpm"/>
+			<F N="ODBC.xpm"/>
+			<F N="odbcinstQ4.exp"/>
+			<F N="odbcinstQ4.pro"/>
+			<F N="ODBCManageDataSources64.xpm"/>
+			<F N="Pooling48.xpm"/>
+			<F N="Set.xpm"/>
+			<F N="Stats48.xpm"/>
+			<F N="Threading48.xpm"/>
+			<F N="Tracing48.xpm"/>
+			<F N="WizardCreateDataSourceName.xpm"/>
+		</Folder>
+	</Files>
+</Project>

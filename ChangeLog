@@ -1,0 +1,7 @@
+19th-Nov-2008
+1,0,00
+
+	* Made the unixODBC Qt bits build in thier own project.
+
+
+

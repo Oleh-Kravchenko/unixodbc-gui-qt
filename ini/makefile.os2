@@ -1,0 +1,153 @@
+CC = gcc
+LIB = d:\ddk\base\tools\lib.exe
+LINK = ilink /nofree
+
+CCFLAGS = -Zomf -c
+
+DEFINEITS = -D__OS2__
+DEBUGS = -D__OS2DEBUG__
+
+INCLUDES = -I../include 
+DEPENDSON = ..\include\ini.h
+
+SOURCES = \
+	iniAllTrim.c \
+	iniAppend.c \
+	iniDelete.c \
+	iniClose.c \
+	iniCommit.c \
+	iniObject.c \
+	iniObjectFirst.c \
+	iniObjectLast.c \
+	iniObjectNext.c \
+	iniObjectSeek.c \
+	iniObjectSeekSure.c \
+	iniObjectUpdate.c \
+	iniObjectInsert.c \
+	iniObjectDelete.c \
+	iniObjectEOL.c \
+	iniOpen.c \
+	iniProperty.c \
+	iniPropertyFirst.c \
+	iniPropertyLast.c \
+	iniPropertyNext.c \
+	iniPropertySeek.c \
+	iniPropertySeekSure.c \
+	iniPropertyUpdate.c \
+	iniPropertyInsert.c \
+	iniPropertyDelete.c \
+	iniPropertyEOL.c \
+	iniPropertyValue.c \
+	iniValue.c \
+	iniToUpper.c \
+	iniElement.c \
+	iniElementCount.c \
+	iniGetBookmark.c \
+	iniGotoBookmark.c \
+	iniCursor.c \
+	_iniObjectRead.c \
+	_iniPropertyRead.c \
+	_iniDump.c \
+	_iniScanUntilObject.c \
+	iniOS2Profile.c
+
+
+OBJECTS = \
+	iniAllTrim.obj \
+	iniAppend.obj \
+	iniDelete.obj \
+	iniClose.obj \
+	iniCommit.obj \
+	iniObject.obj \
+	iniObjectFirst.obj \
+	iniObjectLast.obj \
+	iniObjectNext.obj \
+	iniObjectSeek.obj \
+	iniObjectSeekSure.obj \
+	iniObjectUpdate.obj \
+	iniObjectInsert.obj \
+	iniObjectDelete.obj \
+	iniObjectEOL.obj \
+	iniOpen.obj \
+	iniProperty.obj \
+	iniPropertyFirst.obj \
+	iniPropertyLast.obj \
+	iniPropertyNext.obj \
+	iniPropertySeek.obj \
+	iniPropertySeekSure.obj \
+	iniPropertyUpdate.obj \
+	iniPropertyInsert.obj \
+	iniPropertyDelete.obj \
+	iniPropertyEOL.obj \
+	iniPropertyValue.obj \
+	iniValue.obj \
+	iniToUpper.obj \
+	iniElement.obj \
+	iniElementCount.obj \
+	iniGetBookmark.obj \
+	iniGotoBookmark.obj \
+	iniCursor.obj \
+	_iniObjectRead.obj \
+	_iniPropertyRead.obj \
+	_iniDump.obj \
+	_iniScanUntilObject.obj \
+	iniOS2Profile.obj
+
+LIBNAMES = \
+	-+iniAllTrim.obj \
+	-+iniAppend.obj \
+	-+iniDelete.obj \
+	-+iniClose.obj \
+	-+iniCommit.obj \
+	-+iniObject.obj \
+	-+iniObjectFirst.obj \
+	-+iniObjectLast.obj \
+	-+iniObjectNext.obj \
+	-+iniObjectSeek.obj \
+	-+iniObjectSeekSure.obj \
+	-+iniObjectUpdate.obj \
+	-+iniObjectInsert.obj \
+	-+iniObjectDelete.obj \
+	-+iniObjectEOL.obj \
+	-+iniOpen.obj \
+	-+iniProperty.obj \
+	-+iniPropertyFirst.obj \
+	-+iniPropertyLast.obj \
+	-+iniPropertyNext.obj \
+	-+iniPropertySeek.obj \
+	-+iniPropertySeekSure.obj \
+	-+iniPropertyUpdate.obj \
+	-+iniPropertyInsert.obj \
+	-+iniPropertyDelete.obj \
+	-+iniPropertyEOL.obj \
+	-+iniPropertyValue.obj \
+	-+iniValue.obj \
+	-+iniToUpper.obj \
+	-+iniElement.obj \
+	-+iniElementCount.obj \
+	-+iniGetBookmark.obj \
+	-+iniGotoBookmark.obj \
+	-+iniCursor.obj \
+	-+_iniObjectRead.obj \
+	-+_iniPropertyRead.obj \
+	-+_iniDump.obj \
+	-+_iniScanUntilObject.obj \
+	-+iniOS2Profile.obj
+
+
+.SUFFIXES: .c .obj
+
+.c.obj: makefile.os2
+	@echo Compiling $<
+	$(CC) $(CCFLAGS) $(INCLUDES) $(DEFINEITS) -o $@ $<
+
+libinilc.lib: $(OBJECTS) 
+	@echo Building libinlc.lib
+	$(LIB) libinilc.lib $(LIBNAMES);
+
+all: libinilc.lib
+
+clean:
+	@del *.obj
+	@del *.lib
+

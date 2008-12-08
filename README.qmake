@@ -1,0 +1,76 @@
++-------------------------------------------------------------+
+| unixODBC-GUI-Qt                                             |
+| qmake                                                       |
++-------------------------------------------------------------+
+
+README
+---------------------------------------------------------------
+
+Description:
+
+	Read this if you want to know how to build things 
+	using TrollTech's qmake.
+
+	Why have qmake enter the picture? Frankly; I find the
+	GNU auto tools to be a great idea - if you never have
+	to figure them out. Unfortunately; many projects, this
+	included, do not have the resources to allocate a GNU
+	auto-tools specialist. This means that development
+	time has to be spent in figuring it out. This is particularly
+	bad for someone who just wants to configure the a
+	build for his/her own purposes.
+
+	Also; at this time, the GNU auto-tools are not a simple
+	solution for OSX users.
+
+Warning:
+
+	This is not a fully baked solution and is therefore not
+	recommended for most people. If you are not into editing
+	qmake project files then you should do the regular GNU
+	build process using the configure script.
+
+Requirements:
+
+	Guess what? You are going to need qmake. If you have
+	Qt -dev installed then you probably already have qmake
+	installed. If not then get it from your distro or directly
+	from www.trolltech.com.
+
+Make & Install:
+
+	The qmake project files have .pro extensions. You may want
+	to edit them to your liking. The top level one is 
+	unixODBC-GUI-Qt.pro and it handles going into the sub 
+	directories.
+
+	Here are the steps to build using qmake;
+	
+	1. $ qmake
+	2. $ make
+	
+	This should drop libraries in ./lib and programs in
+	./bin. This fits in well with the existing ./include.
+
+	Currently; these qmake project files lack an install but... 
+	
+	PATH
+	
+	You can add the unixODBC-GUI-Qt/.bin to your PATH or copy them
+	somewhere like /usr/local/bin. 
+
+        NOTE: directories with the app extension are OSX apps...
+        they can be executed using open i.e. "open <name>.app"
+	
+	LIB PATH
+	
+	The ./lib directory may just contain static libs; in which
+	case you do not need to put them into your lib path. If 
+	you built share libs then you must get them into your lib path.
+
+
++-------------------------------------------------------------+
+| Peter Harvey <pharvey@codebydesign.com>                     |
+| 05.DEC.08                                                   |
++-------------------------------------------------------------+
+

@@ -1,0 +1,49 @@
++-------------------------------------------------------------+
+| unixODBC-GUI-Qt                                             |
++-------------------------------------------------------------+
+
+README
+---------------------------------------------------------------
+
+Description:
+
+	unixODBC-GUI-Qt is a compliment to unixODBC - providing
+	the Qt-based GUI bits.
+	
+License:
+	
+	All libraries are LGPL and can be used by commercial 
+	software.
+	
+	All programs are GPL.
+
+Parts:
+	unixODBC-GUI-Qt includes the following;
+	
+	- a Qt based installer library/plugin
+	- ODBC Administrator
+	- create Data Source Name wizard
+	- Data Manager
+	
+
+How To Start:
+
+	Look for and read README files with extensions of interest. Then
+	read the INSTALL file.
+	
+	You can also jump into the doc directory and browse information 
+	there. And do not forget the online stuff.
+	
+	Some documentation may be a bit out of date the vast majority of
+	it should be ok.
+	
+Resources:
+
+        http://unixodbc-gui-qt.sourceforge.net
+        http://unixodbc.sourceforge.net
+	
++-------------------------------------------------------------+
+| Peter Harvey <pharvey@codebydesign.com>                     |
+| 05.DEC.08                                                   |
++-------------------------------------------------------------+
+ 

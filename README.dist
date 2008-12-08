@@ -1,0 +1,40 @@
++-------------------------------------------------------------+
+| unixODBC-GUI-Qt                                             |
+| distribution                                                |
++-------------------------------------------------------------+
+
+README
+---------------------------------------------------------------
+
+Description:
+
+	This readme is for those interested in *making* a 
+	unixODBC-GUI-Qt	distribution of some sort.
+	
+Source via cvs:
+      
+	see the README.cvs
+	
+Source via 'tar-ball':
+
+	1. pull down the source from cvs
+	2. make -f Makefile.cvs
+	3. mv unixODBC-GUI-Qt unixODBC-GUI-Qt-<version>
+	4. tar -c unixODBC-GUI-Qt-<version> > unixODBC-GUI-Qt-<version>.tar
+	5. gzip unixODBC-GUI-Qt-<version>.tar
+	
+Binary + Source via RPM:
+
+	1. pull down the source from cvs
+	2. make -f Makefile.cvs
+	3. make dist
+	4. copy the unixODBC-GUI-Qt-<version> into /usr/src/..../SOURCES
+	5. rpm -ba ..../unixODBC-GUI-Qt.spec 
+
+	NOTE: Use "rpm -bb" if you just want a binary dist.
+
++-------------------------------------------------------------+
+| Peter Harvey <pharvey@codebydesign.com>                     |
+| 05.DEC.08                                                   |
++-------------------------------------------------------------+
+

@@ -1,0 +1,87 @@
++-------------------------------------------------------------+
+| unixODBC-GUI-Qt                                             |
+| cvs                                                         |
++-------------------------------------------------------------+
+
+README
+---------------------------------------------------------------
+
+Description:
+
+	Read this if you want to know how to build from
+	source code checked-out from cvs. 
+
+Warning:
+
+	When you use source code from cvs you get the latest source code;
+	however it may not be as stable (or even be buildable). So you
+	may want to get a regular source distribution instead. Read on 
+	if you are still interested in building from cvs source.
+
+Requirements:
+
+        - C++ development environment
+        - autoconf (and related) packages
+	    - automake v1.5
+	    - libtool v1.4.2
+	    - autoconf v2.13
+	    - m4 v1.4 (v1.4o will not work)
+        - unixODBC-core
+        - unixODBC-dev
+        - Qt 4
+        - Qt 4 dev
+
+Download:
+	
+	Get the source from cvs at 
+	http://unixodbc-gui-qt.sourceforge.net
+
+Make & Install:
+
+	1. $ make -f Makefile.cvs
+	2. $ ./configure --help
+	3. $ ./configure AnyOptionsHere
+	4. $ make
+	5. # make install
+
+	Steps 2-5 are the same steps used to install from a 
+	regular source distribution.
+
+	You can re-configure by simply running through steps
+	2-5 again. However; configure will try to use cached
+	information from any previous attempts. So it you
+	should "rm *cache" before doing steps 2-5 again.
+
+	configure will create a config.log when done. This 
+	should be the first place to look if configure seems
+	to have a problem.
+			
+	NOTE: You probably want to be 'root' when you do a
+	'make install'.
+
+Contributing:
+
+	Source code from cvs is used by two different types of 
+	Users.
+	
+	1. Those that want the 'bleeding edge' code; either to
+	get the newest bug fixs/features or to test. This
+	group of users will typically have read-only access to
+	the cvs code. Anyone can download the source code from
+	cvs and use it. No special permission is required. See
+	LICENSE file.
+	
+	2. Those who are actively improving things by making
+	code and document changes. This group of users will have
+	read/write access to the cvs source code.
+	
+	If you want to contribute you can request 'write'
+	permissions using the Source Forge web interface. This
+	usually means sending an email request to one of the 
+	project admins.
+	
++-------------------------------------------------------------+
+| Peter Harvey <pharvey@codebydesign.com>                     |
+| 05.DEC.08                                                   |
++-------------------------------------------------------------+
+
