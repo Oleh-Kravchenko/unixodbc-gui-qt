@@ -1,0 +1,164 @@
+<!DOCTYPE Project SYSTEM "http://www.slickedit.com/dtd/vse/10.0/vpj.dtd">
+<Project
+	Version="10.0"
+	VendorName="SlickEdit"
+	WorkingDir=".">
+	<Config
+		Name="Release"
+		OutputFile=""
+		CompilerConfigName="Latest Version">
+		<Menu>
+			<Target
+				Name="Compile"
+				MenuCaption="&amp;Compile"
+				CaptureOutputWith="ProcessBuffer"
+				SaveOption="SaveCurrent"
+				RunFromDir="%rw">
+				<Exec/>
+			</Target>
+			<Target
+				Name="Build"
+				MenuCaption="&amp;Build"
+				CaptureOutputWith="ProcessBuffer"
+				SaveOption="SaveWorkspaceFiles"
+				RunFromDir="%rw">
+				<Exec CmdLine="make"/>
+			</Target>
+			<Target
+				Name="Rebuild"
+				MenuCaption="&amp;Rebuild"
+				CaptureOutputWith="ProcessBuffer"
+				SaveOption="SaveWorkspaceFiles"
+				RunFromDir="%rw">
+				<Exec/>
+			</Target>
+			<Target
+				Name="Debug"
+				MenuCaption="&amp;Debug"
+				SaveOption="SaveNone"
+				RunFromDir="%rw">
+				<Exec/>
+			</Target>
+			<Target
+				Name="Execute"
+				MenuCaption="E&amp;xecute"
+				SaveOption="SaveNone"
+				RunFromDir="%rw">
+				<Exec CmdLine='"ODBCDataManagerQ4.exe"'/>
+			</Target>
+		</Menu>
+	</Config>
+	<Files>
+		<Folder
+			Name="Source Files"
+			Filters="*.c;*.C;*.cc;*.cpp;*.cp;*.cxx;*.prg;*.pas;*.dpr;*.asm;*.s;*.bas;*.java;*.cs;*.sc;*.e;*.cob;*.html;*.rc;*.tcl;*.py;*.pl">
+			<F N="DBrowser.cpp"/>
+			<F N="DDataManager.cpp"/>
+			<F N="DDiagnostic.cpp"/>
+			<F N="DEdit.cpp"/>
+			<F N="DEditStatement.cpp"/>
+			<F N="DNode.cpp"/>
+			<F N="DNodeAttribute.cpp"/>
+			<F N="DNodeConnection.cpp"/>
+			<F N="DNodeDataSourceNameFile.cpp"/>
+			<F N="DNodeDataSourceNames.cpp"/>
+			<F N="DNodeDataSourceNameSystem.cpp"/>
+			<F N="DNodeDataSourceNameUser.cpp"/>
+			<F N="DNodeDriver.cpp"/>
+			<F N="DNodeDrivers.cpp"/>
+			<F N="DNodeODBC.cpp"/>
+			<F N="DNodeSchema.cpp"/>
+			<F N="DNodeSchemas.cpp"/>
+			<F N="DNodeStatement.cpp"/>
+			<F N="DNodeTable.cpp"/>
+			<F N="DNodeTableColumn.cpp"/>
+			<F N="DNodeTableColumns.cpp"/>
+			<F N="DNodeTables.cpp"/>
+			<F N="DNodeWidget.cpp"/>
+			<F N="DOutputLog.cpp"/>
+			<F N="DOutputMessages.cpp"/>
+			<F N="DPropWidget.cpp"/>
+			<F N="main.cpp"/>
+			<F N="ODBCDelegateCell.cpp"/>
+			<F N="ODBCMetaInfo.cpp"/>
+			<F N="ODBCModel.cpp"/>
+			<F N="ODBCModelBrowser.cpp"/>
+			<F N="ODBCModelDriver.cpp"/>
+			<F N="ODBCModelDrivers.cpp"/>
+			<F N="ODBCModelEnvironment.cpp"/>
+			<F N="ODBCModelSystem.cpp"/>
+			<F N="ODBCValueCell.cpp"/>
+			<F N="ODBCViewBrowser.cpp"/>
+		</Folder>
+		<Folder
+			Name="Header Files"
+			Filters="*.h;*.H;*.hh;*.hpp;*.hxx;*.inc;*.sh;*.cpy;*.if">
+			<F N="DBrowser.h"/>
+			<F N="DDataManager.h"/>
+			<F N="DDiagnostic.h"/>
+			<F N="DEdit.h"/>
+			<F N="DEditStatement.h"/>
+			<F N="DNode.h"/>
+			<F N="DNodeAttribute.h"/>
+			<F N="DNodeConnection.h"/>
+			<F N="DNodeDataSourceNameFile.h"/>
+			<F N="DNodeDataSourceNames.h"/>
+			<F N="DNodeDataSourceNameSystem.h"/>
+			<F N="DNodeDataSourceNameUser.h"/>
+			<F N="DNodeDriver.h"/>
+			<F N="DNodeDrivers.h"/>
+			<F N="DNodeODBC.h"/>
+			<F N="DNodeSchema.h"/>
+			<F N="DNodeSchemas.h"/>
+			<F N="DNodeStatement.h"/>
+			<F N="DNodeTable.h"/>
+			<F N="DNodeTableColumn.h"/>
+			<F N="DNodeTableColumns.h"/>
+			<F N="DNodeTables.h"/>
+			<F N="DNodeWidget.h"/>
+			<F N="DOutputLog.h"/>
+			<F N="DOutputMessages.h"/>
+			<F N="DPropWidget.h"/>
+			<F N="ODBCDelegateCell.h"/>
+			<F N="ODBCMetaInfo.h"/>
+			<F N="ODBCModel.h"/>
+			<F N="ODBCModelBrowser.h"/>
+			<F N="ODBCModelDriver.h"/>
+			<F N="ODBCModelDrivers.h"/>
+			<F N="ODBCModelEnvironment.h"/>
+			<F N="ODBCModelSystem.h"/>
+			<F N="ODBCValueCell.h"/>
+			<F N="ODBCViewBrowser.h"/>
+		</Folder>
+		<Folder
+			Name="Resource Files"
+			Filters="*.ico;*.cur;*.dlg"/>
+		<Folder
+			Name="Bitmaps"
+			Filters="*.bmp"/>
+		<Folder
+			Name="Other Files"
+			Filters="">
+			<F N="Add32.xpm"/>
+			<F N="Attribute48.xpm"/>
+			<F N="Connected48.xpm"/>
+			<F N="DataSourceNameFile48.xpm"/>
+			<F N="DataSourceNames48.xpm"/>
+			<F N="DataSourceNameSystem48.xpm"/>
+			<F N="DataSourceNameUser48.xpm"/>
+			<F N="Disconnected48.xpm"/>
+			<F N="Driver48.xpm"/>
+			<F N="Drivers48.xpm"/>
+			<F N="Error48.xpm"/>
+			<F N="Information48.xpm"/>
+			<F N="Makefile.am"/>
+			<F N="ODBC64.xpm"/>
+			<F N="ODBCDataManager64.xpm"/>
+			<F N="ODBCDataManagerQ4.pro"/>
+			<F N="Remove32.xpm"/>
+			<F N="Run48.xpm"/>
+			<F N="SQL48.xpm"/>
+			<F N="Warning48.xpm"/>
+		</Folder>
+	</Files>
+</Project>
