@@ -39,6 +39,17 @@ CAbout::CAbout( QWidget *pwidgetParent )
         addTab( pwidget, tr( "unixODBC" ) );
     }
 
+    // introduction to unixODBC-GUI-Qt
+    {
+        QWidget *       pwidget         = new QWidget( this );
+        QVBoxLayout *   playout         = new QVBoxLayout( pwidget );
+        QTextBrowser *  ptextbrowser    = new QTextBrowser( pwidget );
+
+        playout->addWidget( ptextbrowser );
+        ptextbrowser->setHtml( "<B>What is unixODBC-GUI-Qt?</B><P>unixODBC-GUI-Qt adds Qt-based GUI support to unixODBC. This was formally part of the unixODBC project but now exists as its own project.</P><B>Resources</B><UL><LI>unixODBC-GUI-Qt - unixodbc-gui-qt.sourceforge.net</LI></UL>" );
+        addTab( pwidget, tr( "unixODBC-GUI-Qt" ) );
+    }
+
     // introduction to people
     {
         QWidget *       pwidget         = new QWidget( this );
@@ -46,7 +57,7 @@ CAbout::CAbout( QWidget *pwidgetParent )
         QTextBrowser *  ptextbrowser    = new QTextBrowser( pwidget );
 
         playout->addWidget( ptextbrowser );
-        ptextbrowser->setHtml( "<P><B>Nick Gorham</B> (current project lead) and <B>Peter Harvey</B> (founder of unixODBC) are the principle developers of unixODBC. Many others have contributed.</P><P>Please see the <B>AUTHORS</B> file in the source distribution for more information.</P>" );
+        ptextbrowser->setHtml( "<P><B>Peter Harvey</B> (current project lead). Many others have contributed.</P><P>Please see the <B>AUTHORS</B> file in the source distribution for more information.</P>" );
         addTab( pwidget, tr( "People" ) );
     }
 
@@ -68,7 +79,11 @@ CAbout::CAbout( QWidget *pwidgetParent )
         QTextBrowser *  ptextbrowser    = new QTextBrowser( pwidget );
 
         playout->addWidget( ptextbrowser );
-        ptextbrowser->setHtml( QString( "<TABLE><TR><TD>unixODBC</TD><TD>%1.%2.%3</TD><TR></TABLE>" ).arg( V_MAJOUR ).arg( V_MINOR ).arg( V_RELEASE ) );
+#ifdef V_MAJOUR
+        ptextbrowser->setHtml( QString( "<TABLE><TR><TD>unixODBC-GUI-Qt</TD><TD>%1.%2.%3</TD><TR></TABLE>" ).arg( V_MAJOUR ).arg( V_MINOR ).arg( V_RELEASE ) );
+#else
+        ptextbrowser->setHtml( QString( "<TABLE><TR><TD>unixODBC-GUI-Qt</TD><TD>%1</TD><TR></TABLE>" ).arg( VERSION ) );
+#endif
         addTab( pwidget, tr( "Version" ) );
     }
 
