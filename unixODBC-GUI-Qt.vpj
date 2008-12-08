@@ -68,8 +68,12 @@
 			<F N="ChangeLog"/>
 			<F N="common.pri"/>
 			<F N="config.pri"/>
+			<F N="configure.in"/>
+			<F N="COPYING"/>
 			<F N="defines.pri"/>
+			<F N="GPL.txt"/>
 			<F N="INSTALL"/>
+			<F N="Makefile.am"/>
 			<F N="Makefile.cvs"/>
 			<F N="odbc.pri"/>
 			<F N="qt.m4"/>

@@ -1,9 +1,9 @@
 +-------------------------------------------------------------+
 | unixODBC-GUI-Qt                                             |
-| qmake                                                       |
 +-------------------------------------------------------------+
 
 README
+qmake
 ---------------------------------------------------------------
 
 Description:
@@ -67,10 +67,4 @@ Make & Install:
 	The ./lib directory may just contain static libs; in which
 	case you do not need to put them into your lib path. If 
 	you built share libs then you must get them into your lib path.
-
-
-+-------------------------------------------------------------+
-| Peter Harvey <pharvey@codebydesign.com>                     |
-| 05.DEC.08                                                   |
-+-------------------------------------------------------------+
 
