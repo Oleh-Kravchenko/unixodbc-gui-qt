@@ -1,0 +1,108 @@
+<!DOCTYPE Project SYSTEM "http://www.slickedit.com/dtd/vse/10.0/vpj.dtd">
+<Project
+	Version="10.0"
+	VendorName="SlickEdit"
+	WorkingDir=".">
+	<Config
+		Name="Release"
+		OutputFile=""
+		CompilerConfigName="Latest Version">
+		<Menu>
+			<Target
+				Name="Compile"
+				MenuCaption="&amp;Compile"
+				CaptureOutputWith="ProcessBuffer"
+				SaveOption="SaveCurrent"
+				RunFromDir="%rw">
+				<Exec/>
+			</Target>
+			<Target
+				Name="Build"
+				MenuCaption="&amp;Build"
+				CaptureOutputWith="ProcessBuffer"
+				SaveOption="SaveWorkspaceFiles"
+				RunFromDir="%rw">
+				<Exec CmdLine="make"/>
+			</Target>
+			<Target
+				Name="Rebuild"
+				MenuCaption="&amp;Rebuild"
+				CaptureOutputWith="ProcessBuffer"
+				SaveOption="SaveWorkspaceFiles"
+				RunFromDir="%rw">
+				<Exec/>
+			</Target>
+			<Target
+				Name="Debug"
+				MenuCaption="&amp;Debug"
+				SaveOption="SaveNone"
+				RunFromDir="%rw">
+				<Exec/>
+			</Target>
+			<Target
+				Name="Execute"
+				MenuCaption="E&amp;xecute"
+				SaveOption="SaveNone"
+				RunFromDir="%rw">
+				<Exec CmdLine='"Qt4.exe"'/>
+			</Target>
+		</Menu>
+	</Config>
+	<Files>
+		<Folder
+			Name="Source Files"
+			Filters="*.c;*.C;*.cc;*.cpp;*.cp;*.cxx;*.prg;*.pas;*.dpr;*.asm;*.s;*.bas;*.java;*.cs;*.sc;*.e;*.cob;*.html;*.rc;*.tcl;*.py;*.pl">
+			<F N="Application/main.cpp"/>
+			<F N="Application/odbcqg.cpp"/>
+			<F N="Library/ODBCQGConnection.cpp"/>
+			<F N="Library/ODBCQGEnvironment.cpp"/>
+			<F N="Library/ODBCQGLogin.cpp"/>
+			<F N="Library/ODBCQGMessageOutput.cpp"/>
+			<F N="Library/ODBCQGPropertiesDelegate.cpp"/>
+			<F N="Library/ODBCQGPropertiesDialog.cpp"/>
+			<F N="Library/ODBCQGPropertiesModel.cpp"/>
+			<F N="Library/ODBCQGProperty.cpp"/>
+			<F N="Library/ODBCQGStatement.cpp"/>
+			<F N="Library/ODBCQGSystem.cpp"/>
+		</Folder>
+		<Folder
+			Name="Header Files"
+			Filters="*.h;*.H;*.hh;*.hpp;*.hxx;*.inc;*.sh;*.cpy;*.if">
+			<F N="Application/odbcqg.h"/>
+			<F N="include/ODBCQGConnection.h"/>
+			<F N="include/ODBCQGEnvironment.h"/>
+			<F N="include/ODBCQGLogin.h"/>
+			<F N="include/ODBCQGMessageOutput.h"/>
+			<F N="include/ODBCQGPropertiesDelegate.h"/>
+			<F N="include/ODBCQGPropertiesDialog.h"/>
+			<F N="include/ODBCQGPropertiesModel.h"/>
+			<F N="include/ODBCQGProperty.h"/>
+			<F N="include/ODBCQGStatement.h"/>
+			<F N="include/ODBCQGSystem.h"/>
+		</Folder>
+		<Folder
+			Name="Resource Files"
+			Filters="*.ico;*.cur;*.dlg"/>
+		<Folder
+			Name="Bitmaps"
+			Filters="*.bmp"/>
+		<Folder
+			Name="Other Files"
+			Filters="">
+			<F N="Application/Application.pro"/>
+			<F N="Application/Connected16.xpm"/>
+			<F N="Application/Disconnected16.xpm"/>
+			<F N="Library/Error16.xpm"/>
+			<F N="Application/Execute16.xpm"/>
+			<F N="Library/Information16.xpm"/>
+			<F N="Library/Library.pro"/>
+			<F N="Makefile.am"/>
+			<F N="Application/Makefile.am"/>
+			<F N="Library/Makefile.am"/>
+			<F N="Application/ODBC64.xpm"/>
+			<F N="QtGui4.pro"/>
+			<F N="Application/Stop16.xpm"/>
+			<F N="Library/Warning16.xpm"/>
+		</Folder>
+	</Files>
+</Project>

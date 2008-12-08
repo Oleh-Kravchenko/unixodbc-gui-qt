@@ -1,0 +1,88 @@
+<!DOCTYPE Project SYSTEM "http://www.slickedit.com/dtd/vse/10.0/vpj.dtd">
+<Project
+	Version="10.0"
+	VendorName="SlickEdit"
+	WorkingDir=".">
+	<Config
+		Name="Release"
+		OutputFile=""
+		CompilerConfigName="Latest Version">
+		<Menu>
+			<Target
+				Name="Compile"
+				MenuCaption="&amp;Compile"
+				CaptureOutputWith="ProcessBuffer"
+				SaveOption="SaveCurrent"
+				RunFromDir="%rw">
+				<Exec/>
+			</Target>
+			<Target
+				Name="Build"
+				MenuCaption="&amp;Build"
+				CaptureOutputWith="ProcessBuffer"
+				SaveOption="SaveWorkspaceFiles"
+				RunFromDir="%rw">
+				<Exec CmdLine="make"/>
+			</Target>
+			<Target
+				Name="Rebuild"
+				MenuCaption="&amp;Rebuild"
+				CaptureOutputWith="ProcessBuffer"
+				SaveOption="SaveWorkspaceFiles"
+				RunFromDir="%rw">
+				<Exec/>
+			</Target>
+			<Target
+				Name="Debug"
+				MenuCaption="&amp;Debug"
+				SaveOption="SaveNone"
+				RunFromDir="%rw">
+				<Exec/>
+			</Target>
+			<Target
+				Name="Execute"
+				MenuCaption="E&amp;xecute"
+				SaveOption="SaveNone"
+				RunFromDir="%rw">
+				<Exec CmdLine='"Qt4.exe"'/>
+			</Target>
+		</Menu>
+	</Config>
+	<Files>
+		<Folder
+			Name="Source Files"
+			Filters="*.c;*.C;*.cc;*.cpp;*.cp;*.cxx;*.prg;*.pas;*.dpr;*.asm;*.s;*.bas;*.java;*.cs;*.sc;*.e;*.cob;*.html;*.rc;*.tcl;*.py;*.pl">
+			<F N="Application/main.cpp"/>
+			<F N="Library/ODBCQConnection.cpp"/>
+			<F N="Library/ODBCQConsole.cpp"/>
+			<F N="Library/ODBCQEnvironment.cpp"/>
+			<F N="Library/ODBCQStatement.cpp"/>
+			<F N="Library/ODBCQSystem.cpp"/>
+		</Folder>
+		<Folder
+			Name="Header Files"
+			Filters="*.h;*.H;*.hh;*.hpp;*.hxx;*.inc;*.sh;*.cpy;*.if">
+			<F N="include/ODBCQConnection.h"/>
+			<F N="include/ODBCQConsole.h"/>
+			<F N="include/ODBCQEnvironment.h"/>
+			<F N="include/ODBCQStatement.h"/>
+			<F N="include/ODBCQSystem.h"/>
+		</Folder>
+		<Folder
+			Name="Resource Files"
+			Filters="*.ico;*.cur;*.dlg"/>
+		<Folder
+			Name="Bitmaps"
+			Filters="*.bmp"/>
+		<Folder
+			Name="Other Files"
+			Filters="">
+			<F N="Application/Application.pro"/>
+			<F N="Library/Library.pro"/>
+			<F N="Makefile.am"/>
+			<F N="Application/Makefile.am"/>
+			<F N="Library/Makefile.am"/>
+			<F N="QtCore4.pro"/>
+		</Folder>
+	</Files>
+</Project>
