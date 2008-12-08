@@ -3,20 +3,20 @@
 +-------------------------------------------------------------+
 
 README
-cvs
+svn
 ---------------------------------------------------------------
 
 Description:
 
 	Read this if you want to know how to build from
-	source code checked-out from cvs. 
+	source code checked-out from svn. 
 
 Warning:
 
-	When you use source code from cvs you get the latest source code;
+	When you use source code from svn you get the latest source code;
 	however it may not be as stable (or even be buildable). So you
 	may want to get a regular source distribution instead. Read on 
-	if you are still interested in building from cvs source.
+	if you are still interested in building from svn source.
 
 Requirements:
 
@@ -33,12 +33,12 @@ Requirements:
 
 Download:
 	
-	Get the source from cvs at 
+	Get the source from svn at 
 	http://unixodbc-gui-qt.sourceforge.net
 
 Make & Install:
 
-	1. $ make -f Makefile.cvs
+	1. $ make -f Makefile.svn
 	2. $ ./configure --help
 	3. $ ./configure AnyOptionsHere
 	4. $ make
@@ -61,19 +61,19 @@ Make & Install:
 
 Contributing:
 
-	Source code from cvs is used by two different types of 
+	Source code from svn is used by two different types of 
 	Users.
 	
 	1. Those that want the 'bleeding edge' code; either to
 	get the newest bug fixs/features or to test. This
 	group of users will typically have read-only access to
-	the cvs code. Anyone can download the source code from
-	cvs and use it. No special permission is required. See
+	the svn code. Anyone can download the source code from
+	svn and use it. No special permission is required. See
 	LICENSE file.
 	
 	2. Those who are actively improving things by making
 	code and document changes. This group of users will have
-	read/write access to the cvs source code.
+	read/write access to the svn source code.
 	
 	If you want to contribute you can request 'write'
 	permissions using the Source Forge web interface. This

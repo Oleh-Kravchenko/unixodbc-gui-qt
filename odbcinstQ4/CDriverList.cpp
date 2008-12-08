@@ -39,7 +39,7 @@ CDriverList::CDriverList( QWidget* pwidgetParent )
     : QTableWidget( pwidgetParent )
 {
     setToolTip( tr( "list of registered drivers" ) );
-    setWhatsThis( tr( "This is a list of registered drivers. Registered drivers are drivers which the Driver Manager knows about. A well behaved driver installer will automatically register a driver - but not all driver installers do this last step. If you know your driver is installed but is not registered here then it can be registered manually providing you knwo the file names." ) );
+    setWhatsThis( tr( "This is a list of registered drivers. Registered drivers are drivers which the Driver Manager knows about. A well behaved driver installer will automatically register a driver - but not all driver installers do this last step. If you know your driver is installed but is not registered here then it can be registered manually providing you know the file names." ) );
     QStringList stringlistHeaderLabels;
 
     setColumnCount( 4 );

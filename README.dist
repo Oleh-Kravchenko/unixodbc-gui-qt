@@ -11,22 +11,22 @@ Description:
 	This readme is for those interested in *making* a 
 	unixODBC-GUI-Qt	distribution of some sort.
 	
-Source via cvs:
+Source via svn:
       
-	see the README.cvs
+	see the README.svn
 	
 Source via 'tar-ball':
 
-	1. pull down the source from cvs
-	2. make -f Makefile.cvs
+	1. pull down the source from svn
+	2. make -f Makefile.svn
 	3. mv unixODBC-GUI-Qt unixODBC-GUI-Qt-<version>
 	4. tar -c unixODBC-GUI-Qt-<version> > unixODBC-GUI-Qt-<version>.tar
 	5. gzip unixODBC-GUI-Qt-<version>.tar
 	
 Binary + Source via RPM:
 
-	1. pull down the source from cvs
-	2. make -f Makefile.cvs
+	1. pull down the source from svn
+	2. make -f Makefile.svn
 	3. make dist
 	4. copy the unixODBC-GUI-Qt-<version> into /usr/src/..../SOURCES
 	5. rpm -ba ..../unixODBC-GUI-Qt.spec 
