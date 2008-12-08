@@ -565,50 +565,9 @@ LIB_VERSION="1:0:0"
 AC_SUBST(LIB_VERSION)
 
 AC_OUTPUT( Makefile \
-    extras/Makefile \
-    log/Makefile \
-    lst/Makefile \
     ini/Makefile \
-    odbcinst/Makefile \
-    cur/Makefile \
-    DriverManager/Makefile \
-    odbcinstQ/Makefile \
     odbcinstQ4/Makefile \
-    exe/Makefile \
-    DRVConfig/Makefile \
-    DRVConfig/drvcfg1/Makefile \
-    DRVConfig/drvcfg2/Makefile \
-    DRVConfig/PostgreSQL/Makefile \
-    DRVConfig/MiniSQL/Makefile \
-    DRVConfig/MySQL/Makefile \
-    DRVConfig/nn/Makefile \
-    DRVConfig/esoob/Makefile \
-    DRVConfig/oplodbc/Makefile \
-    DRVConfig/template/Makefile \
-    DRVConfig/tds/Makefile \
-    DRVConfig/txt/Makefile \
-    DRVConfig/Oracle/Makefile \
-    DRVConfig/sapdb/Makefile \
-    DRVConfig/Mimer/Makefile \
-    Drivers/Makefile \
-    Drivers/PostgreSQL/Makefile \
-    Drivers/Postgre7.1/Makefile \
-    Drivers/nn/Makefile \
-    Drivers/odbc/Makefile \
-    Drivers/template/Makefile \
-    Drivers/MiniSQL/Makefile \
-    include/Makefile \
-    doc/Makefile \
-    doc/AdministratorManual/Makefile \
-    doc/ProgrammerManual/Makefile \
-    doc/ProgrammerManual/Tutorial/Makefile \
-    doc/UserManual/Makefile \
-    doc/lst/Makefile \
-    DataManager/Makefile \
-    DataManagerII/Makefile \
-    ODBCConfig/Makefile \
-    odbctest/Makefile \
-    autotest/Makefile \
-    samples/Makefile \
+    ODBCCreateDataSourceQ4/Makefile \
+    ODBCManageDataSourcesQ4/Makefile \
     )
 

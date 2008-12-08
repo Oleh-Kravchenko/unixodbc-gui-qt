@@ -1,18 +1,15 @@
-if QT4
 bin_PROGRAMS = ODBCManageDataSourcesQ4
 
-INCLUDES = -I@top_srcdir@/include $(QT_CXXFLAGS) \
+INCLUDES = $(QT_CXXFLAGS) \
     -DSYSTEM_FILE_PATH=\"@sysconfdir@\" -DDEFLIB_PATH=\"@libdir@\" $(LTDLINCL)
 
 ODBCManageDataSourcesQ4_LDADD =  \
 	$(QT_LDFLAGS) \
 	$(QT_LIBS) \
-	../odbcinst/libodbcinst.la \
-	../extras/libodbcextraslc.la \
-	../DriverManager/libodbc.la 
+	-lodbc -lodbcinst
 
-ODBCManageDataSourcesQ4_DEPENDANCIES = ../odbcinst/libodbcinst.la ../extras/libodbcextraslc.la ../DriverManager/libodbc.la
+ODBCManageDataSourcesQ4_DEPENDANCIES = ../odbcinstQ4/libodbcinstQ4.la
 
 ODBCManageDataSourcesQ4_SOURCES = \
 	main.cpp
-endif
+

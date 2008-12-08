@@ -1,4 +1,5 @@
 cvs:
+	@touch config.rpath
 	@echo "*** Retrieving configure tests needed by configure.in"
 	@aclocal
 	@echo "*** Building Makefile templates (step one)"

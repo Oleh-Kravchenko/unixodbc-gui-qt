@@ -1,50 +1,29 @@
 SUBDIRS = \
-	extras \
-	log \
-	lst \
 	ini \
-	libltdl \
-	odbcinst \
-	DriverManager \
-	odbcinstQ \
 	odbcinstQ4 \
-	exe \
-	cur \
-	DRVConfig \
-	Drivers \
-	include \
-	doc \
-	ODBCConfig \
-	DataManager \
-	DataManagerII \
-	odbctest \
-	autotest \
-	samples 
+	ODBCCreateDataSourceQ4 \
+	ODBCManageDataSourcesQ4
 
 EXTRA_DIST = \
-	unixODBC.spec \
-	unixODBC-sr.spec \
-	README.OSX \
-	README.VMS \
-	README.QNX \
-	README.CYGWIN \
-	README.AIX \
-	README.SOLARIS \
-	README.INTERIX \
-	vms/install_image.com \
-	vms/odbc2_axp.opt \
-	vms/odbc_axp.opt \
-	vms/odbcinst_axp.opt \
-	vms/odbc_setup.com \
-	vms/drivermanager_axp.opt \
-	vmsbuild.com \
-	Interix/configure \
-	Interix/config.guess \
-	Interix/libtool \
-	qt.m4 
+	AUTHORS \
+	ChangeLog \
+	common.pri \
+	config.pri \
+	configure.in \
+	COPYING \
+	defines.pri \
+	GPL.txt \
+	INSTALL \
+	LGPL.txt \
+	Makefile.am \
+	odbc.pri \
+	qt.m4 \
+	README \
+	README.cvs \
+	README.dist \
+	README.qmake \
+	unixODBC-GUI-Qt.pro \
+	unixODBC-GUI-Qt.spec
+	 
 
-install-data-am:
-	-touch $(DESTDIR)${sysconfdir}/odbcinst.ini
-	-touch $(DESTDIR)${sysconfdir}/odbc.ini
-	-mkdir -p $(DESTDIR)${sysconfdir}/ODBCDataSources
-	$(DESTDIR)${bindir}/odbc_config --header > $(DESTDIR)${includedir}/unixodbc_conf.h
+

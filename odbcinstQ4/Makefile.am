@@ -5,25 +5,19 @@ libodbcinstQ4_la_LDFLAGS = \
 		-export-symbols @srcdir@/odbcinstQ4.exp \
 		-module
 
-if QT4
-if QTWIZARD
-
 lib_LTLIBRARIES = libodbcinstQ4.la 
 
-INCLUDES = -I@top_srcdir@/include $(QT_CXXFLAGS) \
+INCLUDES = -I@top_srcdir@/ini $(QT_CXXFLAGS) \
     -DTHEPREFIX=\"@prefix@\" -DSYSTEM_FILE_PATH=\"@sysconfdir@\" -DDEFLIB_PATH=\"@libdir@\" -DSHLIBEXT=\"@SHLIBEXT@\" $(LTDLINCL)
 
 libodbcinstQ4_la_LIBADD = \
 	$(QT_LDFLAGS) \
 	$(QT_LIBS) \
-    ../ini/libinilc.la \
-	../DriverManager/libodbc.la \
-	../odbcinst/libodbcinst.la 
+	../ini/libinilc.la \
+	-lodbc -lodbcinst
 
 libodbcinstQ4_la_DEPENDENCIES = \
-    ../ini/libinilc.la \
-	../DriverManager/libodbc.la \
-	../odbcinst/libodbcinst.la 
+	../ini/libinilc.la
 
 CLEANFILES = \
 	mCAbout.cpp \
@@ -194,9 +188,6 @@ mCThreading.cpp: @srcdir@/CThreading.h
 
 mCTracing.cpp: @srcdir@/CTracing.h
 	@MOC@ @srcdir@/CTracing.h -o mCTracing.cpp
-
-endif
-endif
 
 EXTRA_DIST = \
 	CAbout.h \

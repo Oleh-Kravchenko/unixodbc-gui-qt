@@ -73,6 +73,7 @@
 			<F N="defines.pri"/>
 			<F N="GPL.txt"/>
 			<F N="INSTALL"/>
+			<F N="LGPL.txt"/>
 			<F N="Makefile.am"/>
 			<F N="Makefile.cvs"/>
 			<F N="odbc.pri"/>

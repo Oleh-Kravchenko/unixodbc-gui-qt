@@ -1,11 +1,6 @@
 noinst_LTLIBRARIES = libinilc.la
 
-INCLUDES = -I@top_srcdir@/include
-
 libinilc_la_LDFLAGS = -no-undefined 
-
-libinilc_la_LIBADD = \
-    ../extras/libodbcextraslc.la
 
 libinilc_la_SOURCES = \
 	iniAllTrim.c \
