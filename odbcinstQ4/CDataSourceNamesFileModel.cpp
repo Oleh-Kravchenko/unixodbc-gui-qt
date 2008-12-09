@@ -7,6 +7,8 @@
  * \date    2007
  * \license Copyright unixODBC-GUI-Qt Project 2009, LGPL
  */
+#include <unistd.h>
+
 #include <odbcinstext.h>
 
 #include <QtGui>

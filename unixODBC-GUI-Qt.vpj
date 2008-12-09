@@ -78,7 +78,7 @@
 			<F N="INSTALL"/>
 			<F N="LGPL.txt"/>
 			<F N="Makefile.am"/>
-			<F N="Makefile.cvs"/>
+			<F N="Makefile.svn"/>
 			<F N="NEWS"/>
 			<F N="odbc.pri"/>
 			<F N="qt.m4"/>
