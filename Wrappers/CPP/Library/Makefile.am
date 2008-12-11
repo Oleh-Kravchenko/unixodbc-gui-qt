@@ -1,25 +1,14 @@
-lib_LTLIBRARIES = libodbcplus.la 
+noinst_LTLIBRARIES = libodbcplus.la 
 
-libodbcplus_la_LDFLAGS = \
-	-version-info @LIB_VERSION@ \
-	-export-dynamic
+libodbcplus_la_LDFLAGS = -no-undefined 
 
 INCLUDES = \
 	-I../include \
-	-I@top_srcdir@/include \
 	-DTHEPREFIX=\"@prefix@\" \
 	-DSYSTEM_FILE_PATH=\"@sysconfdir@\" \
 	-DDEFLIB_PATH=\"@libdir@\" \
 	-DSHLIBEXT=\"@SHLIBEXT@\" \
 	$(LTDLINCL)
-
-libodbcplus_la_LIBADD = \
-	../../../DriverManager/libodbc.la \
-	../../../odbcinst/libodbcinst.la 
-
-libodbcplus_la_DEPENDENCIES = \
-	../../../DriverManager/libodbc.la \
-	../../../odbcinst/libodbcinst.la 
 
 libodbcplus_la_SOURCES = \
 	ODBCConnection.cpp \
