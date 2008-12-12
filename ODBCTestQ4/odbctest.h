@@ -58,7 +58,7 @@ typedef struct attr_options
 class Handle
 {
 public:
-	Handle( int t, SQLHANDLE h, QList<Handle> &list );
+	Handle( int t, SQLHANDLE h, QList<Handle*> &list );
 	Handle( int t, SQLHANDLE h, QString desc = NULL, SQLHANDLE stmt = SQL_NULL_HANDLE );
 	Handle( Handle &e );
 	~Handle();
@@ -86,7 +86,7 @@ private:
     QString description;
     int implicit;
 	SQLHANDLE stmt_handle;
-    QList<Handle> *handle_list;
+    QList<Handle*> *handle_list;
 };
 
 class OutputWin : public QTextEdit
@@ -109,7 +109,7 @@ public:
 	QSplitter *split;
 	QTextEdit *in_win;
 	OutputWin *out_win;
-	QList<Handle> listHandle;
+	QList<Handle*> listHandle; // \todo free these up in a destructor
 	const char *return_as_text( int ret );
 	void fill_list_box( attr_value *attr, QComboBox *lst );
 	void fill_list_box( attr_options *attr, QComboBox *lst );

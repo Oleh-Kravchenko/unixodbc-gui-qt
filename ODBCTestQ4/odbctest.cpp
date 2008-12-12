@@ -773,7 +773,7 @@ Handle::Handle( int t, SQLHANDLE h, QString desc, SQLHANDLE stmt )
     param_array_size = 0;
 }
 
-Handle::Handle( int t, SQLHANDLE h, QList<Handle> &list ) 
+Handle::Handle( int t, SQLHANDLE h, QList<Handle*> &list ) 
 { 
 	type = t; 
 	handle = h; 

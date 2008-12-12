@@ -1000,7 +1000,7 @@ void dGetEnvAttr::Ok()
                  env_options[ types -> currentIndex() ].attr );
     odbctest -> out_win -> insertLineLimited( txt );
 
-    b_len = atoi( buffer_len -> text().toAscii().constData() );
+    b_len = buffer_len -> text().toInt();
     if ( b_len < 1 )
     {
         b_len = 0;
@@ -1689,7 +1689,7 @@ void dGetStmtAttr::Ok()
                  stmt_options[ types -> currentIndex() ].attr );
     odbctest -> out_win -> insertLineLimited( txt );
 
-    b_len = atoi( buffer_len -> text().toAscii().constData() );
+    b_len = buffer_len -> text().toInt();
     if ( b_len < 1 )
     {
         b_len = 0;

@@ -83,9 +83,9 @@ class dFullConnect : public QDialog
 		QComboBox *handles;
 		QLineEdit *dsn, *usr, *pwd;
 		QLabel *l_handle, *l_dsn, *l_usr, *l_pwd;
-		QListBox *dsn_list;
+		QListWidget *dsn_list;
 		QTextEdit *in_win;
-		QButtonGroup *version, *cursor;
+		QGroupBox *version, *cursor;
 		OutputWin *out_win;
 		OdbcTest *odbctest;
 		QRadioButton *ver_2, *ver_3, *ver_def; 
