@@ -127,7 +127,7 @@
 #include "odbctest.h"
 
 OutputWin::OutputWin( QWidget *parent , const char *name )
-    :QTextEdit( parent, name )
+    : QTextEdit( parent )
 {
 }
 

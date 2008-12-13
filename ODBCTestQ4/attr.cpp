@@ -375,7 +375,7 @@ static attr_options stmt_options[] =
         }, 
         "2.0", SQL_INTEGER, 0, 0
     },
-    { NULL, 0, { { NULL, 0, NULL, 0 } }, NULL, 0, 0, 0 },
+    { NULL, 0, { { NULL, 0, NULL, 0 } }, NULL, 0, 0, 0 }
 };
 
 static attr_options stmt_opt_options[] = 
@@ -467,7 +467,7 @@ static attr_options stmt_opt_options[] =
             { NULL, 0, NULL, 0 }
         }, "2.0", SQL_INTEGER, 0, 0
     },
-    { NULL, 0, { { NULL, 0, NULL, 0 } }, NULL, 0, 0, 0 },
+    { NULL, 0, { { NULL, 0, NULL, 0 } }, NULL, 0, 0, 0 }
 };
 
 static attr_options conn_options[] = 
@@ -571,7 +571,7 @@ static attr_options conn_options[] =
             { NULL, 0, NULL, 0 }
         }, "1.0", SQL_INTEGER, 0, 0
     },
-    { NULL, 0, { { NULL, 0, NULL, 0 } }, NULL, 0, 0, 0 },
+    { NULL, 0, { { NULL, 0, NULL, 0 } }, NULL, 0, 0, 0 }
 };
 
 static attr_options conn_opt_options[] = 
@@ -736,7 +736,7 @@ static attr_options conn_opt_options[] =
             { NULL, 0, NULL, 0 }
         }, "2.0", SQL_INTEGER, 0, 0
     },
-    { NULL, 0, { { NULL, 0, NULL, 0 } }, NULL, 0, 0, 0 },
+    { NULL, 0, { { NULL, 0, NULL, 0 } }, NULL, 0, 0, 0 }
 };
 
 static attr_options conn_gopt_options[] = 
@@ -815,7 +815,7 @@ static attr_options conn_gopt_options[] =
             { NULL, 0, NULL, 0 }
         }, "1.0", SQL_INTEGER, 0, 0
     },
-    { NULL, 0, { { NULL, 0, NULL, 0 } }, NULL, 0, 0, 0 },
+    { NULL, 0, { { NULL, 0, NULL, 0 } }, NULL, 0, 0, 0 }
 };
 
 static attr_options env_options[] = 
@@ -851,7 +851,7 @@ static attr_options env_options[] =
             { NULL, 0, NULL, 0 }
         }, "3.0", SQL_INTEGER, 0, 0
     },
-    { NULL, 0, { { NULL, 0, NULL, 0 } }, NULL, 0, 0, 0 },
+    { NULL, 0, { { NULL, 0, NULL, 0 } }, NULL, 0, 0, 0 }
 };
 
 void dSetEnvAttr::Activated( int index )

@@ -503,7 +503,7 @@ static attr_options gf_options[] =
             { NULL, 0, NULL, 0}
         }, "3.0", SQL_INTEGER, 0, 0
     },
-    { NULL, 0, { { NULL, 0, NULL, 0}}, NULL, 0, 0, 0},
+    { NULL, 0, { { NULL, 0, NULL, 0 } }, NULL, 0, 0, 0 }
 };
 
 static attr_options dc_options[] = 
@@ -528,7 +528,7 @@ static attr_options dc_options[] =
             { NULL, 0, NULL, 0}
         }, "1.0", SQL_INTEGER, 0, 0
     },
-    { NULL, 0, { { NULL, 0, NULL, 0}}, NULL, 0, 0, 0},
+    { NULL, 0, { { NULL, 0, NULL, 0 } }, NULL, 0, 0, 0 }
 };
 
 static attr_options info_options[] = 
@@ -2406,7 +2406,7 @@ static attr_options info_options[] =
             { NULL, 0, NULL, 0}
         }, "3.0", SQL_CHAR, 0, 0
     },
-    { NULL, 0, { { NULL, 0, NULL, 0}}, NULL, 0, 0, 0}
+    { NULL, 0, { { NULL, 0, NULL, 0 } }, NULL, 0, 0, 0 }
 };
 
 void dDriverConnect::out_str_clkd()

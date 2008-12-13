@@ -79,92 +79,86 @@
  *
  **********************************************************************/
 
-#include <stdlib.h>
-
-#include <sql.h>
-#include <sqlext.h>
-
 #include "desc.h"
 
 static attr_options field_ident_struct[] = 
 {
 	{ "SQL_DESC_ALLOC_TYPE", SQL_DESC_ALLOC_TYPE, 
 		{
-			{ NULL }
-		}, "3.0", SQL_IS_USMALLINT
+			{ NULL, 0, NULL, 0 }
+		}, "3.0", SQL_IS_USMALLINT, 0, 0
 	},
 	{ "SQL_DESC_ARRAY_SIZE", SQL_DESC_ARRAY_SIZE, 
 		{
-			{ NULL }
-		}, "3.0", SQL_IS_UINTEGER
+			{ NULL, 0, NULL, 0 }
+		}, "3.0", SQL_IS_UINTEGER, 0, 0
 	},
 	{ "SQL_DESC_ARRAY_STATUS_PTR", SQL_DESC_ARRAY_STATUS_PTR, 
 		{
-			{ NULL }
-		}, "3.0", SQL_IS_POINTER
+			{ NULL, 0, NULL, 0 }
+		}, "3.0", SQL_IS_POINTER, 0, 0
 	},
 	{ "SQL_DESC_BIND_OFFSET_PTR", SQL_DESC_BIND_OFFSET_PTR, 
 		{
-			{ NULL }
-		}, "3.0", SQL_IS_POINTER
+			{ NULL, 0, NULL, 0 }
+		}, "3.0", SQL_IS_POINTER, 0, 0
 	},
 	{ "SQL_DESC_BIND_TYPE", SQL_DESC_BIND_TYPE, 
 		{
-			{ NULL }
-		}, "3.0", SQL_IS_UINTEGER
+			{ NULL, 0, NULL, 0 }
+		}, "3.0", SQL_IS_UINTEGER, 0, 0
 	},
 	{ "SQL_DESC_COUNT", SQL_DESC_COUNT, 
 		{
-			{ NULL }
-		}, "3.0", SQL_IS_SMALLINT
+			{ NULL, 0, NULL, 0 }
+		}, "3.0", SQL_IS_SMALLINT, 0, 0
 	},
 	{ "SQL_DESC_ROWS_PROCESSED_PTR", SQL_DESC_ROWS_PROCESSED_PTR, 
 		{
-			{ NULL }
-		}, "3.0", SQL_IS_POINTER
+			{ NULL, 0, NULL, 0 }
+		}, "3.0", SQL_IS_POINTER, 0, 0
 	},
 	{ "SQL_DESC_AUTO_UNIQUE_VALUE", SQL_DESC_AUTO_UNIQUE_VALUE, 
 		{
-			{ NULL }
-		}, "3.0", SQL_IS_INTEGER
+			{ NULL, 0, NULL, 0 }
+		}, "3.0", SQL_IS_INTEGER, 0, 0
 	},
 	{ "SQL_DESC_BASE_COLUMN_NAME", SQL_DESC_BASE_COLUMN_NAME, 
 		{
-			{ NULL }
-		}, "3.0", SQL_CHAR
+			{ NULL, 0, NULL, 0 }
+		}, "3.0", SQL_CHAR, 0, 0
 	},
 	{ "SQL_DESC_BASE_TABLE_NAME", SQL_DESC_BASE_TABLE_NAME, 
 		{
-			{ NULL }
-		}, "3.0", SQL_CHAR
+			{ NULL, 0, NULL, 0 }
+		}, "3.0", SQL_CHAR, 0, 0
 	},
 	{ "SQL_DESC_CASE_SENSITIVE", SQL_DESC_CASE_SENSITIVE, 
 		{
-			{ NULL }
-		}, "3.0", SQL_IS_INTEGER
+			{ NULL, 0, NULL, 0 }
+		}, "3.0", SQL_IS_INTEGER, 0, 0
 	},
 	{ "SQL_DESC_CATALOG_NAME", SQL_DESC_CATALOG_NAME, 
 		{
-			{ NULL }
-		}, "3.0", SQL_CHAR
+			{ NULL, 0, NULL, 0 }
+		}, "3.0", SQL_CHAR, 0, 0
 	},
 	{ "SQL_DESC_CONCISE_TYPE", SQL_DESC_CONCISE_TYPE, 
 		{
-			{ NULL }
-		}, "3.0", SQL_IS_SMALLINT
+			{ NULL, 0, NULL, 0 }
+		}, "3.0", SQL_IS_SMALLINT, 0, 0
 	},
 	{ "SQL_DESC_DATA_PTR", SQL_DESC_DATA_PTR, 
 		{
-			{ NULL }
-		}, "3.0", SQL_IS_POINTER
+			{ NULL, 0, NULL, 0 }
+		}, "3.0", SQL_IS_POINTER, 0, 0
 	},
 	{ "SQL_DESC_DATETIME_INTERVAL_CODE", SQL_DESC_DATETIME_INTERVAL_CODE, 
 		{
-			{ NULL }
-		}, "3.0", SQL_IS_SMALLINT
+			{ NULL, 0, NULL, 0 }
+		}, "3.0", SQL_IS_SMALLINT, 0, 0
 	},
-	{ NULL 
-	}
+	{ NULL, 0, { { NULL, 0, NULL, 0 } }, NULL, 0, 0, 0 }
 };
 
 void dCopyDesc::Ok()
@@ -206,9 +200,10 @@ void dCopyDesc::Ok()
 }
 
 dCopyDesc::dCopyDesc( OdbcTest *parent, QString name )
-        : QDialog( parent, name, TRUE )
+        : QDialog( parent )
 {
-	setCaption( name );
+	setWindowTitle( name );
+	setModal( true );
 
 	odbctest = parent;
 
@@ -221,14 +216,14 @@ dCopyDesc::dCopyDesc( OdbcTest *parent, QString name )
     help = new QPushButton( "Help", this );
     help->setGeometry( 290,10, 70,25 );
 
-	handle1 = new QComboBox( FALSE, this, "Source Handle 1" );
+	handle1 = new QComboBox( this );
 	handle1 -> setGeometry( 160, 50, 200, 20 );
 	odbctest->fill_handle_list( SQL_HANDLE_DESC, handle1 );
 
 	l_handle1 = new QLabel( "Source Handle:", this );
 	l_handle1 -> setGeometry( 10, 50, 120, 20 );
 
-	handle2 = new QComboBox( FALSE, this, "Destination Handle 2" );
+	handle2 = new QComboBox( this );
 	handle2 -> setGeometry( 160, 80, 200, 20 );
 	odbctest->fill_handle_list( SQL_HANDLE_DESC, handle2 );
 
@@ -253,7 +248,7 @@ dCopyDesc::~dCopyDesc()
 
 void dGetDescField::ptr_clkd()
 {
-	if ( ptr_valid -> isOn() )
+	if ( ptr_valid -> isChecked() )
 	    ptr_valid -> setText( "ValuePtr: SQL_NULL_POINTER" );
 	else
 	    ptr_valid -> setText( "ValuePtr: VALID" );
@@ -261,7 +256,7 @@ void dGetDescField::ptr_clkd()
 
 void dGetDescField::strlen_clkd()
 {
-	if ( strlen_valid -> isOn() )
+	if ( strlen_valid -> isChecked() )
 	    strlen_valid -> setText( "StringLengthPtr: SQL_NULL_POINTER" );
 	else
 	    strlen_valid -> setText( "StringLengthPtr: VALID" );
@@ -294,39 +289,39 @@ void dGetDescField::Ok()
 		txt.sprintf( "    Handle: SQL_NULL_HANDLE" );
 	odbctest -> out_win -> insertLineLimited( txt );
 
-    rec_number = atoi( rec_num -> text().ascii());
+    rec_number = rec_num -> text().toInt();
     txt.sprintf( "    RecNumber: %d", rec_number );
 	odbctest -> out_win -> insertLineLimited( txt );
 
-	attribute = field_ident_struct[ diag_info -> currentItem() ].attr;
+	attribute = field_ident_struct[ diag_info -> currentIndex() ].attr;
 	txt.sprintf( "    FieldIdentifier: %s=%d", 
-		field_ident_struct[ diag_info -> currentItem() ].text,
-		field_ident_struct[ diag_info -> currentItem() ].attr );
+		field_ident_struct[ diag_info -> currentIndex() ].text,
+		field_ident_struct[ diag_info -> currentIndex() ].attr );
 	odbctest -> out_win -> insertLineLimited( txt );
 
-    b_len = atoi( buffer_len -> text().ascii());
-	if ( ptr_valid -> isOn() )
+    b_len = buffer_len -> text().toInt();
+	if ( ptr_valid -> isChecked() )
     {
         buf = NULL;
 		txt.sprintf( "    ValuePtr: <null pointer>" );
     }
-	else if ( field_ident_struct[ diag_info -> currentItem() ].data_type == SQL_IS_POINTER )
+	else if ( field_ident_struct[ diag_info -> currentIndex() ].data_type == SQL_IS_POINTER )
     {
         buf = &pval;
     }
-	else if ( field_ident_struct[ diag_info -> currentItem() ].data_type == SQL_IS_INTEGER )
+	else if ( field_ident_struct[ diag_info -> currentIndex() ].data_type == SQL_IS_INTEGER )
     {
         buf = &ival;
     }
-	else if ( field_ident_struct[ diag_info -> currentItem() ].data_type == SQL_IS_UINTEGER )
+	else if ( field_ident_struct[ diag_info -> currentIndex() ].data_type == SQL_IS_UINTEGER )
     {
         buf = &uival;
     }
-	else if ( field_ident_struct[ diag_info -> currentItem() ].data_type == SQL_IS_SMALLINT )
+	else if ( field_ident_struct[ diag_info -> currentIndex() ].data_type == SQL_IS_SMALLINT )
     {
         buf = &sval;
     }
-	else if ( field_ident_struct[ diag_info -> currentItem() ].data_type == SQL_IS_USMALLINT )
+	else if ( field_ident_struct[ diag_info -> currentIndex() ].data_type == SQL_IS_USMALLINT )
     {
         buf = &usval;
     }
@@ -347,7 +342,7 @@ void dGetDescField::Ok()
     }
 	odbctest -> out_win -> insertLineLimited( txt );
 
-	if ( strlen_valid -> isOn() )
+	if ( strlen_valid -> isChecked() )
     {
 		txt.sprintf( "    StringLengthPtr: <null pointer>" );
         strlen_ptr = NULL;
@@ -372,27 +367,27 @@ void dGetDescField::Ok()
         odbctest -> out_win -> insertLineLimited( "  Out:" );
         if ( buf )
         {
-            if ( field_ident_struct[ diag_info -> currentItem() ].data_type == SQL_CHAR )
+            if ( field_ident_struct[ diag_info -> currentIndex() ].data_type == SQL_CHAR )
             {
-                txt.sprintf( "    ValuePtr: %s", buf );
+                txt.sprintf( "    ValuePtr: %p", buf );
             }
-            else if ( field_ident_struct[ diag_info -> currentItem() ].data_type == SQL_IS_POINTER )
+            else if ( field_ident_struct[ diag_info -> currentIndex() ].data_type == SQL_IS_POINTER )
             {
                 txt.sprintf( "    ValuePtr: %p", pval );
             }
-            else if ( field_ident_struct[ diag_info -> currentItem() ].data_type == SQL_IS_INTEGER )
+            else if ( field_ident_struct[ diag_info -> currentIndex() ].data_type == SQL_IS_INTEGER )
             {
                 txt.sprintf( "    ValuePtr: %d", ival );
             }
-            else if ( field_ident_struct[ diag_info -> currentItem() ].data_type == SQL_IS_UINTEGER )
+            else if ( field_ident_struct[ diag_info -> currentIndex() ].data_type == SQL_IS_UINTEGER )
             {
                 txt.sprintf( "    ValuePtr: %d", ival );
             }
-            else if ( field_ident_struct[ diag_info -> currentItem() ].data_type == SQL_IS_SMALLINT )
+            else if ( field_ident_struct[ diag_info -> currentIndex() ].data_type == SQL_IS_SMALLINT )
             {
                 txt.sprintf( "    ValuePtr: %d", sval );
             }
-            else if ( field_ident_struct[ diag_info -> currentItem() ].data_type == SQL_IS_USMALLINT )
+            else if ( field_ident_struct[ diag_info -> currentIndex() ].data_type == SQL_IS_USMALLINT )
             {
                 txt.sprintf( "    ValuePtr: %d", sval );
             }
@@ -420,9 +415,10 @@ void dGetDescField::Ok()
 } 
 
 dGetDescField::dGetDescField( OdbcTest *parent, QString name )
-        : QDialog( parent, name, TRUE )
+        : QDialog( parent )
 {
-	setCaption( name );
+	setWindowTitle( name );
+	setModal( true );
 
 	odbctest = parent;
 
@@ -435,14 +431,14 @@ dGetDescField::dGetDescField( OdbcTest *parent, QString name )
     help = new QPushButton( "Help", this );
     help->setGeometry( 410,10, 70,25 );
 
-	handles = new QComboBox( FALSE, this, "Handles" );
+	handles = new QComboBox( this );
 	handles -> setGeometry( 130, 50, 200, 20 );
 	odbctest->fill_handle_list( SQL_HANDLE_DESC, handles );
 
 	l_handles = new QLabel( "Handle:", this );
 	l_handles -> setGeometry( 10, 50, 120, 20 );
 
-	rec_num = new QLineEdit( this, "Rec Num" );
+	rec_num = new QLineEdit( this );
     rec_num -> setGeometry( 130, 80, 70, 20 );
 	rec_num -> setMaxLength( 6 );
 	rec_num -> setText( "0" );
@@ -450,7 +446,7 @@ dGetDescField::dGetDescField( OdbcTest *parent, QString name )
 	l_rec_num = new QLabel( "Rec Number:", this );
     l_rec_num -> setGeometry( 10, 80, 100, 20 );
 
-	diag_info = new QComboBox( FALSE, this, "Info" );
+	diag_info = new QComboBox( this );
 	diag_info -> setGeometry( 130, 110, 350, 20 );
 	parent->fill_list_box( field_ident_struct, diag_info );
 
@@ -460,7 +456,7 @@ dGetDescField::dGetDescField( OdbcTest *parent, QString name )
 	ptr_valid = new QCheckBox( "ValuePtr: VALID", this );
 	ptr_valid -> setGeometry( 10, 140, 300, 15 );
 
-	buffer_len = new QLineEdit( this, "Buffer Len" );
+	buffer_len = new QLineEdit( this );
     buffer_len -> setGeometry( 130, 170, 70, 20 );
 	buffer_len -> setMaxLength( 6 );
 	buffer_len -> setText( "300" );
@@ -498,7 +494,7 @@ dGetDescField::~dGetDescField()
 
 void dGetDescRec::name_clkd()
 {
-	if ( name_valid -> isOn() )
+	if ( name_valid -> isChecked() )
 	    name_valid -> setText( "Name: SQL_NULL_POINTER" );
 	else
 	    name_valid -> setText( "Name: VALID" );
@@ -506,7 +502,7 @@ void dGetDescRec::name_clkd()
 
 void dGetDescRec::strlen_clkd()
 {
-	if ( strlen_valid -> isOn() )
+	if ( strlen_valid -> isChecked() )
 	    strlen_valid -> setText( "StringLengthPtr: SQL_NULL_POINTER" );
 	else
 	    strlen_valid -> setText( "StringLengthPtr: VALID" );
@@ -514,7 +510,7 @@ void dGetDescRec::strlen_clkd()
 
 void dGetDescRec::type_clkd()
 {
-	if ( type_valid -> isOn() )
+	if ( type_valid -> isChecked() )
 	    type_valid -> setText( "TypePtr: SQL_NULL_POINTER" );
 	else
 	    type_valid -> setText( "TypePtr: VALID" );
@@ -522,7 +518,7 @@ void dGetDescRec::type_clkd()
 
 void dGetDescRec::sub_type_clkd()
 {
-	if ( sub_type_valid -> isOn() )
+	if ( sub_type_valid -> isChecked() )
 	    sub_type_valid -> setText( "SubTypePtr: SQL_NULL_POINTER" );
 	else
 	    sub_type_valid -> setText( "SubTypePtr: VALID" );
@@ -530,7 +526,7 @@ void dGetDescRec::sub_type_clkd()
 
 void dGetDescRec::length_clkd()
 {
-	if ( length_valid -> isOn() )
+	if ( length_valid -> isChecked() )
 	    length_valid -> setText( "LengthPtr: SQL_NULL_POINTER" );
 	else
 	    length_valid -> setText( "LengthPtr: VALID" );
@@ -538,7 +534,7 @@ void dGetDescRec::length_clkd()
 
 void dGetDescRec::precision_clkd()
 {
-	if ( precision_valid -> isOn() )
+	if ( precision_valid -> isChecked() )
 	    precision_valid -> setText( "PrecisionPtr: SQL_NULL_POINTER" );
 	else
 	    precision_valid -> setText( "PrecisionPtr: VALID" );
@@ -546,7 +542,7 @@ void dGetDescRec::precision_clkd()
 
 void dGetDescRec::scale_clkd()
 {
-	if ( scale_valid -> isOn() )
+	if ( scale_valid -> isChecked() )
 	    scale_valid -> setText( "ScalePtr: SQL_NULL_POINTER" );
 	else
 	    scale_valid -> setText( "ScalePtr: VALID" );
@@ -554,7 +550,7 @@ void dGetDescRec::scale_clkd()
 
 void dGetDescRec::nullable_clkd()
 {
-	if ( nullable_valid -> isOn() )
+	if ( nullable_valid -> isChecked() )
 	    nullable_valid -> setText( "NullablePtr: SQL_NULL_POINTER" );
 	else
 	    nullable_valid -> setText( "NullablePtr: VALID" );
@@ -587,12 +583,12 @@ void dGetDescRec::Ok()
 		txt.sprintf( "    Handle: SQL_NULL_HANDLE" );
 	odbctest -> out_win -> insertLineLimited( txt );
 
-    rec_number = atoi( rec_num -> text().ascii());
+    rec_number = rec_num -> text().toInt();
     txt.sprintf( "    RecNumber: %d", rec_number );
 	odbctest -> out_win -> insertLineLimited( txt );
 
-    b_len = atoi( buffer_len -> text().ascii());
-	if ( name_valid -> isOn() )
+    b_len = buffer_len -> text().toInt();
+	if ( name_valid -> isChecked() )
     {
         buf = NULL;
 		txt.sprintf( "    Name: <null pointer>" );
@@ -607,7 +603,7 @@ void dGetDescRec::Ok()
     }
 	odbctest -> out_win -> insertLineLimited( txt );
 
-	if ( strlen_valid -> isOn() )
+	if ( strlen_valid -> isChecked() )
     {
 		txt.sprintf( "    StringLengthPtr: <null pointer>" );
         strlen_ptr = NULL;
@@ -620,7 +616,7 @@ void dGetDescRec::Ok()
     }
 	odbctest -> out_win -> insertLineLimited( txt );
 
-	if ( type_valid -> isOn() )
+	if ( type_valid -> isChecked() )
     {
 		txt.sprintf( "    TypePtr: <null pointer>" );
         type_ptr = NULL;
@@ -633,7 +629,7 @@ void dGetDescRec::Ok()
     }
 	odbctest -> out_win -> insertLineLimited( txt );
 
-	if ( sub_type_valid -> isOn() )
+	if ( sub_type_valid -> isChecked() )
     {
 		txt.sprintf( "    SubTypePtr: <null pointer>" );
         sub_type_ptr = NULL;
@@ -646,7 +642,7 @@ void dGetDescRec::Ok()
     }
 	odbctest -> out_win -> insertLineLimited( txt );
 
-	if ( length_valid -> isOn() )
+	if ( length_valid -> isChecked() )
     {
 		txt.sprintf( "    LengthPtr: <null pointer>" );
         length_ptr = NULL;
@@ -659,7 +655,7 @@ void dGetDescRec::Ok()
     }
 	odbctest -> out_win -> insertLineLimited( txt );
 
-	if ( precision_valid -> isOn() )
+	if ( precision_valid -> isChecked() )
     {
 		txt.sprintf( "    PrecisionPtr: <null pointer>" );
         precision_ptr = NULL;
@@ -672,7 +668,7 @@ void dGetDescRec::Ok()
     }
 	odbctest -> out_win -> insertLineLimited( txt );
 
-	if ( scale_valid -> isOn() )
+	if ( scale_valid -> isChecked() )
     {
 		txt.sprintf( "    ScalePtr: <null pointer>" );
         scale_ptr = NULL;
@@ -685,7 +681,7 @@ void dGetDescRec::Ok()
     }
 	odbctest -> out_win -> insertLineLimited( txt );
 
-	if ( nullable_valid -> isOn() )
+	if ( nullable_valid -> isChecked() )
     {
 		txt.sprintf( "    NullablePtr: <null pointer>" );
         nullable_ptr = NULL;
@@ -806,9 +802,10 @@ void dGetDescRec::Ok()
 }
 
 dGetDescRec::dGetDescRec( OdbcTest *parent, QString name )
-        : QDialog( parent, name, TRUE )
+        : QDialog( parent )
 {
-	setCaption( name );
+	setWindowTitle( name );
+	setModal( true );
 
 	odbctest = parent;
 
@@ -821,14 +818,14 @@ dGetDescRec::dGetDescRec( OdbcTest *parent, QString name )
     help = new QPushButton( "Help", this );
     help->setGeometry( 410,10, 70,25 );
 
-	handles = new QComboBox( FALSE, this, "Handles" );
+	handles = new QComboBox( this );
 	handles -> setGeometry( 130, 50, 200, 20 );
 	odbctest->fill_handle_list( SQL_HANDLE_DESC, handles );
 
 	l_handles = new QLabel( "Handle:", this );
 	l_handles -> setGeometry( 10, 50, 120, 20 );
 
-	rec_num = new QLineEdit( this, "Rec Num" );
+	rec_num = new QLineEdit( this );
     rec_num -> setGeometry( 130, 80, 70, 20 );
 	rec_num -> setMaxLength( 6 );
 	rec_num -> setText( "0" );
@@ -839,7 +836,7 @@ dGetDescRec::dGetDescRec( OdbcTest *parent, QString name )
 	name_valid = new QCheckBox( "Name: VALID", this );
 	name_valid -> setGeometry( 10, 110, 300, 15 );
 
-	buffer_len = new QLineEdit( this, "Buffer Len" );
+	buffer_len = new QLineEdit( this );
     buffer_len -> setGeometry( 130, 140, 70, 20 );
 	buffer_len -> setMaxLength( 6 );
 	buffer_len -> setText( "300" );
