@@ -107,147 +107,147 @@
 
 static attr_value io_type_option[] = 
 {
-	{ "SQL_PARAM_INPUT", SQL_PARAM_INPUT, "2.0" },
-	{ "SQL_PARAM_INPUT_OUTPUT", SQL_PARAM_INPUT_OUTPUT, "2.0" },
-	{ "SQL_PARAM_INPUT", SQL_PARAM_OUTPUT, "2.0" },
-	{ NULL }
+	{ "SQL_PARAM_INPUT",        SQL_PARAM_INPUT,        "2.0",  0 },
+	{ "SQL_PARAM_INPUT_OUTPUT", SQL_PARAM_INPUT_OUTPUT, "2.0",  0 },
+	{ "SQL_PARAM_INPUT",        SQL_PARAM_OUTPUT,       "2.0",  0 },
+    { NULL,                     0,                      NULL,   0 }
 };
 
 static attr_value value_type_option[] = 
 {
-	{ "SQL_C_CHAR", SQL_C_CHAR, "1.0" },
-	{ "SQL_C_BINARY", SQL_C_BINARY, "1.0" },
-	{ "SQL_C_BIT", SQL_C_BIT, "1.0" },
-	{ "SQL_C_BOOKMARK", SQL_C_BOOKMARK, "2.0" },
-	{ "SQL_C_DATE", SQL_C_DATE, "1.0" },
-	{ "SQL_C_DOUBLE", SQL_C_DOUBLE, "1.0" },
-	{ "SQL_C_FLOAT", SQL_C_FLOAT, "1.0" },
-	{ "SQL_C_GUID", SQL_C_GUID, "1.0" },
-	{ "SQL_C_INTERVAL_DAY", SQL_C_INTERVAL_DAY, "3.0" },
-	{ "SQL_C_INTERVAL_DAY_TO_HOUR", SQL_C_INTERVAL_DAY_TO_HOUR, "3.0" },
-	{ "SQL_C_INTERVAL_DAY_TO_MINUTE", SQL_C_INTERVAL_DAY_TO_MINUTE, "3.0" },
-	{ "SQL_C_INTERVAL_DAY_TO_SECOND", SQL_C_INTERVAL_DAY_TO_SECOND, "3.0" },
-	{ "SQL_C_INTERVAL_HOUR", SQL_C_INTERVAL_HOUR, "3.0" },
-	{ "SQL_C_INTERVAL_HOUR_TO_MINUTE", SQL_C_INTERVAL_HOUR_TO_MINUTE, "3.0" },
-	{ "SQL_C_INTERVAL_HOUR_TO_SECOND", SQL_C_INTERVAL_HOUR_TO_SECOND, "3.0" },
-	{ "SQL_C_INTERVAL_MINUTE", SQL_C_INTERVAL_MINUTE, "3.0" },
-    { "SQL_C_INTERVAL_MINUTE_TO_SECOND", SQL_C_INTERVAL_MINUTE_TO_SECOND, "3.0" },
-	{ "SQL_C_INTERVAL_SECOND", SQL_C_INTERVAL_SECOND, "3.0" },
-	{ "SQL_C_INTERVAL_YEAR", SQL_C_INTERVAL_YEAR, "3.0" },
-	{ "SQL_C_INTERVAL_MONTH", SQL_C_INTERVAL_MONTH, "3.0" },
-	{ "SQL_C_INTERVAL_YEAR_TO_MONTH", SQL_C_INTERVAL_YEAR_TO_MONTH, "3.0" },
-	{ "SQL_C_LONG", SQL_C_LONG, "2.0" },
-	{ "SQL_C_NUMERIC", SQL_C_NUMERIC, "3.0" },
-	{ "SQL_C_SBIGINT", SQL_C_SBIGINT, "3.0" },
-	{ "SQL_C_SLONG", SQL_C_SLONG, "2.0" },
-	{ "SQL_C_SHORT", SQL_C_SHORT, "2.0" },
-	{ "SQL_C_SSHORT", SQL_C_SSHORT, "2.0" },
-	{ "SQL_C_STINYINT", SQL_C_STINYINT, "2.0" },
-	{ "SQL_C_TIME", SQL_C_TIME, "1.0" },
-	{ "SQL_C_TIMESTAMP", SQL_C_TIMESTAMP, "1.0" },
-	{ "SQL_C_TINYINT", SQL_C_TINYINT, "1.0" },
-	{ "SQL_C_TYPE_DATE", SQL_C_TYPE_DATE, "3.0" },
-	{ "SQL_C_TYPE_TIME", SQL_C_TYPE_TIME, "3.0" },
-	{ "SQL_C_TYPE_TIMESTAMP", SQL_C_TYPE_TIMESTAMP, "3.0" },
-	{ "SQL_C_UBIGINT", SQL_C_UBIGINT, "2.0" },
-	{ "SQL_C_USHORT", SQL_C_USHORT, "2.0" },
-    { "SQL_C_UTINYINT", SQL_C_UTINYINT, "2.0" },
-	{ "SQL_C_VARBOOKMARK", SQL_C_VARBOOKMARK, "3.0" },
-	{ "SQL_C_WCHAR", SQL_C_WCHAR, "3.0" },
-	{ "SQL_ARD_TYPE", SQL_ARD_TYPE, "3.0" },
-	{ "SQL_C_DEFAULT", SQL_C_DEFAULT, "1.0" },
-	{ NULL }
+	{ "SQL_C_CHAR",                         SQL_C_CHAR,                         "1.0",  0 },
+	{ "SQL_C_BINARY",                       SQL_C_BINARY,                       "1.0",  0 },
+	{ "SQL_C_BIT",                          SQL_C_BIT,                          "1.0",  0 },
+	{ "SQL_C_BOOKMARK",                     SQL_C_BOOKMARK,                     "2.0",  0 },
+	{ "SQL_C_DATE",                         SQL_C_DATE,                         "1.0",  0 },
+	{ "SQL_C_DOUBLE",                       SQL_C_DOUBLE,                       "1.0",  0 },
+	{ "SQL_C_FLOAT",                        SQL_C_FLOAT,                        "1.0",  0 },
+	{ "SQL_C_GUID",                         SQL_C_GUID,                         "1.0",  0 },
+	{ "SQL_C_INTERVAL_DAY",                 SQL_C_INTERVAL_DAY,                 "3.0",  0 },
+	{ "SQL_C_INTERVAL_DAY_TO_HOUR",         SQL_C_INTERVAL_DAY_TO_HOUR,         "3.0",  0 },
+	{ "SQL_C_INTERVAL_DAY_TO_MINUTE",       SQL_C_INTERVAL_DAY_TO_MINUTE,       "3.0",  0 },
+	{ "SQL_C_INTERVAL_DAY_TO_SECOND",       SQL_C_INTERVAL_DAY_TO_SECOND,       "3.0",  0 },
+	{ "SQL_C_INTERVAL_HOUR",                SQL_C_INTERVAL_HOUR,                "3.0",  0 },
+	{ "SQL_C_INTERVAL_HOUR_TO_MINUTE",      SQL_C_INTERVAL_HOUR_TO_MINUTE,      "3.0",  0 },
+	{ "SQL_C_INTERVAL_HOUR_TO_SECOND",      SQL_C_INTERVAL_HOUR_TO_SECOND,      "3.0",  0 },
+	{ "SQL_C_INTERVAL_MINUTE",              SQL_C_INTERVAL_MINUTE,              "3.0",  0 },
+    { "SQL_C_INTERVAL_MINUTE_TO_SECOND",    SQL_C_INTERVAL_MINUTE_TO_SECOND,    "3.0",  0 },
+	{ "SQL_C_INTERVAL_SECOND",              SQL_C_INTERVAL_SECOND,              "3.0",  0 },
+	{ "SQL_C_INTERVAL_YEAR",                SQL_C_INTERVAL_YEAR,                "3.0",  0 },
+	{ "SQL_C_INTERVAL_MONTH",               SQL_C_INTERVAL_MONTH,               "3.0",  0 },
+	{ "SQL_C_INTERVAL_YEAR_TO_MONTH",       SQL_C_INTERVAL_YEAR_TO_MONTH,       "3.0",  0 },
+	{ "SQL_C_LONG",                         SQL_C_LONG,                         "2.0",  0 },
+	{ "SQL_C_NUMERIC",                      SQL_C_NUMERIC,                      "3.0",  0 },
+	{ "SQL_C_SBIGINT",                      SQL_C_SBIGINT,                      "3.0",  0 },
+	{ "SQL_C_SLONG",                        SQL_C_SLONG,                        "2.0",  0 },
+	{ "SQL_C_SHORT",                        SQL_C_SHORT,                        "2.0",  0 },
+	{ "SQL_C_SSHORT",                       SQL_C_SSHORT,                       "2.0",  0 },
+	{ "SQL_C_STINYINT",                     SQL_C_STINYINT,                     "2.0",  0 },
+	{ "SQL_C_TIME",                         SQL_C_TIME,                         "1.0",  0 },
+	{ "SQL_C_TIMESTAMP",                    SQL_C_TIMESTAMP,                    "1.0",  0 },
+	{ "SQL_C_TINYINT",                      SQL_C_TINYINT,                      "1.0",  0 },
+	{ "SQL_C_TYPE_DATE",                    SQL_C_TYPE_DATE,                    "3.0",  0 },
+	{ "SQL_C_TYPE_TIME",                    SQL_C_TYPE_TIME,                    "3.0",  0 },
+	{ "SQL_C_TYPE_TIMESTAMP",               SQL_C_TYPE_TIMESTAMP,               "3.0",  0 },
+	{ "SQL_C_UBIGINT",                      SQL_C_UBIGINT,                      "2.0",  0 },
+	{ "SQL_C_USHORT",                       SQL_C_USHORT,                       "2.0",  0 },
+    { "SQL_C_UTINYINT",                     SQL_C_UTINYINT,                     "2.0",  0 },
+	{ "SQL_C_VARBOOKMARK",                  SQL_C_VARBOOKMARK,                  "3.0",  0 },
+	{ "SQL_C_WCHAR",                        SQL_C_WCHAR,                        "3.0",  0 },
+	{ "SQL_ARD_TYPE",                       SQL_ARD_TYPE,                       "3.0",  0 },
+	{ "SQL_C_DEFAULT",                      SQL_C_DEFAULT,                      "1.0",  0 },
+    { NULL,                                 0,                                  NULL,   0 }
 };
 
 static attr_value param_type_option[] = 
 {
-	{ "SQL_CHAR", SQL_CHAR, "1.0" },
-	{ "SQL_BIGINT", SQL_BIGINT, "1.0" },
-	{ "SQL_BINARY", SQL_BINARY, "1.0" },
-	{ "SQL_BIT", SQL_BIT, "1.0" },
-	{ "SQL_DATE", SQL_DATE, "1.0" },
-	{ "SQL_DECIMAL", SQL_DECIMAL, "1.0" },
-	{ "SQL_DEFAULT", SQL_DECIMAL, "3.0" },
-	{ "SQL_DOUBLE", SQL_DOUBLE, "1.0" },
-	{ "SQL_FLOAT", SQL_FLOAT, "1.0" },
-	{ "SQL_GUID", SQL_GUID, "1.0" },
-	{ "SQL_INTEGER", SQL_INTEGER, "1.0" },
-	{ "SQL_INTERVAL_DAY", SQL_INTERVAL_DAY, "3.0" },
-	{ "SQL_INTERVAL_DAY_TO_HOUR", SQL_INTERVAL_DAY_TO_HOUR, "3.0" },
-	{ "SQL_INTERVAL_DAY_TO_MINUTE", SQL_INTERVAL_DAY_TO_MINUTE, "3.0" },
-	{ "SQL_INTERVAL_DAY_TO_SECOND", SQL_INTERVAL_DAY_TO_SECOND, "3.0" },
-	{ "SQL_INTERVAL_HOUR", SQL_INTERVAL_HOUR, "3.0" },
-	{ "SQL_INTERVAL_HOUR_TO_MINUTE", SQL_INTERVAL_HOUR_TO_MINUTE, "3.0" },
-	{ "SQL_INTERVAL_HOUR_TO_SECOND", SQL_INTERVAL_HOUR_TO_SECOND, "3.0" },
-	{ "SQL_INTERVAL_MINUTE", SQL_INTERVAL_MINUTE, "3.0" },
-    { "SQL_INTERVAL_MINUTE_TO_SECOND", SQL_INTERVAL_MINUTE_TO_SECOND, "3.0" },
-	{ "SQL_INTERVAL_SECOND", SQL_INTERVAL_SECOND, "3.0" },
-	{ "SQL_INTERVAL_YEAR", SQL_INTERVAL_YEAR, "3.0" },
-	{ "SQL_INTERVAL_MONTH", SQL_INTERVAL_MONTH, "3.0" },
-	{ "SQL_INTERVAL_YEAR_TO_MONTH", SQL_INTERVAL_YEAR_TO_MONTH, "3.0" },
-	{ "SQL_LONGVARCHAR", SQL_LONGVARCHAR, "1.0" },
-	{ "SQL_LONGVARBINARY", SQL_LONGVARBINARY, "1.0" },
-	{ "SQL_NUMERIC", SQL_NUMERIC, "1.0" },
-	{ "SQL_REAL", SQL_REAL, "1.0" },
-	{ "SQL_SMALLINT", SQL_SMALLINT, "1.0" },
-	{ "SQL_TINYINT", SQL_TINYINT, "1.0" },
-	{ "SQL_TIME", SQL_TIME, "1.0" },
-	{ "SQL_TIMESTAMP", SQL_TIMESTAMP, "1.0" },
-	{ "SQL_TYPE_DATE", SQL_TYPE_DATE, "3.0" },
-	{ "SQL_TYPE_TIME", SQL_TYPE_TIME, "3.0" },
-	{ "SQL_TYPE_TIMESTAMP", SQL_TYPE_TIMESTAMP, "3.0" },
-	{ "SQL_VARBINARY", SQL_VARBINARY, "1.0" },
-	{ "SQL_VARCHAR", SQL_VARCHAR, "1.0" },
-	{ "SQL_WCHAR", SQL_WCHAR, "3.0" },
-	{ "SQL_WLONGVARCHAR", SQL_WLONGVARCHAR, "3.0" },
-	{ "SQL_WVARCHAR", SQL_WVARCHAR, "3.0" },
-	{ NULL }
+	{ "SQL_CHAR",                       SQL_CHAR,                       "1.0",  0 },
+	{ "SQL_BIGINT",                     SQL_BIGINT,                     "1.0",  0 },
+	{ "SQL_BINARY",                     SQL_BINARY,                     "1.0",  0 },
+	{ "SQL_BIT",                        SQL_BIT,                        "1.0",  0 },
+	{ "SQL_DATE",                       SQL_DATE,                       "1.0",  0 },
+	{ "SQL_DECIMAL",                    SQL_DECIMAL,                    "1.0",  0 },
+	{ "SQL_DEFAULT",                    SQL_DECIMAL,                    "3.0",  0 },
+	{ "SQL_DOUBLE",                     SQL_DOUBLE,                     "1.0",  0 },
+	{ "SQL_FLOAT",                      SQL_FLOAT,                      "1.0",  0 },
+	{ "SQL_GUID",                       SQL_GUID,                       "1.0",  0 },
+	{ "SQL_INTEGER",                    SQL_INTEGER,                    "1.0",  0 },
+	{ "SQL_INTERVAL_DAY",               SQL_INTERVAL_DAY,               "3.0",  0 },
+	{ "SQL_INTERVAL_DAY_TO_HOUR",       SQL_INTERVAL_DAY_TO_HOUR,       "3.0",  0 },
+	{ "SQL_INTERVAL_DAY_TO_MINUTE",     SQL_INTERVAL_DAY_TO_MINUTE,     "3.0",  0 },
+	{ "SQL_INTERVAL_DAY_TO_SECOND",     SQL_INTERVAL_DAY_TO_SECOND,     "3.0",  0 },
+	{ "SQL_INTERVAL_HOUR",              SQL_INTERVAL_HOUR,              "3.0",  0 },
+	{ "SQL_INTERVAL_HOUR_TO_MINUTE",    SQL_INTERVAL_HOUR_TO_MINUTE,    "3.0",  0 },
+	{ "SQL_INTERVAL_HOUR_TO_SECOND",    SQL_INTERVAL_HOUR_TO_SECOND,    "3.0",  0 },
+	{ "SQL_INTERVAL_MINUTE",            SQL_INTERVAL_MINUTE,            "3.0",  0 },
+    { "SQL_INTERVAL_MINUTE_TO_SECOND",  SQL_INTERVAL_MINUTE_TO_SECOND,  "3.0",  0 },
+	{ "SQL_INTERVAL_SECOND",            SQL_INTERVAL_SECOND,            "3.0",  0 },
+	{ "SQL_INTERVAL_YEAR",              SQL_INTERVAL_YEAR,              "3.0",  0 },
+	{ "SQL_INTERVAL_MONTH",             SQL_INTERVAL_MONTH,             "3.0",  0 },
+	{ "SQL_INTERVAL_YEAR_TO_MONTH",     SQL_INTERVAL_YEAR_TO_MONTH,     "3.0",  0 },
+	{ "SQL_LONGVARCHAR",                SQL_LONGVARCHAR,                "1.0",  0 },
+	{ "SQL_LONGVARBINARY",              SQL_LONGVARBINARY,              "1.0",  0 },
+	{ "SQL_NUMERIC",                    SQL_NUMERIC,                    "1.0",  0 },
+	{ "SQL_REAL",                       SQL_REAL,                       "1.0",  0 },
+	{ "SQL_SMALLINT",                   SQL_SMALLINT,                   "1.0",  0 },
+	{ "SQL_TINYINT",                    SQL_TINYINT,                    "1.0",  0 },
+	{ "SQL_TIME",                       SQL_TIME,                       "1.0",  0 },
+	{ "SQL_TIMESTAMP",                  SQL_TIMESTAMP,                  "1.0",  0 },
+	{ "SQL_TYPE_DATE",                  SQL_TYPE_DATE,                  "3.0",  0 },
+	{ "SQL_TYPE_TIME",                  SQL_TYPE_TIME,                  "3.0",  0 },
+	{ "SQL_TYPE_TIMESTAMP",             SQL_TYPE_TIMESTAMP,             "3.0",  0 },
+	{ "SQL_VARBINARY",                  SQL_VARBINARY,                  "1.0",  0 },
+	{ "SQL_VARCHAR",                    SQL_VARCHAR,                    "1.0",  0 },
+	{ "SQL_WCHAR",                      SQL_WCHAR,                      "3.0",  0 },
+	{ "SQL_WLONGVARCHAR",               SQL_WLONGVARCHAR,               "3.0",  0 },
+	{ "SQL_WVARCHAR",                   SQL_WVARCHAR,                   "3.0",  0 },
+    { NULL,                             0,                              NULL,   0 }
 };
 
 static attr_value free_stmt_option[] = 
 {
-	{ "SQL_CLOSE", SQL_CLOSE },
-	{ "SQL_DROP", SQL_DROP },
-	{ "SQL_UNBIND", SQL_UNBIND },
-	{ "SQL_RESET_PARAMS", SQL_RESET_PARAMS },
-	{ NULL }
+	{ "SQL_CLOSE",          SQL_CLOSE,          NULL,   0 },
+	{ "SQL_DROP",           SQL_DROP,           NULL,   0 },
+	{ "SQL_UNBIND",         SQL_UNBIND,         NULL,   0 },
+	{ "SQL_RESET_PARAMS",   SQL_RESET_PARAMS,   NULL,   0 },
+    { NULL,                 0,                  NULL,   0 }
 };
 
 static attr_value sql_data_types[] = 
 {
-	{ "SQL_CHAR", SQL_CHAR, "1.0" },
-	{ "SQL_VARCHAR", SQL_VARCHAR, "1.0" },
-	{ "SQL_LONGVARCHAR", SQL_LONGVARCHAR, "1.0" },
-	{ "SQL_BINARY", SQL_BINARY, "1.0" },
-	{ "SQL_VARBINARY", SQL_VARBINARY, "1.0" },
-	{ "SQL_LONGVARBINARY", SQL_LONGVARBINARY, "1.0" },
-	{ "SQL_TINYINT", SQL_TINYINT, "1.0" },
-	{ "SQL_SMALLINT", SQL_SMALLINT, "1.0" },
-	{ "SQL_INTEGER", SQL_INTEGER, "1.0" },
-	{ "SQL_BIGINT", SQL_BIGINT, "1.0" },
-	{ "SQL_FLOAT", SQL_FLOAT, "1.0" },
-	{ "SQL_DOUBLE", SQL_DOUBLE, "1.0" },
-	{ "SQL_REAL", SQL_REAL, "1.0" },
-	{ "SQL_NUMERIC", SQL_NUMERIC, "1.0" },
-	{ "SQL_DATETIME", SQL_DATETIME, "1.0" },
-	{ "SQL_DATE", SQL_DATE, "1.0" },
-	{ "SQL_TIME", SQL_TIME, "1.0" },
-	{ "SQL_TIMESTAMP", SQL_TIMESTAMP, "1.0" },
-	{ "SQL_INTERVAL_DAY", SQL_INTERVAL_DAY, "3.0" },
-	{ "SQL_INTERVAL_DAY_TO_HOUR", SQL_INTERVAL_DAY_TO_HOUR, "3.0" },
-	{ "SQL_INTERVAL_DAY_TO_MINUTE", SQL_INTERVAL_DAY_TO_MINUTE, "3.0" },
-	{ "SQL_INTERVAL_DAY_TO_SECOND", SQL_INTERVAL_DAY_TO_SECOND, "3.0" },
-	{ "SQL_INTERVAL_HOUR", SQL_INTERVAL_HOUR, "3.0" },
-	{ "SQL_INTERVAL_HOUR_TO_MINUTE", SQL_INTERVAL_HOUR_TO_MINUTE, "3.0" },
-	{ "SQL_INTERVAL_HOUR_TO_SECOND", SQL_INTERVAL_HOUR_TO_SECOND, "3.0" },
-	{ "SQL_INTERVAL_MINUTE_TO_SECOND", SQL_INTERVAL_MINUTE_TO_SECOND, "3.0" },
-	{ "SQL_INTERVAL_MONTH", SQL_INTERVAL_MONTH, "3.0" },
-	{ "SQL_INTERVAL_MINUTE", SQL_INTERVAL_MINUTE, "3.0" },
-	{ "SQL_INTERVAL_SECOND", SQL_INTERVAL_SECOND, "3.0" },
-	{ "SQL_INTERVAL_YEAR", SQL_INTERVAL_YEAR, "3.0" },
-	{ "SQL_INTERVAL_YEAR_TO_MONTH", SQL_INTERVAL_YEAR_TO_MONTH, "3.0" },
-	{ "SQL_GUID", SQL_GUID, "3.0" },
-	{ NULL }
+	{ "SQL_CHAR",                       SQL_CHAR,                       "1.0",  0 },
+	{ "SQL_VARCHAR",                    SQL_VARCHAR,                    "1.0",  0 },
+	{ "SQL_LONGVARCHAR",                SQL_LONGVARCHAR,                "1.0",  0 },
+	{ "SQL_BINARY",                     SQL_BINARY,                     "1.0",  0 },
+	{ "SQL_VARBINARY",                  SQL_VARBINARY,                  "1.0",  0 },
+	{ "SQL_LONGVARBINARY",              SQL_LONGVARBINARY,              "1.0",  0 },
+	{ "SQL_TINYINT",                    SQL_TINYINT,                    "1.0",  0 },
+	{ "SQL_SMALLINT",                   SQL_SMALLINT,                   "1.0",  0 },
+	{ "SQL_INTEGER",                    SQL_INTEGER,                    "1.0",  0 },
+	{ "SQL_BIGINT",                     SQL_BIGINT,                     "1.0",  0 },
+	{ "SQL_FLOAT",                      SQL_FLOAT,                      "1.0",  0 },
+	{ "SQL_DOUBLE",                     SQL_DOUBLE,                     "1.0",  0 },
+	{ "SQL_REAL",                       SQL_REAL,                       "1.0",  0 },
+	{ "SQL_NUMERIC",                    SQL_NUMERIC,                    "1.0",  0 },
+	{ "SQL_DATETIME",                   SQL_DATETIME,                   "1.0",  0 },
+	{ "SQL_DATE",                       SQL_DATE,                       "1.0",  0 },
+	{ "SQL_TIME",                       SQL_TIME,                       "1.0",  0 },
+	{ "SQL_TIMESTAMP",                  SQL_TIMESTAMP,                  "1.0",  0 },
+	{ "SQL_INTERVAL_DAY",               SQL_INTERVAL_DAY,               "3.0",  0 },
+	{ "SQL_INTERVAL_DAY_TO_HOUR",       SQL_INTERVAL_DAY_TO_HOUR,       "3.0",  0 },
+	{ "SQL_INTERVAL_DAY_TO_MINUTE",     SQL_INTERVAL_DAY_TO_MINUTE,     "3.0",  0 },
+	{ "SQL_INTERVAL_DAY_TO_SECOND",     SQL_INTERVAL_DAY_TO_SECOND,     "3.0",  0 },
+	{ "SQL_INTERVAL_HOUR",              SQL_INTERVAL_HOUR,              "3.0",  0 },
+	{ "SQL_INTERVAL_HOUR_TO_MINUTE",    SQL_INTERVAL_HOUR_TO_MINUTE,    "3.0",  0 },
+	{ "SQL_INTERVAL_HOUR_TO_SECOND",    SQL_INTERVAL_HOUR_TO_SECOND,    "3.0",  0 },
+	{ "SQL_INTERVAL_MINUTE_TO_SECOND",  SQL_INTERVAL_MINUTE_TO_SECOND,  "3.0",  0 },
+	{ "SQL_INTERVAL_MONTH",             SQL_INTERVAL_MONTH,             "3.0",  0 },
+	{ "SQL_INTERVAL_MINUTE",            SQL_INTERVAL_MINUTE,            "3.0",  0 },
+	{ "SQL_INTERVAL_SECOND",            SQL_INTERVAL_SECOND,            "3.0",  0 },
+	{ "SQL_INTERVAL_YEAR",              SQL_INTERVAL_YEAR,              "3.0",  0 },
+	{ "SQL_INTERVAL_YEAR_TO_MONTH",     SQL_INTERVAL_YEAR_TO_MONTH,     "3.0",  0 },
+	{ "SQL_GUID",                       SQL_GUID,                       "3.0",  0 },
+    { NULL,                             0,                              NULL,   0 }
 };
 
 void dPrepare::Ok()
@@ -260,7 +260,7 @@ void dPrepare::Ok()
 	if ( hand )
 		in_handle = hand -> getHandle();
 
-	sql = str -> currentText();
+	sql = str->currentText().toAscii().constData();
 
 	odbctest -> out_win -> insertLineLimited( "SQLPrepare():" );
 	odbctest -> out_win -> insertLineLimited( "  In:" );
@@ -282,13 +282,13 @@ void dPrepare::Ok()
 	}
 	else if ( strcmp( sql, "<input window>" ) == 0 )
 	{
-		QString *s = new QString( odbctest->in_win->text());
+		QString *s = new QString( odbctest->in_win->toPlainText() );
 		if ( s -> isEmpty())
 			sql = "";
 		else if ( s -> isNull())
 			sql = NULL;
 		else 
-			sql = s->latin1();
+			sql = s->toAscii().constData();
 		txt.sprintf( "    Text: %s", sql );
 		odbctest -> out_win -> insertLineLimited( txt );
 	}
@@ -298,7 +298,7 @@ void dPrepare::Ok()
 		odbctest -> out_win -> insertLineLimited( txt );
 	}
 
-	lname = name_len -> currentText();
+	lname = name_len -> currentText().toAscii().constData();
 
 	if ( strncmp( lname, "SQL_NTS", 7 ) == 0 )
 	{
@@ -321,9 +321,10 @@ void dPrepare::Ok()
 }
 
 dPrepare::dPrepare( OdbcTest *parent, QString name )
-        : QDialog( parent, name, TRUE )
+        : QDialog( parent )
 {
-	setCaption( name );
+	setWindowTitle( name );
+    setModal( true );
 
 	odbctest = parent;
 
@@ -336,22 +337,24 @@ dPrepare::dPrepare( OdbcTest *parent, QString name )
     help = new QPushButton( "Help", this );
     help->setGeometry( 350,10, 70,25 );
 
-	handles = new QComboBox( FALSE, this, "Statement Handle" );
+	handles = new QComboBox( this );
 	handles -> setGeometry( 130, 50, 200, 20 );
 	odbctest->fill_handle_list( SQL_HANDLE_STMT, handles );
 
-	str = new QComboBox( TRUE, this, "Input Text" );
+	str = new QComboBox( this );
+    str->setEditable( true );
 	str -> setGeometry( 130, 80, 290, 20 );
-	str -> insertItem( "<input window>", 0 );
-	str -> insertItem( "<empty string>", 1 );
-	str -> insertItem( "<null ptr>", 2 );
+	str -> insertItem( 0, "<input window>" );
+	str -> insertItem( 1, "<empty string>" );
+	str -> insertItem( 2, "<null ptr>" );
 
-	name_len = new QComboBox( TRUE, this, "name len" );
+	name_len = new QComboBox( this );
+    name_len->setEditable( true );
 	name_len -> setGeometry( 130, 110, 150, 20 );
 	l_name_len = new QLabel( "Statement Length:", this );
 	l_name_len -> setGeometry( 10, 110, 110, 20 );
-	name_len -> insertItem( "SQL_NTS=-3", 0 );
-	name_len -> insertItem( "0", 1 );
+	name_len -> insertItem( 0, "SQL_NTS=-3" );
+	name_len -> insertItem( 1, "0" );
 
 	l_handle = new QLabel( "Statement Handle:", this );
 	l_handle -> setGeometry( 10, 50, 120, 20 );
@@ -402,10 +405,10 @@ void dExecute::Ok()
 }
 
 dExecute::dExecute( OdbcTest *parent, QString name )
-        : QDialog( parent, name, TRUE )
+        : QDialog( parent )
 {
-	setCaption( name );
-
+	setWindowTitle( name );
+    setModal( true );
 	odbctest = parent;
 
     ok = new QPushButton( "OK", this );
@@ -417,7 +420,7 @@ dExecute::dExecute( OdbcTest *parent, QString name )
     help = new QPushButton( "Help", this );
     help->setGeometry( 250,10, 70,25 );
 
-	handles = new QComboBox( FALSE, this, "Statement Handle" );
+	handles = new QComboBox( this );
 	handles -> setGeometry( 130, 50, 190, 20 );
 	odbctest->fill_handle_list( SQL_HANDLE_STMT, handles );
 
@@ -448,7 +451,7 @@ void dExecDirect::Ok()
 	if ( hand )
 		in_handle = hand -> getHandle();
 
-	sql = str -> currentText();
+	sql = str -> currentText().toAscii().constData();
 
 	odbctest -> out_win -> insertLineLimited( "SQLExecDirect():" );
 	odbctest -> out_win -> insertLineLimited( "  In:" );
@@ -470,13 +473,13 @@ void dExecDirect::Ok()
 	}
 	else if ( strcmp( sql, "<input window>" ) == 0 )
 	{
-		QString *s = new QString( odbctest->in_win->text());
+		QString *s = new QString( odbctest->in_win->toPlainText() );
 		if ( s -> isEmpty())
 			sql = "";
 		else if ( s -> isNull())
 			sql = NULL;
 		else 
-			sql = s->latin1();
+			sql = s->toAscii().constData();
 		txt.sprintf( "    Text: %s", sql );
 		odbctest -> out_win -> insertLineLimited( txt );
 	}
@@ -486,7 +489,7 @@ void dExecDirect::Ok()
 		odbctest -> out_win -> insertLineLimited( txt );
 	}
 
-	lname = name_len -> currentText();
+	lname = name_len -> currentText().toAscii().constData();
 
 	if ( strncmp( lname, "SQL_NTS", 7 ) == 0 )
 	{
@@ -509,10 +512,10 @@ void dExecDirect::Ok()
 }
 
 dExecDirect::dExecDirect( OdbcTest *parent, QString name )
-        : QDialog( parent, name, TRUE )
+        : QDialog( parent )
 {
-	setCaption( name );
-
+	setWindowTitle( name );
+    setModal( true );
 	odbctest = parent;
 
     ok = new QPushButton( "OK", this );
@@ -524,22 +527,24 @@ dExecDirect::dExecDirect( OdbcTest *parent, QString name )
     help = new QPushButton( "Help", this );
     help->setGeometry( 350,10, 70,25 );
 
-	handles = new QComboBox( FALSE, this, "Statement Handle" );
+	handles = new QComboBox( this );
 	handles -> setGeometry( 130, 50, 200, 20 );
 	odbctest->fill_handle_list( SQL_HANDLE_STMT, handles );
 
-	str = new QComboBox( TRUE, this, "Input Text" );
+	str = new QComboBox( this );
+    str->setEditable( true );
 	str -> setGeometry( 130, 80, 290, 20 );
-	str -> insertItem( "<input window>", 0 );
-	str -> insertItem( "<empty string>", 1 );
-	str -> insertItem( "<null ptr>", 2 );
+	str -> insertItem( 0, "<input window>" );
+	str -> insertItem( 1, "<empty string>" );
+	str -> insertItem( 2, "<null ptr>" );
 
-	name_len = new QComboBox( TRUE, this, "name len" );
+	name_len = new QComboBox( this );
+    name_len->setEditable( true );
 	name_len -> setGeometry( 130, 110, 150, 20 );
 	l_name_len = new QLabel( "Statement Length:", this );
 	l_name_len -> setGeometry( 10, 110, 110, 20 );
-	name_len -> insertItem( "SQL_NTS=-3", 0 );
-	name_len -> insertItem( "0", 1 );
+	name_len -> insertItem( 0, "SQL_NTS=-3" );
+	name_len -> insertItem( 1, "0" );
 
 	l_handle = new QLabel( "Statement Handle:", this );
 	l_handle -> setGeometry( 10, 50, 120, 20 );
@@ -567,7 +572,7 @@ dExecDirect::~dExecDirect()
 
 void dNumParams::Valid()
 {
-	if ( valid -> isOn() )
+	if ( valid -> isChecked() )
 	    valid -> setText( "ParamCountPtr: SQL_NULL_POINTER" );
 	else
 	    valid -> setText( "ParamCountPtr: VALID" );
@@ -591,7 +596,7 @@ void dNumParams::Ok()
 		txt.sprintf( "    Statement Handle: SQL_NULL_HSTMT" );
 	odbctest -> out_win -> insertLineLimited( txt );
 
-	if ( valid -> isOn() )
+	if ( valid -> isChecked() )
 		txt.sprintf( "    ParamCountPtr: <null pointer>" );
 	else
 		txt.sprintf( "    ParamCountPtr: %p", &num_params );
@@ -599,7 +604,7 @@ void dNumParams::Ok()
 
 	num_params = -9999;
 
-	SQLRETURN ret = SQLNumParams( in_handle,  valid -> isOn() ? NULL : &num_params );
+	SQLRETURN ret = SQLNumParams( in_handle,  valid -> isChecked() ? NULL : &num_params );
 
 	odbctest -> out_win -> insertLineLimited( "  Return:" );
 	txt.sprintf( "    %s=%d", odbctest->return_as_text( ret ), ret );
@@ -620,10 +625,10 @@ void dNumParams::Ok()
 }
 
 dNumParams::dNumParams( OdbcTest *parent, QString name )
-        : QDialog( parent, name, TRUE )
+        : QDialog( parent )
 {
-	setCaption( name );
-
+	setWindowTitle( name );
+    setModal( true );
 	odbctest = parent;
 
     ok = new QPushButton( "OK", this );
@@ -635,7 +640,7 @@ dNumParams::dNumParams( OdbcTest *parent, QString name )
     help = new QPushButton( "Help", this );
     help->setGeometry( 260,10, 70,25 );
 
-	handles = new QComboBox( FALSE, this, "Statement Handle" );
+	handles = new QComboBox( this );
 	handles -> setGeometry( 130, 50, 200, 20 );
 	odbctest->fill_handle_list( SQL_HANDLE_STMT, handles );
 
@@ -665,7 +670,6 @@ void dCancel::Ok()
 {
     Handle *hand = odbctest->extract_handle_list( SQL_HANDLE_STMT, handles );
 	SQLHANDLE in_handle = SQL_NULL_HANDLE;
-	SQLSMALLINT num_cols;
 
 	if ( hand )
 		in_handle = hand -> getHandle();
@@ -689,10 +693,10 @@ void dCancel::Ok()
 }
 
 dCancel::dCancel( OdbcTest *parent, QString name )
-        : QDialog( parent, name, TRUE )
+        : QDialog( parent )
 {
-	setCaption( name );
-
+	setWindowTitle( name );
+    setModal( true );
 	odbctest = parent;
 
     ok = new QPushButton( "OK", this );
@@ -704,7 +708,7 @@ dCancel::dCancel( OdbcTest *parent, QString name )
     help = new QPushButton( "Help", this );
     help->setGeometry( 260,10, 70,25 );
 
-	handles = new QComboBox( FALSE, this, "Statement Handle" );
+	handles = new QComboBox( this );
 	handles -> setGeometry( 130, 50, 200, 20 );
 	odbctest->fill_handle_list( SQL_HANDLE_STMT, handles );
 
@@ -728,7 +732,6 @@ void dCloseCursor::Ok()
 {
     Handle *hand = odbctest->extract_handle_list( SQL_HANDLE_STMT, handles );
 	SQLHANDLE in_handle = SQL_NULL_HANDLE;
-	SQLSMALLINT num_cols;
 
 	if ( hand )
 		in_handle = hand -> getHandle();
@@ -752,10 +755,10 @@ void dCloseCursor::Ok()
 }
 
 dCloseCursor::dCloseCursor( OdbcTest *parent, QString name )
-        : QDialog( parent, name, TRUE )
+        : QDialog( parent )
 {
-	setCaption( name );
-
+	setWindowTitle( name );
+    setModal( true );
 	odbctest = parent;
 
     ok = new QPushButton( "OK", this );
@@ -767,7 +770,7 @@ dCloseCursor::dCloseCursor( OdbcTest *parent, QString name )
     help = new QPushButton( "Help", this );
     help->setGeometry( 260,10, 70,25 );
 
-	handles = new QComboBox( FALSE, this, "Statement Handle" );
+	handles = new QComboBox( this );
 	handles -> setGeometry( 130, 50, 200, 20 );
 	odbctest->fill_handle_list( SQL_HANDLE_STMT, handles );
 
@@ -806,13 +809,13 @@ void dGetCursorName::Ok()
 		txt.sprintf( "    Statement Handle: SQL_NULL_HSTMT" );
 	odbctest -> out_win -> insertLineLimited( txt );
 
-	b_len = atoi( buffer_len -> text().ascii());
+	b_len = buffer_len -> text().toInt();
 	if ( b_len < 1 )
 	{
 		b_len = 0;
 	}
 
-	if ( cursor_valid -> isOn())
+	if ( cursor_valid -> isChecked())
 	{
 		buf = NULL;
 	}
@@ -841,7 +844,7 @@ void dGetCursorName::Ok()
 
 	name_length = -9999;
 
-	if ( name_valid -> isOn())
+	if ( name_valid -> isChecked())
 	{
 		name_length_ptr = NULL;
 	}
@@ -893,7 +896,7 @@ void dGetCursorName::Ok()
 
 void dGetCursorName::NameValid()
 {
-	if ( name_valid -> isOn() )
+	if ( name_valid -> isChecked() )
 	    name_valid -> setText( "NameLengthPtr: SQL_NULL_POINTER" );
 	else
 	    name_valid -> setText( "NameLengthPtr: VALID" );
@@ -901,17 +904,17 @@ void dGetCursorName::NameValid()
 
 void dGetCursorName::CursorValid()
 {
-	if ( cursor_valid -> isOn() )
+	if ( cursor_valid -> isChecked() )
 	    cursor_valid -> setText( "CursorName: SQL_NULL_POINTER" );
 	else
 	    cursor_valid -> setText( "CursorName: VALID" );
 }
 
 dGetCursorName::dGetCursorName( OdbcTest *parent, QString name )
-        : QDialog( parent, name, TRUE )
+        : QDialog( parent )
 {
-	setCaption( name );
-
+	setWindowTitle( name );
+    setModal( true );
 	odbctest = parent;
 
     ok = new QPushButton( "OK", this );
@@ -923,7 +926,7 @@ dGetCursorName::dGetCursorName( OdbcTest *parent, QString name )
     help = new QPushButton( "Help", this );
     help->setGeometry( 350,10, 70,25 );
 
-	handles = new QComboBox( FALSE, this, "Statement Handle" );
+	handles = new QComboBox( this );
 	handles -> setGeometry( 130, 50, 200, 20 );
 	odbctest->fill_handle_list( SQL_HANDLE_STMT, handles );
 
@@ -936,7 +939,7 @@ dGetCursorName::dGetCursorName( OdbcTest *parent, QString name )
 	name_valid = new QCheckBox( "NameLengthPtr: VALID", this );
 	name_valid -> setGeometry( 10, 110, 300, 15 );
 
-	buffer_len = new QLineEdit( this, "Buffer Len" );
+	buffer_len = new QLineEdit( this );
     buffer_len -> setGeometry( 350, 80, 70, 20 );
 	buffer_len -> setMaxLength( 6 );
 	buffer_len -> setText( "300" );
@@ -983,7 +986,7 @@ void dFreeStmt::Ok()
 		txt.sprintf( "    Statement Handle: SQL_NULL_HSTMT" );
 	odbctest -> out_win -> insertLineLimited( txt );
 
-	index = option -> currentItem(); 
+	index = option -> currentIndex(); 
 
 	option_val = free_stmt_option[ index ].value;
 	txt.sprintf( "    Option: %s=%d", free_stmt_option[ index ].text,
@@ -998,17 +1001,18 @@ void dFreeStmt::Ok()
 
     if ( SQL_SUCCEEDED( ret ) && free_stmt_option[ index ].value == SQL_DROP )
     {
-		odbctest->listHandle.remove( hand );
+		odbctest->listHandle.removeOne( hand );
+        delete hand;
     }
 
 	odbctest -> out_win -> insertLineLimited( "" );
 }
 
 dFreeStmt::dFreeStmt( OdbcTest *parent, QString name )
-        : QDialog( parent, name, TRUE )
+        : QDialog( parent )
 {
-	setCaption( name );
-
+	setWindowTitle( name );
+    setModal( true );
 	odbctest = parent;
 
     ok = new QPushButton( "OK", this );
@@ -1020,14 +1024,14 @@ dFreeStmt::dFreeStmt( OdbcTest *parent, QString name )
     help = new QPushButton( "Help", this );
     help->setGeometry( 260,10, 70,25 );
 
-	handles = new QComboBox( FALSE, this, "Statement Handle" );
+	handles = new QComboBox( this );
 	handles -> setGeometry( 130, 50, 200, 20 );
 	odbctest->fill_handle_list( SQL_HANDLE_STMT, handles );
 
 	l_handle = new QLabel( "Statement Handle:", this );
 	l_handle -> setGeometry( 10, 50, 120, 20 );
 
-	option = new QComboBox( FALSE, this, "Option" );
+	option = new QComboBox( this );
 	option -> setGeometry( 130, 80, 200, 20 );
 
 	parent->fill_list_box( free_stmt_option, option );
@@ -1056,13 +1060,12 @@ void dSetCursorName::Ok()
 	const char *sql, *lname;
     Handle *hand = odbctest->extract_handle_list( SQL_HANDLE_STMT, handles );
 	SQLHANDLE in_handle = SQL_NULL_HANDLE;
-	SQLSMALLINT clen;
 	SQLINTEGER n_len;
 
 	if ( hand )
 		in_handle = hand -> getHandle();
 
-	sql = str -> currentText();
+	sql = str -> currentText().toAscii().constData();
 
 	odbctest -> out_win -> insertLineLimited( "SQLSetCursorName():" );
 	odbctest -> out_win -> insertLineLimited( "  In:" );
@@ -1084,13 +1087,13 @@ void dSetCursorName::Ok()
 	}
 	else if ( strcmp( sql, "<input window>" ) == 0 )
 	{
-		QString *s = new QString( odbctest->in_win->text());
+		QString *s = new QString( odbctest->in_win->toPlainText() );
 		if ( s -> isEmpty())
 			sql = "";
 		else if ( s -> isNull())
 			sql = NULL;
 		else 
-			sql = s->latin1();
+			sql = s->toAscii().constData();
 		txt.sprintf( "    CursorName: %s", sql );
 		odbctest -> out_win -> insertLineLimited( txt );
 	}
@@ -1100,7 +1103,7 @@ void dSetCursorName::Ok()
 		odbctest -> out_win -> insertLineLimited( txt );
 	}
 
-	lname = name_len -> currentText();
+	lname = name_len -> currentText().toAscii().constData();
 
 	if ( strncmp( lname, "SQL_NTS", 7 ) == 0 )
 	{
@@ -1123,10 +1126,10 @@ void dSetCursorName::Ok()
 }
 
 dSetCursorName::dSetCursorName( OdbcTest *parent, QString name )
-        : QDialog( parent, name, TRUE )
+        : QDialog( parent )
 {
-	setCaption( name );
-
+	setWindowTitle( name );
+    setModal( true );
 	odbctest = parent;
 
     ok = new QPushButton( "OK", this );
@@ -1138,22 +1141,23 @@ dSetCursorName::dSetCursorName( OdbcTest *parent, QString name )
     help = new QPushButton( "Help", this );
     help->setGeometry( 350,10, 70,25 );
 
-	handles = new QComboBox( FALSE, this, "Statement Handle" );
+	handles = new QComboBox( this );
 	handles -> setGeometry( 130, 50, 200, 20 );
 	odbctest->fill_handle_list( SQL_HANDLE_STMT, handles );
 
-	str = new QComboBox( TRUE, this, "CursorName" );
+	str = new QComboBox( this );
+    str->setEditable( true );
 	str -> setGeometry( 130, 80, 290, 20 );
-	str -> insertItem( "<input window>", 0 );
-	str -> insertItem( "<empty string>", 1 );
-	str -> insertItem( "<null ptr>", 2 );
+	str -> insertItem( 0, "<input window>" );
+	str -> insertItem( 1, "<empty string>" );
+	str -> insertItem( 2, "<null ptr>" );
 
-	name_len = new QComboBox( TRUE, this, "name len" );
+	name_len = new QComboBox( this );
 	name_len -> setGeometry( 130, 110, 150, 20 );
 	l_name_len = new QLabel( "CursorName Length:", this );
 	l_name_len -> setGeometry( 10, 110, 110, 20 );
-	name_len -> insertItem( "SQL_NTS=-3", 0 );
-	name_len -> insertItem( "0", 1 );
+	name_len -> insertItem( 0, "SQL_NTS=-3" );
+	name_len -> insertItem( 1, "0" );
 
 	l_handle = new QLabel( "Statement Handle:", this );
 	l_handle -> setGeometry( 10, 50, 120, 20 );
@@ -1181,7 +1185,6 @@ dSetCursorName::~dSetCursorName()
 
 const char *dDescribeParam::data_type_to_str( int type )
 {
-	int index = 0;
 	struct attr_value *data_type = sql_data_types;
 
 	while( TRUE )
@@ -1203,7 +1206,7 @@ const char *dDescribeParam::data_type_to_str( int type )
 
 void dDescribeParam::type_clkd()
 {
-	if ( type_valid -> isOn() )
+	if ( type_valid -> isChecked() )
 	    type_valid -> setText( "DataTypePtr: SQL_NULL_PTR" );
 	else
 	    type_valid -> setText( "DataTypePtr: VALID" );
@@ -1211,7 +1214,7 @@ void dDescribeParam::type_clkd()
 
 void dDescribeParam::size_clkd()
 {
-	if ( size_valid -> isOn() )
+	if ( size_valid -> isChecked() )
 	    size_valid -> setText( "ParameterSizePtr: SQL_NULL_PTR" );
 	else
 	    size_valid -> setText( "ParameterSizePtr: VALID" );
@@ -1219,7 +1222,7 @@ void dDescribeParam::size_clkd()
 
 void dDescribeParam::digit_clkd()
 {
-	if ( digit_valid -> isOn() )
+	if ( digit_valid -> isChecked() )
 	    digit_valid -> setText( "DecimalDigitsPtr: SQL_NULL_PTR" );
 	else
 	    digit_valid -> setText( "DecimalDigitsPtr: VALID" );
@@ -1227,7 +1230,7 @@ void dDescribeParam::digit_clkd()
 
 void dDescribeParam::null_clkd()
 {
-	if ( null_valid -> isOn() )
+	if ( null_valid -> isChecked() )
 	    null_valid -> setText( "NullablePtr: SQL_NULL_PTR" );
 	else
 	    null_valid -> setText( "NullablePtr: VALID" );
@@ -1255,11 +1258,11 @@ void dDescribeParam::Ok()
 		txt.sprintf( "    Statement Handle: SQL_NULL_HSTMT" );
 	odbctest -> out_win -> insertLineLimited( txt );
 
-	parameter_number = atoi( param_num -> text().ascii());
+	parameter_number = param_num -> text().toInt();
 	txt.sprintf( "    Parameter Number: %d", parameter_number );
 	odbctest -> out_win -> insertLineLimited( txt );
 
-	if ( type_valid -> isOn() )
+	if ( type_valid -> isChecked() )
 	{
 		data_type_ptr = NULL;
 		txt.sprintf( "    DataTypePtr: <null pointer>" );
@@ -1272,7 +1275,7 @@ void dDescribeParam::Ok()
 	odbctest -> out_win -> insertLineLimited( txt );
 	data_type = -9999;
 
-	if ( size_valid -> isOn() )
+	if ( size_valid -> isChecked() )
 	{
 		param_size_ptr = NULL;
 		txt.sprintf( "    ParameterSizePtr: <null pointer>" );
@@ -1285,7 +1288,7 @@ void dDescribeParam::Ok()
 	odbctest -> out_win -> insertLineLimited( txt );
 	param_size = 9999;
 
-	if ( digit_valid -> isOn() )
+	if ( digit_valid -> isChecked() )
 	{
 		decimal_digits_ptr = NULL;
 		txt.sprintf( "    DecimalDigitsPtr: <null pointer>" );
@@ -1298,7 +1301,7 @@ void dDescribeParam::Ok()
 	odbctest -> out_win -> insertLineLimited( txt );
 	decimal_digits = -9999;
 
-	if ( null_valid -> isOn() )
+	if ( null_valid -> isChecked() )
 	{
 		nullable_ptr = NULL;
 		txt.sprintf( "    NullablePtr: <null pointer>" );
@@ -1387,10 +1390,10 @@ void dDescribeParam::Ok()
 }
 
 dDescribeParam::dDescribeParam( OdbcTest *parent, QString name )
-        : QDialog( parent, name, TRUE )
+        : QDialog( parent )
 {
-	setCaption( name );
-
+	setWindowTitle( name );
+    setModal( true );
 	odbctest = parent;
 
     ok = new QPushButton( "OK", this );
@@ -1402,14 +1405,14 @@ dDescribeParam::dDescribeParam( OdbcTest *parent, QString name )
     help = new QPushButton( "Help", this );
     help->setGeometry( 400,10, 70,25 );
 
-	handles = new QComboBox( FALSE, this, "Statement Handle" );
+	handles = new QComboBox( this );
 	handles -> setGeometry( 130, 50, 200, 20 );
 	odbctest->fill_handle_list( SQL_HANDLE_STMT, handles );
 
 	l_handle = new QLabel( "Statement Handle:", this );
     l_handle -> setGeometry( 10, 50, 120, 20 );
 
-	param_num = new QLineEdit( this, "Param Num" );
+	param_num = new QLineEdit( this );
     param_num -> setGeometry( 130, 80, 70, 20 );
 	param_num -> setMaxLength( 6 );
 	param_num -> setText( "1" );
@@ -1455,7 +1458,7 @@ dDescribeParam::~dDescribeParam()
 
 void dParamData::value_clkd()
 {
-	if ( value_valid -> isOn() )
+	if ( value_valid -> isChecked() )
 	    value_valid -> setText( "ValuePtr: SQL_NULL_PTR" );
 	else
 	    value_valid -> setText( "ValuePtr: VALID" );
@@ -1479,7 +1482,7 @@ void dParamData::Ok()
 		txt.sprintf( "    Statement Handle: SQL_NULL_HSTMT" );
 	odbctest -> out_win -> insertLineLimited( txt );
 
-	if ( value_valid -> isOn() )
+	if ( value_valid -> isChecked() )
 	{
 		value_ptr = NULL;
 		txt.sprintf( "    ValuePtr: <null pointer>" );
@@ -1512,10 +1515,10 @@ void dParamData::Ok()
 }
 
 dParamData::dParamData( OdbcTest *parent, QString name )
-        : QDialog( parent, name, TRUE )
+        : QDialog( parent )
 {
-	setCaption( name );
-
+	setWindowTitle( name );
+    setModal( true );
 	odbctest = parent;
 
     ok = new QPushButton( "OK", this );
@@ -1527,7 +1530,7 @@ dParamData::dParamData( OdbcTest *parent, QString name )
     help = new QPushButton( "Help", this );
     help->setGeometry( 260,10, 70,25 );
 
-	handles = new QComboBox( FALSE, this, "Statement Handle" );
+	handles = new QComboBox( this );
 	handles -> setGeometry( 130, 50, 200, 20 );
 	odbctest->fill_handle_list( SQL_HANDLE_STMT, handles );
 
@@ -1555,7 +1558,7 @@ dParamData::~dParamData()
 
 void dParamOption::pirow_clkd()
 {
-	if ( pirow_valid -> isOn() )
+	if ( pirow_valid -> isChecked() )
 	    pirow_valid -> setText( "pirow: SQL_NULL_PTR" );
 	else
 	    pirow_valid -> setText( "pirow: VALID" );
@@ -1580,11 +1583,11 @@ void dParamOption::Ok()
 		txt.sprintf( "    Statement Handle: SQL_NULL_HSTMT" );
 	odbctest -> out_win -> insertLineLimited( txt );
 
-	crow = atoi( crow_num -> text().ascii());
+	crow = crow_num -> text().toInt();
 	txt.sprintf( "    crow: %d", crow );
 	odbctest -> out_win -> insertLineLimited( txt );
 
-	if ( pirow_valid -> isOn() )
+	if ( pirow_valid -> isChecked() )
 	{
 		pirow_ptr = NULL;
 		txt.sprintf( "    pirow: <null pointer>" );
@@ -1606,9 +1609,9 @@ void dParamOption::Ok()
 }
 
 dParamOption::dParamOption( OdbcTest *parent, QString name )
-        : QDialog( parent, name, TRUE )
+        : QDialog( parent )
 {
-	setCaption( name );
+	setWindowTitle( name );
 
 	odbctest = parent;
 
@@ -1621,14 +1624,14 @@ dParamOption::dParamOption( OdbcTest *parent, QString name )
     help = new QPushButton( "Help", this );
     help->setGeometry( 260,10, 70,25 );
 
-	handles = new QComboBox( FALSE, this, "Statement Handle" );
+	handles = new QComboBox( this );
 	handles -> setGeometry( 130, 50, 200, 20 );
 	odbctest->fill_handle_list( SQL_HANDLE_STMT, handles );
 
 	l_handle = new QLabel( "Statement Handle:", this );
     l_handle -> setGeometry( 10, 50, 120, 20 );
 
-	crow_num = new QLineEdit( this, "Crow Num" );
+	crow_num = new QLineEdit( this );
     crow_num -> setGeometry( 130, 80, 70, 20 );
 	crow_num -> setMaxLength( 6 );
 	crow_num -> setText( "1" );
@@ -1659,7 +1662,6 @@ dParamOption::~dParamOption()
 
 void dPutData::Ok()
 {
-	const char *sql;
     Handle *hand = odbctest->extract_handle_list( SQL_HANDLE_STMT, handles );
 	SQLHANDLE in_handle = SQL_NULL_HANDLE;
 	SQLPOINTER data_ptr_var;
@@ -1669,7 +1671,7 @@ void dPutData::Ok()
 	if ( hand )
 		in_handle = hand -> getHandle();
 
-	data_str = data_ptr -> currentText();
+	data_str = data_ptr -> currentText().toAscii().constData();
 
 	odbctest -> out_win -> insertLineLimited( "SQLPutData():" );
 	odbctest -> out_win -> insertLineLimited( "  In:" );
@@ -1691,13 +1693,13 @@ void dPutData::Ok()
 	}
 	else if ( strcmp( data_str, "<input window>" ) == 0 )
 	{
-		QString *s = new QString( odbctest->in_win->text());
+		QString *s = new QString( odbctest->in_win->toPlainText() );
 		if ( s -> isEmpty())
 			data_ptr_var = (SQLPOINTER)"";
 		else if ( s -> isNull())
 			data_ptr_var = NULL;
 		else 
-			data_ptr_var = (SQLPOINTER) s->latin1();
+			data_ptr_var = (SQLPOINTER) s->toAscii().constData();
 		txt.sprintf( "    DataPtr: %s", data_ptr_var );
 		odbctest -> out_win -> insertLineLimited( txt );
 	}
@@ -1708,7 +1710,7 @@ void dPutData::Ok()
 		odbctest -> out_win -> insertLineLimited( txt );
 	}
 
-	strlen_or_len_str = str_len -> currentText();
+	strlen_or_len_str = str_len -> currentText().toAscii().constData();
 
 	if ( strncmp( strlen_or_len_str, "SQL_NTS", 7 ) == 0 )
 	{
@@ -1741,10 +1743,10 @@ void dPutData::Ok()
 }
 
 dPutData::dPutData( OdbcTest *parent, QString name )
-        : QDialog( parent, name, TRUE )
+        : QDialog( parent )
 {
-	setCaption( name );
-
+	setWindowTitle( name );
+    setModal( true );
 	odbctest = parent;
 
     ok = new QPushButton( "OK", this );
@@ -1756,23 +1758,25 @@ dPutData::dPutData( OdbcTest *parent, QString name )
     help = new QPushButton( "Help", this );
     help->setGeometry( 310,10, 70,25 );
 
-	handles = new QComboBox( FALSE, this, "Statement Handle" );
+	handles = new QComboBox( this );
 	handles -> setGeometry( 130, 50, 200, 20 );
 	odbctest->fill_handle_list( SQL_HANDLE_STMT, handles );
 
-	data_ptr = new QComboBox( TRUE, this, "data_ptr" );
+	data_ptr = new QComboBox( this );
+    data_ptr->setEditable( true );
 	data_ptr -> setGeometry( 130, 80, 250, 20 );
-	data_ptr -> insertItem( "<input window>", 0 );
-	data_ptr -> insertItem( "<empty string>", 1 );
-	data_ptr -> insertItem( "<null ptr>", 2 );
+	data_ptr -> insertItem( 0, "<input window>" );
+	data_ptr -> insertItem( 1, "<empty string>" );
+	data_ptr -> insertItem( 2, "<null ptr>" );
 
-	str_len = new QComboBox( TRUE, this, "str len" );
+	str_len = new QComboBox( this );
+    str_len->setEditable( true );
 	str_len -> setGeometry( 130, 110, 200, 20 );
     
-	str_len -> insertItem( "SQL_NTS=-3", 0 );
-	str_len -> insertItem( "SQL_NULL_DATA=-1", 1 );
-	str_len -> insertItem( "SQL_DEFAULT_PARAM=-5", 2 );
-	str_len -> insertItem( "0", 3 );
+	str_len -> insertItem( 0, "SQL_NTS=-3" );
+	str_len -> insertItem( 1, "SQL_NULL_DATA=-1" );
+	str_len -> insertItem( 2, "SQL_DEFAULT_PARAM=-5" );
+	str_len -> insertItem( 3, "0" );
 
 	l_handle = new QLabel( "Statement Handle:", this );
 	l_handle -> setGeometry( 10, 50, 120, 20 );
@@ -1806,10 +1810,10 @@ void dBindParameter::Ok()
 }
 
 dBindParameter::dBindParameter( OdbcTest *parent, QString name )
-        : QDialog( parent, name, TRUE )
+        : QDialog( parent )
 {
-	setCaption( name );
-
+	setWindowTitle( name );
+    setModal( true );
 	odbctest = parent;
 
     ok = new QPushButton( "OK", this );
@@ -1821,14 +1825,14 @@ dBindParameter::dBindParameter( OdbcTest *parent, QString name )
     help = new QPushButton( "Help", this );
     help->setGeometry( 610,10, 70,25 );
 
-	handles = new QComboBox( FALSE, this, "Statement Handle" );
+	handles = new QComboBox( this );
 	handles -> setGeometry( 130, 50, 200, 20 );
 	odbctest->fill_handle_list( SQL_HANDLE_STMT, handles );
 
 	l_handle = new QLabel( "Statement Handle:", this );
 	l_handle -> setGeometry( 10, 50, 120, 20 );
 
-	param_num = new QLineEdit( this, "Param Num" );
+	param_num = new QLineEdit( this );
     param_num -> setGeometry( 130, 80, 70, 20 );
 	param_num -> setMaxLength( 6 );
 	param_num -> setText( "1" );
@@ -1836,7 +1840,7 @@ dBindParameter::dBindParameter( OdbcTest *parent, QString name )
 	l_param_num = new QLabel( "ParameterNumber:", this );
     l_param_num -> setGeometry( 10, 80, 120, 20 );
 
-	io_type = new QComboBox( FALSE, this, "io_type" );
+	io_type = new QComboBox( this );
 	io_type -> setGeometry( 420, 80, 250, 20 );
 
 	parent->fill_list_box( io_type_option, io_type );
@@ -1844,7 +1848,7 @@ dBindParameter::dBindParameter( OdbcTest *parent, QString name )
 	l_io_type = new QLabel( "InputOutputType:", this );
     l_io_type -> setGeometry( 320, 80, 100, 20 );
 
-	value_type = new QComboBox( FALSE, this, "value_type" );
+	value_type = new QComboBox( this );
 	value_type -> setGeometry( 130, 110, 360, 20 );
 
 	parent->fill_list_box( value_type_option, value_type );
@@ -1852,7 +1856,7 @@ dBindParameter::dBindParameter( OdbcTest *parent, QString name )
 	l_value_type = new QLabel( "ValueType:", this );
     l_value_type -> setGeometry( 10, 110, 100, 20 );
 
-	column_size = new QLineEdit( this, "column_size" );
+	column_size = new QLineEdit( this );
     column_size -> setGeometry( 600, 110, 70, 20 );
 	column_size -> setMaxLength( 6 );
 	column_size -> setText( "0" );
@@ -1860,7 +1864,7 @@ dBindParameter::dBindParameter( OdbcTest *parent, QString name )
 	l_column_size = new QLabel( "ColumnSize:", this );
     l_column_size -> setGeometry( 500, 110, 100, 20 );
 
-	param_type = new QComboBox( FALSE, this, "param_type" );
+	param_type = new QComboBox( this );
 	param_type -> setGeometry( 130, 140, 360, 20 );
 
 	parent->fill_list_box( param_type_option, param_type );
@@ -1868,7 +1872,7 @@ dBindParameter::dBindParameter( OdbcTest *parent, QString name )
 	l_param_type = new QLabel( "ParameterType:", this );
     l_param_type -> setGeometry( 10, 140, 100, 20 );
 
-	decimal_digits = new QLineEdit( this, "decimal_digits" );
+	decimal_digits = new QLineEdit( this );
     decimal_digits -> setGeometry( 600, 140, 70, 20 );
 	decimal_digits -> setMaxLength( 6 );
 	decimal_digits -> setText( "0" );
@@ -1876,16 +1880,16 @@ dBindParameter::dBindParameter( OdbcTest *parent, QString name )
 	l_decimal_digits = new QLabel( "DecimalDigits:", this );
     l_decimal_digits -> setGeometry( 500, 140, 100, 20 );
 
-	param_value = new QComboBox( FALSE, this, "param_value" );
+	param_value = new QComboBox( this );
 	param_value -> setGeometry( 130, 170, 360, 20 );
 
-	param_value -> insertItem( "<valid pointer>", 0 );
-	param_value -> insertItem( "<null pointer>", 1 );
+	param_value -> insertItem( 0, "<valid pointer>" );
+	param_value -> insertItem( 1, "<null pointer>" );
 
 	l_param_value = new QLabel( "ParameterValuePtr:", this );
     l_param_value -> setGeometry( 10, 170, 120, 20 );
 
-	buffer_length = new QLineEdit( this, "buffer_length" );
+	buffer_length = new QLineEdit( this );
     buffer_length -> setGeometry( 600, 170, 70, 20 );
 	buffer_length -> setMaxLength( 6 );
 	buffer_length -> setText( "0" );
@@ -1893,15 +1897,16 @@ dBindParameter::dBindParameter( OdbcTest *parent, QString name )
 	l_buffer_length = new QLabel( "BufferLength:", this );
     l_buffer_length -> setGeometry( 500, 170, 100, 20 );
 
-	strlen_or_ind = new QComboBox( TRUE, this, "strlen_or_ind" );
+	strlen_or_ind = new QComboBox( this );
+    strlen_or_ind->setEditable( true );
 	strlen_or_ind -> setGeometry( 130, 200, 360, 20 );
 
-	strlen_or_ind -> insertItem( "SQL_NTS=-3", 0 );
-	strlen_or_ind -> insertItem( "SQL_NULL_DATA=-1", 1 );
-	strlen_or_ind -> insertItem( "SQL_DATA_AT_EXEC=-2", 2 );
-    strlen_or_ind -> insertItem( "SQL_DEFAULT_PARAM=-5", 3 );
-	strlen_or_ind -> insertItem( "<null pointer>", 4 );
-	strlen_or_ind -> insertItem( "0", 5 );
+	strlen_or_ind -> insertItem( 0, "SQL_NTS=-3" );
+	strlen_or_ind -> insertItem( 1, "SQL_NULL_DATA=-1" );
+	strlen_or_ind -> insertItem( 2, "SQL_DATA_AT_EXEC=-2" );
+    strlen_or_ind -> insertItem( 3, "SQL_DEFAULT_PARAM=-5" );
+	strlen_or_ind -> insertItem( 4, "<null pointer>" );
+	strlen_or_ind -> insertItem( 5, "0" );
 
 	l_strlen_or_ind = new QLabel( "StrLen_or_IndPtr:", this );
     l_strlen_or_ind -> setGeometry( 10, 200, 100, 20 );
@@ -1947,10 +1952,10 @@ void dBindParam::Ok()
 }
 
 dBindParam::dBindParam( OdbcTest *parent, QString name )
-        : QDialog( parent, name, TRUE )
+        : QDialog( parent )
 {
-	setCaption( name );
-
+	setWindowTitle( name );
+    setModal( true );
 	odbctest = parent;
 
     ok = new QPushButton( "OK", this );
@@ -1962,14 +1967,14 @@ dBindParam::dBindParam( OdbcTest *parent, QString name )
     help = new QPushButton( "Help", this );
     help->setGeometry( 610,10, 70,25 );
 
-	handles = new QComboBox( FALSE, this, "Statement Handle" );
+	handles = new QComboBox( this );
 	handles -> setGeometry( 130, 50, 200, 20 );
 	odbctest->fill_handle_list( SQL_HANDLE_STMT, handles );
 
 	l_handle = new QLabel( "Statement Handle:", this );
 	l_handle -> setGeometry( 10, 50, 120, 20 );
 
-	param_num = new QLineEdit( this, "Param Num" );
+	param_num = new QLineEdit( this );
     param_num -> setGeometry( 130, 80, 70, 20 );
 	param_num -> setMaxLength( 6 );
 	param_num -> setText( "1" );
@@ -1977,7 +1982,7 @@ dBindParam::dBindParam( OdbcTest *parent, QString name )
 	l_param_num = new QLabel( "ParameterNumber:", this );
     l_param_num -> setGeometry( 10, 80, 120, 20 );
 
-	value_type = new QComboBox( FALSE, this, "value_type" );
+	value_type = new QComboBox( this );
 	value_type -> setGeometry( 130, 110, 360, 20 );
 
 	parent->fill_list_box( value_type_option, value_type );
@@ -1985,7 +1990,7 @@ dBindParam::dBindParam( OdbcTest *parent, QString name )
 	l_value_type = new QLabel( "ValueType:", this );
     l_value_type -> setGeometry( 10, 110, 100, 20 );
 
-	column_size = new QLineEdit( this, "column_size" );
+	column_size = new QLineEdit( this );
     column_size -> setGeometry( 600, 110, 70, 20 );
 	column_size -> setMaxLength( 6 );
 	column_size -> setText( "0" );
@@ -1993,7 +1998,7 @@ dBindParam::dBindParam( OdbcTest *parent, QString name )
 	l_column_size = new QLabel( "ColumnSize:", this );
     l_column_size -> setGeometry( 500, 110, 100, 20 );
 
-	param_type = new QComboBox( FALSE, this, "param_type" );
+	param_type = new QComboBox( this );
 	param_type -> setGeometry( 130, 140, 360, 20 );
 
 	parent->fill_list_box( param_type_option, param_type );
@@ -2001,7 +2006,7 @@ dBindParam::dBindParam( OdbcTest *parent, QString name )
 	l_param_type = new QLabel( "ParameterType:", this );
     l_param_type -> setGeometry( 10, 140, 100, 20 );
 
-	decimal_digits = new QLineEdit( this, "decimal_digits" );
+	decimal_digits = new QLineEdit( this );
     decimal_digits -> setGeometry( 600, 140, 70, 20 );
 	decimal_digits -> setMaxLength( 6 );
 	decimal_digits -> setText( "0" );
@@ -2009,24 +2014,25 @@ dBindParam::dBindParam( OdbcTest *parent, QString name )
 	l_decimal_digits = new QLabel( "DecimalDigits:", this );
     l_decimal_digits -> setGeometry( 500, 140, 100, 20 );
 
-	param_value = new QComboBox( FALSE, this, "param_value" );
+	param_value = new QComboBox( this );
 	param_value -> setGeometry( 130, 170, 360, 20 );
 
-	param_value -> insertItem( "<valid pointer>", 0 );
-	param_value -> insertItem( "<null pointer>", 1 );
+	param_value -> insertItem( 0, "<valid pointer>" );
+	param_value -> insertItem( 1, "<null pointer>" );
 
 	l_param_value = new QLabel( "ParameterValuePtr:", this );
     l_param_value -> setGeometry( 10, 170, 120, 20 );
 
-	strlen_or_ind = new QComboBox( TRUE, this, "strlen_or_ind" );
+	strlen_or_ind = new QComboBox( this );
+    strlen_or_ind->setEditable( true );
 	strlen_or_ind -> setGeometry( 130, 200, 360, 20 );
 
-	strlen_or_ind -> insertItem( "SQL_NTS=-3", 0 );
-	strlen_or_ind -> insertItem( "SQL_NULL_DATA=-1", 1 );
-	strlen_or_ind -> insertItem( "SQL_DATA_AT_EXEC=-2", 2 );
-    strlen_or_ind -> insertItem( "SQL_DEFAULT_PARAM=-5", 3 );
-	strlen_or_ind -> insertItem( "<null pointer>", 4 );
-	strlen_or_ind -> insertItem( "0", 5 );
+	strlen_or_ind -> insertItem( 0, "SQL_NTS=-3" );
+	strlen_or_ind -> insertItem( 1, "SQL_NULL_DATA=-1" );
+	strlen_or_ind -> insertItem( 2, "SQL_DATA_AT_EXEC=-2" );
+    strlen_or_ind -> insertItem( 3, "SQL_DEFAULT_PARAM=-5" );
+	strlen_or_ind -> insertItem( 4, "<null pointer>" );
+	strlen_or_ind -> insertItem( 5, "0" );
 
 	l_strlen_or_ind = new QLabel( "StrLen_or_IndPtr:", this );
     l_strlen_or_ind -> setGeometry( 10, 200, 100, 20 );
@@ -2065,7 +2071,7 @@ dBindParam::~dBindParam()
 
 void dAllocStmt::handle_clkd()
 {
-	if ( handle_valid -> isOn() )
+	if ( handle_valid -> isChecked() )
 	    handle_valid -> setText( "phstmt: SQL_NULL_POINTER" );
 	else
 	    handle_valid -> setText( "phstmt: VALID" );
@@ -2075,7 +2081,7 @@ void dAllocStmt::Ok()
 {
     SQLHSTMT hstmt, *hstmt_ptr;
     Handle *hand = odbctest->extract_handle_list( SQL_HANDLE_DBC, handles );
-	SQLHANDLE in_handle;
+	SQLHANDLE in_handle = NULL;
 
 	if ( hand )
 		in_handle = hand -> getHandle();
@@ -2090,7 +2096,7 @@ void dAllocStmt::Ok()
 
 	odbctest -> out_win -> insertLineLimited( txt );
 
-    if ( handle_valid -> isOn())
+    if ( handle_valid -> isChecked())
     {
         hstmt_ptr = NULL;
 		txt.sprintf( "    phstmt: SQL_NULL_HANDLE" );
@@ -2120,10 +2126,10 @@ void dAllocStmt::Ok()
 }
 
 dAllocStmt::dAllocStmt( OdbcTest *parent, QString name )
-        : QDialog( parent, name, TRUE )
+        : QDialog( parent )
 {
-	setCaption( name );
-
+	setWindowTitle( name );
+    setModal( true );
 	odbctest = parent;
 
     ok = new QPushButton( "OK", this );
@@ -2135,7 +2141,7 @@ dAllocStmt::dAllocStmt( OdbcTest *parent, QString name )
     help = new QPushButton( "Help", this );
     help->setGeometry( 250,10, 70,25 );
 
-	handles = new QComboBox( FALSE, this, "Handle" );
+	handles = new QComboBox( this );
 	handles -> setGeometry( 100, 50, 200, 20 );
 
 	odbctest->fill_handle_list( SQL_HANDLE_DBC, handles );
