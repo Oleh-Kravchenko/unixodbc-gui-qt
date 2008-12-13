@@ -158,7 +158,7 @@ char * Handle::toStr( char * str )
 			break;
 
 		case SQL_HANDLE_DESC:
-			sprintf( str, "hdesc: %p \"%s\"", handle, description.toLatin1());
+			sprintf( str, "hdesc: %p \"%s\"", handle, description.toAscii().constData() );
 			break;
 	}
 
@@ -652,7 +652,7 @@ OdbcTest::OdbcTest( QWidget *parent )
 
     this->setGeometry( 0, 0, 500, 250 );
 
-	split = new QSplitter( Qt::Vertical, this, "main" );
+	split = new QSplitter( Qt::Vertical, this );
 	split -> setOpaqueResize( FALSE );
 	setCentralWidget( split );
     in_win = new QTextEdit( split );
@@ -907,7 +907,7 @@ void OdbcTest::createActions()
 	connect( pactionSetDescRec               , SIGNAL(triggered()), this, SLOT(slotSetDescRec               ()) );
 	connect( pactionGetDescAll               , SIGNAL(triggered()), this, SLOT(slotGetDescAll               ()) );
 	connect( pactionAllocStmt                , SIGNAL(triggered()), this, SLOT(slotAllocStmt                ()) );
-	connect( pactionBindParam                , SIGNAL(triggered()), this, SLOT(slotBindParam,               ()) );
+	connect( pactionBindParam                , SIGNAL(triggered()), this, SLOT(slotBindParam                ()) );
 	connect( pactionBindParameter            , SIGNAL(triggered()), this, SLOT(slotBindParameter            ()) );
 	connect( pactionCancel                   , SIGNAL(triggered()), this, SLOT(slotCancel                   ()) );
 	connect( pactionCloseCursor              , SIGNAL(triggered()), this, SLOT(slotCloseCursor              ()) );
@@ -1202,12 +1202,11 @@ void OdbcTest::createMenus()
 
 int main( int argc, char ** argv )
 {
-    QApplication a( argc, argv );
-	OdbcTest m;
-
-    a.setMainWidget( &m );
+    QApplication 	a( argc, argv );
+	OdbcTest 		m;
 
 	m.show();
+
     return a.exec();
 }
 
@@ -1325,27 +1324,26 @@ Handle::~Handle()
 
     if ( type == SQL_HANDLE_STMT )
     {
-	    Handle *hand, *match = NULL;
-	    char txt[ 128 ];
         int changed = 0;
 
         do
         {
             changed = 0;
             
-            for ( hand=handle_list -> first();
-		        hand != 0; 
-		        hand=handle_list -> next() )
-	        {
-                if ( hand->getType() == SQL_HANDLE_DESC && 
-                        hand->getStmtHandle() == handle )
-                {
-                    handle_list -> remove( hand );
+			{
+				for ( int i = 0; i < handle_list->size(); ++i ) 
+				{
+					Handle *hand = handle_list->at( i );
 
-                    changed = 1;
-                    break;
-                }
-		    }
+					if ( hand && hand->getType() == SQL_HANDLE_DESC && hand->getStmtHandle() == handle )
+					{
+						handle_list -> removeOne( hand );
+						delete hand;
+						changed = 1;
+						break;
+					}
+				}
+			}
         }
         while( changed );
 	}
