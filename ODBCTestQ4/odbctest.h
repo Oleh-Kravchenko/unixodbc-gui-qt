@@ -92,7 +92,7 @@ private:
 class OutputWin : public QTextEdit
 {
 public:
-	OutputWin( QWidget *parent = 0, const char *name = 0 );
+	OutputWin( QWidget *parent = 0 );
 	void insertLineLimited( const QString &str );
 	void setMaxLines( int );
 
@@ -105,7 +105,9 @@ class OdbcTest : public QMainWindow
     Q_OBJECT
 
 public:
-    OdbcTest( QWidget *parent=0, const char *name=0 );
+    OdbcTest( QWidget *parent=0 );
+    ~OdbcTest();
+
 	QSplitter *split;
 	QTextEdit *in_win;
 	OutputWin *out_win;
@@ -268,8 +270,159 @@ signals:
     void    explain( const QString& );
 
 private:
-    QMenuBar *menu;
     QLabel   *label;
+
+    QMenu*      pmenuFile;
+    QMenu*      pmenuDiagnostic;
+    QMenu*      pmenuEnvironment;
+    QMenu*      pmenuConnection;
+    QMenu*      pmenuDescriptor;
+    QMenu*      pmenuStatement;
+    QMenu*      pmenuAttributes;
+    QMenu*      pmenuResults;
+    QMenu*      pmenuCatalog;
+    QMenu*      pmenuDataSources;
+    QMenu*      pmenuDrivers;
+    QMenu*      pmenuDriverManager;
+    QMenu*      pmenuFileDataSourceName;
+    QMenu*      pmenuProfileStrings;
+    QMenu*      pmenuTranslator;
+    QMenu*      pmenuConfigMode;
+    QMenu*      pmenuInstaller;
+    QMenu*      pmenuTools;
+    QMenu*      pmenuHelp;
+
+    QAction*    pactionExit;
+    QAction*    pactionGetDiagRec;
+    QAction*    pactionGetDiagField;
+    QAction*    pactionError;
+    QAction*    pactionErrorsAll;
+    QAction*    pactionAllocEnv;
+    QAction*    pactionAllocHandle;
+    QAction*    pactionDataSources;
+    QAction*    pactionDrivers;
+    QAction*    pactionFreeEnv;
+    QAction*    pactionFreeHandle;
+    QAction*    pactionEndTran;
+    QAction*    pactionTransact;
+    QAction*    pactionDataSourcesAll;
+    QAction*    pactionDriversAll;
+    QAction*    pactionAllocConnect;
+    QAction*    pactionBrowseConnect;
+    QAction*    pactionConnect;
+    QAction*    pactionDriverConnect;
+    QAction*    pactionDisconnect;
+    QAction*    pactionFreeConnect;
+    QAction*    pactionGetFunctions;
+    QAction*    pactionGetInfo;
+    QAction*    pactionNativeSQL;
+    QAction*    pactionFullConnect;
+    QAction*    pactionFullDisconnect;
+    QAction*    pactionGetInfoAll;
+    QAction*    pactionGetFunctionsAll;
+    QAction*    pactionCopyDesc;
+    QAction*    pactionGetDescField;
+    QAction*    pactionGetDescRec;
+    QAction*    pactionSetDescField;
+    QAction*    pactionSetDescRec;
+    QAction*    pactionGetDescAll;
+    QAction*    pactionAllocStmt;
+    QAction*    pactionBindParam;
+    QAction*    pactionBindParameter;
+    QAction*    pactionCancel;
+    QAction*    pactionCloseCursor;
+    QAction*    pactionDescribeParam;
+    QAction*    pactionExecute;
+    QAction*    pactionExecDirect;
+    QAction*    pactionFreeStmt;
+    QAction*    pactionGetCursorName;
+    QAction*    pactionNumParams;
+    QAction*    pactionParamData;
+    QAction*    pactionParamOptions;
+    QAction*    pactionPrepare;
+    QAction*    pactionPutData;
+    QAction*    pactionSetCursorName;
+    QAction*    pactionFillParam;
+    QAction*    pactionShowParam;
+    QAction*    pactionShowCursorSettings;
+    QAction*    pactionSetStmtAttr;
+    QAction*    pactionGetStmtAttr;
+    QAction*    pactionSetStmtOption;
+    QAction*    pactionGetStmtOption;
+    QAction*    pactionSetConnectAttr;
+    QAction*    pactionGetConnectAttr;
+    QAction*    pactionSetConnectOption;
+    QAction*    pactionGetConnectOption;
+    QAction*    pactionSetEnvAttr;
+    QAction*    pactionGetEnvAttr;
+    QAction*    pactionSetCursorAttributes;
+    QAction*    pactionBindCol;
+    QAction*    pactionBulkOperations;
+    QAction*    pactionColAttributes;
+    QAction*    pactionColAttribute;
+    QAction*    pactionDescribeCol;
+    QAction*    pactionExtendedFetch;
+    QAction*    pactionFetch;
+    QAction*    pactionFetchScroll;
+    QAction*    pactionGetData;
+    QAction*    pactionMoreResults;
+    QAction*    pactionNumResultCols;
+    QAction*    pactionRowCount;
+    QAction*    pactionSetPos;
+    QAction*    pactionSetScrollOptions;
+    QAction*    pactionBindColAll;
+    QAction*    pactionDescribeColAll;
+    QAction*    pactionFetchAll;
+    QAction*    pactionGetDataAll;
+    QAction*    pactionShowBoundCols;
+    QAction*    pactionDisplayRowset;
+    QAction*    pactionColumns;
+    QAction*    pactionColumnPrivileges;
+    QAction*    pactionGetTypeInfo;
+    QAction*    pactionForeignKeys;
+    QAction*    pactionPrimaryKeys;
+    QAction*    pactionProcedures;
+    QAction*    pactionProcedureColumns;
+    QAction*    pactionSpecialColumns;
+    QAction*    pactionStatistics;
+    QAction*    pactionTables;
+    QAction*    pactionTablePrivileges;
+    QAction*    pactionManageDataSources;
+    QAction*    pactionRemoveDefaultDataSource;
+    QAction*    pactionConfigDataSource;
+    QAction*    pactionCreateDataSource;
+    QAction*    pactionValidDSN;
+    QAction*    pactionRemoveDSNFromIni;
+    QAction*    pactionWriteDSNToIni;
+    QAction*    pactionRemoveDrivers;
+    QAction*    pactionConfigDrivers;
+    QAction*    pactionInstallDriver;
+    QAction*    pactionInstallDriverEx;
+    QAction*    pactionGetInstalledDrivers;
+    QAction*    pactionRemoveDriverManager;
+    QAction*    pactionInstallDriverManager;
+    QAction*    pactionReadFileDSN;
+    QAction*    pactionWriteFileDSN;
+    QAction*    pactionWritePrivateProfileString;
+    QAction*    pactionGetPrivateProfileString;
+    QAction*    pactionInstallTranslator;
+    QAction*    pactionInstallTranslatorEx;
+    QAction*    pactionRemoveTranslator;
+    QAction*    pactionGetTranslator;
+    QAction*    pactionSetConfigMode;
+    QAction*    pactionGetConfigMode;
+    QAction*    pactionOptions;
+    QAction*    pactionTrace;
+    QAction*    pactionManageTestSources;
+    QAction*    pactionManageAutoTests;
+    QAction*    pactionManageTestGroups;
+    QAction*    pactionRunAutoTests;
+    QAction*    pactionHelpTest;
+    QAction*    pactionHelpApi;
+    QAction*    pactionHelpAbout;
+
+    void createActions();
+    void createMenus();
 };
 
 #endif // ODBCTEST_H
