@@ -20,6 +20,11 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
  **********************************************************************/
+/*
+ * 2008-12-10   Code adopted by unixODBC-GUI-Qt project. Heavily altered
+ * pharvey      to be Qt4 only code.
+ * 
+ */
 
 #ifndef CONN_H
 #define CONN_H

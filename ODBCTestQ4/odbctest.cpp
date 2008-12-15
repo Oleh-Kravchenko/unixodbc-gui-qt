@@ -21,6 +21,9 @@
  *
  **********************************************************************
  *
+ * 2008-12-10   Code adopted by unixODBC-GUI-Qt project. Heavily altered
+ * pharvey      to be Qt4 only code.
+ * 
  * $Id: odbctest.cpp,v 1.5 2008/05/30 12:04:56 lurcher Exp $
  *
  * $Log: odbctest.cpp,v $

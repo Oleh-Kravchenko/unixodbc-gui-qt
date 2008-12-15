@@ -20,7 +20,10 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
  **********************************************************************
- *
+ * 
+ * 2008-12-10   Code adopted by unixODBC-GUI-Qt project. Heavily altered
+ * pharvey      to be Qt4 only code.
+ * 
  * $Id: attr.cpp,v 1.7 2007/11/29 12:00:37 lurcher Exp $
  *
  * $Log: attr.cpp,v $

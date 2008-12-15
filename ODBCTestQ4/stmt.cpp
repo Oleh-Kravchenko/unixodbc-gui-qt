@@ -21,6 +21,9 @@
  *
  **********************************************************************
  *
+ * 2008-12-10   Code adopted by unixODBC-GUI-Qt project. Heavily altered
+ * pharvey      to be Qt4 only code.
+ * 
  * $Id: stmt.cpp,v 1.6 2007/02/13 06:14:21 peteralexharvey Exp $
  *
  * $Log: stmt.cpp,v $

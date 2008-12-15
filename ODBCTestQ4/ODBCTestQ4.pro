@@ -21,7 +21,14 @@ HEADERS		= \
 		odbctest.h \
 		results.h \
 		stmt.h \
-		tools.h
+		tools.h \
+		DlgToolsManageAutoTest.h \
+		DlgToolsManageTestGroup.h \
+		DlgToolsManageTest.h \
+		DlgToolsNewGroup.h \
+		DlgToolsNewSource.h \
+		DlgToolsRunAutoTests.h
+
 
 SOURCES 	= \
 		attr.cpp \
@@ -36,5 +43,11 @@ SOURCES 	= \
 		open.cpp \
 		results.cpp \
 		stmt.cpp \
-		tools.cpp
+		tools.cpp \
+		DlgToolsManageAutoTest.cpp \
+		DlgToolsManageTest.cpp \
+		DlgToolsManageTestGroup.cpp \
+		DlgToolsNewGroup.cpp \
+		DlgToolsNewSource.cpp \
+		DlgToolsRunAutoTests.cpp
 

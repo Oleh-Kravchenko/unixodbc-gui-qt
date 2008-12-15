@@ -21,6 +21,9 @@
  *
  **********************************************************************
  *
+ * 2008-12-10   Code adopted by unixODBC-GUI-Qt project. Heavily altered
+ * pharvey      to be Qt4 only code.
+ * 
  * $Id: diag.cpp,v 1.2 2007/02/12 11:49:37 lurcher Exp $
  *
  * $Log: diag.cpp,v $

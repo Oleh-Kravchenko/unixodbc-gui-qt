@@ -26,16 +26,28 @@
  * 
  */
 
-#ifndef TOOLS_H
-#define TOOLS_H
+#ifndef DLGTOOLSNEWSOURCE_H
+#define DLGTOOLSNEWSOURCE_H
 
 #include "odbctest.h"
 
-#define setqbit(lpa, pos)	\
-	(lpa[((pos) / CQBITS)] |= (1 << ((pos) - (CQBITS * ((pos) / CQBITS)))))
-#define SETBIT(p1,p2) setqbit(p1,(p2)-1)
+class DlgToolsNewSource : public QDialog 
+{
+    Q_OBJECT
 
-QMap<QString,QMap<QString,QString>> ini;
+    public:
+		DlgToolsNewSource( OdbcTest *parent, QString name, dManageTest *ptest );
+        ~DlgToolsNewSource();
 
+	protected:
+		QPushButton *ok, *cancel;
+		OdbcTest *odbctest;
+		QLineEdit *source;
+        QLabel *l_dsn;
+        dManageTest *parent_test;
+
+	protected slots:
+		void Ok();
+};
 
 #endif

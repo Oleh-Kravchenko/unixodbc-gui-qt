@@ -1,3 +1,9 @@
+/*
+ * 2008-12-10   Code adopted by unixODBC-GUI-Qt project. Heavily altered
+ * pharvey      to be Qt4 only code.
+ * 
+ */
+
 #ifndef ODBCTEST_H
 #define ODBCTEST_H
 

@@ -26,16 +26,35 @@
  * 
  */
 
-#ifndef TOOLS_H
-#define TOOLS_H
+#ifndef DLGTOOLSMANAGEAUTOTEST_H
+#define DLGTOOLSMANAGEAUTOTEST_H
 
 #include "odbctest.h"
 
-#define setqbit(lpa, pos)	\
-	(lpa[((pos) / CQBITS)] |= (1 << ((pos) - (CQBITS * ((pos) / CQBITS)))))
-#define SETBIT(p1,p2) setqbit(p1,(p2)-1)
+class DlgToolsManageAutoTest : public QDialog 
+{
+    Q_OBJECT
 
-QMap<QString,QMap<QString,QString>> ini;
+    public:
+		DlgToolsManageAutoTest( OdbcTest *parent, QString name );
+        ~DlgToolsManageAutoTest();
 
+	protected:
+		QPushButton *close, *add, *remove, *from;
+		OdbcTest *odbctest;
+		QLabel *l_avail, *l_name, *l_lib, *l_so, *l_installed, *s_from, *s_name, *s_lib;
+		QListWidget *lib_list, *test_list;
+        char curr_dir[ 256 ];
+
+        void SetPath( QString &str );
+        void SetPath( const char *str );
+
+	protected slots:
+		void Ok();
+        void From();
+        void Add();
+        void ListSelect( const QString &name );
+        void Remove();
+};
 
 #endif

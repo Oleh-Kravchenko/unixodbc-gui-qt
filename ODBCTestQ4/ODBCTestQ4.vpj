@@ -57,6 +57,12 @@
 			<F N="conn.cpp"/>
 			<F N="desc.cpp"/>
 			<F N="diag.cpp"/>
+			<F N="DlgToolsManageAutoTest.cpp"/>
+			<F N="DlgToolsManageTest.cpp"/>
+			<F N="DlgToolsManageTestGroup.cpp"/>
+			<F N="DlgToolsNewGroup.cpp"/>
+			<F N="DlgToolsNewSource.cpp"/>
+			<F N="DlgToolsRunAutoTests.cpp"/>
 			<F N="edit.cpp"/>
 			<F N="env.cpp"/>
 			<F N="installer.cpp"/>
@@ -74,6 +80,12 @@
 			<F N="conn.h"/>
 			<F N="desc.h"/>
 			<F N="diag.h"/>
+			<F N="DlgToolsManageAutoTest.h"/>
+			<F N="DlgToolsManageTest.h"/>
+			<F N="DlgToolsManageTestGroup.h"/>
+			<F N="DlgToolsNewGroup.h"/>
+			<F N="DlgToolsNewSource.h"/>
+			<F N="DlgToolsRunAutoTests.h"/>
 			<F N="env.h"/>
 			<F N="odbctest.h"/>
 			<F N="results.h"/>
