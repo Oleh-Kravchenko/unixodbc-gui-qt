@@ -24,31 +24,9 @@
  * 2008-12-10   Code adopted by unixODBC-GUI-Qt project. Heavily altered
  * pharvey      to be Qt4 only code.
  * 
- * $Id: installer.cpp,v 1.2 2007/02/12 11:49:37 lurcher Exp $
- *
- * $Log: installer.cpp,v $
- * Revision 1.2  2007/02/12 11:49:37  lurcher
- * Add QT4 support to existing GUI parts
- *
- * Revision 1.1.1.1  2001/10/17 16:40:31  lurcher
- *
- * First upload to SourceForge
- *
- * Revision 1.1.1.1  2000/09/04 16:42:53  nick
- * Imported Sources
- *
- * Revision 1.2  2000/06/05 16:53:20  ngorham
- *
- * Next lot of updates
- *
- * Revision 1.1  2000/05/04 17:04:48  ngorham
- *
- * Initial commit
- *
- *
  **********************************************************************/
 
-#include "odbctest.h"
+#include "OdbcTest.h"
 
 void OdbcTest::sqlmanagedatasources()
 {

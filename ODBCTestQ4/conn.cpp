@@ -24,85 +24,10 @@
  * 2008-12-10   Code adopted by unixODBC-GUI-Qt project. Heavily altered
  * pharvey      to be Qt4 only code.
  * 
- * $Id: conn.cpp,v 1.6 2007/02/12 11:49:37 lurcher Exp $
- *
- * $Log: conn.cpp,v $
- * Revision 1.6  2007/02/12 11:49:37  lurcher
- * Add QT4 support to existing GUI parts
- *
- * Revision 1.5  2005/04/18 15:00:56  lurcher
- *
- * Use SQLDriverConnect in odbctest Full Connect
- *
- * Revision 1.4  2004/11/20 13:21:39  lurcher
- * Fix unicode bug in SQLGetInfoW
- *
- * Revision 1.3  2002/10/10 08:48:34  lurcher
- *
- * Add missing SQLGetInfo value to odbctest (SQL_ODBC_SAG_CONFORMANCE)
- *
- * Revision 1.2  2002/08/12 13:17:52  lurcher
- *
- * Replicate the way the MS DM handles loading of driver libs, and allocating
- * handles in the driver. usage counting in the driver means that dlopen is
- * only called for the first use, and dlclose for the last. AllocHandle for
- * the driver environment is only called for the first time per driver
- * per application environment.
- *
- * Revision 1.1.1.1  2001/10/17 16:40:30  lurcher
- *
- * First upload to SourceForge
- *
- * Revision 1.6  2001/07/20 09:42:58  nick
- *
- * Replace char[] with QString to avoid buffer overrun
- *
- * Revision 1.5  2001/07/20 08:54:25  nick
- *
- * Add a delete in BrowseConnect
- *
- * Revision 1.4  2001/07/19 14:04:46  martin
- *
- * SQLBrowseConnect legitimately returns SQL_NEED_DATA
- *
- * Revision 1.3  2001/06/04 15:24:49  nick
- *
- * Add port to MAC OSX and QT3 changes
- *
- * Revision 1.2  2001/05/31 16:05:55  nick
- *
- * Fix problems with postgres closing local sockets
- * Make odbctest build with QT 3 (it doesn't work due to what I think are bugs
- * in QT 3)
- * Fix a couple of problems in the cursor lib
- *
- * Revision 1.1.1.1  2000/09/04 16:42:53  nick
- * Imported Sources
- *
- * Revision 1.5  2000/06/13 12:30:21  ngorham
- *
- * Enough there for the first release I think
- *
- * Revision 1.4  2000/06/09 17:04:19  ngorham
- *
- * More, and More
- *
- * Revision 1.3  2000/06/05 16:53:16  ngorham
- *
- * Next lot of updates
- *
- * Revision 1.2  2001/05/31 10:26:26  ngorham
- *
- * Fix a few minor typo's
- *
- * Revision 1.1  2000/05/04 17:04:47  ngorham
- *
- * Initial commit
- *
- *
  **********************************************************************/
 
 #include "conn.h"
+#include "OdbcTest.h"
 
 static attr_options gf_options[] = 
 {

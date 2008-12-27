@@ -28,21 +28,6 @@
 
 #include "OdbcTest.h"
 
-OutputWin::OutputWin( QWidget *parent )
-    : QTextEdit( parent )
-{
-}
-
-void OutputWin::insertLineLimited( const QString &str )
-{
-	QTextEdit::append( str );
-}
-
-void OutputWin::setMaxLines( int i )
-{
-	max_lines = i;
-}
-
 OdbcTest::OdbcTest( QWidget *parent )
     : QMainWindow( parent )
 {
@@ -325,8 +310,8 @@ OdbcTest::OdbcTest( QWidget *parent )
 	split = new QSplitter( Qt::Vertical, this );
 	split -> setOpaqueResize( FALSE );
 	setCentralWidget( split );
-    in_win = new QTextEdit( split );
-    out_win = new OutputWin( split );
+    in_win 	= new QTextEdit( split );
+    out_win = new QTextEdit( split );
 	out_win -> setReadOnly( TRUE );
 	out_win -> setMaxLines( 1000 );
 }
@@ -424,11 +409,11 @@ void OdbcTest::fill_list_box( attr_options *attr, QComboBox *lst )
 
 SQLHANDLE OdbcTest::get_handle( int type )
 {
-	QListIterator<Handle*> it( listHandle );
+	QListIterator<OdbcHandle*> it( listHandle );
 
 	while ( it.hasNext() )
 	{
-		Handle *hand = it.next();
+		OdbcHandle *hand = it.next();
 		if ( hand && hand->getType() == type )
 		{
 			return hand->getHandle();
@@ -438,16 +423,16 @@ SQLHANDLE OdbcTest::get_handle( int type )
 	return SQL_NULL_HANDLE;
 }
 
-Handle * OdbcTest::fill_handle_list( int type, QComboBox *lst )
+OdbcHandle * OdbcTest::fill_handle_list( int type, QComboBox *lst )
 {
-	QListIterator<Handle*> 	it( listHandle );
-	Handle *				match 	= NULL;
+	QListIterator<OdbcHandle*> 	it( listHandle );
+	OdbcHandle *				match 	= NULL;
 	int 					i 		= 0;
 	char 					txt[128];
 
 	while ( it.hasNext() )
 	{
-		Handle *hand = it.next();
+		OdbcHandle *hand = it.next();
 		if ( !hand  )
 			break;
 
@@ -469,12 +454,12 @@ Handle * OdbcTest::fill_handle_list( int type, QComboBox *lst )
 	return match;
 }
 
-Handle *OdbcTest::extract_handle_list( int type, QComboBox *lst )
+OdbcHandle *OdbcTest::extract_handle_list( int type, QComboBox *lst )
 {
-	QListIterator<Handle*> 	it( listHandle );
+	QListIterator<OdbcHandle*> 	it( listHandle );
 	int 					index = lst -> currentIndex(); 
 	int 					i = 0;
-	Handle *				hand = NULL;
+	OdbcHandle *				hand = NULL;
 
 	while ( it.hasNext() )
 	{

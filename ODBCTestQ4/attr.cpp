@@ -24,84 +24,10 @@
  * 2008-12-10   Code adopted by unixODBC-GUI-Qt project. Heavily altered
  * pharvey      to be Qt4 only code.
  * 
- * $Id: attr.cpp,v 1.7 2007/11/29 12:00:37 lurcher Exp $
- *
- * $Log: attr.cpp,v $
- * Revision 1.7  2007/11/29 12:00:37  lurcher
- * Add 64 bit type changes to SQLExtendedFetch etc
- *
- * Revision 1.6  2007/02/12 11:49:37  lurcher
- * Add QT4 support to existing GUI parts
- *
- * Revision 1.5  2007/01/02 10:27:50  lurcher
- * Fix descriptor leak with unicode only driver
- *
- * Revision 1.4  2003/12/01 16:37:17  lurcher
- *
- * Fix a bug in SQLWritePrivateProfileString
- *
- * Revision 1.3  2001/12/20 17:26:26  lurcher
- *
- * More warnings removed
- *
- * Revision 1.2  2001/12/20 12:30:44  lurcher
- *
- * Fix 64 problem in odbctest and 7.1 Postgres driver
- *
- * Revision 1.1.1.1  2001/10/17 16:40:30  lurcher
- *
- * First upload to SourceForge
- *
- * Revision 1.4  2001/07/20 09:42:58  nick
- *
- * Replace char[] with QString to avoid buffer overrun
- *
- * Revision 1.3  2001/06/04 15:24:49  nick
- *
- * Add port to MAC OSX and QT3 changes
- *
- * Revision 1.2  2001/05/31 16:05:55  nick
- *
- * Fix problems with postgres closing local sockets
- * Make odbctest build with QT 3 (it doesn't work due to what I think are bugs
- * in QT 3)
- * Fix a couple of problems in the cursor lib
- *
- * Revision 1.1.1.1  2000/09/04 16:42:53  nick
- * Imported Sources
- *
- * Revision 1.7  2000/06/16 14:09:26  ngorham
- *
- * Fix a couple of bugs in GetStmtOptions
- *
- * Revision 1.6  2000/06/13 12:30:19  ngorham
- *
- * Enough there for the first release I think
- *
- * Revision 1.5  2000/06/12 18:46:18  ngorham
- *
- * More changes
- *
- * Revision 1.4  2000/06/09 17:04:18  ngorham
- *
- * More, and More
- *
- * Revision 1.3  2000/06/05 16:53:14  ngorham
- *
- * Next lot of updates
- *
- * Revision 1.2  2001/05/31 10:26:26  ngorham
- *
- * Fix a few minor typo's
- *
- * Revision 1.1  2000/05/04 17:04:47  ngorham
- *
- * Initial commit
- *
- *
  **********************************************************************/
 
 #include "attr.h"
+#include "OdbcTest.h"
 
 static attr_value strlen_options[] = 
 {
@@ -861,7 +787,7 @@ void dSetEnvAttr::Activated( int index )
 {
     value -> clear();
 
-    odbctest->fill_list_box( env_options[ index ].values, value );
+    pOdbcTest->fill_list_box( env_options[ index ].values, value );
 }
 
 void dSetEnvAttr::Ok()
@@ -870,52 +796,52 @@ void dSetEnvAttr::Ok()
     SQLINTEGER attribute;
     SQLPOINTER vptr;
     SQLINTEGER string_length;
-    Handle *hand = odbctest->extract_handle_list( SQL_HANDLE_ENV, handles );
+    OdbcHandle *hand = pOdbcTest->extract_handle_list( SQL_HANDLE_ENV, handles );
 
     if ( hand )
         in_handle = hand -> getHandle();
 
-    odbctest -> out_win -> insertLineLimited( "SQLSetEnvAttr():" );
-    odbctest -> out_win -> insertLineLimited( "  In:" );
+    pOdbcTest -> out_win -> append( "SQLSetEnvAttr():" );
+    pOdbcTest -> out_win -> append( "  In:" );
     if ( in_handle )
         txt.sprintf( "    Environment Handle: %p", in_handle );
     else
         txt.sprintf( "    Environment Handle: SQL_NULL_HENV" );
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     attribute = env_options[ types->currentIndex() ].attr;
     txt.sprintf( "    Attribute: %s=%d", 
                  env_options[ types -> currentIndex() ].text,
                  env_options[ types -> currentIndex() ].attr );
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     vptr = (SQLPOINTER) env_options[ types -> currentIndex() ].values[ value -> currentIndex() ].value;
     txt.sprintf( "    Value: %s=%d", 
                  env_options[ types -> currentIndex() ].values[ value -> currentIndex() ].text,
                  env_options[ types -> currentIndex() ].values[ value -> currentIndex() ].value );
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     string_length = strlen_options[ stringlen -> currentIndex() ].value;
     txt.sprintf( "    String Length: %s=%d", 
                  strlen_options[ stringlen -> currentIndex() ].text,
                  strlen_options[ stringlen -> currentIndex() ].value );
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     SQLRETURN ret = SQLSetEnvAttr( in_handle, attribute, vptr, string_length );
 
-    odbctest -> out_win -> insertLineLimited( "  Return:" );
-    txt.sprintf( "    %s=%d", odbctest->return_as_text( ret ), ret );
-    odbctest -> out_win -> insertLineLimited( txt );
-    odbctest -> out_win -> insertLineLimited( "" );
+    pOdbcTest -> out_win -> append( "  Return:" );
+    txt.sprintf( "    %s=%d", pOdbcTest->return_as_text( ret ), ret );
+    pOdbcTest -> out_win -> append( txt );
+    pOdbcTest -> out_win -> append( "" );
 }
 
-dSetEnvAttr::dSetEnvAttr( OdbcTest *parent, QString name )
-: QDialog( parent )
+dSetEnvAttr::dSetEnvAttr( OdbcTest *pOdbcTest, QString name )
+    : QDialog( pOdbcTest )
 {
     setWindowTitle( name );
     setModal( true );
 
-    odbctest = parent;
+    this->pOdbcTest = pOdbcTest;
 
     ok = new QPushButton( "OK", this );
     ok->setGeometry( 240,10, 70,25 );
@@ -929,20 +855,20 @@ dSetEnvAttr::dSetEnvAttr( OdbcTest *parent, QString name )
     handles = new QComboBox( this ); // "Environment Handle"
     handles -> setGeometry( 170, 50, 300, 20 );
 
-    odbctest->fill_handle_list( SQL_HANDLE_ENV, handles );
+    pOdbcTest->fill_handle_list( SQL_HANDLE_ENV, handles );
 
     types = new QComboBox( this ); // "Attribute"
     types -> setGeometry( 170, 80, 300, 20 );
 
-    parent->fill_list_box( env_options, types );
+    pOdbcTest->fill_list_box( env_options, types );
 
     value = new QComboBox( this ); // "Value"
     value -> setGeometry( 170, 110, 300, 20 );
-    parent->fill_list_box( env_options[ 0 ].values, value );
+    pOdbcTest->fill_list_box( env_options[ 0 ].values, value );
 
     stringlen = new QComboBox( this ); // "String Length"
     stringlen -> setGeometry( 170, 140, 300, 20 );
-    parent->fill_list_box( strlen_options, stringlen );
+    pOdbcTest->fill_list_box( strlen_options, stringlen );
 
     l_handle = new QLabel( "Environment Handle:", this );
     l_handle -> setGeometry( 10, 50, 130, 20 );
@@ -981,7 +907,7 @@ void dGetEnvAttr::Ok()
 {
     SQLHANDLE in_handle = SQL_NULL_HENV;
     SQLINTEGER attribute;
-    Handle *hand = odbctest->extract_handle_list( SQL_HANDLE_ENV, handles );
+    OdbcHandle *hand = pOdbcTest->extract_handle_list( SQL_HANDLE_ENV, handles );
     SQLINTEGER b_len, strlen_or_ind;
     SQLINTEGER *strlen_ptr;
     char *buf = NULL;
@@ -989,19 +915,19 @@ void dGetEnvAttr::Ok()
     if ( hand )
         in_handle = hand -> getHandle();
 
-    odbctest -> out_win -> insertLineLimited( "SQLGetEnvAttr():" );
-    odbctest -> out_win -> insertLineLimited( "  In:" );
+    pOdbcTest -> out_win -> append( "SQLGetEnvAttr():" );
+    pOdbcTest -> out_win -> append( "  In:" );
     if ( in_handle )
         txt.sprintf( "    Environment Handle: %p", in_handle );
     else
         txt.sprintf( "    Environment Handle: SQL_NULL_HENV" );
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     attribute = env_options[ types -> currentIndex() ].attr;
     txt.sprintf( "    Attribute: %s=%d", 
                  env_options[ types -> currentIndex() ].text,
                  env_options[ types -> currentIndex() ].attr );
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     b_len = buffer_len -> text().toInt();
     if ( b_len < 1 )
@@ -1025,16 +951,16 @@ void dGetEnvAttr::Ok()
     if ( buf )
     {
         txt.sprintf( "    Value Ptr: %p", buf );
-        odbctest -> out_win -> insertLineLimited( txt );
+        pOdbcTest -> out_win -> append( txt );
     }
     else
     {
         txt.sprintf( "    Value Ptr: SQL_NULL_POINTER" );
-        odbctest -> out_win -> insertLineLimited( txt );
+        pOdbcTest -> out_win -> append( txt );
     }
 
     txt.sprintf( "    Buffer Length: %d", b_len );
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     strlen_or_ind = -999999;
 
@@ -1050,22 +976,22 @@ void dGetEnvAttr::Ok()
     if ( strlen_ptr )
     {
         txt.sprintf( "    Strlen Ptr: %p", strlen_ptr );
-        odbctest -> out_win -> insertLineLimited( txt );
+        pOdbcTest -> out_win -> append( txt );
     }
     else
     {
         txt.sprintf( "    Strlen Ptr: SQL_NULL_POINTER" );
-        odbctest -> out_win -> insertLineLimited( txt );
+        pOdbcTest -> out_win -> append( txt );
     }
 
     SQLRETURN ret = SQLGetEnvAttr( in_handle, attribute, 
                                    buf, b_len, strlen_ptr );
 
-    odbctest -> out_win -> insertLineLimited( "  Return:" );
-    txt.sprintf( "    %s=%d", odbctest->return_as_text( ret ), ret );
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( "  Return:" );
+    txt.sprintf( "    %s=%d", pOdbcTest->return_as_text( ret ), ret );
+    pOdbcTest -> out_win -> append( txt );
 
-    odbctest -> out_win -> insertLineLimited( "  Out:" );
+    pOdbcTest -> out_win -> append( "  Out:" );
     if ( strlen_ptr )
     {
         if ( strlen_or_ind == -999999 )
@@ -1076,7 +1002,7 @@ void dGetEnvAttr::Ok()
         {
             txt.sprintf( "    *Strlen Ptr: %d", strlen_or_ind );
         }
-        odbctest -> out_win -> insertLineLimited( txt );
+        pOdbcTest -> out_win -> append( txt );
     }
 
     if ( SQL_SUCCEEDED( ret ))
@@ -1088,7 +1014,7 @@ void dGetEnvAttr::Ok()
                 SQLUINTEGER ival;
                 memcpy( &ival, buf, sizeof( ival ));
                 txt.sprintf( "    *ValuePtr = %d (0x%08X)", ival, ival );
-                odbctest -> out_win -> insertLineLimited( txt );
+                pOdbcTest -> out_win -> append( txt );
 
                 if ( env_options[ index ].values[ 0 ].text )
                 {
@@ -1102,7 +1028,7 @@ void dGetEnvAttr::Ok()
                             {
                                 txt.sprintf( "        %s", 
                                              env_options[ index ].values[ i ].text );
-                                odbctest -> out_win -> insertLineLimited( txt );
+                                pOdbcTest -> out_win -> append( txt );
                             }
                         }
                     }
@@ -1116,7 +1042,7 @@ void dGetEnvAttr::Ok()
                             {
                                 txt.sprintf( "        %s", 
                                              env_options[ index ].values[ i ].text );
-                                odbctest -> out_win -> insertLineLimited( txt );
+                                pOdbcTest -> out_win -> append( txt );
                             }
                         }
                     }
@@ -1127,7 +1053,7 @@ void dGetEnvAttr::Ok()
                 SQLSMALLINT sval;
                 memcpy( &sval, buf, sizeof( sval ));
                 txt.sprintf( "    *ValuePtr = %d (0x%04X)", sval, sval );
-                odbctest -> out_win -> insertLineLimited( txt );
+                pOdbcTest -> out_win -> append( txt );
 
                 if ( env_options[ index ].values[ 0 ].text )
                 {
@@ -1141,7 +1067,7 @@ void dGetEnvAttr::Ok()
                             {
                                 txt.sprintf( "        %s", 
                                              env_options[ index ].values[ i ].text );
-                                odbctest -> out_win -> insertLineLimited( txt );
+                                pOdbcTest -> out_win -> append( txt );
                             }
                         }
                     }
@@ -1155,7 +1081,7 @@ void dGetEnvAttr::Ok()
                             {
                                 txt.sprintf( "        %s", 
                                              env_options[ index ].values[ i ].text );
-                                odbctest -> out_win -> insertLineLimited( txt );
+                                pOdbcTest -> out_win -> append( txt );
                             }
                         }
                     }
@@ -1167,7 +1093,7 @@ void dGetEnvAttr::Ok()
     if ( buf )
         delete buf;
 
-    odbctest -> out_win -> insertLineLimited( "" );
+    pOdbcTest -> out_win -> append( "" );
 }
 
 void dGetEnvAttr::target_clkd()
@@ -1186,13 +1112,13 @@ void dGetEnvAttr::strlen_clkd()
         strlen_valid -> setText( "StrLen_Ptr: VALID" );
 }
 
-dGetEnvAttr::dGetEnvAttr( OdbcTest *parent, QString name )
-: QDialog( parent )
+dGetEnvAttr::dGetEnvAttr( OdbcTest *pOdbcTest, QString name )
+: QDialog( pOdbcTest )
 {
     setWindowTitle( name );
     setModal( true );
 
-    odbctest = parent;
+    this->pOdbcTest = pOdbcTest;
 
     ok = new QPushButton( "OK", this );
     ok->setGeometry( 240,10, 70,25 );
@@ -1206,12 +1132,12 @@ dGetEnvAttr::dGetEnvAttr( OdbcTest *parent, QString name )
     handles = new QComboBox( this ); // "Environment Handle"
     handles -> setGeometry( 170, 50, 300, 20 );
 
-    odbctest->fill_handle_list( SQL_HANDLE_ENV, handles );
+    pOdbcTest->fill_handle_list( SQL_HANDLE_ENV, handles );
 
     types = new QComboBox( this ); // "Attribute"
     types -> setGeometry( 170, 80, 300, 20 );
 
-    parent->fill_list_box( env_options, types );
+    pOdbcTest->fill_list_box( env_options, types );
 
     l_handle = new QLabel( "Environment Handle:", this );
     l_handle -> setGeometry( 10, 50, 130, 20 );
@@ -1282,7 +1208,7 @@ void dSetStmtAttr::Activated( int index )
     }
     else
     {
-        odbctest->fill_list_box( stmt_options[ index ].values, value );
+        pOdbcTest->fill_list_box( stmt_options[ index ].values, value );
     }
 }
 
@@ -1295,26 +1221,26 @@ void dSetStmtAttr::Ok()
     const char *tptr;
     attr_value *ptr;
     SQLINTEGER string_length;
-    Handle *hand = odbctest->extract_handle_list( SQL_HANDLE_STMT, handles );
+    OdbcHandle *hand = pOdbcTest->extract_handle_list( SQL_HANDLE_STMT, handles );
 
     QString qtptr;
 
     if ( hand )
         in_handle = hand -> getHandle();
 
-    odbctest -> out_win -> insertLineLimited( "SQLSetStmtAttr():" );
-    odbctest -> out_win -> insertLineLimited( "  In:" );
+    pOdbcTest -> out_win -> append( "SQLSetStmtAttr():" );
+    pOdbcTest -> out_win -> append( "  In:" );
     if ( in_handle )
         txt.sprintf( "    Statment Handle: %p", in_handle );
     else
         txt.sprintf( "    Statment Handle: SQL_NULL_HSTMT" );
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     attribute = stmt_options[ types -> currentIndex() ].attr;
     txt.sprintf( "    Attribute: %s=%d", 
                  stmt_options[ types -> currentIndex() ].text,
                  stmt_options[ types -> currentIndex() ].attr );
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     qtptr = value -> currentText();
     tptr = qtptr.toAscii().constData();
@@ -1406,20 +1332,20 @@ void dSetStmtAttr::Ok()
         }
     }
 
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest-> out_win -> append( txt );
 
     string_length = strlen_options[ stringlen -> currentIndex() ].value;
     txt.sprintf( "    String Length: %s=%d", 
                  strlen_options[ stringlen -> currentIndex() ].text,
                  strlen_options[ stringlen -> currentIndex() ].value );
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest-> out_win -> append( txt );
 
     SQLRETURN ret = SQLSetStmtAttr( in_handle, attribute, vptr, string_length );
 
-    odbctest -> out_win -> insertLineLimited( "  Return:" );
-    txt.sprintf( "    %s=%d", odbctest->return_as_text( ret ), ret );
-    odbctest -> out_win -> insertLineLimited( txt );
-    odbctest -> out_win -> insertLineLimited( "" );
+    pOdbcTest-> out_win -> append( "  Return:" );
+    txt.sprintf( "    %s=%d", pOdbcTest->return_as_text( ret ), ret );
+    pOdbcTest-> out_win -> append( txt );
+    pOdbcTest-> out_win -> append( "" );
 
     /*
      * save the row or param array size
@@ -1438,12 +1364,12 @@ void dSetStmtAttr::Ok()
     }
 }
 
-dSetStmtAttr::dSetStmtAttr( OdbcTest *parent, QString name )
-: QDialog( parent )
+dSetStmtAttr::dSetStmtAttr( OdbcTest *pOdbcTest, QString name )
+    : QDialog( pOdbcTest )
 {
     setWindowTitle( name );
     setModal( true );
-    odbctest = parent;
+    this->pOdbcTest = pOdbcTest;
 
     ok = new QPushButton( "OK", this );
     ok->setGeometry( 240,10, 70,25 );
@@ -1457,20 +1383,20 @@ dSetStmtAttr::dSetStmtAttr( OdbcTest *parent, QString name )
     handles = new QComboBox( this ); // "Statement Handle"
     handles -> setGeometry( 170, 50, 300, 20 );
 
-    odbctest->fill_handle_list( SQL_HANDLE_STMT, handles );
+    pOdbcTest->fill_handle_list( SQL_HANDLE_STMT, handles );
 
     types = new QComboBox( this ); // "Attribute"
     types -> setGeometry( 170, 80, 300, 20 );
 
-    parent->fill_list_box( stmt_options, types );
+    pOdbcTest->fill_list_box( stmt_options, types );
 
     value = new QComboBox( this ); // "Value"
     value -> setGeometry( 170, 110, 300, 20 );
-    parent->fill_list_box( stmt_options[ 0 ].values, value );
+    pOdbcTest->fill_list_box( stmt_options[ 0 ].values, value );
 
     stringlen = new QComboBox( this ); // "String Length"
     stringlen -> setGeometry( 170, 140, 300, 20 );
-    parent->fill_list_box( strlen_options, stringlen );
+    pOdbcTest->fill_list_box( strlen_options, stringlen );
 
     l_handle = new QLabel( "Statement Handle:", this );
     l_handle -> setGeometry( 10, 50, 130, 20 );
@@ -1517,7 +1443,7 @@ void dSetStmtOption::Activated( int index )
     }
     else
     {
-        odbctest->fill_list_box( stmt_opt_options[ index ].values, value );
+        pOdbcTest->fill_list_box( stmt_opt_options[ index ].values, value );
     }
 }
 
@@ -1529,25 +1455,25 @@ void dSetStmtOption::Ok()
     SQLULEN vptr;
     const char *tptr;
     attr_value *ptr;
-    Handle *hand = odbctest->extract_handle_list( SQL_HANDLE_STMT, handles );
+    OdbcHandle *hand = pOdbcTest->extract_handle_list( SQL_HANDLE_STMT, handles );
     QString qtptr;
 
     if ( hand )
         in_handle = hand -> getHandle();
 
-    odbctest -> out_win -> insertLineLimited( "SQLSetStmtOption():" );
-    odbctest -> out_win -> insertLineLimited( "  In:" );
+    pOdbcTest-> out_win -> append( "SQLSetStmtOption():" );
+    pOdbcTest-> out_win -> append( "  In:" );
     if ( in_handle )
         txt.sprintf( "    hstmt: %p", in_handle );
     else
         txt.sprintf( "    hstmt: SQL_NULL_HSTMT" );
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest-> out_win -> append( txt );
 
     attribute = stmt_opt_options[ types -> currentIndex() ].attr;
     txt.sprintf( "    fOption: %s=%d", 
                  stmt_opt_options[ types -> currentIndex() ].text,
                  stmt_opt_options[ types -> currentIndex() ].attr );
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest-> out_win -> append( txt );
 
     qtptr = value -> currentText();
     tptr = qtptr.toAscii().constData();
@@ -1584,14 +1510,14 @@ void dSetStmtOption::Ok()
         }
     }
 
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest-> out_win -> append( txt );
 
     SQLRETURN ret = SQLSetStmtOption( in_handle, attribute, vptr );
 
-    odbctest -> out_win -> insertLineLimited( "  Return:" );
-    txt.sprintf( "    %s=%d", odbctest->return_as_text( ret ), ret );
-    odbctest -> out_win -> insertLineLimited( txt );
-    odbctest -> out_win -> insertLineLimited( "" );
+    pOdbcTest-> out_win -> append( "  Return:" );
+    txt.sprintf( "    %s=%d", pOdbcTest->return_as_text( ret ), ret );
+    pOdbcTest-> out_win -> append( txt );
+    pOdbcTest-> out_win -> append( "" );
 
     /*
      * save the row or param array size
@@ -1606,12 +1532,12 @@ void dSetStmtOption::Ok()
     }
 }
 
-dSetStmtOption::dSetStmtOption( OdbcTest *parent, QString name )
-: QDialog( parent )
+dSetStmtOption::dSetStmtOption( OdbcTest *pOdbcTest, QString name )
+: QDialog( pOdbcTest )
 {
     setWindowTitle( name );
     setModal( true );
-    odbctest = parent;
+    this->pOdbcTest = pOdbcTest;
 
     ok = new QPushButton( "OK", this );
     ok->setGeometry( 240,10, 70,25 );
@@ -1625,16 +1551,16 @@ dSetStmtOption::dSetStmtOption( OdbcTest *parent, QString name )
     handles = new QComboBox( this ); // "Statement Handle"
     handles -> setGeometry( 170, 50, 300, 20 );
 
-    odbctest->fill_handle_list( SQL_HANDLE_STMT, handles );
+    pOdbcTest->fill_handle_list( SQL_HANDLE_STMT, handles );
 
     types = new QComboBox( this ); // "Attribute"
     types -> setGeometry( 170, 80, 300, 20 );
 
-    parent->fill_list_box( stmt_opt_options, types );
+    pOdbcTest->fill_list_box( stmt_opt_options, types );
 
     value = new QComboBox( this ); // "Value"
     value -> setGeometry( 170, 110, 300, 20 );
-    parent->fill_list_box( stmt_opt_options[ 0 ].values, value );
+    pOdbcTest->fill_list_box( stmt_opt_options[ 0 ].values, value );
 
     l_handle = new QLabel( "Statement Handle:", this );
     l_handle -> setGeometry( 10, 50, 130, 20 );
@@ -1670,7 +1596,7 @@ void dGetStmtAttr::Ok()
 {
     SQLHANDLE in_handle = SQL_NULL_HENV;
     SQLINTEGER attribute;
-    Handle *hand = odbctest->extract_handle_list( SQL_HANDLE_STMT, handles );
+    OdbcHandle *hand = pOdbcTest->extract_handle_list( SQL_HANDLE_STMT, handles );
     SQLINTEGER b_len, strlen_or_ind;
     SQLINTEGER *strlen_ptr;
     char *buf = NULL; 
@@ -1678,19 +1604,19 @@ void dGetStmtAttr::Ok()
     if ( hand )
         in_handle = hand -> getHandle();
 
-    odbctest -> out_win -> insertLineLimited( "SQLGetStmtAttr():" );
-    odbctest -> out_win -> insertLineLimited( "  In:" );
+    pOdbcTest-> out_win -> append( "SQLGetStmtAttr():" );
+    pOdbcTest-> out_win -> append( "  In:" );
     if ( in_handle )
         txt.sprintf( "    Statement Handle: %p", in_handle );
     else
         txt.sprintf( "    Statement Handle: SQL_NULL_HSTMT" );
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest-> out_win -> append( txt );
 
     attribute = stmt_options[ types -> currentIndex() ].attr;
     txt.sprintf( "    Attribute: %s=%d", 
                  stmt_options[ types -> currentIndex() ].text,
                  stmt_options[ types -> currentIndex() ].attr );
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest-> out_win -> append( txt );
 
     b_len = buffer_len -> text().toInt();
     if ( b_len < 1 )
@@ -1714,16 +1640,16 @@ void dGetStmtAttr::Ok()
     if ( buf )
     {
         txt.sprintf( "    Value Ptr: %p", buf );
-        odbctest -> out_win -> insertLineLimited( txt );
+        pOdbcTest-> out_win -> append( txt );
     }
     else
     {
         txt.sprintf( "    Value Ptr: SQL_NULL_POINTER" );
-        odbctest -> out_win -> insertLineLimited( txt );
+        pOdbcTest-> out_win -> append( txt );
     }
 
     txt.sprintf( "    Buffer Length: %d", b_len );
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest-> out_win -> append( txt );
 
     strlen_or_ind = -999999;
 
@@ -1739,22 +1665,22 @@ void dGetStmtAttr::Ok()
     if ( strlen_ptr )
     {
         txt.sprintf( "    Strlen Ptr: %p", strlen_ptr );
-        odbctest -> out_win -> insertLineLimited( txt );
+        pOdbcTest-> out_win -> append( txt );
     }
     else
     {
         txt.sprintf( "    Strlen Ptr: SQL_NULL_POINTER" );
-        odbctest -> out_win -> insertLineLimited( txt );
+        pOdbcTest-> out_win -> append( txt );
     }
 
     SQLRETURN ret = SQLGetStmtAttr( in_handle, attribute, 
                                     buf, b_len, strlen_ptr );
 
-    odbctest -> out_win -> insertLineLimited( "  Return:" );
-    txt.sprintf( "    %s=%d", odbctest->return_as_text( ret ), ret );
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest-> out_win -> append( "  Return:" );
+    txt.sprintf( "    %s=%d", pOdbcTest->return_as_text( ret ), ret );
+    pOdbcTest-> out_win -> append( txt );
 
-    odbctest -> out_win -> insertLineLimited( "  Out:" );
+    pOdbcTest-> out_win -> append( "  Out:" );
     if ( strlen_ptr )
     {
         if ( strlen_or_ind == -999999 )
@@ -1765,7 +1691,7 @@ void dGetStmtAttr::Ok()
         {
             txt.sprintf( "    *Strlen Ptr: %d", strlen_or_ind );
         }
-        odbctest -> out_win -> insertLineLimited( txt );
+        pOdbcTest-> out_win -> append( txt );
     }
 
     if ( SQL_SUCCEEDED( ret ))
@@ -1777,7 +1703,7 @@ void dGetStmtAttr::Ok()
             void *ival;
             memcpy( &ival, buf, sizeof( ival ));
             txt.sprintf( "    ValuePtr = 0x%08X", ival );
-            odbctest -> out_win -> insertLineLimited( txt );
+            pOdbcTest-> out_win -> append( txt );
         }
         else
         {
@@ -1787,7 +1713,7 @@ void dGetStmtAttr::Ok()
                     SQLUINTEGER ival;
                     memcpy( &ival, buf, sizeof( ival ));
                     txt.sprintf( "    *ValuePtr = %d (0x%08X)", ival, ival );
-                    odbctest -> out_win -> insertLineLimited( txt );
+                    pOdbcTest-> out_win -> append( txt );
 
                     if ( stmt_options[ index ].values[ 0 ].text )
                     {
@@ -1801,7 +1727,7 @@ void dGetStmtAttr::Ok()
                                 {
                                     txt.sprintf( "        %s", 
                                                  stmt_options[ index ].values[ i ].text );
-                                    odbctest -> out_win -> insertLineLimited( txt );
+                                    pOdbcTest-> out_win -> append( txt );
                                 }
                             }
                         }
@@ -1815,7 +1741,7 @@ void dGetStmtAttr::Ok()
                                 {
                                     txt.sprintf( "        %s", 
                                                  stmt_options[ index ].values[ i ].text );
-                                    odbctest -> out_win -> insertLineLimited( txt );
+                                    pOdbcTest-> out_win -> append( txt );
                                 }
                             }
                         }
@@ -1826,7 +1752,7 @@ void dGetStmtAttr::Ok()
                     SQLSMALLINT sval;
                     memcpy( &sval, buf, sizeof( sval ));
                     txt.sprintf( "    *ValuePtr = %d (0x%04X)", sval, sval );
-                    odbctest -> out_win -> insertLineLimited( txt );
+                    pOdbcTest-> out_win -> append( txt );
 
                     if ( stmt_options[ index ].values[ 0 ].text )
                     {
@@ -1840,7 +1766,7 @@ void dGetStmtAttr::Ok()
                                 {
                                     txt.sprintf( "        %s", 
                                                  stmt_options[ index ].values[ i ].text );
-                                    odbctest -> out_win -> insertLineLimited( txt );
+                                    pOdbcTest-> out_win -> append( txt );
                                 }
                             }
                         }
@@ -1854,7 +1780,7 @@ void dGetStmtAttr::Ok()
                                 {
                                     txt.sprintf( "        %s", 
                                                  stmt_options[ index ].values[ i ].text );
-                                    odbctest -> out_win -> insertLineLimited( txt );
+                                    pOdbcTest-> out_win -> append( txt );
                                 }
                             }
                         }
@@ -1867,7 +1793,7 @@ void dGetStmtAttr::Ok()
     if ( buf )
         delete buf;
 
-    odbctest -> out_win -> insertLineLimited( "" );
+    pOdbcTest-> out_win -> append( "" );
 }
 
 void dGetStmtAttr::target_clkd()
@@ -1886,13 +1812,13 @@ void dGetStmtAttr::strlen_clkd()
         strlen_valid -> setText( "StrLen_Ptr: VALID" );
 }
 
-dGetStmtAttr::dGetStmtAttr( OdbcTest *parent, QString name )
-: QDialog( parent )
+dGetStmtAttr::dGetStmtAttr( OdbcTest *pOdbcTest, QString name )
+: QDialog( pOdbcTest )
 {
     setWindowTitle( name );
     setModal( true );
 
-    odbctest = parent;
+    this->pOdbcTest = pOdbcTest;
 
     ok = new QPushButton( "OK", this );
     ok->setGeometry( 240,10, 70,25 );
@@ -1906,12 +1832,12 @@ dGetStmtAttr::dGetStmtAttr( OdbcTest *parent, QString name )
     handles = new QComboBox( this ); // "Statement Handle"
     handles -> setGeometry( 170, 50, 300, 20 );
 
-    odbctest->fill_handle_list( SQL_HANDLE_STMT, handles );
+    pOdbcTest->fill_handle_list( SQL_HANDLE_STMT, handles );
 
     types = new QComboBox( this ); // "Attribute"
     types -> setGeometry( 170, 80, 300, 20 );
 
-    parent->fill_list_box( stmt_options, types );
+    pOdbcTest->fill_list_box( stmt_options, types );
 
     l_handle = new QLabel( "Statement Handle:", this );
     l_handle -> setGeometry( 10, 50, 130, 20 );
@@ -1960,26 +1886,26 @@ void dGetStmtOption::Ok()
     SQLHANDLE in_handle = SQL_NULL_HENV;
     SQLINTEGER attribute, value;
     SQLPOINTER vptr;
-    Handle *hand = odbctest->extract_handle_list( SQL_HANDLE_STMT, handles );
+    OdbcHandle *hand = pOdbcTest->extract_handle_list( SQL_HANDLE_STMT, handles );
     int index = types->currentIndex();
     char *buf = NULL;
 
     if ( hand )
         in_handle = hand -> getHandle();
 
-    odbctest -> out_win -> insertLineLimited( "SQLGetStmtOption():" );
-    odbctest -> out_win -> insertLineLimited( "  In:" );
+    pOdbcTest-> out_win -> append( "SQLGetStmtOption():" );
+    pOdbcTest-> out_win -> append( "  In:" );
     if ( in_handle )
         txt.sprintf( "    hstmt: %p", in_handle );
     else
         txt.sprintf( "    hstmt: SQL_NULL_HSTMT" );
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest-> out_win -> append( txt );
 
     attribute = stmt_opt_options[ types -> currentIndex() ].attr;
     txt.sprintf( "    fOption: %s=%d", 
                  stmt_opt_options[ types -> currentIndex() ].text,
                  stmt_opt_options[ types -> currentIndex() ].attr );
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest-> out_win -> append( txt );
 
     if ( target_valid -> isChecked())
     {
@@ -2002,22 +1928,22 @@ void dGetStmtOption::Ok()
     if ( vptr )
     {
         txt.sprintf( "    vParam: %p", vptr );
-        odbctest -> out_win -> insertLineLimited( txt );
+        pOdbcTest-> out_win -> append( txt );
     }
     else
     {
         txt.sprintf( "    vParam: SQL_NULL_POINTER" );
-        odbctest -> out_win -> insertLineLimited( txt );
+        pOdbcTest-> out_win -> append( txt );
     }
 
     SQLRETURN ret = SQLGetStmtOption( in_handle, attribute, 
                                       vptr );
 
-    odbctest -> out_win -> insertLineLimited( "  Return:" );
-    txt.sprintf( "    %s=%d", odbctest->return_as_text( ret ), ret );
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest-> out_win -> append( "  Return:" );
+    txt.sprintf( "    %s=%d", pOdbcTest->return_as_text( ret ), ret );
+    pOdbcTest-> out_win -> append( txt );
 
-    odbctest -> out_win -> insertLineLimited( "  Out:" );
+    pOdbcTest-> out_win -> append( "  Out:" );
 
     if ( SQL_SUCCEEDED( ret ))
     {
@@ -2030,7 +1956,7 @@ void dGetStmtOption::Ok()
                         int i;
 
                         txt.sprintf( "    *vptr = 0x%08X", value );
-                        odbctest -> out_win -> insertLineLimited( txt );
+                        pOdbcTest-> out_win -> append( txt );
 
                         for ( i = 0; stmt_opt_options[ index ].values[ i ].text; i ++ )
                         {
@@ -2038,7 +1964,7 @@ void dGetStmtOption::Ok()
                             {
                                 txt.sprintf( "        %s", 
                                              stmt_opt_options[ index ].values[ i ].text );
-                                odbctest -> out_win -> insertLineLimited( txt );
+                                pOdbcTest-> out_win -> append( txt );
                             }
                         }
                         break;
@@ -2054,7 +1980,7 @@ void dGetStmtOption::Ok()
     if ( buf )
         delete buf;
 
-    odbctest -> out_win -> insertLineLimited( "" );
+    pOdbcTest-> out_win -> append( "" );
 }
 
 void dGetStmtOption::target_clkd()
@@ -2065,12 +1991,12 @@ void dGetStmtOption::target_clkd()
         target_valid -> setText( "vParam: VALID" );
 }
 
-dGetStmtOption::dGetStmtOption( OdbcTest *parent, QString name )
-: QDialog( parent )
+dGetStmtOption::dGetStmtOption( OdbcTest *pOdbcTest, QString name )
+: QDialog( pOdbcTest )
 {
     setWindowTitle( name );
     setModal( true );
-    odbctest = parent;
+    this->pOdbcTest = pOdbcTest;
 
     ok = new QPushButton( "OK", this );
     ok->setGeometry( 240,10, 70,25 );
@@ -2084,12 +2010,12 @@ dGetStmtOption::dGetStmtOption( OdbcTest *parent, QString name )
     handles = new QComboBox( this ); // "hstmt"
     handles -> setGeometry( 170, 50, 300, 20 );
 
-    odbctest->fill_handle_list( SQL_HANDLE_STMT, handles );
+    pOdbcTest->fill_handle_list( SQL_HANDLE_STMT, handles );
 
     types = new QComboBox( this ); // "fOption"
     types -> setGeometry( 170, 80, 300, 20 );
 
-    parent->fill_list_box( stmt_opt_options, types );
+    pOdbcTest->fill_list_box( stmt_opt_options, types );
 
     l_handle = new QLabel( "hstmt:", this );
     l_handle -> setGeometry( 10, 50, 130, 20 );
@@ -2136,7 +2062,7 @@ void dSetConnAttr::Activated( int index )
     }
     else
     {
-        odbctest->fill_list_box( conn_options[ index ].values, value );
+        pOdbcTest->fill_list_box( conn_options[ index ].values, value );
     }
 }
 
@@ -2146,7 +2072,7 @@ void dSetConnAttr::Ok()
     SQLINTEGER attribute;
     SQLPOINTER vptr;
     SQLINTEGER string_length;
-    Handle *hand = odbctest->extract_handle_list( SQL_HANDLE_DBC, handles );
+    OdbcHandle *hand = pOdbcTest->extract_handle_list( SQL_HANDLE_DBC, handles );
     attr_value *ptr;
     const char *tptr;
     QString qtptr;
@@ -2154,19 +2080,19 @@ void dSetConnAttr::Ok()
     if ( hand )
         in_handle = hand -> getHandle();
 
-    odbctest -> out_win -> insertLineLimited( "SQLSetConnectAttr():" );
-    odbctest -> out_win -> insertLineLimited( "  In:" );
+    pOdbcTest-> out_win -> append( "SQLSetConnectAttr():" );
+    pOdbcTest-> out_win -> append( "  In:" );
     if ( in_handle )
         txt.sprintf( "    Connection Handle: %p", in_handle );
     else
         txt.sprintf( "    Connection Handle: SQL_NULL_HDBC" );
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest-> out_win -> append( txt );
 
     attribute = conn_options[ types -> currentIndex() ].attr;
     txt.sprintf( "    Attribute: %s=%d", 
                  conn_options[ types -> currentIndex() ].text,
                  conn_options[ types -> currentIndex() ].attr );
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest-> out_win -> append( txt );
 
     qtptr = value -> currentText();
     tptr = qtptr.toAscii().constData();
@@ -2212,28 +2138,28 @@ void dSetConnAttr::Ok()
         txt.sprintf( "    Value: %s=%d", ptr -> text, ptr -> value );
     }
 
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest-> out_win -> append( txt );
 
     string_length = strlen_options[ stringlen -> currentIndex() ].value;
     txt.sprintf( "    String Length: %s=%d", 
                  strlen_options[ stringlen -> currentIndex() ].text,
                  strlen_options[ stringlen -> currentIndex() ].value );
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest-> out_win -> append( txt );
 
     SQLRETURN ret = SQLSetConnectAttr( in_handle, attribute, vptr, string_length );
 
-    odbctest -> out_win -> insertLineLimited( "  Return:" );
-    txt.sprintf( "    %s=%d", odbctest->return_as_text( ret ), ret );
-    odbctest -> out_win -> insertLineLimited( txt );
-    odbctest -> out_win -> insertLineLimited( "" );
+    pOdbcTest-> out_win -> append( "  Return:" );
+    txt.sprintf( "    %s=%d", pOdbcTest->return_as_text( ret ), ret );
+    pOdbcTest-> out_win -> append( txt );
+    pOdbcTest-> out_win -> append( "" );
 }
 
-dSetConnAttr::dSetConnAttr( OdbcTest *parent, QString name )
-: QDialog( parent )
+dSetConnAttr::dSetConnAttr( OdbcTest *pOdbcTest, QString name )
+: QDialog( pOdbcTest )
 {
     setWindowTitle( name );
     setModal( true );
-    odbctest = parent;
+    this->pOdbcTest = pOdbcTest;
 
     ok = new QPushButton( "OK", this );
     ok->setGeometry( 240,10, 70,25 );
@@ -2247,20 +2173,20 @@ dSetConnAttr::dSetConnAttr( OdbcTest *parent, QString name )
     handles = new QComboBox( this ); // "Connection Handle"
     handles -> setGeometry( 170, 50, 300, 20 );
 
-    odbctest->fill_handle_list( SQL_HANDLE_DBC, handles );
+    pOdbcTest->fill_handle_list( SQL_HANDLE_DBC, handles );
 
     types = new QComboBox( this ); // "Attribute"
     types -> setGeometry( 170, 80, 300, 20 );
 
-    parent->fill_list_box( conn_options, types );
+    pOdbcTest->fill_list_box( conn_options, types );
 
     value = new QComboBox( this ); // "Value"
     value -> setGeometry( 170, 110, 300, 20 );
-    parent->fill_list_box( conn_options[ 0 ].values, value );
+    pOdbcTest->fill_list_box( conn_options[ 0 ].values, value );
 
     stringlen = new QComboBox( this ); // "String Length"
     stringlen -> setGeometry( 170, 140, 300, 20 );
-    parent->fill_list_box( strlen_options, stringlen );
+    pOdbcTest->fill_list_box( strlen_options, stringlen );
 
     l_handle = new QLabel( "Connection Handle:", this );
     l_handle -> setGeometry( 10, 50, 130, 20 );
@@ -2299,7 +2225,7 @@ void dGetConnAttr::Ok()
 {
     SQLHANDLE in_handle = SQL_NULL_HDBC;
     SQLINTEGER attribute;
-    Handle *hand = odbctest->extract_handle_list( SQL_HANDLE_DBC, handles );
+    OdbcHandle *hand = pOdbcTest->extract_handle_list( SQL_HANDLE_DBC, handles );
     SQLINTEGER b_len, strlen_or_ind;
     SQLINTEGER *strlen_ptr;
     char *buf = NULL;
@@ -2307,19 +2233,19 @@ void dGetConnAttr::Ok()
     if ( hand )
         in_handle = hand -> getHandle();
 
-    odbctest -> out_win -> insertLineLimited( "SQLGetConnectAttr():" );
-    odbctest -> out_win -> insertLineLimited( "  In:" );
+    pOdbcTest-> out_win -> append( "SQLGetConnectAttr():" );
+    pOdbcTest-> out_win -> append( "  In:" );
     if ( in_handle )
         txt.sprintf( "    Connection Handle: %p", in_handle );
     else
         txt.sprintf( "    Connection Handle: SQL_NULL_HDBC" );
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest-> out_win -> append( txt );
 
     attribute = conn_options[ types -> currentIndex() ].attr;
     txt.sprintf( "    Attribute: %s=%d", 
                  conn_options[ types -> currentIndex() ].text,
                  conn_options[ types -> currentIndex() ].attr );
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest-> out_win -> append( txt );
 
     b_len = atoi( buffer_len -> text().toAscii().constData() );
     if ( b_len < 1 )
@@ -2343,16 +2269,16 @@ void dGetConnAttr::Ok()
     if ( buf )
     {
         txt.sprintf( "    Value Ptr: %p", buf );
-        odbctest -> out_win -> insertLineLimited( txt );
+        pOdbcTest-> out_win -> append( txt );
     }
     else
     {
         txt.sprintf( "    Value Ptr: SQL_NULL_POINTER" );
-        odbctest -> out_win -> insertLineLimited( txt );
+        pOdbcTest-> out_win -> append( txt );
     }
 
     txt.sprintf( "    Buffer Length: %d", b_len );
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest-> out_win -> append( txt );
 
     strlen_or_ind = -999999;
 
@@ -2368,22 +2294,22 @@ void dGetConnAttr::Ok()
     if ( strlen_ptr )
     {
         txt.sprintf( "    Strlen Ptr: %p", strlen_ptr );
-        odbctest -> out_win -> insertLineLimited( txt );
+        pOdbcTest-> out_win -> append( txt );
     }
     else
     {
         txt.sprintf( "    Strlen Ptr: SQL_NULL_POINTER" );
-        odbctest -> out_win -> insertLineLimited( txt );
+        pOdbcTest-> out_win -> append( txt );
     }
 
     SQLRETURN ret = SQLGetConnectAttr( in_handle, attribute, 
                                        buf, b_len, strlen_ptr );
 
-    odbctest -> out_win -> insertLineLimited( "  Return:" );
-    txt.sprintf( "    %s=%d", odbctest->return_as_text( ret ), ret );
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest-> out_win -> append( "  Return:" );
+    txt.sprintf( "    %s=%d", pOdbcTest->return_as_text( ret ), ret );
+    pOdbcTest-> out_win -> append( txt );
 
-    odbctest -> out_win -> insertLineLimited( "  Out:" );
+    pOdbcTest-> out_win -> append( "  Out:" );
     if ( strlen_ptr )
     {
         if ( strlen_or_ind == -999999 )
@@ -2394,7 +2320,7 @@ void dGetConnAttr::Ok()
         {
             txt.sprintf( "    *Strlen Ptr: %d", strlen_or_ind );
         }
-        odbctest -> out_win -> insertLineLimited( txt );
+        pOdbcTest-> out_win -> append( txt );
     }
 
     if ( SQL_SUCCEEDED( ret ))
@@ -2404,14 +2330,14 @@ void dGetConnAttr::Ok()
         {
             case SQL_CHAR:
                 txt.sprintf( "    *InfoValuePtr = \"%s\"", buf );
-                odbctest -> out_win -> insertLineLimited( txt );
+                pOdbcTest-> out_win -> append( txt );
                 break;
 
             case SQL_INTEGER:
                 SQLUINTEGER ival;
                 memcpy( &ival, buf, sizeof( ival ));
                 txt.sprintf( "    *ValuePtr = %d (0x%08X)", ival, ival );
-                odbctest -> out_win -> insertLineLimited( txt );
+                pOdbcTest-> out_win -> append( txt );
 
                 if ( conn_options[ index ].values[ 0 ].text )
                 {
@@ -2425,7 +2351,7 @@ void dGetConnAttr::Ok()
                             {
                                 txt.sprintf( "        %s", 
                                              conn_options[ index ].values[ i ].text );
-                                odbctest -> out_win -> insertLineLimited( txt );
+                                pOdbcTest-> out_win -> append( txt );
                             }
                         }
                     }
@@ -2439,7 +2365,7 @@ void dGetConnAttr::Ok()
                             {
                                 txt.sprintf( "        %s", 
                                              conn_options[ index ].values[ i ].text );
-                                odbctest -> out_win -> insertLineLimited( txt );
+                                pOdbcTest-> out_win -> append( txt );
                             }
                         }
                     }
@@ -2450,7 +2376,7 @@ void dGetConnAttr::Ok()
                 SQLSMALLINT sval;
                 memcpy( &sval, buf, sizeof( sval ));
                 txt.sprintf( "    *ValuePtr = %d (0x%04X)", sval, sval );
-                odbctest -> out_win -> insertLineLimited( txt );
+                pOdbcTest-> out_win -> append( txt );
 
                 if ( conn_options[ index ].values[ 0 ].text )
                 {
@@ -2464,7 +2390,7 @@ void dGetConnAttr::Ok()
                             {
                                 txt.sprintf( "        %s", 
                                              conn_options[ index ].values[ i ].text );
-                                odbctest -> out_win -> insertLineLimited( txt );
+                                pOdbcTest-> out_win -> append( txt );
                             }
                         }
                     }
@@ -2478,7 +2404,7 @@ void dGetConnAttr::Ok()
                             {
                                 txt.sprintf( "        %s", 
                                              conn_options[ index ].values[ i ].text );
-                                odbctest -> out_win -> insertLineLimited( txt );
+                                pOdbcTest-> out_win -> append( txt );
                             }
                         }
                     }
@@ -2490,7 +2416,7 @@ void dGetConnAttr::Ok()
     if ( buf )
         delete buf;
 
-    odbctest -> out_win -> insertLineLimited( "" );
+    pOdbcTest-> out_win -> append( "" );
 }
 
 void dGetConnAttr::target_clkd()
@@ -2509,13 +2435,13 @@ void dGetConnAttr::strlen_clkd()
         strlen_valid -> setText( "StrLen_Ptr: VALID" );
 }
 
-dGetConnAttr::dGetConnAttr( OdbcTest *parent, QString name )
-: QDialog( parent )
+dGetConnAttr::dGetConnAttr( OdbcTest *pOdbcTest, QString name )
+: QDialog( pOdbcTest )
 {
     setWindowTitle( name );
     setModal( true );
 
-    odbctest = parent;
+    this->pOdbcTest = pOdbcTest;
 
     ok = new QPushButton( "OK", this );
     ok->setGeometry( 240,10, 70,25 );
@@ -2529,12 +2455,12 @@ dGetConnAttr::dGetConnAttr( OdbcTest *parent, QString name )
     handles = new QComboBox( this ); // "Connection Handle"
     handles -> setGeometry( 170, 50, 300, 20 );
 
-    odbctest->fill_handle_list( SQL_HANDLE_DBC, handles );
+    pOdbcTest->fill_handle_list( SQL_HANDLE_DBC, handles );
 
     types = new QComboBox( this ); // "Attribute"
     types -> setGeometry( 170, 80, 300, 20 );
 
-    parent->fill_list_box( conn_options, types );
+    pOdbcTest->fill_list_box( conn_options, types );
 
     l_handle = new QLabel( "Connection Handle:", this );
     l_handle -> setGeometry( 10, 50, 130, 20 );
@@ -2596,7 +2522,7 @@ void dSetConnectOption::Activated( int index )
     }
     else
     {
-        odbctest->fill_list_box( conn_opt_options[ index ].values, value );
+        pOdbcTest->fill_list_box( conn_opt_options[ index ].values, value );
     }
 }
 
@@ -2607,25 +2533,25 @@ void dSetConnectOption::Ok()
     SQLULEN vptr = 0;
     const char *tptr;
     attr_value *ptr;
-    Handle *hand = odbctest->extract_handle_list( SQL_HANDLE_DBC, handles );
+    OdbcHandle *hand = pOdbcTest->extract_handle_list( SQL_HANDLE_DBC, handles );
     QString qtptr;
 
     if ( hand )
         in_handle = hand -> getHandle();
 
-    odbctest -> out_win -> insertLineLimited( "SQLSetConnectOption():" );
-    odbctest -> out_win -> insertLineLimited( "  In:" );
+    pOdbcTest-> out_win -> append( "SQLSetConnectOption():" );
+    pOdbcTest-> out_win -> append( "  In:" );
     if ( in_handle )
         txt.sprintf( "    hdbc: %p", in_handle );
     else
         txt.sprintf( "    hdbc: SQL_NULL_HDBC" );
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest-> out_win -> append( txt );
 
     attribute = conn_opt_options[ types -> currentIndex() ].attr;
     txt.sprintf( "    fOption: %s=%d", 
                  conn_opt_options[ types -> currentIndex() ].text,
                  conn_opt_options[ types -> currentIndex() ].attr );
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest-> out_win -> append( txt );
 
     qtptr = value -> currentText();
     tptr = qtptr.toAscii().constData();
@@ -2687,23 +2613,23 @@ void dSetConnectOption::Ok()
         txt.sprintf( "    vParam: %s=%d", ptr -> text, ptr -> value );
     }
 
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest-> out_win -> append( txt );
 
     SQLRETURN ret = SQLSetConnectOption( in_handle, attribute, vptr );
 
-    odbctest -> out_win -> insertLineLimited( "  Return:" );
-    txt.sprintf( "    %s=%d", odbctest->return_as_text( ret ), ret );
-    odbctest -> out_win -> insertLineLimited( txt );
-    odbctest -> out_win -> insertLineLimited( "" );
+    pOdbcTest-> out_win -> append( "  Return:" );
+    txt.sprintf( "    %s=%d", pOdbcTest->return_as_text( ret ), ret );
+    pOdbcTest-> out_win -> append( txt );
+    pOdbcTest-> out_win -> append( "" );
 }
 
-dSetConnectOption::dSetConnectOption( OdbcTest *parent, QString name )
-: QDialog( parent )
+dSetConnectOption::dSetConnectOption( OdbcTest *pOdbcTest, QString name )
+: QDialog( pOdbcTest )
 {
     setWindowTitle( name );
     setModal( true );
 
-    odbctest = parent;
+    this->pOdbcTest = pOdbcTest;
 
     ok = new QPushButton( "OK", this );
     ok->setGeometry( 240,10, 70,25 );
@@ -2717,16 +2643,16 @@ dSetConnectOption::dSetConnectOption( OdbcTest *parent, QString name )
     handles = new QComboBox( this ); // "Statement Handle"
     handles -> setGeometry( 170, 50, 300, 20 );
 
-    odbctest->fill_handle_list( SQL_HANDLE_STMT, handles );
+    pOdbcTest->fill_handle_list( SQL_HANDLE_STMT, handles );
 
     types = new QComboBox( this ); // "Attribute"
     types -> setGeometry( 170, 80, 300, 20 );
 
-    parent->fill_list_box( conn_opt_options, types );
+    pOdbcTest->fill_list_box( conn_opt_options, types );
 
     value = new QComboBox( this ); // "Value"
     value -> setGeometry( 170, 110, 300, 20 );
-    parent->fill_list_box( conn_opt_options[ 0 ].values, value );
+    pOdbcTest->fill_list_box( conn_opt_options[ 0 ].values, value );
 
     l_handle = new QLabel( "hdbc:", this );
     l_handle -> setGeometry( 10, 50, 130, 20 );
@@ -2763,26 +2689,26 @@ void dGetConnectOption::Ok()
     SQLHANDLE in_handle = SQL_NULL_HENV;
     SQLINTEGER attribute, value;
     SQLPOINTER vptr;
-    Handle *hand = odbctest->extract_handle_list( SQL_HANDLE_DBC, handles );
+    OdbcHandle *hand = pOdbcTest->extract_handle_list( SQL_HANDLE_DBC, handles );
     int index = types->currentIndex();
     char *buf = NULL;
 
     if ( hand )
         in_handle = hand -> getHandle();
 
-    odbctest -> out_win -> insertLineLimited( "SQLGetConnectOption():" );
-    odbctest -> out_win -> insertLineLimited( "  In:" );
+    pOdbcTest-> out_win -> append( "SQLGetConnectOption():" );
+    pOdbcTest-> out_win -> append( "  In:" );
     if ( in_handle )
         txt.sprintf( "    hdbc: %p", in_handle );
     else
         txt.sprintf( "    hdbc: SQL_NULL_HDBC" );
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest-> out_win -> append( txt );
 
     attribute = conn_gopt_options[ types -> currentIndex() ].attr;
     txt.sprintf( "    fOption: %s=%d", 
                  conn_gopt_options[ types -> currentIndex() ].text,
                  conn_gopt_options[ types -> currentIndex() ].attr );
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest-> out_win -> append( txt );
 
     if ( target_valid -> isChecked())
     {
@@ -2805,22 +2731,22 @@ void dGetConnectOption::Ok()
     if ( vptr )
     {
         txt.sprintf( "    vParam: %p", vptr );
-        odbctest -> out_win -> insertLineLimited( txt );
+        pOdbcTest-> out_win -> append( txt );
     }
     else
     {
         txt.sprintf( "    vParam: SQL_NULL_POINTER" );
-        odbctest -> out_win -> insertLineLimited( txt );
+        pOdbcTest-> out_win -> append( txt );
     }
 
     SQLRETURN ret = SQLGetConnectOption( in_handle, attribute, 
                                          vptr );
 
-    odbctest -> out_win -> insertLineLimited( "  Return:" );
-    txt.sprintf( "    %s=%d", odbctest->return_as_text( ret ), ret );
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest-> out_win -> append( "  Return:" );
+    txt.sprintf( "    %s=%d", pOdbcTest->return_as_text( ret ), ret );
+    pOdbcTest-> out_win -> append( txt );
 
-    odbctest -> out_win -> insertLineLimited( "  Out:" );
+    pOdbcTest-> out_win -> append( "  Out:" );
 
     if ( SQL_SUCCEEDED( ret ))
     {
@@ -2833,7 +2759,7 @@ void dGetConnectOption::Ok()
                         int i;
 
                         txt.sprintf( "    *vptr = 0x%08X", value );
-                        odbctest -> out_win -> insertLineLimited( txt );
+                        pOdbcTest-> out_win -> append( txt );
 
                         for ( i = 0; conn_gopt_options[ index ].values[ i ].text; i ++ )
                         {
@@ -2841,7 +2767,7 @@ void dGetConnectOption::Ok()
                             {
                                 txt.sprintf( "        %s", 
                                              conn_gopt_options[ index ].values[ i ].text );
-                                odbctest -> out_win -> insertLineLimited( txt );
+                                pOdbcTest-> out_win -> append( txt );
                             }
                         }
                         break;
@@ -2857,7 +2783,7 @@ void dGetConnectOption::Ok()
     if ( buf )
         delete buf;
 
-    odbctest -> out_win -> insertLineLimited( "" );
+    pOdbcTest-> out_win -> append( "" );
 }
 
 void dGetConnectOption::target_clkd()
@@ -2868,13 +2794,13 @@ void dGetConnectOption::target_clkd()
         target_valid -> setText( "vParam: VALID" );
 }
 
-dGetConnectOption::dGetConnectOption( OdbcTest *parent, QString name )
-: QDialog( parent )
+dGetConnectOption::dGetConnectOption( OdbcTest *pOdbcTest, QString name )
+: QDialog( pOdbcTest )
 {
     setWindowTitle( name );
     setModal( true );
 
-    odbctest = parent;
+    this->pOdbcTest = pOdbcTest;
 
     ok = new QPushButton( "OK", this );
     ok->setGeometry( 240,10, 70,25 );
@@ -2888,12 +2814,12 @@ dGetConnectOption::dGetConnectOption( OdbcTest *parent, QString name )
     handles = new QComboBox( this ); // "hdbc"
     handles -> setGeometry( 170, 50, 300, 20 );
 
-    odbctest->fill_handle_list( SQL_HANDLE_DBC, handles );
+    pOdbcTest->fill_handle_list( SQL_HANDLE_DBC, handles );
 
     types = new QComboBox( this ); // "fOption"
     types -> setGeometry( 170, 80, 300, 20 );
 
-    parent->fill_list_box( conn_gopt_options, types );
+    pOdbcTest->fill_list_box( conn_gopt_options, types );
 
     l_handle = new QLabel( "hstmt:", this );
     l_handle -> setGeometry( 10, 50, 130, 20 );

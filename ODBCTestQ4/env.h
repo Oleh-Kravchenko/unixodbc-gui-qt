@@ -19,17 +19,18 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- **********************************************************************/
-/*
+ **********************************************************************
+ *
  * 2008-12-10   Code adopted by unixODBC-GUI-Qt project. Heavily altered
  * pharvey      to be Qt4 only code.
  * 
- */
+ **********************************************************************/
 
-#ifndef ENV_H
-#define ENV_H
+#pragma once
 
-#include "odbctest.h"
+#include "OdbcHandle.h"
+
+class OdbcTest;
 
 class dAllocHandle : public QDialog 
 {
@@ -217,4 +218,4 @@ class dTransact : public QDialog
 		void Ok();
 };
 
-#endif
+

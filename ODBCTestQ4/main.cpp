@@ -26,7 +26,7 @@
  * 
  **********************************************************************/
 
-#include "odbctest.h"
+#include "OdbcTest.h"
 
 int main( int argc, char ** argv )
 {

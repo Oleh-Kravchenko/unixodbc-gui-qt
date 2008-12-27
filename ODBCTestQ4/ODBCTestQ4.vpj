@@ -69,11 +69,9 @@
 			<F N="main.cpp"/>
 			<F N="OdbcHandle.cpp"/>
 			<F N="OdbcTest.cpp"/>
-			<F N="odbctest.cpp"/>
 			<F N="open.cpp"/>
 			<F N="results.cpp"/>
 			<F N="stmt.cpp"/>
-			<F N="tools.cpp"/>
 		</Folder>
 		<Folder
 			Name="Header Files"
@@ -92,10 +90,8 @@
 			<F N="env.h"/>
 			<F N="OdbcHandle.h"/>
 			<F N="OdbcTest.h"/>
-			<F N="odbctest.h"/>
 			<F N="results.h"/>
 			<F N="stmt.h"/>
-			<F N="tools.h"/>
 		</Folder>
 		<Folder
 			Name="Resource Files"

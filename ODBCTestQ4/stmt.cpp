@@ -24,89 +24,10 @@
  * 2008-12-10   Code adopted by unixODBC-GUI-Qt project. Heavily altered
  * pharvey      to be Qt4 only code.
  * 
- * $Id: stmt.cpp,v 1.6 2007/02/13 06:14:21 peteralexharvey Exp $
- *
- * $Log: stmt.cpp,v $
- * Revision 1.6  2007/02/13 06:14:21  peteralexharvey
- * caught a missed SQLULEN
- *
- * Revision 1.5  2007/02/12 11:49:37  lurcher
- * Add QT4 support to existing GUI parts
- *
- * Revision 1.4  2002/05/29 10:22:58  lurcher
- *
- * Changes and tidy's
- *
- * Revision 1.3  2001/12/20 17:26:26  lurcher
- *
- * More warnings removed
- *
- * Revision 1.2  2001/12/20 12:30:44  lurcher
- *
- * Fix 64 problem in odbctest and 7.1 Postgres driver
- *
- * Revision 1.1.1.1  2001/10/17 16:40:31  lurcher
- *
- * First upload to SourceForge
- *
- * Revision 1.5  2001/10/02 16:32:52  nick
- *
- * Alter unicode TCHAR defs
- *
- * Revision 1.4  2001/07/20 09:42:59  nick
- *
- * Replace char[] with QString to avoid buffer overrun
- *
- * Revision 1.3  2001/05/31 16:05:55  nick
- *
- * Fix problems with postgres closing local sockets
- * Make odbctest build with QT 3 (it doesn't work due to what I think are bugs
- * in QT 3)
- * Fix a couple of problems in the cursor lib
- *
- * Revision 1.2  2000/12/17 10:51:33  nick
- *
- * Add include for sqlucode.h
- *
- * Revision 1.1.1.1  2000/09/04 16:42:53  nick
- * Imported Sources
- *
- * Revision 1.8  2000/06/23 16:23:24  ngorham
- *
- * Couple of small changes
- *
- * Revision 1.7  2000/06/15 09:31:04  ngorham
- *
- * Add some fixes and porting options after 1.8.9 has been released
- *
- * Revision 1.6  2000/06/13 12:30:29  ngorham
- *
- * Enough there for the first release I think
- *
- * Revision 1.5  2000/06/09 17:04:22  ngorham
- *
- * More, and More
- *
- * Revision 1.4  2000/06/07 15:10:23  ngorham
- *
- * More additions
- *
- * Revision 1.3  2000/06/07 08:29:48  ngorham
- *
- * More additions
- *
- * Revision 1.2  2001/05/31 10:26:27  ngorham
- *
- * Fix a few minor typo's
- *
- * Revision 1.1  2000/05/04 17:04:48  ngorham
- *
- * Initial commit
- *
- *
  **********************************************************************/
 
 #include "stmt.h"
+#include "OdbcTest.h"
 
 static attr_value io_type_option[] = 
 {

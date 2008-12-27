@@ -27,6 +27,7 @@
  **********************************************************************/
 
 #include "DlgToolsNewSource.h"
+#include "OdbcTest.h"
 
 DlgToolsNewSource::DlgToolsNewSource( OdbcTest *parent, QString name, dManageTest *ptest )
 : QDialog( parent )

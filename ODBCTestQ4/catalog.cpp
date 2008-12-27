@@ -24,58 +24,10 @@
  * 2008-12-10   Code adopted by unixODBC-GUI-Qt project. Heavily altered
  * pharvey      to be Qt4 only code.
  * 
- * $Id: catalog.cpp,v 1.2 2007/02/12 11:49:37 lurcher Exp $
- *
- * $Log: catalog.cpp,v $
- * Revision 1.2  2007/02/12 11:49:37  lurcher
- * Add QT4 support to existing GUI parts
- *
- * Revision 1.1.1.1  2001/10/17 16:40:30  lurcher
- *
- * First upload to SourceForge
- *
- * Revision 1.4  2001/07/20 09:42:58  nick
- *
- * Replace char[] with QString to avoid buffer overrun
- *
- * Revision 1.3  2001/06/04 15:24:49  nick
- *
- * Add port to MAC OSX and QT3 changes
- *
- * Revision 1.2  2001/05/31 16:05:55  nick
- *
- * Fix problems with postgres closing local sockets
- * Make odbctest build with QT 3 (it doesn't work due to what I think are bugs
- * in QT 3)
- * Fix a couple of problems in the cursor lib
- *
- * Revision 1.1.1.1  2000/09/04 16:42:53  nick
- * Imported Sources
- *
- * Revision 1.5  2000/09/04 15:43:59  ngorham
- *
- * Fix incorrect call in TablePrivs
- *
- * Revision 1.4  2000/06/13 12:30:20  ngorham
- *
- * Enough there for the first release I think
- *
- * Revision 1.3  2000/06/05 16:53:15  ngorham
- *
- * Next lot of updates
- *
- * Revision 1.2  2001/05/31 10:26:26  ngorham
- *
- * Fix a few minor typo's
- *
- * Revision 1.1  2000/05/04 17:04:47  ngorham
- *
- * Initial commit
- *
- *
  **********************************************************************/
 
 #include "catalog.h"
+#include "OdbcTest.h"
 
 static attr_options get_type_options[] = 
 {
@@ -344,7 +296,7 @@ void dTables::Ok()
     QString qcat, qsch, qtab, qtyp;
     QString qlcat, qlsch, qltab, qltyp;
     int cat_len, sch_len, tab_len, typ_len;
-    Handle *hand = odbctest->extract_handle_list( SQL_HANDLE_STMT, handles );
+    OdbcHandle *hand = pOdbcTest->extract_handle_list( SQL_HANDLE_STMT, handles );
     SQLHANDLE in_handle = SQL_NULL_HANDLE;
 
     if ( hand )
@@ -368,28 +320,28 @@ void dTables::Ok()
     ltab = qltab.toAscii().constData();
     ltyp = qltyp.toAscii().constData();
 
-    odbctest -> out_win -> insertLineLimited( "SQLTables():" );
-    odbctest -> out_win -> insertLineLimited( "  In:" );
+    pOdbcTest -> out_win -> append( "SQLTables():" );
+    pOdbcTest -> out_win -> append( "  In:" );
     if ( in_handle )
         txt.sprintf( "    Statement Handle: %p", in_handle );
     else
         txt.sprintf( "    Statement Handle: SQL_NULL_HSTMT" );
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     if ( strcmp( cat, "<null ptr>" ) == 0 )
     {
         cat = NULL;
-        odbctest -> out_win -> insertLineLimited( "    Catalog: <null ptr>" );
+        pOdbcTest -> out_win -> append( "    Catalog: <null ptr>" );
     }
     else if ( strcmp( cat, "<empty string>" ) == 0 )
     {
         cat = "";
-        odbctest -> out_win -> insertLineLimited( "    Catalog: <empty string>" );
+        pOdbcTest -> out_win -> append( "    Catalog: <empty string>" );
     }
     else
     {
         txt.sprintf( "    Catalog: %s", cat );
-        odbctest -> out_win -> insertLineLimited( txt );
+        pOdbcTest -> out_win -> append( txt );
     }
 
     if ( strncmp( lcat, "SQL_NTS", 7 ) == 0 )
@@ -402,22 +354,22 @@ void dTables::Ok()
         cat_len = atoi( lcat );
         txt.sprintf( "    Catalog Len: %d", cat_len );
     }
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     if ( strcmp( sch, "<null ptr>" ) == 0 )
     {
         sch = NULL;
-        odbctest -> out_win -> insertLineLimited( "    Schema: <null ptr>" );
+        pOdbcTest -> out_win -> append( "    Schema: <null ptr>" );
     }
     else if ( strcmp( sch, "<empty string>" ) == 0 )
     {
         sch = "";
-        odbctest -> out_win -> insertLineLimited( "    Schema: <empty string>" );
+        pOdbcTest -> out_win -> append( "    Schema: <empty string>" );
     }
     else
     {
         txt.sprintf( "    Schema: %s", sch );
-        odbctest -> out_win -> insertLineLimited( txt );
+        pOdbcTest -> out_win -> append( txt );
     }
 
     if ( strncmp( lsch, "SQL_NTS", 7 ) == 0 )
@@ -430,22 +382,22 @@ void dTables::Ok()
         sch_len = atoi( lsch );
         txt.sprintf( "    Schema Len: %d", sch_len );
     }
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     if ( strcmp( tab, "<null ptr>" ) == 0 )
     {
         tab = NULL;
-        odbctest -> out_win -> insertLineLimited( "    Table: <null ptr>" );
+        pOdbcTest -> out_win -> append( "    Table: <null ptr>" );
     }
     else if ( strcmp( tab, "<empty string>" ) == 0 )
     {
         tab = "";
-        odbctest -> out_win -> insertLineLimited( "    Table: <empty string>" );
+        pOdbcTest -> out_win -> append( "    Table: <empty string>" );
     }
     else
     {
         txt.sprintf( "    Table: %s", tab );
-        odbctest -> out_win -> insertLineLimited( txt );
+        pOdbcTest -> out_win -> append( txt );
     }
 
     if ( strncmp( ltab, "SQL_NTS", 7 ) == 0 )
@@ -458,22 +410,22 @@ void dTables::Ok()
         tab_len = atoi( ltab );
         txt.sprintf( "    Table Len: %d", tab_len );
     }
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     if ( strcmp( typ, "<null ptr>" ) == 0 )
     {
         typ = NULL;
-        odbctest -> out_win -> insertLineLimited( "    Table Type: <null ptr>" );
+        pOdbcTest -> out_win -> append( "    Table Type: <null ptr>" );
     }
     else if ( strcmp( typ, "<empty string>" ) == 0 )
     {
         typ = "";
-        odbctest -> out_win -> insertLineLimited( "    Table Type: <empty string>" );
+        pOdbcTest -> out_win -> append( "    Table Type: <empty string>" );
     }
     else
     {
         txt.sprintf( "    Table Type: %s", typ );
-        odbctest -> out_win -> insertLineLimited( txt );
+        pOdbcTest -> out_win -> append( txt );
     }
 
     if ( strncmp( ltyp, "SQL_NTS", 7 ) == 0 )
@@ -486,7 +438,7 @@ void dTables::Ok()
         typ_len = atoi( ltyp );
         txt.sprintf( "    Table Type Len: %d", typ_len );
     }
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     SQLRETURN ret = SQLTables( in_handle, 
                                (SQLCHAR*)cat, cat_len,
@@ -494,19 +446,19 @@ void dTables::Ok()
                                (SQLCHAR*)tab, tab_len,
                                (SQLCHAR*)typ, typ_len );
 
-    odbctest -> out_win -> insertLineLimited( "  Return:" );
-    txt.sprintf( "    %s=%d", odbctest->return_as_text( ret ), ret );
-    odbctest -> out_win -> insertLineLimited( txt );
-    odbctest -> out_win -> insertLineLimited( "" );
+    pOdbcTest -> out_win -> append( "  Return:" );
+    txt.sprintf( "    %s=%d", pOdbcTest->return_as_text( ret ), ret );
+    pOdbcTest -> out_win -> append( txt );
+    pOdbcTest -> out_win -> append( "" );
 }
 
-dTables::dTables( OdbcTest *parent, QString name )
-: QDialog( parent )
+dTables::dTables( OdbcTest *pOdbcTest, QString name )
+: QDialog( pOdbcTest )
 {
     setWindowTitle( name );
     setModal( true );
 
-    odbctest = parent;
+    this->pOdbcTest = pOdbcTest;
 
     ok = new QPushButton( "OK", this );
     ok->setGeometry( 290,10, 70,25 );
@@ -520,7 +472,7 @@ dTables::dTables( OdbcTest *parent, QString name )
     handles = new QComboBox( this ); // "Handle"
     handles -> setGeometry( 100, 15, 150, 20 );
 
-    odbctest->fill_handle_list( SQL_HANDLE_STMT, handles );
+    pOdbcTest->fill_handle_list( SQL_HANDLE_STMT, handles );
 
     l_handle = new QLabel( "Handle:", this );
     l_handle -> setGeometry( 10, 15, 80, 20 );
@@ -618,7 +570,7 @@ void dColumns::Ok()
     QString qcat, qsch, qtab, qcol;
     QString qlcat, qlsch, qltab, qlcol;
     int cat_len, sch_len, tab_len, col_len;
-    Handle *hand = odbctest->extract_handle_list( SQL_HANDLE_STMT, handles );
+    OdbcHandle *hand = pOdbcTest->extract_handle_list( SQL_HANDLE_STMT, handles );
     SQLHANDLE in_handle = SQL_NULL_HANDLE;
 
     if ( hand )
@@ -642,28 +594,28 @@ void dColumns::Ok()
     ltab = qltab.toAscii().constData();
     lcol = qlcol.toAscii().constData();
 
-    odbctest -> out_win -> insertLineLimited( "SQLColumns():" );
-    odbctest -> out_win -> insertLineLimited( "  In:" );
+    pOdbcTest -> out_win -> append( "SQLColumns():" );
+    pOdbcTest -> out_win -> append( "  In:" );
     if ( in_handle )
         txt.sprintf( "    Statement Handle: %p", in_handle );
     else
         txt.sprintf( "    Statement Handle: SQL_NULL_HSTMT" );
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     if ( strcmp( cat, "<null ptr>" ) == 0 )
     {
         cat = NULL;
-        odbctest -> out_win -> insertLineLimited( "    Catalog: <null ptr>" );
+        pOdbcTest -> out_win -> append( "    Catalog: <null ptr>" );
     }
     else if ( strcmp( cat, "<empty string>" ) == 0 )
     {
         cat = "";
-        odbctest -> out_win -> insertLineLimited( "    Catalog: <empty string>" );
+        pOdbcTest -> out_win -> append( "    Catalog: <empty string>" );
     }
     else
     {
         txt.sprintf( "    Catalog: %s", cat );
-        odbctest -> out_win -> insertLineLimited( txt );
+        pOdbcTest -> out_win -> append( txt );
     }
 
     if ( strncmp( lcat, "SQL_NTS", 7 ) == 0 )
@@ -676,22 +628,22 @@ void dColumns::Ok()
         cat_len = atoi( lcat );
         txt.sprintf( "    Catalog Len: %d", cat_len );
     }
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     if ( strcmp( sch, "<null ptr>" ) == 0 )
     {
         sch = NULL;
-        odbctest -> out_win -> insertLineLimited( "    Schema: <null ptr>" );
+        pOdbcTest -> out_win -> append( "    Schema: <null ptr>" );
     }
     else if ( strcmp( sch, "<empty string>" ) == 0 )
     {
         sch = "";
-        odbctest -> out_win -> insertLineLimited( "    Schema: <empty string>" );
+        pOdbcTest -> out_win -> append( "    Schema: <empty string>" );
     }
     else
     {
         txt.sprintf( "    Schema: %s", sch );
-        odbctest -> out_win -> insertLineLimited( txt );
+        pOdbcTest -> out_win -> append( txt );
     }
 
     if ( strncmp( lsch, "SQL_NTS", 7 ) == 0 )
@@ -704,22 +656,22 @@ void dColumns::Ok()
         sch_len = atoi( lsch );
         txt.sprintf( "    Schema Len: %d", sch_len );
     }
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     if ( strcmp( tab, "<null ptr>" ) == 0 )
     {
         tab = NULL;
-        odbctest -> out_win -> insertLineLimited( "    Table: <null ptr>" );
+        pOdbcTest -> out_win -> append( "    Table: <null ptr>" );
     }
     else if ( strcmp( tab, "<empty string>" ) == 0 )
     {
         tab = "";
-        odbctest -> out_win -> insertLineLimited( "    Table: <empty string>" );
+        pOdbcTest -> out_win -> append( "    Table: <empty string>" );
     }
     else
     {
         txt.sprintf( "    Table: %s", tab );
-        odbctest -> out_win -> insertLineLimited( txt );
+        pOdbcTest -> out_win -> append( txt );
     }
 
     if ( strncmp( ltab, "SQL_NTS", 7 ) == 0 )
@@ -732,22 +684,22 @@ void dColumns::Ok()
         tab_len = atoi( ltab );
         txt.sprintf( "    Table Len: %d", tab_len );
     }
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     if ( strcmp( col, "<null ptr>" ) == 0 )
     {
         col = NULL;
-        odbctest -> out_win -> insertLineLimited( "    Column: <null ptr>" );
+        pOdbcTest -> out_win -> append( "    Column: <null ptr>" );
     }
     else if ( strcmp( col, "<empty string>" ) == 0 )
     {
         col = "";
-        odbctest -> out_win -> insertLineLimited( "    Column: <empty string>" );
+        pOdbcTest -> out_win -> append( "    Column: <empty string>" );
     }
     else
     {
         txt.sprintf( "    Column: %s", col );
-        odbctest -> out_win -> insertLineLimited( txt );
+        pOdbcTest -> out_win -> append( txt );
     }
 
     if ( strncmp( lcol, "SQL_NTS", 7 ) == 0 )
@@ -760,7 +712,7 @@ void dColumns::Ok()
         col_len = atoi( lcol );
         txt.sprintf( "    Column Len: %d", col_len );
     }
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     SQLRETURN ret = SQLColumns( in_handle, 
                                 (SQLCHAR*)cat, cat_len,
@@ -768,10 +720,10 @@ void dColumns::Ok()
                                 (SQLCHAR*)tab, tab_len,
                                 (SQLCHAR*)col, col_len );
 
-    odbctest -> out_win -> insertLineLimited( "  Return:" );
-    txt.sprintf( "    %s=%d", odbctest->return_as_text( ret ), ret );
-    odbctest -> out_win -> insertLineLimited( txt );
-    odbctest -> out_win -> insertLineLimited( "" );
+    pOdbcTest -> out_win -> append( "  Return:" );
+    txt.sprintf( "    %s=%d", pOdbcTest->return_as_text( ret ), ret );
+    pOdbcTest -> out_win -> append( txt );
+    pOdbcTest -> out_win -> append( "" );
 }
 
 void dColumnPrivileges::Ok()
@@ -781,7 +733,7 @@ void dColumnPrivileges::Ok()
     QString qcat, qsch, qtab, qcol;
     QString qlcat, qlsch, qltab, qlcol;
     int cat_len, sch_len, tab_len, col_len;
-    Handle *hand = odbctest->extract_handle_list( SQL_HANDLE_STMT, handles );
+    OdbcHandle *hand = pOdbcTest->extract_handle_list( SQL_HANDLE_STMT, handles );
     SQLHANDLE in_handle = SQL_NULL_HANDLE;
 
     if ( hand )
@@ -805,28 +757,28 @@ void dColumnPrivileges::Ok()
     ltab = qltab.toAscii().constData();
     lcol = qlcol.toAscii().constData();
 
-    odbctest -> out_win -> insertLineLimited( "SQLColumnPrivileges():" );
-    odbctest -> out_win -> insertLineLimited( "  In:" );
+    pOdbcTest -> out_win -> append( "SQLColumnPrivileges():" );
+    pOdbcTest -> out_win -> append( "  In:" );
     if ( in_handle )
         txt.sprintf( "    Statement Handle: %p", in_handle );
     else
         txt.sprintf( "    Statement Handle: SQL_NULL_HSTMT" );
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     if ( strcmp( cat, "<null ptr>" ) == 0 )
     {
         cat = NULL;
-        odbctest -> out_win -> insertLineLimited( "    Catalog: <null ptr>" );
+        pOdbcTest -> out_win -> append( "    Catalog: <null ptr>" );
     }
     else if ( strcmp( cat, "<empty string>" ) == 0 )
     {
         cat = "";
-        odbctest -> out_win -> insertLineLimited( "    Catalog: <empty string>" );
+        pOdbcTest -> out_win -> append( "    Catalog: <empty string>" );
     }
     else
     {
         txt.sprintf( "    Catalog: %s", cat );
-        odbctest -> out_win -> insertLineLimited( txt );
+        pOdbcTest -> out_win -> append( txt );
     }
 
     if ( strncmp( lcat, "SQL_NTS", 7 ) == 0 )
@@ -839,22 +791,22 @@ void dColumnPrivileges::Ok()
         cat_len = atoi( lcat );
         txt.sprintf( "    Catalog Len: %d", cat_len );
     }
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     if ( strcmp( sch, "<null ptr>" ) == 0 )
     {
         sch = NULL;
-        odbctest -> out_win -> insertLineLimited( "    Schema: <null ptr>" );
+        pOdbcTest -> out_win -> append( "    Schema: <null ptr>" );
     }
     else if ( strcmp( sch, "<empty string>" ) == 0 )
     {
         sch = "";
-        odbctest -> out_win -> insertLineLimited( "    Schema: <empty string>" );
+        pOdbcTest -> out_win -> append( "    Schema: <empty string>" );
     }
     else
     {
         txt.sprintf( "    Schema: %s", sch );
-        odbctest -> out_win -> insertLineLimited( txt );
+        pOdbcTest -> out_win -> append( txt );
     }
 
     if ( strncmp( lsch, "SQL_NTS", 7 ) == 0 )
@@ -867,22 +819,22 @@ void dColumnPrivileges::Ok()
         sch_len = atoi( lsch );
         txt.sprintf( "    Schema Len: %d", sch_len );
     }
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     if ( strcmp( tab, "<null ptr>" ) == 0 )
     {
         tab = NULL;
-        odbctest -> out_win -> insertLineLimited( "    Table: <null ptr>" );
+        pOdbcTest -> out_win -> append( "    Table: <null ptr>" );
     }
     else if ( strcmp( tab, "<empty string>" ) == 0 )
     {
         tab = "";
-        odbctest -> out_win -> insertLineLimited( "    Table: <empty string>" );
+        pOdbcTest -> out_win -> append( "    Table: <empty string>" );
     }
     else
     {
         txt.sprintf( "    Table: %s", tab );
-        odbctest -> out_win -> insertLineLimited( txt );
+        pOdbcTest -> out_win -> append( txt );
     }
 
     if ( strncmp( ltab, "SQL_NTS", 7 ) == 0 )
@@ -895,22 +847,22 @@ void dColumnPrivileges::Ok()
         tab_len = atoi( ltab );
         txt.sprintf( "    Table Len: %d", tab_len );
     }
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     if ( strcmp( col, "<null ptr>" ) == 0 )
     {
         col = NULL;
-        odbctest -> out_win -> insertLineLimited( "    Column: <null ptr>" );
+        pOdbcTest -> out_win -> append( "    Column: <null ptr>" );
     }
     else if ( strcmp( col, "<empty string>" ) == 0 )
     {
         col = "";
-        odbctest -> out_win -> insertLineLimited( "    Column: <empty string>" );
+        pOdbcTest -> out_win -> append( "    Column: <empty string>" );
     }
     else
     {
         txt.sprintf( "    Column: %s", col );
-        odbctest -> out_win -> insertLineLimited( txt );
+        pOdbcTest -> out_win -> append( txt );
     }
 
     if ( strncmp( lcol, "SQL_NTS", 7 ) == 0 )
@@ -923,7 +875,7 @@ void dColumnPrivileges::Ok()
         col_len = atoi( lcol );
         txt.sprintf( "    Column Len: %d", col_len );
     }
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     SQLRETURN ret = SQLColumnPrivileges( in_handle, 
                                          (SQLCHAR*)cat, cat_len,
@@ -931,19 +883,19 @@ void dColumnPrivileges::Ok()
                                          (SQLCHAR*)tab, tab_len,
                                          (SQLCHAR*)col, col_len );
 
-    odbctest -> out_win -> insertLineLimited( "  Return:" );
-    txt.sprintf( "    %s=%d", odbctest->return_as_text( ret ), ret );
-    odbctest -> out_win -> insertLineLimited( txt );
-    odbctest -> out_win -> insertLineLimited( "" );
+    pOdbcTest -> out_win -> append( "  Return:" );
+    txt.sprintf( "    %s=%d", pOdbcTest->return_as_text( ret ), ret );
+    pOdbcTest -> out_win -> append( txt );
+    pOdbcTest -> out_win -> append( "" );
 }
 
-dColumnPrivileges::dColumnPrivileges( OdbcTest *parent, QString name )
-: QDialog( parent )
+dColumnPrivileges::dColumnPrivileges( OdbcTest *pOdbcTest, QString name )
+: QDialog( pOdbcTest )
 {
     setWindowTitle( name );
     setModal( true );
 
-    odbctest = parent;
+    this->pOdbcTest = pOdbcTest;
 
     ok = new QPushButton( "OK", this );
     ok->setGeometry( 290,10, 70,25 );
@@ -957,7 +909,7 @@ dColumnPrivileges::dColumnPrivileges( OdbcTest *parent, QString name )
     handles = new QComboBox( this );
     handles -> setGeometry( 100, 15, 150, 20 );
 
-    odbctest->fill_handle_list( SQL_HANDLE_STMT, handles );
+    pOdbcTest->fill_handle_list( SQL_HANDLE_STMT, handles );
 
     l_handle = new QLabel( "Handle:", this );
     l_handle -> setGeometry( 10, 15, 80, 20 );
@@ -1048,13 +1000,13 @@ dColumnPrivileges::~dColumnPrivileges()
     delete l_column_len;
 }
 
-dColumns::dColumns( OdbcTest *parent, QString name )
-: QDialog( parent )
+dColumns::dColumns( OdbcTest *pOdbcTest, QString name )
+: QDialog( pOdbcTest )
 {
     setWindowTitle( name );
     setModal( true );
 
-    odbctest = parent;
+    this->pOdbcTest = pOdbcTest;
 
     ok = new QPushButton( "OK", this );
     ok->setGeometry( 290,10, 70,25 );
@@ -1068,7 +1020,7 @@ dColumns::dColumns( OdbcTest *parent, QString name )
     handles = new QComboBox( this );
     handles -> setGeometry( 100, 15, 150, 20 );
 
-    odbctest->fill_handle_list( SQL_HANDLE_STMT, handles );
+    pOdbcTest->fill_handle_list( SQL_HANDLE_STMT, handles );
 
     l_handle = new QLabel( "Handle:", this );
     l_handle -> setGeometry( 10, 15, 80, 20 );
@@ -1171,7 +1123,7 @@ void dForeignKeys::Ok()
     QString qfk_lcat, qfk_lsch, qfk_ltab;
     int cat_len, sch_len, tab_len;
     int fk_cat_len, fk_sch_len, fk_tab_len;
-    Handle *hand = odbctest->extract_handle_list( SQL_HANDLE_STMT, handles );
+    OdbcHandle *hand = pOdbcTest->extract_handle_list( SQL_HANDLE_STMT, handles );
     SQLHANDLE in_handle = SQL_NULL_HANDLE;
 
     if ( hand )
@@ -1203,28 +1155,28 @@ void dForeignKeys::Ok()
     fk_lsch = qfk_lsch.toAscii().constData();
     fk_ltab = qfk_ltab.toAscii().constData();
 
-    odbctest -> out_win -> insertLineLimited( "SQLForeignKeys():" );
-    odbctest -> out_win -> insertLineLimited( "  In:" );
+    pOdbcTest -> out_win -> append( "SQLForeignKeys():" );
+    pOdbcTest -> out_win -> append( "  In:" );
     if ( in_handle )
         txt.sprintf( "    Statement Handle: %p", in_handle );
     else
         txt.sprintf( "    Statement Handle: SQL_NULL_HSTMT" );
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     if ( strcmp( cat, "<null ptr>" ) == 0 )
     {
         cat = NULL;
-        odbctest -> out_win -> insertLineLimited( "    PKCatalog: <null ptr>" );
+        pOdbcTest -> out_win -> append( "    PKCatalog: <null ptr>" );
     }
     else if ( strcmp( cat, "<empty string>" ) == 0 )
     {
         cat = "";
-        odbctest -> out_win -> insertLineLimited( "    PKCatalog: <empty string>" );
+        pOdbcTest -> out_win -> append( "    PKCatalog: <empty string>" );
     }
     else
     {
         txt.sprintf( "    PKCatalog: %s", cat );
-        odbctest -> out_win -> insertLineLimited( txt );
+        pOdbcTest -> out_win -> append( txt );
     }
 
     if ( strncmp( lcat, "SQL_NTS", 7 ) == 0 )
@@ -1237,22 +1189,22 @@ void dForeignKeys::Ok()
         cat_len = atoi( lcat );
         txt.sprintf( "    PKCatalog Len: %d", cat_len );
     }
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     if ( strcmp( sch, "<null ptr>" ) == 0 )
     {
         sch = NULL;
-        odbctest -> out_win -> insertLineLimited( "    PKSchema: <null ptr>" );
+        pOdbcTest -> out_win -> append( "    PKSchema: <null ptr>" );
     }
     else if ( strcmp( sch, "<empty string>" ) == 0 )
     {
         sch = "";
-        odbctest -> out_win -> insertLineLimited( "    PKSchema: <empty string>" );
+        pOdbcTest -> out_win -> append( "    PKSchema: <empty string>" );
     }
     else
     {
         txt.sprintf( "    PKSchema: %s", sch );
-        odbctest -> out_win -> insertLineLimited( txt );
+        pOdbcTest -> out_win -> append( txt );
     }
 
     if ( strncmp( lsch, "SQL_NTS", 7 ) == 0 )
@@ -1265,22 +1217,22 @@ void dForeignKeys::Ok()
         sch_len = atoi( lsch );
         txt.sprintf( "    PKSchema Len: %d", sch_len );
     }
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     if ( strcmp( tab, "<null ptr>" ) == 0 )
     {
         tab = NULL;
-        odbctest -> out_win -> insertLineLimited( "    PKTable: <null ptr>" );
+        pOdbcTest -> out_win -> append( "    PKTable: <null ptr>" );
     }
     else if ( strcmp( tab, "<empty string>" ) == 0 )
     {
         tab = "";
-        odbctest -> out_win -> insertLineLimited( "    PKTable: <empty string>" );
+        pOdbcTest -> out_win -> append( "    PKTable: <empty string>" );
     }
     else
     {
         txt.sprintf( "    PKTable: %s", tab );
-        odbctest -> out_win -> insertLineLimited( txt );
+        pOdbcTest -> out_win -> append( txt );
     }
 
     if ( strncmp( ltab, "SQL_NTS", 7 ) == 0 )
@@ -1293,22 +1245,22 @@ void dForeignKeys::Ok()
         tab_len = atoi( ltab );
         txt.sprintf( "    PKTable Len: %d", tab_len );
     }
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     if ( strcmp( fk_cat, "<null ptr>" ) == 0 )
     {
         fk_cat = NULL;
-        odbctest -> out_win -> insertLineLimited( "    FKCatalog: <null ptr>" );
+        pOdbcTest -> out_win -> append( "    FKCatalog: <null ptr>" );
     }
     else if ( strcmp( fk_cat, "<empty string>" ) == 0 )
     {
         fk_cat = "";
-        odbctest -> out_win -> insertLineLimited( "    FKCatalog: <empty string>" );
+        pOdbcTest -> out_win -> append( "    FKCatalog: <empty string>" );
     }
     else
     {
         txt.sprintf( "    FKCatalog: %s", fk_cat );
-        odbctest -> out_win -> insertLineLimited( txt );
+        pOdbcTest -> out_win -> append( txt );
     }
 
     if ( strncmp( fk_lcat, "SQL_NTS", 7 ) == 0 )
@@ -1321,22 +1273,22 @@ void dForeignKeys::Ok()
         fk_cat_len = atoi( fk_lcat );
         txt.sprintf( "    FKCatalog Len: %d", fk_cat_len );
     }
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     if ( strcmp( fk_sch, "<null ptr>" ) == 0 )
     {
         fk_sch = NULL;
-        odbctest -> out_win -> insertLineLimited( "    FKSchema: <null ptr>" );
+        pOdbcTest -> out_win -> append( "    FKSchema: <null ptr>" );
     }
     else if ( strcmp( fk_sch, "<empty string>" ) == 0 )
     {
         fk_sch = "";
-        odbctest -> out_win -> insertLineLimited( "    FKSchema: <empty string>" );
+        pOdbcTest -> out_win -> append( "    FKSchema: <empty string>" );
     }
     else
     {
         txt.sprintf( "    FKSchema: %s", fk_sch );
-        odbctest -> out_win -> insertLineLimited( txt );
+        pOdbcTest -> out_win -> append( txt );
     }
 
     if ( strncmp( fk_lsch, "SQL_NTS", 7 ) == 0 )
@@ -1349,22 +1301,22 @@ void dForeignKeys::Ok()
         fk_sch_len = atoi( lsch );
         txt.sprintf( "    FKSchema Len: %d", fk_sch_len );
     }
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     if ( strcmp( fk_tab, "<null ptr>" ) == 0 )
     {
         fk_tab = NULL;
-        odbctest -> out_win -> insertLineLimited( "    FKTable: <null ptr>" );
+        pOdbcTest -> out_win -> append( "    FKTable: <null ptr>" );
     }
     else if ( strcmp( fk_tab, "<empty string>" ) == 0 )
     {
         fk_tab = "";
-        odbctest -> out_win -> insertLineLimited( "    FKTable: <empty string>" );
+        pOdbcTest -> out_win -> append( "    FKTable: <empty string>" );
     }
     else
     {
         txt.sprintf( "    FKTable: %s", fk_tab );
-        odbctest -> out_win -> insertLineLimited( txt );
+        pOdbcTest -> out_win -> append( txt );
     }
 
     if ( strncmp( fk_ltab, "SQL_NTS", 7 ) == 0 )
@@ -1377,7 +1329,7 @@ void dForeignKeys::Ok()
         fk_tab_len = atoi( ltab );
         txt.sprintf( "    FKTable Len: %d", fk_tab_len );
     }
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     SQLRETURN ret = SQLForeignKeys( in_handle, 
                                     (SQLCHAR*)cat, cat_len,
@@ -1387,19 +1339,19 @@ void dForeignKeys::Ok()
                                     (SQLCHAR*)fk_sch, fk_sch_len, 
                                     (SQLCHAR*)fk_tab, fk_tab_len );
 
-    odbctest -> out_win -> insertLineLimited( "  Return:" );
-    txt.sprintf( "    %s=%d", odbctest->return_as_text( ret ), ret );
-    odbctest -> out_win -> insertLineLimited( txt );
-    odbctest -> out_win -> insertLineLimited( "" );
+    pOdbcTest -> out_win -> append( "  Return:" );
+    txt.sprintf( "    %s=%d", pOdbcTest->return_as_text( ret ), ret );
+    pOdbcTest -> out_win -> append( txt );
+    pOdbcTest -> out_win -> append( "" );
 }
 
-dForeignKeys::dForeignKeys( OdbcTest *parent, QString name )
-: QDialog( parent )
+dForeignKeys::dForeignKeys( OdbcTest *pOdbcTest, QString name )
+: QDialog( pOdbcTest )
 {
     setWindowTitle( name );
     setModal( true );
 
-    odbctest = parent;
+    this->pOdbcTest = pOdbcTest;
 
     ok = new QPushButton( "OK", this );
     ok->setGeometry( 290,10, 70,25 );
@@ -1413,7 +1365,7 @@ dForeignKeys::dForeignKeys( OdbcTest *parent, QString name )
     handles = new QComboBox( this );
     handles -> setGeometry( 100, 15, 150, 20 );
 
-    odbctest->fill_handle_list( SQL_HANDLE_STMT, handles );
+    pOdbcTest->fill_handle_list( SQL_HANDLE_STMT, handles );
 
     l_handle = new QLabel( "Handle:", this );
     l_handle -> setGeometry( 10, 15, 80, 20 );
@@ -1547,7 +1499,7 @@ void dPrimaryKeys::Ok()
     QString qcat, qsch, qtab;
     QString qlcat, qlsch, qltab;
     int cat_len, sch_len, tab_len;
-    Handle *hand = odbctest->extract_handle_list( SQL_HANDLE_STMT, handles );
+    OdbcHandle *hand = pOdbcTest->extract_handle_list( SQL_HANDLE_STMT, handles );
     SQLHANDLE in_handle = SQL_NULL_HANDLE;
 
     if ( hand )
@@ -1567,28 +1519,28 @@ void dPrimaryKeys::Ok()
     lsch = qlsch.toAscii().constData();
     ltab = qltab.toAscii().constData();
 
-    odbctest -> out_win -> insertLineLimited( "SQLPrimaryKeys():" );
-    odbctest -> out_win -> insertLineLimited( "  In:" );
+    pOdbcTest -> out_win -> append( "SQLPrimaryKeys():" );
+    pOdbcTest -> out_win -> append( "  In:" );
     if ( in_handle )
         txt.sprintf( "    Statement Handle: %p", in_handle );
     else
         txt.sprintf( "    Statement Handle: SQL_NULL_HSTMT" );
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     if ( strcmp( cat, "<null ptr>" ) == 0 )
     {
         cat = NULL;
-        odbctest -> out_win -> insertLineLimited( "    Catalog: <null ptr>" );
+        pOdbcTest -> out_win -> append( "    Catalog: <null ptr>" );
     }
     else if ( strcmp( cat, "<empty string>" ) == 0 )
     {
         cat = "";
-        odbctest -> out_win -> insertLineLimited( "    Catalog: <empty string>" );
+        pOdbcTest -> out_win -> append( "    Catalog: <empty string>" );
     }
     else
     {
         txt.sprintf( "    Catalog: %s", cat );
-        odbctest -> out_win -> insertLineLimited( txt );
+        pOdbcTest -> out_win -> append( txt );
     }
 
     if ( strncmp( lcat, "SQL_NTS", 7 ) == 0 )
@@ -1601,22 +1553,22 @@ void dPrimaryKeys::Ok()
         cat_len = atoi( lcat );
         txt.sprintf( "    Catalog Len: %d", cat_len );
     }
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     if ( strcmp( sch, "<null ptr>" ) == 0 )
     {
         sch = NULL;
-        odbctest -> out_win -> insertLineLimited( "    Schema: <null ptr>" );
+        pOdbcTest -> out_win -> append( "    Schema: <null ptr>" );
     }
     else if ( strcmp( sch, "<empty string>" ) == 0 )
     {
         sch = "";
-        odbctest -> out_win -> insertLineLimited( "    Schema: <empty string>" );
+        pOdbcTest -> out_win -> append( "    Schema: <empty string>" );
     }
     else
     {
         txt.sprintf( "    Schema: %s", sch );
-        odbctest -> out_win -> insertLineLimited( txt );
+        pOdbcTest -> out_win -> append( txt );
     }
 
     if ( strncmp( lsch, "SQL_NTS", 7 ) == 0 )
@@ -1629,22 +1581,22 @@ void dPrimaryKeys::Ok()
         sch_len = atoi( lsch );
         txt.sprintf( "    Schema Len: %d", sch_len );
     }
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     if ( strcmp( tab, "<null ptr>" ) == 0 )
     {
         tab = NULL;
-        odbctest -> out_win -> insertLineLimited( "    Table: <null ptr>" );
+        pOdbcTest -> out_win -> append( "    Table: <null ptr>" );
     }
     else if ( strcmp( tab, "<empty string>" ) == 0 )
     {
         tab = "";
-        odbctest -> out_win -> insertLineLimited( "    Table: <empty string>" );
+        pOdbcTest -> out_win -> append( "    Table: <empty string>" );
     }
     else
     {
         txt.sprintf( "    Table: %s", tab );
-        odbctest -> out_win -> insertLineLimited( txt );
+        pOdbcTest -> out_win -> append( txt );
     }
 
     if ( strncmp( ltab, "SQL_NTS", 7 ) == 0 )
@@ -1657,25 +1609,25 @@ void dPrimaryKeys::Ok()
         tab_len = atoi( ltab );
         txt.sprintf( "    Table Len: %d", tab_len );
     }
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     SQLRETURN ret = SQLPrimaryKeys( in_handle, 
                                     (SQLCHAR*)cat, cat_len,
                                     (SQLCHAR*)sch, sch_len, 
                                     (SQLCHAR*)tab, tab_len );
 
-    odbctest -> out_win -> insertLineLimited( "  Return:" );
-    txt.sprintf( "    %s=%d", odbctest->return_as_text( ret ), ret );
-    odbctest -> out_win -> insertLineLimited( txt );
-    odbctest -> out_win -> insertLineLimited( "" );
+    pOdbcTest -> out_win -> append( "  Return:" );
+    txt.sprintf( "    %s=%d", pOdbcTest->return_as_text( ret ), ret );
+    pOdbcTest -> out_win -> append( txt );
+    pOdbcTest -> out_win -> append( "" );
 }
 
-dPrimaryKeys::dPrimaryKeys( OdbcTest *parent, QString name )
-: QDialog( parent )
+dPrimaryKeys::dPrimaryKeys( OdbcTest *pOdbcTest, QString name )
+: QDialog( pOdbcTest )
 {
     setWindowTitle( name );
     setModal( true );
-    odbctest = parent;
+    this->pOdbcTest = pOdbcTest;
 
     ok = new QPushButton( "OK", this );
     ok->setGeometry( 290,10, 70,25 );
@@ -1689,7 +1641,7 @@ dPrimaryKeys::dPrimaryKeys( OdbcTest *parent, QString name )
     handles = new QComboBox( this );
     handles -> setGeometry( 100, 15, 150, 20 );
 
-    odbctest->fill_handle_list( SQL_HANDLE_STMT, handles );
+    pOdbcTest->fill_handle_list( SQL_HANDLE_STMT, handles );
 
     l_handle = new QLabel( "Handle:", this );
     l_handle -> setGeometry( 10, 15, 80, 20 );
@@ -1775,7 +1727,7 @@ void dProcedures::Ok()
     QString qcat, qsch, qtab;
     QString qlcat, qlsch, qltab;
     int cat_len, sch_len, tab_len;
-    Handle *hand = odbctest->extract_handle_list( SQL_HANDLE_STMT, handles );
+    OdbcHandle *hand = pOdbcTest->extract_handle_list( SQL_HANDLE_STMT, handles );
     SQLHANDLE in_handle = SQL_NULL_HANDLE;
 
     if ( hand )
@@ -1795,28 +1747,28 @@ void dProcedures::Ok()
     lsch = qlsch.toAscii().constData();
     ltab = qltab.toAscii().constData();
 
-    odbctest -> out_win -> insertLineLimited( "SQLProcedures():" );
-    odbctest -> out_win -> insertLineLimited( "  In:" );
+    pOdbcTest -> out_win -> append( "SQLProcedures():" );
+    pOdbcTest -> out_win -> append( "  In:" );
     if ( in_handle )
         txt.sprintf( "    Statement Handle: %p", in_handle );
     else
         txt.sprintf( "    Statement Handle: SQL_NULL_HSTMT" );
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     if ( strcmp( cat, "<null ptr>" ) == 0 )
     {
         cat = NULL;
-        odbctest -> out_win -> insertLineLimited( "    Catalog: <null ptr>" );
+        pOdbcTest -> out_win -> append( "    Catalog: <null ptr>" );
     }
     else if ( strcmp( cat, "<empty string>" ) == 0 )
     {
         cat = "";
-        odbctest -> out_win -> insertLineLimited( "    Catalog: <empty string>" );
+        pOdbcTest -> out_win -> append( "    Catalog: <empty string>" );
     }
     else
     {
         txt.sprintf( "    Catalog: %s", cat );
-        odbctest -> out_win -> insertLineLimited( txt );
+        pOdbcTest -> out_win -> append( txt );
     }
 
     if ( strncmp( lcat, "SQL_NTS", 7 ) == 0 )
@@ -1829,22 +1781,22 @@ void dProcedures::Ok()
         cat_len = atoi( lcat );
         txt.sprintf( "    Catalog Len: %d", cat_len );
     }
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     if ( strcmp( sch, "<null ptr>" ) == 0 )
     {
         sch = NULL;
-        odbctest -> out_win -> insertLineLimited( "    Schema: <null ptr>" );
+        pOdbcTest -> out_win -> append( "    Schema: <null ptr>" );
     }
     else if ( strcmp( sch, "<empty string>" ) == 0 )
     {
         sch = "";
-        odbctest -> out_win -> insertLineLimited( "    Schema: <empty string>" );
+        pOdbcTest -> out_win -> append( "    Schema: <empty string>" );
     }
     else
     {
         txt.sprintf( "    Schema: %s", sch );
-        odbctest -> out_win -> insertLineLimited( txt );
+        pOdbcTest -> out_win -> append( txt );
     }
 
     if ( strncmp( lsch, "SQL_NTS", 7 ) == 0 )
@@ -1857,22 +1809,22 @@ void dProcedures::Ok()
         sch_len = atoi( lsch );
         txt.sprintf( "    Schema Len: %d", sch_len );
     }
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     if ( strcmp( tab, "<null ptr>" ) == 0 )
     {
         tab = NULL;
-        odbctest -> out_win -> insertLineLimited( "    Procedure: <null ptr>" );
+        pOdbcTest -> out_win -> append( "    Procedure: <null ptr>" );
     }
     else if ( strcmp( tab, "<empty string>" ) == 0 )
     {
         tab = "";
-        odbctest -> out_win -> insertLineLimited( "    Procedure: <empty string>" );
+        pOdbcTest -> out_win -> append( "    Procedure: <empty string>" );
     }
     else
     {
         txt.sprintf( "    Procedure: %s", tab );
-        odbctest -> out_win -> insertLineLimited( txt );
+        pOdbcTest -> out_win -> append( txt );
     }
 
     if ( strncmp( ltab, "SQL_NTS", 7 ) == 0 )
@@ -1885,25 +1837,25 @@ void dProcedures::Ok()
         tab_len = atoi( ltab );
         txt.sprintf( "    Procedure Len: %d", tab_len );
     }
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     SQLRETURN ret = SQLProcedures( in_handle, 
                                    (SQLCHAR*)cat, cat_len,
                                    (SQLCHAR*)sch, sch_len, 
                                    (SQLCHAR*)tab, tab_len );
 
-    odbctest -> out_win -> insertLineLimited( "  Return:" );
-    txt.sprintf( "    %s=%d", odbctest->return_as_text( ret ), ret );
-    odbctest -> out_win -> insertLineLimited( txt );
-    odbctest -> out_win -> insertLineLimited( "" );
+    pOdbcTest -> out_win -> append( "  Return:" );
+    txt.sprintf( "    %s=%d", pOdbcTest->return_as_text( ret ), ret );
+    pOdbcTest -> out_win -> append( txt );
+    pOdbcTest -> out_win -> append( "" );
 }
 
-dProcedures::dProcedures( OdbcTest *parent, QString name )
-: QDialog( parent )
+dProcedures::dProcedures( OdbcTest *pOdbcTest, QString name )
+: QDialog( pOdbcTest )
 {
     setWindowTitle( name );
     setModal( true );
-    odbctest = parent;
+    this->pOdbcTest = pOdbcTest;
 
     ok = new QPushButton( "OK", this );
     ok->setGeometry( 290,10, 70,25 );
@@ -1917,7 +1869,7 @@ dProcedures::dProcedures( OdbcTest *parent, QString name )
     handles = new QComboBox( this );
     handles -> setGeometry( 100, 15, 150, 20 );
 
-    odbctest->fill_handle_list( SQL_HANDLE_STMT, handles );
+    pOdbcTest->fill_handle_list( SQL_HANDLE_STMT, handles );
 
     l_handle = new QLabel( "Handle:", this );
     l_handle -> setGeometry( 10, 15, 80, 20 );
@@ -2003,7 +1955,7 @@ void dProcedureColumns::Ok()
     QString qcat, qsch, qtab, qcol;
     QString qlcat, qlsch, qltab, qlcol;
     int cat_len, sch_len, tab_len, col_len;
-    Handle *hand = odbctest->extract_handle_list( SQL_HANDLE_STMT, handles );
+    OdbcHandle *hand = pOdbcTest->extract_handle_list( SQL_HANDLE_STMT, handles );
     SQLHANDLE in_handle = SQL_NULL_HANDLE;
 
     if ( hand )
@@ -2027,28 +1979,28 @@ void dProcedureColumns::Ok()
     ltab = qltab.toAscii().constData();
     lcol = qlcol.toAscii().constData();
 
-    odbctest -> out_win -> insertLineLimited( "SQLProcedureColumns():" );
-    odbctest -> out_win -> insertLineLimited( "  In:" );
+    pOdbcTest -> out_win -> append( "SQLProcedureColumns():" );
+    pOdbcTest -> out_win -> append( "  In:" );
     if ( in_handle )
         txt.sprintf( "    Statement Handle: %p", in_handle );
     else
         txt.sprintf( "    Statement Handle: SQL_NULL_HSTMT" );
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     if ( strcmp( cat, "<null ptr>" ) == 0 )
     {
         cat = NULL;
-        odbctest -> out_win -> insertLineLimited( "    Catalog: <null ptr>" );
+        pOdbcTest -> out_win -> append( "    Catalog: <null ptr>" );
     }
     else if ( strcmp( cat, "<empty string>" ) == 0 )
     {
         cat = "";
-        odbctest -> out_win -> insertLineLimited( "    Catalog: <empty string>" );
+        pOdbcTest -> out_win -> append( "    Catalog: <empty string>" );
     }
     else
     {
         txt.sprintf( "    Catalog: %s", cat );
-        odbctest -> out_win -> insertLineLimited( txt );
+        pOdbcTest -> out_win -> append( txt );
     }
 
     if ( strncmp( lcat, "SQL_NTS", 7 ) == 0 )
@@ -2061,22 +2013,22 @@ void dProcedureColumns::Ok()
         cat_len = atoi( lcat );
         txt.sprintf( "    Catalog Len: %d", cat_len );
     }
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     if ( strcmp( sch, "<null ptr>" ) == 0 )
     {
         sch = NULL;
-        odbctest -> out_win -> insertLineLimited( "    Schema: <null ptr>" );
+        pOdbcTest -> out_win -> append( "    Schema: <null ptr>" );
     }
     else if ( strcmp( sch, "<empty string>" ) == 0 )
     {
         sch = "";
-        odbctest -> out_win -> insertLineLimited( "    Schema: <empty string>" );
+        pOdbcTest -> out_win -> append( "    Schema: <empty string>" );
     }
     else
     {
         txt.sprintf( "    Schema: %s", sch );
-        odbctest -> out_win -> insertLineLimited( txt );
+        pOdbcTest -> out_win -> append( txt );
     }
 
     if ( strncmp( lsch, "SQL_NTS", 7 ) == 0 )
@@ -2089,22 +2041,22 @@ void dProcedureColumns::Ok()
         sch_len = atoi( lsch );
         txt.sprintf( "    Schema Len: %d", sch_len );
     }
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     if ( strcmp( tab, "<null ptr>" ) == 0 )
     {
         tab = NULL;
-        odbctest -> out_win -> insertLineLimited( "    Procedure: <null ptr>" );
+        pOdbcTest -> out_win -> append( "    Procedure: <null ptr>" );
     }
     else if ( strcmp( tab, "<empty string>" ) == 0 )
     {
         tab = "";
-        odbctest -> out_win -> insertLineLimited( "    Procedure: <empty string>" );
+        pOdbcTest -> out_win -> append( "    Procedure: <empty string>" );
     }
     else
     {
         txt.sprintf( "    Procedure: %s", tab );
-        odbctest -> out_win -> insertLineLimited( txt );
+        pOdbcTest -> out_win -> append( txt );
     }
 
     if ( strncmp( ltab, "SQL_NTS", 7 ) == 0 )
@@ -2117,22 +2069,22 @@ void dProcedureColumns::Ok()
         tab_len = atoi( ltab );
         txt.sprintf( "    Table Len: %d", tab_len );
     }
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     if ( strcmp( col, "<null ptr>" ) == 0 )
     {
         col = NULL;
-        odbctest -> out_win -> insertLineLimited( "    Column: <null ptr>" );
+        pOdbcTest -> out_win -> append( "    Column: <null ptr>" );
     }
     else if ( strcmp( col, "<empty string>" ) == 0 )
     {
         col = "";
-        odbctest -> out_win -> insertLineLimited( "    Column: <empty string>" );
+        pOdbcTest -> out_win -> append( "    Column: <empty string>" );
     }
     else
     {
         txt.sprintf( "    Column: %s", col );
-        odbctest -> out_win -> insertLineLimited( txt );
+        pOdbcTest -> out_win -> append( txt );
     }
 
     if ( strncmp( lcol, "SQL_NTS", 7 ) == 0 )
@@ -2145,7 +2097,7 @@ void dProcedureColumns::Ok()
         col_len = atoi( lcol );
         txt.sprintf( "    Column Len: %d", col_len );
     }
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     SQLRETURN ret = SQLProcedureColumns( in_handle, 
                                          (SQLCHAR*)cat, cat_len,
@@ -2153,18 +2105,18 @@ void dProcedureColumns::Ok()
                                          (SQLCHAR*)tab, tab_len,
                                          (SQLCHAR*)col, col_len );
 
-    odbctest -> out_win -> insertLineLimited( "  Return:" );
-    txt.sprintf( "    %s=%d", odbctest->return_as_text( ret ), ret );
-    odbctest -> out_win -> insertLineLimited( txt );
-    odbctest -> out_win -> insertLineLimited( "" );
+    pOdbcTest -> out_win -> append( "  Return:" );
+    txt.sprintf( "    %s=%d", pOdbcTest->return_as_text( ret ), ret );
+    pOdbcTest -> out_win -> append( txt );
+    pOdbcTest -> out_win -> append( "" );
 }
 
-dProcedureColumns::dProcedureColumns( OdbcTest *parent, QString name )
-: QDialog( parent )
+dProcedureColumns::dProcedureColumns( OdbcTest *pOdbcTest, QString name )
+: QDialog( pOdbcTest )
 {
     setWindowTitle( name );
 
-    odbctest = parent;
+    this->pOdbcTest = pOdbcTest;
 
     ok = new QPushButton( "OK", this );
     ok->setGeometry( 290,10, 70,25 );
@@ -2178,7 +2130,7 @@ dProcedureColumns::dProcedureColumns( OdbcTest *parent, QString name )
     handles = new QComboBox( this );
     handles -> setGeometry( 100, 15, 150, 20 );
 
-    odbctest->fill_handle_list( SQL_HANDLE_STMT, handles );
+    pOdbcTest->fill_handle_list( SQL_HANDLE_STMT, handles );
 
     l_handle = new QLabel( "Handle:", this );
     l_handle -> setGeometry( 10, 15, 80, 20 );
@@ -2284,7 +2236,7 @@ void dTablePrivileges::Ok()
     QString qcat, qsch, qtab;
     QString qlcat, qlsch, qltab;
     int cat_len, sch_len, tab_len;
-    Handle *hand = odbctest->extract_handle_list( SQL_HANDLE_STMT, handles );
+    OdbcHandle *hand = pOdbcTest->extract_handle_list( SQL_HANDLE_STMT, handles );
     SQLHANDLE in_handle = SQL_NULL_HANDLE;
 
     if ( hand )
@@ -2304,28 +2256,28 @@ void dTablePrivileges::Ok()
     lsch = qlsch.toAscii().constData();
     ltab = qltab.toAscii().constData();
 
-    odbctest -> out_win -> insertLineLimited( "SQLTablePrivileges():" );
-    odbctest -> out_win -> insertLineLimited( "  In:" );
+    pOdbcTest -> out_win -> append( "SQLTablePrivileges():" );
+    pOdbcTest -> out_win -> append( "  In:" );
     if ( in_handle )
         txt.sprintf( "    Statement Handle: %p", in_handle );
     else
         txt.sprintf( "    Statement Handle: SQL_NULL_HSTMT" );
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     if ( strcmp( cat, "<null ptr>" ) == 0 )
     {
         cat = NULL;
-        odbctest -> out_win -> insertLineLimited( "    Catalog: <null ptr>" );
+        pOdbcTest -> out_win -> append( "    Catalog: <null ptr>" );
     }
     else if ( strcmp( cat, "<empty string>" ) == 0 )
     {
         cat = "";
-        odbctest -> out_win -> insertLineLimited( "    Catalog: <empty string>" );
+        pOdbcTest -> out_win -> append( "    Catalog: <empty string>" );
     }
     else
     {
         txt.sprintf( "    Catalog: %s", cat );
-        odbctest -> out_win -> insertLineLimited( txt );
+        pOdbcTest -> out_win -> append( txt );
     }
 
     if ( strncmp( lcat, "SQL_NTS", 7 ) == 0 )
@@ -2338,22 +2290,22 @@ void dTablePrivileges::Ok()
         cat_len = atoi( lcat );
         txt.sprintf( "    Catalog Len: %d", cat_len );
     }
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     if ( strcmp( sch, "<null ptr>" ) == 0 )
     {
         sch = NULL;
-        odbctest -> out_win -> insertLineLimited( "    Schema: <null ptr>" );
+        pOdbcTest -> out_win -> append( "    Schema: <null ptr>" );
     }
     else if ( strcmp( sch, "<empty string>" ) == 0 )
     {
         sch = "";
-        odbctest -> out_win -> insertLineLimited( "    Schema: <empty string>" );
+        pOdbcTest -> out_win -> append( "    Schema: <empty string>" );
     }
     else
     {
         txt.sprintf( "    Schema: %s", sch );
-        odbctest -> out_win -> insertLineLimited( txt );
+        pOdbcTest -> out_win -> append( txt );
     }
 
     if ( strncmp( lsch, "SQL_NTS", 7 ) == 0 )
@@ -2366,22 +2318,22 @@ void dTablePrivileges::Ok()
         sch_len = atoi( lsch );
         txt.sprintf( "    Schema Len: %d", sch_len );
     }
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     if ( strcmp( tab, "<null ptr>" ) == 0 )
     {
         tab = NULL;
-        odbctest -> out_win -> insertLineLimited( "    Table: <null ptr>" );
+        pOdbcTest -> out_win -> append( "    Table: <null ptr>" );
     }
     else if ( strcmp( tab, "<empty string>" ) == 0 )
     {
         tab = "";
-        odbctest -> out_win -> insertLineLimited( "    Table: <empty string>" );
+        pOdbcTest -> out_win -> append( "    Table: <empty string>" );
     }
     else
     {
         txt.sprintf( "    Table: %s", tab );
-        odbctest -> out_win -> insertLineLimited( txt );
+        pOdbcTest -> out_win -> append( txt );
     }
 
     if ( strncmp( ltab, "SQL_NTS", 7 ) == 0 )
@@ -2394,25 +2346,25 @@ void dTablePrivileges::Ok()
         tab_len = atoi( ltab );
         txt.sprintf( "    Table Len: %d", tab_len );
     }
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     SQLRETURN ret = SQLTablePrivileges( in_handle, 
                                         (SQLCHAR*)cat, cat_len,
                                         (SQLCHAR*)sch, sch_len, 
                                         (SQLCHAR*)tab, tab_len );
 
-    odbctest -> out_win -> insertLineLimited( "  Return:" );
-    txt.sprintf( "    %s=%d", odbctest->return_as_text( ret ), ret );
-    odbctest -> out_win -> insertLineLimited( txt );
-    odbctest -> out_win -> insertLineLimited( "" );
+    pOdbcTest -> out_win -> append( "  Return:" );
+    txt.sprintf( "    %s=%d", pOdbcTest->return_as_text( ret ), ret );
+    pOdbcTest -> out_win -> append( txt );
+    pOdbcTest -> out_win -> append( "" );
 }
 
-dTablePrivileges::dTablePrivileges( OdbcTest *parent, QString name )
-: QDialog( parent )
+dTablePrivileges::dTablePrivileges( OdbcTest *pOdbcTest, QString name )
+: QDialog( pOdbcTest )
 {
     setWindowTitle( name );
     setModal( true );
-    odbctest = parent;
+    this->pOdbcTest = pOdbcTest;
 
     ok = new QPushButton( "OK", this );
     ok->setGeometry( 290,10, 70,25 );
@@ -2426,7 +2378,7 @@ dTablePrivileges::dTablePrivileges( OdbcTest *parent, QString name )
     handles = new QComboBox( this );
     handles -> setGeometry( 100, 15, 150, 20 );
 
-    odbctest->fill_handle_list( SQL_HANDLE_STMT, handles );
+    pOdbcTest->fill_handle_list( SQL_HANDLE_STMT, handles );
 
     l_handle = new QLabel( "Handle:", this );
     l_handle -> setGeometry( 10, 15, 80, 20 );
@@ -2507,7 +2459,7 @@ dTablePrivileges::~dTablePrivileges()
 
 void dGetTypeInfo::Ok()
 {
-    Handle *hand = odbctest->extract_handle_list( SQL_HANDLE_STMT, handles );
+    OdbcHandle *hand = pOdbcTest->extract_handle_list( SQL_HANDLE_STMT, handles );
     int index;
     SQLHANDLE in_handle = SQL_NULL_HANDLE;
     SQLINTEGER info_type;
@@ -2515,37 +2467,37 @@ void dGetTypeInfo::Ok()
     if ( hand )
         in_handle = hand -> getHandle();
 
-    odbctest -> out_win -> insertLineLimited( "SQLGetTypeInfo():" );
-    odbctest -> out_win -> insertLineLimited( "  In:" );
+    pOdbcTest -> out_win -> append( "SQLGetTypeInfo():" );
+    pOdbcTest -> out_win -> append( "  In:" );
 
     if ( in_handle )
         txt.sprintf( "    Statement Handle: %p", in_handle );
     else
         txt.sprintf( "    Statement Handle: SQL_NULL_HSTMT" );
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     index = type -> currentIndex(); 
 
     info_type = get_type_options[ index ].attr;
     txt.sprintf( "    Data Type: %s=%d (%s)", get_type_options[ index ].text,
                  get_type_options[ index ].attr, get_type_options[ index ].version );
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     SQLRETURN ret = SQLGetTypeInfo( in_handle, info_type );
 
-    odbctest -> out_win -> insertLineLimited( "  Return:" );
-    txt.sprintf( "    %s=%d", odbctest->return_as_text( ret ), ret );
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( "  Return:" );
+    txt.sprintf( "    %s=%d", pOdbcTest->return_as_text( ret ), ret );
+    pOdbcTest -> out_win -> append( txt );
 
-    odbctest -> out_win -> insertLineLimited( "" );
+    pOdbcTest -> out_win -> append( "" );
 }
 
-dGetTypeInfo::dGetTypeInfo( OdbcTest *parent, QString name )
-: QDialog( parent )
+dGetTypeInfo::dGetTypeInfo( OdbcTest *pOdbcTest, QString name )
+: QDialog( pOdbcTest )
 {
     setWindowTitle( name );
     setModal( true );
-    odbctest = parent;
+    this->pOdbcTest = pOdbcTest;
 
     ok = new QPushButton( "OK", this );
     ok->setGeometry( 240,10, 70,25 );
@@ -2558,7 +2510,7 @@ dGetTypeInfo::dGetTypeInfo( OdbcTest *parent, QString name )
 
     handles = new QComboBox( this );
     handles -> setGeometry( 130, 50, 200, 20 );
-    odbctest->fill_handle_list( SQL_HANDLE_STMT, handles );
+    pOdbcTest->fill_handle_list( SQL_HANDLE_STMT, handles );
 
     l_handle = new QLabel( "Statement Handle:", this );
     l_handle -> setGeometry( 10, 50, 120, 20 );
@@ -2566,7 +2518,7 @@ dGetTypeInfo::dGetTypeInfo( OdbcTest *parent, QString name )
     type = new QComboBox( this );
     type -> setGeometry( 130, 80, 340, 20 );
 
-    parent->fill_list_box( get_type_options, type );
+    pOdbcTest->fill_list_box( get_type_options, type );
 
     l_type = new QLabel( "Data Type:", this );
     l_type -> setGeometry( 10, 80, 120, 20 );
@@ -2595,7 +2547,7 @@ void dStatistics::Ok()
     QString qlcat, qlsch, qltab;
     int cat_len, sch_len, tab_len;
     int res, res_val, uniq, uniq_val;
-    Handle *hand = odbctest->extract_handle_list( SQL_HANDLE_STMT, handles );
+    OdbcHandle *hand = pOdbcTest->extract_handle_list( SQL_HANDLE_STMT, handles );
     SQLHANDLE in_handle = SQL_NULL_HANDLE;
 
     if ( hand )
@@ -2615,28 +2567,28 @@ void dStatistics::Ok()
     lsch = qlsch.toAscii().constData();
     ltab = qltab.toAscii().constData();
 
-    odbctest -> out_win -> insertLineLimited( "SQLStatistics():" );
-    odbctest -> out_win -> insertLineLimited( "  In:" );
+    pOdbcTest -> out_win -> append( "SQLStatistics():" );
+    pOdbcTest -> out_win -> append( "  In:" );
     if ( in_handle )
         txt.sprintf( "    Statement Handle: %p", in_handle );
     else
         txt.sprintf( "    Statement Handle: SQL_NULL_HSTMT" );
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     if ( strcmp( cat, "<null ptr>" ) == 0 )
     {
         cat = NULL;
-        odbctest -> out_win -> insertLineLimited( "    Catalog: <null ptr>" );
+        pOdbcTest -> out_win -> append( "    Catalog: <null ptr>" );
     }
     else if ( strcmp( cat, "<empty string>" ) == 0 )
     {
         cat = "";
-        odbctest -> out_win -> insertLineLimited( "    Catalog: <empty string>" );
+        pOdbcTest -> out_win -> append( "    Catalog: <empty string>" );
     }
     else
     {
         txt.sprintf( "    Catalog: %s", cat );
-        odbctest -> out_win -> insertLineLimited( txt );
+        pOdbcTest -> out_win -> append( txt );
     }
 
     if ( strncmp( lcat, "SQL_NTS", 7 ) == 0 )
@@ -2649,22 +2601,22 @@ void dStatistics::Ok()
         cat_len = atoi( lcat );
         txt.sprintf( "    Catalog Len: %d", cat_len );
     }
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     if ( strcmp( sch, "<null ptr>" ) == 0 )
     {
         sch = NULL;
-        odbctest -> out_win -> insertLineLimited( "    Schema: <null ptr>" );
+        pOdbcTest -> out_win -> append( "    Schema: <null ptr>" );
     }
     else if ( strcmp( sch, "<empty string>" ) == 0 )
     {
         sch = "";
-        odbctest -> out_win -> insertLineLimited( "    Schema: <empty string>" );
+        pOdbcTest -> out_win -> append( "    Schema: <empty string>" );
     }
     else
     {
         txt.sprintf( "    Schema: %s", sch );
-        odbctest -> out_win -> insertLineLimited( txt );
+        pOdbcTest -> out_win -> append( txt );
     }
 
     if ( strncmp( lsch, "SQL_NTS", 7 ) == 0 )
@@ -2677,22 +2629,22 @@ void dStatistics::Ok()
         sch_len = atoi( lsch );
         txt.sprintf( "    Schema Len: %d", sch_len );
     }
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     if ( strcmp( tab, "<null ptr>" ) == 0 )
     {
         tab = NULL;
-        odbctest -> out_win -> insertLineLimited( "    Table: <null ptr>" );
+        pOdbcTest -> out_win -> append( "    Table: <null ptr>" );
     }
     else if ( strcmp( tab, "<empty string>" ) == 0 )
     {
         tab = "";
-        odbctest -> out_win -> insertLineLimited( "    Table: <empty string>" );
+        pOdbcTest -> out_win -> append( "    Table: <empty string>" );
     }
     else
     {
         txt.sprintf( "    Table: %s", tab );
-        odbctest -> out_win -> insertLineLimited( txt );
+        pOdbcTest -> out_win -> append( txt );
     }
 
     if ( strncmp( ltab, "SQL_NTS", 7 ) == 0 )
@@ -2705,21 +2657,21 @@ void dStatistics::Ok()
         tab_len = atoi( ltab );
         txt.sprintf( "    Table Len: %d", tab_len );
     }
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     uniq = unique -> currentIndex(); 
 
     uniq_val = unique_options[ uniq ].attr;
     txt.sprintf( "    Unique: %s=%d (%s)", unique_options[ uniq ].text,
                  unique_options[ uniq ].attr, unique_options[ uniq ].version );
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     res = reserved -> currentIndex(); 
 
     res_val = reserved_options[ res ].attr;
     txt.sprintf( "    Reserved: %s=%d (%s)", reserved_options[ res ].text,
                  reserved_options[ res ].attr, reserved_options[ res ].version );
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     SQLRETURN ret = SQLStatistics( in_handle, 
                                    (SQLCHAR*)cat, cat_len,
@@ -2728,18 +2680,18 @@ void dStatistics::Ok()
                                    uniq_val,
                                    res_val );
 
-    odbctest -> out_win -> insertLineLimited( "  Return:" );
-    txt.sprintf( "    %s=%d", odbctest->return_as_text( ret ), ret );
-    odbctest -> out_win -> insertLineLimited( txt );
-    odbctest -> out_win -> insertLineLimited( "" );
+    pOdbcTest -> out_win -> append( "  Return:" );
+    txt.sprintf( "    %s=%d", pOdbcTest->return_as_text( ret ), ret );
+    pOdbcTest -> out_win -> append( txt );
+    pOdbcTest -> out_win -> append( "" );
 }
 
-dStatistics::dStatistics( OdbcTest *parent, QString name )
-: QDialog( parent )
+dStatistics::dStatistics( OdbcTest *pOdbcTest, QString name )
+: QDialog( pOdbcTest )
 {
     setWindowTitle( name );
     setModal( true );
-    odbctest = parent;
+    this->pOdbcTest = pOdbcTest;
 
     ok = new QPushButton( "OK", this );
     ok->setGeometry( 290,10, 70,25 );
@@ -2753,7 +2705,7 @@ dStatistics::dStatistics( OdbcTest *parent, QString name )
     handles = new QComboBox( this );
     handles -> setGeometry( 100, 15, 150, 20 );
 
-    odbctest->fill_handle_list( SQL_HANDLE_STMT, handles );
+    pOdbcTest->fill_handle_list( SQL_HANDLE_STMT, handles );
 
     l_handle = new QLabel( "Handle:", this );
     l_handle -> setGeometry( 10, 15, 80, 20 );
@@ -2808,13 +2760,13 @@ dStatistics::dStatistics( OdbcTest *parent, QString name )
 
     unique = new QComboBox( this );
     unique -> setGeometry( 100, 140, 200, 20 );
-    parent->fill_list_box( unique_options, unique );
+    pOdbcTest->fill_list_box( unique_options, unique );
     l_unique = new QLabel( "Unique:", this );
     l_unique -> setGeometry( 10, 140, 90, 20 );
 
     reserved = new QComboBox( this );
     reserved -> setGeometry( 100, 170, 200, 20 );
-    parent->fill_list_box( reserved_options, reserved );
+    pOdbcTest->fill_list_box( reserved_options, reserved );
     l_reserved = new QLabel( "Reserved:", this );
     l_reserved -> setGeometry( 10, 170, 90, 20 );
 
@@ -2857,7 +2809,7 @@ void dSpecialColumns::Ok()
     int cat_len, sch_len, tab_len;
     int nul, nul_val, scp, scp_val;
     int id, id_val;
-    Handle *hand = odbctest->extract_handle_list( SQL_HANDLE_STMT, handles );
+    OdbcHandle *hand = pOdbcTest->extract_handle_list( SQL_HANDLE_STMT, handles );
     SQLHANDLE in_handle = SQL_NULL_HANDLE;
 
     if ( hand )
@@ -2879,35 +2831,35 @@ void dSpecialColumns::Ok()
     lsch = qlsch.toAscii().constData();
     ltab = qltab.toAscii().constData();
 
-    odbctest -> out_win -> insertLineLimited( "SQLSpecialColumns():" );
-    odbctest -> out_win -> insertLineLimited( "  In:" );
+    pOdbcTest -> out_win -> append( "SQLSpecialColumns():" );
+    pOdbcTest -> out_win -> append( "  In:" );
     if ( in_handle )
         txt.sprintf( "    Statement Handle: %p", in_handle );
     else
         txt.sprintf( "    Statement Handle: SQL_NULL_HSTMT" );
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     id = ident -> currentIndex(); 
 
     id_val = ident_options[ id ].attr;
     txt.sprintf( "    Identifier Type: %s=%d (%s)", ident_options[ id ].text,
                  ident_options[ id ].attr, ident_options[ id ].version );
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     if ( strcmp( cat, "<null ptr>" ) == 0 )
     {
         cat = NULL;
-        odbctest -> out_win -> insertLineLimited( "    Catalog: <null ptr>" );
+        pOdbcTest -> out_win -> append( "    Catalog: <null ptr>" );
     }
     else if ( strcmp( cat, "<empty string>" ) == 0 )
     {
         cat = "";
-        odbctest -> out_win -> insertLineLimited( "    Catalog: <empty string>" );
+        pOdbcTest -> out_win -> append( "    Catalog: <empty string>" );
     }
     else
     {
         txt.sprintf( "    Catalog: %s", cat );
-        odbctest -> out_win -> insertLineLimited( txt );
+        pOdbcTest -> out_win -> append( txt );
     }
 
     if ( strncmp( lcat, "SQL_NTS", 7 ) == 0 )
@@ -2920,22 +2872,22 @@ void dSpecialColumns::Ok()
         cat_len = atoi( lcat );
         txt.sprintf( "    Catalog Len: %d", cat_len );
     }
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     if ( strcmp( sch, "<null ptr>" ) == 0 )
     {
         sch = NULL;
-        odbctest -> out_win -> insertLineLimited( "    Schema: <null ptr>" );
+        pOdbcTest -> out_win -> append( "    Schema: <null ptr>" );
     }
     else if ( strcmp( sch, "<empty string>" ) == 0 )
     {
         sch = "";
-        odbctest -> out_win -> insertLineLimited( "    Schema: <empty string>" );
+        pOdbcTest -> out_win -> append( "    Schema: <empty string>" );
     }
     else
     {
         txt.sprintf( "    Schema: %s", sch );
-        odbctest -> out_win -> insertLineLimited( txt );
+        pOdbcTest -> out_win -> append( txt );
     }
 
     if ( strncmp( lsch, "SQL_NTS", 7 ) == 0 )
@@ -2948,22 +2900,22 @@ void dSpecialColumns::Ok()
         sch_len = atoi( lsch );
         txt.sprintf( "    Schema Len: %d", sch_len );
     }
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     if ( strcmp( tab, "<null ptr>" ) == 0 )
     {
         tab = NULL;
-        odbctest -> out_win -> insertLineLimited( "    Table: <null ptr>" );
+        pOdbcTest -> out_win -> append( "    Table: <null ptr>" );
     }
     else if ( strcmp( tab, "<empty string>" ) == 0 )
     {
         tab = "";
-        odbctest -> out_win -> insertLineLimited( "    Table: <empty string>" );
+        pOdbcTest -> out_win -> append( "    Table: <empty string>" );
     }
     else
     {
         txt.sprintf( "    Table: %s", tab );
-        odbctest -> out_win -> insertLineLimited( txt );
+        pOdbcTest -> out_win -> append( txt );
     }
 
     if ( strncmp( ltab, "SQL_NTS", 7 ) == 0 )
@@ -2976,21 +2928,21 @@ void dSpecialColumns::Ok()
         tab_len = atoi( ltab );
         txt.sprintf( "    Table Len: %d", tab_len );
     }
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     scp = scope -> currentIndex(); 
 
     scp_val = unique_options[ scp ].attr;
     txt.sprintf( "    Scope: %s=%d (%s)", scope_options[ scp ].text,
                  scope_options[ scp ].attr, scope_options[ scp ].version );
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     nul = nullable -> currentIndex(); 
 
     nul_val = null_options[ nul ].attr;
     txt.sprintf( "    Nullable: %s=%d (%s)", null_options[ nul ].text,
                  null_options[ nul ].attr, null_options[ nul ].version );
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest -> out_win -> append( txt );
 
     SQLRETURN ret = SQLSpecialColumns( in_handle, 
                                        id_val,
@@ -3000,18 +2952,18 @@ void dSpecialColumns::Ok()
                                        scp_val,
                                        nul_val );
 
-    odbctest -> out_win -> insertLineLimited( "  Return:" );
-    txt.sprintf( "    %s=%d", odbctest->return_as_text( ret ), ret );
-    odbctest -> out_win -> insertLineLimited( txt );
-    odbctest -> out_win -> insertLineLimited( "" );
+    pOdbcTest -> out_win -> append( "  Return:" );
+    txt.sprintf( "    %s=%d", pOdbcTest->return_as_text( ret ), ret );
+    pOdbcTest -> out_win -> append( txt );
+    pOdbcTest -> out_win -> append( "" );
 }
 
-dSpecialColumns::dSpecialColumns( OdbcTest *parent, QString name )
-: QDialog( parent )
+dSpecialColumns::dSpecialColumns( OdbcTest *pOdbcTest, QString name )
+: QDialog( pOdbcTest )
 {
     setWindowTitle( name );
 
-    odbctest = parent;
+    this->pOdbcTest = pOdbcTest;
 
     ok = new QPushButton( "OK", this );
     ok->setGeometry( 290,10, 70,25 );
@@ -3025,14 +2977,14 @@ dSpecialColumns::dSpecialColumns( OdbcTest *parent, QString name )
     handles = new QComboBox( this );
     handles -> setGeometry( 100, 15, 150, 20 );
 
-    odbctest->fill_handle_list( SQL_HANDLE_STMT, handles );
+    pOdbcTest->fill_handle_list( SQL_HANDLE_STMT, handles );
 
     l_handle = new QLabel( "Handle:", this );
     l_handle -> setGeometry( 10, 15, 80, 20 );
 
     ident = new QComboBox( this );
     ident -> setGeometry( 100, 50, 250, 20 );
-    parent->fill_list_box( ident_options, ident );
+    pOdbcTest->fill_list_box( ident_options, ident );
     l_ident = new QLabel( "Identifier Type:", this );
     l_ident -> setGeometry( 10, 50, 90, 20 );
 
@@ -3086,13 +3038,13 @@ dSpecialColumns::dSpecialColumns( OdbcTest *parent, QString name )
 
     scope = new QComboBox( this );
     scope -> setGeometry( 100, 170, 250, 20 );
-    parent->fill_list_box( scope_options, scope );
+    pOdbcTest->fill_list_box( scope_options, scope );
     l_scope = new QLabel( "Scope:", this );
     l_scope -> setGeometry( 10, 170, 90, 20 );
 
     nullable = new QComboBox( this );
     nullable -> setGeometry( 100, 200, 250, 20 );
-    parent->fill_list_box( null_options, nullable );
+    pOdbcTest->fill_list_box( null_options, nullable );
     l_nullable = new QLabel( "Reserved:", this );
     l_nullable -> setGeometry( 10, 200, 90, 20 );
 

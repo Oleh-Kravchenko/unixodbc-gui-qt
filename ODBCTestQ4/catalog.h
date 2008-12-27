@@ -19,24 +19,25 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- **********************************************************************/
-/*
+ **********************************************************************
+ *
  * 2008-12-10   Code adopted by unixODBC-GUI-Qt project. Heavily altered
  * pharvey      to be Qt4 only code.
  * 
- */
+ **********************************************************************/
 
-#ifndef CATALOG_H
-#define CATALOG_H
+#pragma once
 
-#include "odbctest.h"
+#include "OdbcHandle.h"
+
+class OdbcTest;
 
 class dTables : public QDialog 
 {
     Q_OBJECT
 
     public:
-        dTables( OdbcTest *parent, QString name );
+        dTables( OdbcTest *pOdbcTest, QString name );
         ~dTables();
 
 	protected:
@@ -46,8 +47,8 @@ class dTables : public QDialog
 		QLabel *l_handle, *l_schema, *l_catalog, *l_table, *l_type;
 		QLabel *l_schema_len, *l_catalog_len, *l_table_len, *l_type_len;
 		QTextEdit *in_win;
-		OutputWin *out_win;
-		OdbcTest *odbctest;
+		QTextEdit *out_win;
+		OdbcTest *pOdbcTest;
 		QString txt;
 
 	protected slots:
@@ -59,7 +60,7 @@ class dColumns : public QDialog
     Q_OBJECT
 
     public:
-        dColumns( OdbcTest *parent, QString name );
+        dColumns( OdbcTest *pOdbcTest, QString name );
         ~dColumns();
 
 	protected:
@@ -69,8 +70,8 @@ class dColumns : public QDialog
 		QLabel *l_handle, *l_schema, *l_catalog, *l_table, *l_column;
 		QLabel *l_schema_len, *l_catalog_len, *l_table_len, *l_column_len;
 		QTextEdit *in_win;
-		OutputWin *out_win;
-		OdbcTest *odbctest;
+		QTextEdit *out_win;
+		OdbcTest *pOdbcTest;
 		QString txt;
 
 	protected slots:
@@ -82,7 +83,7 @@ class dColumnPrivileges : public QDialog
     Q_OBJECT
 
     public:
-        dColumnPrivileges( OdbcTest *parent, QString name );
+        dColumnPrivileges( OdbcTest *pOdbcTest, QString name );
         ~dColumnPrivileges();
 
 	protected:
@@ -92,8 +93,8 @@ class dColumnPrivileges : public QDialog
 		QLabel *l_handle, *l_schema, *l_catalog, *l_table, *l_column;
 		QLabel *l_schema_len, *l_catalog_len, *l_table_len, *l_column_len;
 		QTextEdit *in_win;
-		OutputWin *out_win;
-		OdbcTest *odbctest;
+		QTextEdit *out_win;
+		OdbcTest *pOdbcTest;
 		QString txt;
 
 	protected slots:
@@ -105,7 +106,7 @@ class dForeignKeys : public QDialog
     Q_OBJECT
 
     public:
-        dForeignKeys( OdbcTest *parent, QString name );
+        dForeignKeys( OdbcTest *pOdbcTest, QString name );
         ~dForeignKeys();
 
 	protected:
@@ -119,8 +120,8 @@ class dForeignKeys : public QDialog
 		QLabel *l_schema_len, *l_catalog_len, *l_table_len;
 		QLabel *fk_l_schema_len, *fk_l_catalog_len, *fk_l_table_len;
 		QTextEdit *in_win;
-		OutputWin *out_win;
-		OdbcTest *odbctest;
+		QTextEdit *out_win;
+		OdbcTest *pOdbcTest;
 		QString txt;
 
 	protected slots:
@@ -132,7 +133,7 @@ class dPrimaryKeys : public QDialog
     Q_OBJECT
 
     public:
-        dPrimaryKeys( OdbcTest *parent, QString name );
+        dPrimaryKeys( OdbcTest *pOdbcTest, QString name );
         ~dPrimaryKeys();
 
 	protected:
@@ -142,8 +143,8 @@ class dPrimaryKeys : public QDialog
 		QLabel *l_handle, *l_schema, *l_catalog, *l_table;
 		QLabel *l_schema_len, *l_catalog_len, *l_table_len;
 		QTextEdit *in_win;
-		OutputWin *out_win;
-		OdbcTest *odbctest;
+		QTextEdit *out_win;
+		OdbcTest *pOdbcTest;
 		QString txt;
 
 	protected slots:
@@ -155,7 +156,7 @@ class dProcedures : public QDialog
     Q_OBJECT
 
     public:
-        dProcedures( OdbcTest *parent, QString name );
+        dProcedures( OdbcTest *pOdbcTest, QString name );
         ~dProcedures();
 
 	protected:
@@ -165,8 +166,8 @@ class dProcedures : public QDialog
 		QLabel *l_handle, *l_schema, *l_catalog, *l_table;
 		QLabel *l_schema_len, *l_catalog_len, *l_table_len;
 		QTextEdit *in_win;
-		OutputWin *out_win;
-		OdbcTest *odbctest;
+		QTextEdit *out_win;
+		OdbcTest *pOdbcTest;
 		QString txt;
 
 	protected slots:
@@ -178,7 +179,7 @@ class dProcedureColumns : public QDialog
     Q_OBJECT
 
     public:
-        dProcedureColumns( OdbcTest *parent, QString name );
+        dProcedureColumns( OdbcTest *pOdbcTest, QString name );
         ~dProcedureColumns();
 
 	protected:
@@ -188,8 +189,8 @@ class dProcedureColumns : public QDialog
 		QLabel *l_handle, *l_schema, *l_catalog, *l_table, *l_column;
 		QLabel *l_schema_len, *l_catalog_len, *l_table_len, *l_column_len;
 		QTextEdit *in_win;
-		OutputWin *out_win;
-		OdbcTest *odbctest;
+		QTextEdit *out_win;
+		OdbcTest *pOdbcTest;
 		QString txt;
 
 	protected slots:
@@ -201,7 +202,7 @@ class dTablePrivileges : public QDialog
     Q_OBJECT
 
     public:
-        dTablePrivileges( OdbcTest *parent, QString name );
+        dTablePrivileges( OdbcTest *pOdbcTest, QString name );
         ~dTablePrivileges();
 
 	protected:
@@ -211,8 +212,8 @@ class dTablePrivileges : public QDialog
 		QLabel *l_handle, *l_schema, *l_catalog, *l_table;
 		QLabel *l_schema_len, *l_catalog_len, *l_table_len;
 		QTextEdit *in_win;
-		OutputWin *out_win;
-		OdbcTest *odbctest;
+		QTextEdit *out_win;
+		OdbcTest *pOdbcTest;
 		QString txt;
 
 	protected slots:
@@ -224,7 +225,7 @@ class dGetTypeInfo : public QDialog
     Q_OBJECT
 
     public:
-        dGetTypeInfo( OdbcTest *parent, QString name );
+        dGetTypeInfo( OdbcTest *pOdbcTest, QString name );
         ~dGetTypeInfo();
 
 	protected:
@@ -232,8 +233,8 @@ class dGetTypeInfo : public QDialog
 		QComboBox *handles, *type;
 		QLabel *l_handle, *l_type;
 		QTextEdit *in_win;
-		OutputWin *out_win;
-		OdbcTest *odbctest;
+		QTextEdit *out_win;
+		OdbcTest *pOdbcTest;
 		QString txt;
 
 	protected slots:
@@ -245,7 +246,7 @@ class dStatistics : public QDialog
     Q_OBJECT
 
     public:
-        dStatistics( OdbcTest *parent, QString name );
+        dStatistics( OdbcTest *pOdbcTest, QString name );
         ~dStatistics();
 
 	protected:
@@ -257,8 +258,8 @@ class dStatistics : public QDialog
 		QLabel *l_schema_len, *l_catalog_len, *l_table_len;
 		QLabel *l_unique, *l_reserved;
 		QTextEdit *in_win;
-		OutputWin *out_win;
-		OdbcTest *odbctest;
+		QTextEdit *out_win;
+		OdbcTest *pOdbcTest;
 		QString txt;
 
 	protected slots:
@@ -270,7 +271,7 @@ class dSpecialColumns : public QDialog
     Q_OBJECT
 
     public:
-        dSpecialColumns( OdbcTest *parent, QString name );
+        dSpecialColumns( OdbcTest *pOdbcTest, QString name );
         ~dSpecialColumns();
 
 	protected:
@@ -282,11 +283,11 @@ class dSpecialColumns : public QDialog
 		QLabel *l_schema_len, *l_catalog_len, *l_table_len;
 		QLabel *l_ident, *l_scope, *l_nullable;
 		QTextEdit *in_win;
-		OutputWin *out_win;
-		OdbcTest *odbctest;
+		QTextEdit *out_win;
+		OdbcTest *pOdbcTest;
 		QString txt;
 
 	protected slots:
 		void Ok();
 };
-#endif
+

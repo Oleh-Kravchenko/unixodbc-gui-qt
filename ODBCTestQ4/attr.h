@@ -19,23 +19,25 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- **********************************************************************/
-/*
+ **********************************************************************
+ *
  * 2008-12-10   Code adopted by unixODBC-GUI-Qt project. Heavily altered
  * pharvey      to be Qt4 only code.
  * 
- */
-#ifndef ATTR_H
-#define ATTR_H
+ **********************************************************************/
 
-#include "odbctest.h"
+#pragma once
+
+#include "OdbcHandle.h"
+
+class OdbcTest;
 
 class dSetStmtAttr : public QDialog 
 {
     Q_OBJECT
 
     public:
-        dSetStmtAttr( OdbcTest *parent, QString name );
+        dSetStmtAttr( OdbcTest *pOdbcTest, QString name );
         ~dSetStmtAttr();
 
 	protected:
@@ -43,8 +45,8 @@ class dSetStmtAttr : public QDialog
 		QComboBox *handles, *types, *value, *stringlen;
 		QLabel *l_handle, *l_types, *l_value, *l_slen;
 		QTextEdit *in_win;
-		OutputWin *out_win;
-		OdbcTest *odbctest;
+		QTextEdit *out_win;
+		OdbcTest *pOdbcTest;
 		QString txt;
 
 	protected slots:
@@ -57,7 +59,7 @@ class dSetStmtOption : public QDialog
     Q_OBJECT
 
     public:
-        dSetStmtOption( OdbcTest *parent, QString name );
+        dSetStmtOption( OdbcTest *pOdbcTest, QString name );
         ~dSetStmtOption();
 
 	protected:
@@ -65,8 +67,8 @@ class dSetStmtOption : public QDialog
 		QComboBox *handles, *types, *value;
 		QLabel *l_handle, *l_types, *l_value;
 		QTextEdit *in_win;
-		OutputWin *out_win;
-		OdbcTest *odbctest;
+		QTextEdit *out_win;
+		OdbcTest *pOdbcTest;
 		QString txt;
 
 	protected slots:
@@ -79,7 +81,7 @@ class dGetStmtOption : public QDialog
     Q_OBJECT
 
     public:
-        dGetStmtOption( OdbcTest *parent, QString name );
+        dGetStmtOption( OdbcTest *pOdbcTest, QString name );
         ~dGetStmtOption();
 
     protected:
@@ -88,8 +90,8 @@ class dGetStmtOption : public QDialog
         QCheckBox *target_valid;
         QLabel *l_handle, *l_types;
         QTextEdit *in_win;
-        OutputWin *out_win;
-        OdbcTest *odbctest;
+        QTextEdit *out_win;
+        OdbcTest *pOdbcTest;
         QString txt;
 
     protected slots:
@@ -102,7 +104,7 @@ class dGetStmtAttr : public QDialog
     Q_OBJECT
 
     public:
-        dGetStmtAttr( OdbcTest *parent, QString name );
+        dGetStmtAttr( OdbcTest *pOdbcTest, QString name );
         ~dGetStmtAttr();
 
 	protected:
@@ -112,8 +114,8 @@ class dGetStmtAttr : public QDialog
 		QLabel *l_handle, *l_types, *l_buffer_len;
 		QLineEdit *buffer_len;
 		QTextEdit *in_win;
-		OutputWin *out_win;
-		OdbcTest *odbctest;
+		QTextEdit *out_win;
+		OdbcTest *pOdbcTest;
 		QString txt;
 
 	protected slots:
@@ -127,7 +129,7 @@ class dSetConnAttr : public QDialog
     Q_OBJECT
 
     public:
-        dSetConnAttr( OdbcTest *parent, QString name );
+        dSetConnAttr( OdbcTest *pOdbcTest, QString name );
         ~dSetConnAttr();
 
 	protected:
@@ -135,8 +137,8 @@ class dSetConnAttr : public QDialog
 		QComboBox *handles, *types, *value, *stringlen;
 		QLabel *l_handle, *l_types, *l_value, *l_slen;
 		QTextEdit *in_win;
-		OutputWin *out_win;
-		OdbcTest *odbctest;
+		QTextEdit *out_win;
+		OdbcTest *pOdbcTest;
 		QString txt;
 
 	protected slots:
@@ -149,7 +151,7 @@ class dGetConnAttr : public QDialog
     Q_OBJECT
 
     public:
-        dGetConnAttr( OdbcTest *parent, QString name );
+        dGetConnAttr( OdbcTest *pOdbcTest, QString name );
         ~dGetConnAttr();
 
 	protected:
@@ -159,8 +161,8 @@ class dGetConnAttr : public QDialog
 		QLabel *l_handle, *l_types, *l_buffer_len;
 		QLineEdit *buffer_len;
 		QTextEdit *in_win;
-		OutputWin *out_win;
-		OdbcTest *odbctest;
+		QTextEdit *out_win;
+		OdbcTest *pOdbcTest;
 		QString txt;
 
 	protected slots:
@@ -174,7 +176,7 @@ class dSetConnectOption : public QDialog
     Q_OBJECT
 
     public:
-        dSetConnectOption( OdbcTest *parent, QString name );
+        dSetConnectOption( OdbcTest *pOdbcTest, QString name );
         ~dSetConnectOption();
 
 	protected:
@@ -182,8 +184,8 @@ class dSetConnectOption : public QDialog
 		QComboBox *handles, *types, *value;
 		QLabel *l_handle, *l_types, *l_value;
 		QTextEdit *in_win;
-		OutputWin *out_win;
-		OdbcTest *odbctest;
+		QTextEdit *out_win;
+		OdbcTest *pOdbcTest;
 		QString txt;
 
 	protected slots:
@@ -196,7 +198,7 @@ class dGetConnectOption : public QDialog
     Q_OBJECT
 
     public:
-        dGetConnectOption( OdbcTest *parent, QString name );
+        dGetConnectOption( OdbcTest *pOdbcTest, QString name );
         ~dGetConnectOption();
 
     protected:
@@ -205,8 +207,8 @@ class dGetConnectOption : public QDialog
         QCheckBox *target_valid;
         QLabel *l_handle, *l_types;
         QTextEdit *in_win;
-        OutputWin *out_win;
-        OdbcTest *odbctest;
+        QTextEdit *out_win;
+        OdbcTest *pOdbcTest;
         QString txt;
 
     protected slots:
@@ -219,7 +221,7 @@ class dSetEnvAttr : public QDialog
     Q_OBJECT
 
     public:
-        dSetEnvAttr( OdbcTest *parent, QString name );
+        dSetEnvAttr( OdbcTest *pOdbcTest, QString name );
         ~dSetEnvAttr();
 
 	protected:
@@ -227,8 +229,8 @@ class dSetEnvAttr : public QDialog
 		QComboBox *handles, *types, *value, *stringlen;
 		QLabel *l_handle, *l_types, *l_value, *l_slen;
 		QTextEdit *in_win;
-		OutputWin *out_win;
-		OdbcTest *odbctest;
+		QTextEdit *out_win;
+		OdbcTest *pOdbcTest;
 		QString txt;
 
 	protected slots:
@@ -241,7 +243,7 @@ class dGetEnvAttr : public QDialog
     Q_OBJECT
 
     public:
-        dGetEnvAttr( OdbcTest *parent, QString name );
+        dGetEnvAttr( OdbcTest *pOdbcTest, QString name );
         ~dGetEnvAttr();
 
 	protected:
@@ -251,8 +253,8 @@ class dGetEnvAttr : public QDialog
 		QLabel *l_handle, *l_types, *l_buffer_len;
 		QLineEdit *buffer_len;
 		QTextEdit *in_win;
-		OutputWin *out_win;
-		OdbcTest *odbctest;
+		QTextEdit *out_win;
+		OdbcTest *pOdbcTest;
 		QString txt;
 
 	protected slots:
@@ -261,4 +263,4 @@ class dGetEnvAttr : public QDialog
 		void Ok();
 };
 
-#endif
+

@@ -27,6 +27,7 @@
  **********************************************************************/
 
 #include "DlgToolsManageAutoTest.h"
+#include "OdbcTest.h"
 
 DlgToolsManageAutoTest::DlgToolsManageAutoTest( OdbcTest *parent, QString name )
     : QDialog( parent )

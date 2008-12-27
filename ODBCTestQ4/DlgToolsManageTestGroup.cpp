@@ -28,6 +28,7 @@
 
 #include "DlgToolsManageTestGroup.h"
 #include "DlgToolsNewGroup.h"
+#include "OdbcTest.h"
 
 DlgToolsManageTestGroup::DlgToolsManageTestGroup( OdbcTest *parent, QString name )
     : QDialog( parent )

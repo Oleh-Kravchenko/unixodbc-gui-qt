@@ -27,6 +27,7 @@
  **********************************************************************/
 
 #include "DlgToolsRunAutoTests.h"
+#include "OdbcTest.h"
 
 #define setqbit(lpa, pos)	\
 	(lpa[((pos) / CQBITS)] |= (1 << ((pos) - (CQBITS * ((pos) / CQBITS)))))

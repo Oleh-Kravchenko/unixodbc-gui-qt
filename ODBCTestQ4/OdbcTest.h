@@ -30,17 +30,6 @@
 
 #include "OdbcHandle.h"
 
-class OutputWin : public QTextEdit
-{
-public:
-	OutputWin( QWidget *parent = 0 );
-	void insertLineLimited( const QString &str );
-	void setMaxLines( int );
-
-private:
-	int max_lines;
-};
-
 /*!
  * \brief   Main application class for ODBCTestQ4. 
  *  
@@ -59,7 +48,7 @@ public:
 
 	QSplitter *split;
 	QTextEdit *in_win;
-	OutputWin *out_win;
+	QTextEdit *out_win;
 
     QList<OdbcHandle*> listHandle; // \todo free these up in a destructor
 	const char *return_as_text( int ret );
