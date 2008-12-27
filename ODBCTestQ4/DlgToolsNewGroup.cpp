@@ -29,12 +29,12 @@
 #include "DlgToolsNewGroup.h"
 #include "OdbcTest.h"
 
-DlgToolsNewGroup::DlgToolsNewGroup( OdbcTest *parent, QString name, dManageTestGroup *ptest )
+DlgToolsNewGroup::DlgToolsNewGroup( OdbcTest *pOdbcTest, QString name, dManageTestGroup *ptest )
 : QDialog( parent, name, TRUE )
 {
     setWindowTitle( name );
 
-    odbctest = parent;
+    this->pOdbcTest = pOdbcTest;
     parent_test = ptest;
 
     cancel = new QPushButton( "Close", this );
@@ -44,11 +44,11 @@ DlgToolsNewGroup::DlgToolsNewGroup( OdbcTest *parent, QString name, dManageTestG
     ok->setGeometry( 110,50, 70,25 );
 
     source = new QLineEdit( this, "Test Group" );
-    source -> setGeometry( 100, 20, 250, 20 );
-    source -> setMaxLength( 128 );
+    source->setGeometry( 100, 20, 250, 20 );
+    source->setMaxLength( 128 );
 
     l_dsn = new QLabel( "Test Group:", this );
-    l_dsn -> setGeometry( 10, 20, 90, 20 );
+    l_dsn->setGeometry( 10, 20, 90, 20 );
 
     connect( ok, SIGNAL(clicked()), SLOT(Ok()) );
     connect( ok, SIGNAL(clicked()), SLOT(accept()) );
@@ -66,7 +66,7 @@ DlgToolsNewGroup::~DlgToolsNewGroup()
 
 void DlgToolsNewGroup::Ok()
 {
-    QString name = source -> text();
+    QString name = source->text();
     prop *p;
 
     //
@@ -76,9 +76,9 @@ void DlgToolsNewGroup::Ok()
     section *s = find_section( "GROUPS" );
     if ( s )
     {
-        for ( p = s->first(); p != 0; p = s -> next())
+        for ( p = s->first(); p != 0; p = s->next())
         {
-            if ( strcmp( p -> name(), name ) == 0 )
+            if ( strcmp( p->name(), name ) == 0 )
             {
                 char msg[ 128 ];
 
@@ -89,14 +89,14 @@ void DlgToolsNewGroup::Ok()
         }
 
         p = new prop( name.toAscii().constData(), "Installed" );
-        s -> append( p );
+        s->append( p );
 
         s = new section( name );
         ini_list.append( s );
 
-        parent_test -> group -> insertItem( p -> name());
+        parent_test->group->insertItem( p->name());
         parent_test->group->setCurrentItem( parent_test->group->count() - 1 );
-        parent_test -> Activated( p -> name());
+        parent_test->Activated( p->name());
     }
 }
 

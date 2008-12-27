@@ -120,41 +120,41 @@ static attr_options field_type_struct[] =
 
 void dError::sqlstate_clkd()
 {
-    if ( sqlstate_valid -> isChecked() )
-        sqlstate_valid -> setText( "szSqlState: SQL_NULL_POINTER" );
+    if ( sqlstate_valid->isChecked() )
+        sqlstate_valid->setText( "szSqlState: SQL_NULL_POINTER" );
     else
-        sqlstate_valid -> setText( "szSqlState: VALID" );
+        sqlstate_valid->setText( "szSqlState: VALID" );
 }
 
 void dError::native_clkd()
 {
-    if ( native_valid -> isChecked() )
-        native_valid -> setText( "pfNativeError: SQL_NULL_POINTER" );
+    if ( native_valid->isChecked() )
+        native_valid->setText( "pfNativeError: SQL_NULL_POINTER" );
     else
-        native_valid -> setText( "pfNativeError: VALID" );
+        native_valid->setText( "pfNativeError: VALID" );
 }
 
 void dError::error_clkd()
 {
-    if ( error_valid -> isChecked() )
-        error_valid -> setText( "szErrorMsg: SQL_NULL_POINTER" );
+    if ( error_valid->isChecked() )
+        error_valid->setText( "szErrorMsg: SQL_NULL_POINTER" );
     else
-        error_valid -> setText( "szErrorMsg: VALID" );
+        error_valid->setText( "szErrorMsg: VALID" );
 }
 
 void dError::perror_clkd()
 {
-    if ( perror_valid -> isChecked() )
-        perror_valid -> setText( "pcbErrorMsg: SQL_NULL_POINTER" );
+    if ( perror_valid->isChecked() )
+        perror_valid->setText( "pcbErrorMsg: SQL_NULL_POINTER" );
     else
-        perror_valid -> setText( "pcbErrorMsg: VALID" );
+        perror_valid->setText( "pcbErrorMsg: VALID" );
 }
 
 void dError::Ok()
 {
-    Handle *stmt = odbctest->extract_handle_list( SQL_HANDLE_STMT, shandles );
-    Handle *dbc = odbctest->extract_handle_list( SQL_HANDLE_DBC, chandles );
-    Handle *env = odbctest->extract_handle_list( SQL_HANDLE_ENV, ehandles );
+    OdbcHandle *stmt = pOdbcTest->extract_handle_list( SQL_HANDLE_STMT, shandles );
+    OdbcHandle *dbc = pOdbcTest->extract_handle_list( SQL_HANDLE_DBC, chandles );
+    OdbcHandle *env = pOdbcTest->extract_handle_list( SQL_HANDLE_ENV, ehandles );
     SQLHANDLE in_shandle = SQL_NULL_HANDLE;
     SQLHANDLE in_dhandle = SQL_NULL_HANDLE;
     SQLHANDLE in_ehandle = SQL_NULL_HANDLE;
@@ -164,34 +164,34 @@ void dError::Ok()
     SQLCHAR *buf;
 
     if ( env )
-        in_ehandle = env -> getHandle();
+        in_ehandle = env->getHandle();
     if ( dbc )
-        in_dhandle = dbc -> getHandle();
+        in_dhandle = dbc->getHandle();
     if ( stmt )
-        in_shandle = stmt -> getHandle();
+        in_shandle = stmt->getHandle();
 
-    odbctest -> out_win -> insertLineLimited( "SQLError():" );
-    odbctest -> out_win -> insertLineLimited( "  In:" );
+    pOdbcTest->out_win->append( "SQLError():" );
+    pOdbcTest->out_win->append( "  In:" );
 
     if ( in_ehandle )
         txt.sprintf( "    Environment Handle: %p", in_ehandle );
     else
         txt.sprintf( "    Environment Handle: SQL_NULL_HENV" );
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest->out_win->append( txt );
 
     if ( in_dhandle )
         txt.sprintf( "    Connection Handle: %p", in_dhandle );
     else
         txt.sprintf( "    Connection Handle: SQL_NULL_HDBC" );
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest->out_win->append( txt );
 
     if ( in_shandle )
         txt.sprintf( "    Statement Handle: %p", in_shandle );
     else
         txt.sprintf( "    Statement Handle: SQL_NULL_HSTMT" );
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest->out_win->append( txt );
 
-    if ( sqlstate_valid -> isChecked() )
+    if ( sqlstate_valid->isChecked() )
     {
         txt.sprintf( "    szSqlState: <null pointer>" );
         psqlstate = NULL;
@@ -202,9 +202,9 @@ void dError::Ok()
         strcpy(( char * ) sqlstate, "XYXYXZ" );
         txt.sprintf( "    szSqlState: %p", psqlstate );
     }
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest->out_win->append( txt );
 
-    if ( native_valid -> isChecked() )
+    if ( native_valid->isChecked() )
     {
         txt.sprintf( "    pfNativeError: <null pointer>" );
         pnative = NULL;
@@ -215,10 +215,10 @@ void dError::Ok()
         native = -999999;
         txt.sprintf( "    pfNativeError: %p", pnative );
     }
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest->out_win->append( txt );
 
-    b_len = buffer_len -> text().toInt();
-    if ( error_valid -> isChecked() )
+    b_len = buffer_len->text().toInt();
+    if ( error_valid->isChecked() )
     {
         buf = NULL;
         txt.sprintf( "    szErrorMsg: <null pointer>" );
@@ -232,12 +232,12 @@ void dError::Ok()
 
         txt.sprintf( "    szErrorMsg: %p", buf );
     }
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest->out_win->append( txt );
 
     txt.sprintf( "    cbErrorMsgMax: %d", b_len );
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest->out_win->append( txt );
 
-    if ( perror_valid -> isChecked() )
+    if ( perror_valid->isChecked() )
     {
         txt.sprintf( "    pcbErrorMsg: <null pointer>" );
         ptext_len = NULL;
@@ -248,18 +248,18 @@ void dError::Ok()
         text_len = -9999;
         txt.sprintf( "    pcbErrorMsg: %p", ptext_len );
     }
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest->out_win->append( txt );
 
     SQLRETURN ret = SQLError( in_ehandle, in_dhandle, in_shandle,
                               psqlstate, pnative, buf, b_len, ptext_len );
 
-    odbctest -> out_win -> insertLineLimited( "  Return:" );
-    txt.sprintf( "    %s=%d", odbctest->return_as_text( ret ), ret );
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest->out_win->append( "  Return:" );
+    txt.sprintf( "    %s=%d", pOdbcTest->return_as_text( ret ), ret );
+    pOdbcTest->out_win->append( txt );
 
     if ( SQL_SUCCEEDED( ret ))
     {
-        odbctest -> out_win -> insertLineLimited( "  Out:" );
+        pOdbcTest->out_win->append( "  Out:" );
         if ( psqlstate )
         {
             if ( strcmp(( char * ) sqlstate, "XYXYXZ" ) == 0 )
@@ -270,7 +270,7 @@ void dError::Ok()
             {
                 txt.sprintf( "    *szSqlState: %6s", sqlstate );
             }
-            odbctest -> out_win -> insertLineLimited( txt );
+            pOdbcTest->out_win->append( txt );
         }
         if ( pnative )
         {
@@ -282,12 +282,12 @@ void dError::Ok()
             {
                 txt.sprintf( "    *pfNativeError: %d", native );
             }
-            odbctest -> out_win -> insertLineLimited( txt );
+            pOdbcTest->out_win->append( txt );
         }
         if ( buf )
         {
             txt.sprintf( "    *szErrorMsg: %s", buf );
-            odbctest -> out_win -> insertLineLimited( txt );
+            pOdbcTest->out_win->append( txt );
         }
         if ( ptext_len )
         {
@@ -299,23 +299,23 @@ void dError::Ok()
             {
                 txt.sprintf( "    *pcbErrorMsg: %d", text_len );
             }
-            odbctest -> out_win -> insertLineLimited( txt );
+            pOdbcTest->out_win->append( txt );
         }
     }
 
-    odbctest -> out_win -> insertLineLimited( "" );
+    pOdbcTest->out_win->append( "" );
 
     if ( buf )
         delete buf;
 }
 
-dError::dError( OdbcTest *parent, QString name )
-: QDialog( parent )
+dError::dError( OdbcTest *pOdbcTest, QString name )
+: QDialog( pOdbcTest )
 {
     setWindowTitle( name );
     setModal( true );
 
-    odbctest = parent;
+    this->pOdbcTest = pOdbcTest;
 
     ok = new QPushButton( "OK", this );
     ok->setGeometry( 190,10, 70,25 );
@@ -327,45 +327,45 @@ dError::dError( OdbcTest *parent, QString name )
     help->setGeometry( 350,10, 70,25 );
 
     ehandles = new QComboBox( this );
-    ehandles -> setGeometry( 130, 50, 200, 20 );
-    odbctest->fill_handle_list( SQL_HANDLE_ENV, ehandles );
+    ehandles->setGeometry( 130, 50, 200, 20 );
+    pOdbcTest->fill_handle_list( SQL_HANDLE_ENV, ehandles );
 
     l_ehandle = new QLabel( "Environment Handle:", this );
-    l_ehandle -> setGeometry( 10, 50, 120, 20 );
+    l_ehandle->setGeometry( 10, 50, 120, 20 );
 
     chandles = new QComboBox( this );
-    chandles -> setGeometry( 130, 80, 200, 20 );
-    odbctest->fill_handle_list( SQL_HANDLE_DBC, chandles );
+    chandles->setGeometry( 130, 80, 200, 20 );
+    pOdbcTest->fill_handle_list( SQL_HANDLE_DBC, chandles );
 
     l_chandle = new QLabel( "Connection Handle:", this );
-    l_chandle -> setGeometry( 10, 80, 120, 20 );
+    l_chandle->setGeometry( 10, 80, 120, 20 );
 
     shandles = new QComboBox( this );
-    shandles -> setGeometry( 130, 110, 200, 20 );
-    odbctest->fill_handle_list( SQL_HANDLE_STMT, shandles );
+    shandles->setGeometry( 130, 110, 200, 20 );
+    pOdbcTest->fill_handle_list( SQL_HANDLE_STMT, shandles );
 
     l_shandle = new QLabel( "Statement Handle:", this );
-    l_shandle -> setGeometry( 10, 110, 120, 20 );
+    l_shandle->setGeometry( 10, 110, 120, 20 );
 
     sqlstate_valid = new QCheckBox( "szSqlState: VALID", this );
-    sqlstate_valid -> setGeometry( 10, 140, 300, 15 );
+    sqlstate_valid->setGeometry( 10, 140, 300, 15 );
 
     native_valid = new QCheckBox( "pfNativeError: VALID", this );
-    native_valid -> setGeometry( 10, 170, 300, 15 );
+    native_valid->setGeometry( 10, 170, 300, 15 );
 
     error_valid = new QCheckBox( "szErrorMsg: VALID", this );
-    error_valid -> setGeometry( 10, 200, 300, 15 );
+    error_valid->setGeometry( 10, 200, 300, 15 );
 
     buffer_len = new QLineEdit( this );
-    buffer_len -> setGeometry( 350, 200, 70, 20 );
-    buffer_len -> setMaxLength( 6 );
-    buffer_len -> setText( "300" );
+    buffer_len->setGeometry( 350, 200, 70, 20 );
+    buffer_len->setMaxLength( 6 );
+    buffer_len->setText( "300" );
 
     l_buffer_len = new QLabel( "cbErrorMsgMax:", this );
-    l_buffer_len -> setGeometry( 240, 200, 100, 20 );
+    l_buffer_len->setGeometry( 240, 200, 100, 20 );
 
     perror_valid = new QCheckBox( "pcbErrorMsg: VALID", this );
-    perror_valid -> setGeometry( 10, 230, 300, 15 );
+    perror_valid->setGeometry( 10, 230, 300, 15 );
 
     connect( native_valid, SIGNAL( clicked()), this, SLOT( native_clkd()));
     connect( sqlstate_valid, SIGNAL( clicked()), this, SLOT( sqlstate_clkd()));
@@ -400,48 +400,48 @@ void dGetDiagRec::sel_handle( int /* index */ )
 {
     int handle_t;
 
-    handles -> clear();
-    handle_t = handle_type_struct[ handle_type -> currentIndex() ].value;
+    handles->clear();
+    handle_t = handle_type_struct[ handle_type->currentIndex() ].value;
 
-    odbctest->fill_handle_list( handle_t, handles );
+    pOdbcTest->fill_handle_list( handle_t, handles );
 }
 
 void dGetDiagRec::sqlstate_clkd()
 {
-    if ( sqlstate_valid -> isChecked() )
-        sqlstate_valid -> setText( "szSqlState: SQL_NULL_POINTER" );
+    if ( sqlstate_valid->isChecked() )
+        sqlstate_valid->setText( "szSqlState: SQL_NULL_POINTER" );
     else
-        sqlstate_valid -> setText( "szSqlState: VALID" );
+        sqlstate_valid->setText( "szSqlState: VALID" );
 }
 
 void dGetDiagRec::native_clkd()
 {
-    if ( native_valid -> isChecked() )
-        native_valid -> setText( "pfNativeError: SQL_NULL_POINTER" );
+    if ( native_valid->isChecked() )
+        native_valid->setText( "pfNativeError: SQL_NULL_POINTER" );
     else
-        native_valid -> setText( "pfNativeError: VALID" );
+        native_valid->setText( "pfNativeError: VALID" );
 }
 
 void dGetDiagRec::error_clkd()
 {
-    if ( error_valid -> isChecked() )
-        error_valid -> setText( "szErrorMsg: SQL_NULL_POINTER" );
+    if ( error_valid->isChecked() )
+        error_valid->setText( "szErrorMsg: SQL_NULL_POINTER" );
     else
-        error_valid -> setText( "szErrorMsg: VALID" );
+        error_valid->setText( "szErrorMsg: VALID" );
 }
 
 void dGetDiagRec::perror_clkd()
 {
-    if ( perror_valid -> isChecked() )
-        perror_valid -> setText( "pcbErrorMsg: SQL_NULL_POINTER" );
+    if ( perror_valid->isChecked() )
+        perror_valid->setText( "pcbErrorMsg: SQL_NULL_POINTER" );
     else
-        perror_valid -> setText( "pcbErrorMsg: VALID" );
+        perror_valid->setText( "pcbErrorMsg: VALID" );
 }
 
 void dGetDiagRec::Ok()
 {
-    int htype = handle_type_struct[ handle_type -> currentIndex() ].value;
-    Handle *hand = odbctest->extract_handle_list( htype, handles );
+    int htype = handle_type_struct[ handle_type->currentIndex() ].value;
+    OdbcHandle *hand = pOdbcTest->extract_handle_list( htype, handles );
     SQLHANDLE in_handle = SQL_NULL_HANDLE;
     SQLCHAR sqlstate[ 7 ], *psqlstate;
     SQLSMALLINT b_len, text_len, *ptext_len;
@@ -449,24 +449,24 @@ void dGetDiagRec::Ok()
     SQLCHAR *buf;
 
     if ( hand )
-        in_handle = hand -> getHandle();
+        in_handle = hand->getHandle();
 
-    odbctest -> out_win -> insertLineLimited( "SQLGetDiagRec():" );
-    odbctest -> out_win -> insertLineLimited( "  In:" );
+    pOdbcTest->out_win->append( "SQLGetDiagRec():" );
+    pOdbcTest->out_win->append( "  In:" );
 
-    txt.sprintf( "    Handle Type: %s", handle_type_struct[ handle_type -> currentIndex() ].text );
-    odbctest -> out_win -> insertLineLimited( txt );
+    txt.sprintf( "    Handle Type: %s", handle_type_struct[ handle_type->currentIndex() ].text );
+    pOdbcTest->out_win->append( txt );
 
     if ( in_handle )
         txt.sprintf( "    Handle: %p", in_handle );
     else
         txt.sprintf( "    Handle: SQL_NULL_HANDLE" );
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest->out_win->append( txt );
 
-    rec_number = rec_num -> text().toInt();
+    rec_number = rec_num->text().toInt();
     txt.sprintf( "    RecNumber: %d", rec_number );
 
-    if ( sqlstate_valid -> isChecked() )
+    if ( sqlstate_valid->isChecked() )
     {
         txt.sprintf( "    szSqlState: <null pointer>" );
         psqlstate = NULL;
@@ -477,9 +477,9 @@ void dGetDiagRec::Ok()
         strcpy(( char * ) sqlstate, "XYXYXZ" );
         txt.sprintf( "    szSqlState: %p", psqlstate );
     }
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest->out_win->append( txt );
 
-    if ( native_valid -> isChecked() )
+    if ( native_valid->isChecked() )
     {
         txt.sprintf( "    pfNativeError: <null pointer>" );
         pnative = NULL;
@@ -490,10 +490,10 @@ void dGetDiagRec::Ok()
         native = -999999;
         txt.sprintf( "    pfNativeError: %p", pnative );
     }
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest->out_win->append( txt );
 
-    b_len = buffer_len -> text().toInt();
-    if ( error_valid -> isChecked() )
+    b_len = buffer_len->text().toInt();
+    if ( error_valid->isChecked() )
     {
         buf = NULL;
         txt.sprintf( "    szErrorMsg: <null pointer>" );
@@ -507,12 +507,12 @@ void dGetDiagRec::Ok()
 
         txt.sprintf( "    szErrorMsg: %p", buf );
     }
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest->out_win->append( txt );
 
     txt.sprintf( "    cbErrorMsgMax: %d", b_len );
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest->out_win->append( txt );
 
-    if ( perror_valid -> isChecked() )
+    if ( perror_valid->isChecked() )
     {
         txt.sprintf( "    pcbErrorMsg: <null pointer>" );
         ptext_len = NULL;
@@ -523,18 +523,18 @@ void dGetDiagRec::Ok()
         text_len = -9999;
         txt.sprintf( "    pcbErrorMsg: %p", ptext_len );
     }
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest->out_win->append( txt );
 
     SQLRETURN ret = SQLGetDiagRec( htype, in_handle, rec_number,
                                    psqlstate, pnative, buf, b_len, ptext_len );
 
-    odbctest -> out_win -> insertLineLimited( "  Return:" );
-    txt.sprintf( "    %s=%d", odbctest->return_as_text( ret ), ret );
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest->out_win->append( "  Return:" );
+    txt.sprintf( "    %s=%d", pOdbcTest->return_as_text( ret ), ret );
+    pOdbcTest->out_win->append( txt );
 
     if ( SQL_SUCCEEDED( ret ))
     {
-        odbctest -> out_win -> insertLineLimited( "  Out:" );
+        pOdbcTest->out_win->append( "  Out:" );
         if ( psqlstate )
         {
             if ( strcmp(( char * ) sqlstate, "XYXYXZ" ) == 0 )
@@ -545,7 +545,7 @@ void dGetDiagRec::Ok()
             {
                 txt.sprintf( "    *szSqlState: %6s", sqlstate );
             }
-            odbctest -> out_win -> insertLineLimited( txt );
+            pOdbcTest->out_win->append( txt );
         }
         if ( pnative )
         {
@@ -557,12 +557,12 @@ void dGetDiagRec::Ok()
             {
                 txt.sprintf( "    *pfNativeError: %d", native );
             }
-            odbctest -> out_win -> insertLineLimited( txt );
+            pOdbcTest->out_win->append( txt );
         }
         if ( buf )
         {
             txt.sprintf( "    *szErrorMsg: %s", buf );
-            odbctest -> out_win -> insertLineLimited( txt );
+            pOdbcTest->out_win->append( txt );
         }
         if ( ptext_len )
         {
@@ -574,22 +574,22 @@ void dGetDiagRec::Ok()
             {
                 txt.sprintf( "    *pcbErrorMsg: %d", text_len );
             }
-            odbctest -> out_win -> insertLineLimited( txt );
+            pOdbcTest->out_win->append( txt );
         }
     }
 
-    odbctest -> out_win -> insertLineLimited( "" );
+    pOdbcTest->out_win->append( "" );
 
     if ( buf )
         delete buf;
 }
 
-dGetDiagRec::dGetDiagRec( OdbcTest *parent, QString name )
-: QDialog( parent )
+dGetDiagRec::dGetDiagRec( OdbcTest *pOdbcTest, QString name )
+: QDialog( pOdbcTest )
 {
     setWindowTitle( name );
     setModal( true );
-    odbctest = parent;
+    this->pOdbcTest = pOdbcTest;
 
     ok = new QPushButton( "OK", this );
     ok->setGeometry( 190,10, 70,25 );
@@ -601,46 +601,46 @@ dGetDiagRec::dGetDiagRec( OdbcTest *parent, QString name )
     help->setGeometry( 350,10, 70,25 );
 
     handle_type = new QComboBox( this );
-    handle_type -> setGeometry( 130, 50, 200, 20 );
-    parent->fill_list_box( handle_type_struct, handle_type );
+    handle_type->setGeometry( 130, 50, 200, 20 );
+    pOdbcTest->fill_list_box( handle_type_struct, handle_type );
 
     l_handle_type = new QLabel( "Handle Type:", this );
-    l_handle_type -> setGeometry( 10, 50, 120, 20 );
+    l_handle_type->setGeometry( 10, 50, 120, 20 );
 
     handles = new QComboBox( this );
-    handles -> setGeometry( 130, 80, 200, 20 );
-    odbctest->fill_handle_list( SQL_HANDLE_ENV, handles );
+    handles->setGeometry( 130, 80, 200, 20 );
+    pOdbcTest->fill_handle_list( SQL_HANDLE_ENV, handles );
 
     l_handles = new QLabel( "Handle:", this );
-    l_handles -> setGeometry( 10, 80, 120, 20 );
+    l_handles->setGeometry( 10, 80, 120, 20 );
 
     rec_num = new QLineEdit( this );
-    rec_num -> setGeometry( 130, 110, 70, 20 );
-    rec_num -> setMaxLength( 6 );
-    rec_num -> setText( "1" );
+    rec_num->setGeometry( 130, 110, 70, 20 );
+    rec_num->setMaxLength( 6 );
+    rec_num->setText( "1" );
 
     l_rec_num = new QLabel( "Rec Number:", this );
-    l_rec_num -> setGeometry( 10, 110, 100, 20 );
+    l_rec_num->setGeometry( 10, 110, 100, 20 );
 
     sqlstate_valid = new QCheckBox( "szSqlState: VALID", this );
-    sqlstate_valid -> setGeometry( 10, 140, 300, 15 );
+    sqlstate_valid->setGeometry( 10, 140, 300, 15 );
 
     native_valid = new QCheckBox( "pfNativeError: VALID", this );
-    native_valid -> setGeometry( 10, 170, 300, 15 );
+    native_valid->setGeometry( 10, 170, 300, 15 );
 
     error_valid = new QCheckBox( "szErrorMsg: VALID", this );
-    error_valid -> setGeometry( 10, 200, 300, 15 );
+    error_valid->setGeometry( 10, 200, 300, 15 );
 
     buffer_len = new QLineEdit( this );
-    buffer_len -> setGeometry( 350, 200, 70, 20 );
-    buffer_len -> setMaxLength( 6 );
-    buffer_len -> setText( "300" );
+    buffer_len->setGeometry( 350, 200, 70, 20 );
+    buffer_len->setMaxLength( 6 );
+    buffer_len->setText( "300" );
 
     l_buffer_len = new QLabel( "cbErrorMsgMax:", this );
-    l_buffer_len -> setGeometry( 240, 200, 100, 20 );
+    l_buffer_len->setGeometry( 240, 200, 100, 20 );
 
     perror_valid = new QCheckBox( "pcbErrorMsg: VALID", this );
-    perror_valid -> setGeometry( 10, 230, 300, 15 );
+    perror_valid->setGeometry( 10, 230, 300, 15 );
 
     connect( native_valid, SIGNAL( clicked()), this, SLOT( native_clkd()));
     connect( sqlstate_valid, SIGNAL( clicked()), this, SLOT( sqlstate_clkd()));
@@ -677,62 +677,62 @@ void dGetDiagField::sel_handle( int /* index */ )
 {
     int handle_t;
 
-    handles -> clear();
-    handle_t = handle_type_struct[ handle_type -> currentIndex() ].value;
+    handles->clear();
+    handle_t = handle_type_struct[ handle_type->currentIndex() ].value;
 
-    odbctest->fill_handle_list( handle_t, handles );
+    pOdbcTest->fill_handle_list( handle_t, handles );
 }
 
 void dGetDiagField::diag_ptr_clkd()
 {
-    if ( diag_ptr_valid -> isChecked() )
-        diag_ptr_valid -> setText( "DiagInfoPtr: SQL_NULL_POINTER" );
+    if ( diag_ptr_valid->isChecked() )
+        diag_ptr_valid->setText( "DiagInfoPtr: SQL_NULL_POINTER" );
     else
-        diag_ptr_valid -> setText( "DiagInfoPtr: VALID" );
+        diag_ptr_valid->setText( "DiagInfoPtr: VALID" );
 }
 
 void dGetDiagField::strlen_clkd()
 {
-    if ( strlen_valid -> isChecked() )
-        strlen_valid -> setText( "StringLengthPtr: SQL_NULL_POINTER" );
+    if ( strlen_valid->isChecked() )
+        strlen_valid->setText( "StringLengthPtr: SQL_NULL_POINTER" );
     else
-        strlen_valid -> setText( "StringLengthPtr: VALID" );
+        strlen_valid->setText( "StringLengthPtr: VALID" );
 }
 
 void dGetDiagField::Ok()
 {
-    int htype = handle_type_struct[ handle_type -> currentIndex() ].value;
-    Handle *hand = odbctest->extract_handle_list( htype, handles );
+    int htype = handle_type_struct[ handle_type->currentIndex() ].value;
+    OdbcHandle *hand = pOdbcTest->extract_handle_list( htype, handles );
     SQLHANDLE in_handle = SQL_NULL_HANDLE;
     SQLSMALLINT b_len, *strlen_ptr, strlen_val, attribute;
     SQLINTEGER rec_number;
     SQLCHAR *buf;
 
     if ( hand  )
-        in_handle = hand -> getHandle();
+        in_handle = hand->getHandle();
 
-    odbctest -> out_win -> insertLineLimited( "SQLGetDiagField():" );
-    odbctest -> out_win -> insertLineLimited( "  In:" );
+    pOdbcTest->out_win->append( "SQLGetDiagField():" );
+    pOdbcTest->out_win->append( "  In:" );
 
-    txt.sprintf( "    Handle Type: %s", handle_type_struct[ handle_type -> currentIndex() ].text );
-    odbctest -> out_win -> insertLineLimited( txt );
+    txt.sprintf( "    Handle Type: %s", handle_type_struct[ handle_type->currentIndex() ].text );
+    pOdbcTest->out_win->append( txt );
 
     if ( in_handle )
         txt.sprintf( "    Handle: %p", in_handle );
     else
         txt.sprintf( "    Handle: SQL_NULL_HANDLE" );
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest->out_win->append( txt );
 
-    rec_number = rec_num -> text().toInt();
+    rec_number = rec_num->text().toInt();
     txt.sprintf( "    RecNumber: %d", rec_number );
 
-    attribute = field_type_struct[ diag_info -> currentIndex() ].attr;
+    attribute = field_type_struct[ diag_info->currentIndex() ].attr;
     txt.sprintf( "    DiagIdentifier: %s=%d", 
-                 field_type_struct[ diag_info -> currentIndex() ].text,
-                 field_type_struct[ diag_info -> currentIndex() ].attr );
+                 field_type_struct[ diag_info->currentIndex() ].text,
+                 field_type_struct[ diag_info->currentIndex() ].attr );
 
-    b_len = buffer_len -> text().toInt();
-    if ( diag_ptr_valid -> isChecked() )
+    b_len = buffer_len->text().toInt();
+    if ( diag_ptr_valid->isChecked() )
     {
         buf = NULL;
         txt.sprintf( "    DiagInfo: <null pointer>" );
@@ -746,9 +746,9 @@ void dGetDiagField::Ok()
 
         txt.sprintf( "    DiagInfo: %p", buf );
     }
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest->out_win->append( txt );
 
-    if ( strlen_valid -> isChecked() )
+    if ( strlen_valid->isChecked() )
     {
         txt.sprintf( "    StringLengthPtr: <null pointer>" );
         strlen_ptr = NULL;
@@ -759,19 +759,19 @@ void dGetDiagField::Ok()
         strlen_val = -9999;
         txt.sprintf( "    StringLengthPtr: %p", strlen_ptr );
     }
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest->out_win->append( txt );
 
     SQLRETURN ret = SQLGetDiagField( htype, in_handle, rec_number,
                                      attribute, buf, b_len, strlen_ptr );
 
-    odbctest -> out_win -> insertLineLimited( "  Return:" );
-    txt.sprintf( "    %s=%d", odbctest->return_as_text( ret ), ret );
-    odbctest -> out_win -> insertLineLimited( txt );
+    pOdbcTest->out_win->append( "  Return:" );
+    txt.sprintf( "    %s=%d", pOdbcTest->return_as_text( ret ), ret );
+    pOdbcTest->out_win->append( txt );
 
     if ( SQL_SUCCEEDED( ret ))
     {
-        odbctest -> out_win -> insertLineLimited( "  Out:" );
-        if ( field_type_struct[ diag_info -> currentIndex() ].data_type == SQL_INTEGER )
+        pOdbcTest->out_win->append( "  Out:" );
+        if ( field_type_struct[ diag_info->currentIndex() ].data_type == SQL_INTEGER )
         {
             if ( buf )
             {
@@ -779,7 +779,7 @@ void dGetDiagField::Ok()
 
                 memcpy( &lval, buf, sizeof( lval ));
                 txt.sprintf( "    *DiagInfo: %d", lval );
-                odbctest -> out_win -> insertLineLimited( txt );
+                pOdbcTest->out_win->append( txt );
             }
         }
         else
@@ -787,7 +787,7 @@ void dGetDiagField::Ok()
             if ( buf )
             {
                 txt.sprintf( "    *DiagInfo: %s", buf );
-                odbctest -> out_win -> insertLineLimited( txt );
+                pOdbcTest->out_win->append( txt );
             }
         }
 
@@ -801,22 +801,22 @@ void dGetDiagField::Ok()
             {
                 txt.sprintf( "    *StringLengthPtr: %d", strlen_val );
             }
-            odbctest -> out_win -> insertLineLimited( txt );
+            pOdbcTest->out_win->append( txt );
         }
     }
 
-    odbctest -> out_win -> insertLineLimited( "" );
+    pOdbcTest->out_win->append( "" );
 
     if ( buf )
         delete buf;
 }
 
-dGetDiagField::dGetDiagField( OdbcTest *parent, QString name )
-: QDialog( parent )
+dGetDiagField::dGetDiagField( OdbcTest *pOdbcTest, QString name )
+: QDialog( pOdbcTest )
 {
     setWindowTitle( name );
     setModal( true );
-    odbctest = parent;
+    this->pOdbcTest = pOdbcTest;
 
     ok = new QPushButton( "OK", this );
     ok->setGeometry( 250,10, 70,25 );
@@ -828,47 +828,47 @@ dGetDiagField::dGetDiagField( OdbcTest *parent, QString name )
     help->setGeometry( 410,10, 70,25 );
 
     handle_type = new QComboBox( this );
-    handle_type -> setGeometry( 130, 50, 200, 20 );
-    parent->fill_list_box( handle_type_struct, handle_type );
+    handle_type->setGeometry( 130, 50, 200, 20 );
+    pOdbcTest->fill_list_box( handle_type_struct, handle_type );
 
     l_handle_type = new QLabel( "Handle Type:", this );
-    l_handle_type -> setGeometry( 10, 50, 120, 20 );
+    l_handle_type->setGeometry( 10, 50, 120, 20 );
 
     handles = new QComboBox( this );
-    handles -> setGeometry( 130, 80, 200, 20 );
-    odbctest->fill_handle_list( SQL_HANDLE_ENV, handles );
+    handles->setGeometry( 130, 80, 200, 20 );
+    pOdbcTest->fill_handle_list( SQL_HANDLE_ENV, handles );
 
     l_handles = new QLabel( "Handle:", this );
-    l_handles -> setGeometry( 10, 80, 120, 20 );
+    l_handles->setGeometry( 10, 80, 120, 20 );
 
     rec_num = new QLineEdit( this );
-    rec_num -> setGeometry( 130, 110, 70, 20 );
-    rec_num -> setMaxLength( 6 );
-    rec_num -> setText( "1" );
+    rec_num->setGeometry( 130, 110, 70, 20 );
+    rec_num->setMaxLength( 6 );
+    rec_num->setText( "1" );
 
     l_rec_num = new QLabel( "Rec Number:", this );
-    l_rec_num -> setGeometry( 10, 110, 100, 20 );
+    l_rec_num->setGeometry( 10, 110, 100, 20 );
 
     diag_info = new QComboBox( this );
-    diag_info -> setGeometry( 130, 140, 350, 20 );
-    parent->fill_list_box( field_type_struct, diag_info );
+    diag_info->setGeometry( 130, 140, 350, 20 );
+    pOdbcTest->fill_list_box( field_type_struct, diag_info );
 
     l_diag_info = new QLabel( "Diag Identifier::", this );
-    l_diag_info -> setGeometry( 10, 140, 120, 20 );
+    l_diag_info->setGeometry( 10, 140, 120, 20 );
 
     diag_ptr_valid = new QCheckBox( "DiagInfoPtr: VALID", this );
-    diag_ptr_valid -> setGeometry( 10, 170, 300, 15 );
+    diag_ptr_valid->setGeometry( 10, 170, 300, 15 );
 
     buffer_len = new QLineEdit( this );
-    buffer_len -> setGeometry( 130, 200, 70, 20 );
-    buffer_len -> setMaxLength( 6 );
-    buffer_len -> setText( "300" );
+    buffer_len->setGeometry( 130, 200, 70, 20 );
+    buffer_len->setMaxLength( 6 );
+    buffer_len->setText( "300" );
 
     l_buffer_len = new QLabel( "Buffer Length:", this );
-    l_buffer_len -> setGeometry( 10, 200, 100, 20 );
+    l_buffer_len->setGeometry( 10, 200, 100, 20 );
 
     strlen_valid = new QCheckBox( "pcbErrorMsg: VALID", this );
-    strlen_valid -> setGeometry( 10, 230, 300, 15 );
+    strlen_valid->setGeometry( 10, 230, 300, 15 );
 
     connect( diag_ptr_valid, SIGNAL( clicked()), this, SLOT( diag_ptr_clkd()));
     connect( strlen_valid, SIGNAL( clicked()), this, SLOT( strlen_clkd()));
@@ -901,7 +901,7 @@ void OdbcTest::sqlgetdiagrec()
 {
     dGetDiagRec *dlg = new dGetDiagRec( this, "SQLGetDiagRec" );
 
-    dlg -> exec();
+    dlg->exec();
 
     delete dlg;
 }
@@ -910,7 +910,7 @@ void OdbcTest::sqlgetdiagfield()
 {
     dGetDiagField *dlg = new dGetDiagField( this, "SQLGetDiagField" );
 
-    dlg -> exec();
+    dlg->exec();
 
     delete dlg;
 }
@@ -919,7 +919,7 @@ void OdbcTest::sqlerror()
 {
     dError *dlg = new dError( this, "SQLError" );
 
-    dlg -> exec();
+    dlg->exec();
 
     delete dlg;
 }

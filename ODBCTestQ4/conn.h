@@ -37,7 +37,7 @@ class dConnect : public QDialog
     Q_OBJECT
 
     public:
-        dConnect( OdbcTest *parent, QString name );
+        dConnect( OdbcTest *pOdbcTest, QString name );
         ~dConnect();
 
 	protected:
@@ -47,8 +47,8 @@ class dConnect : public QDialog
 		QLabel *l_handle, *l_server, *l_user, *l_auth;
 		QLabel *l_server_len, *l_user_len, *l_auth_len;
 		QTextEdit *in_win;
-		OutputWin *out_win;
-		OdbcTest *odbctest;
+		QTextEdit *out_win;
+		OdbcTest *pOdbcTest;
 		QString txt;
 
 	protected slots:
@@ -60,7 +60,7 @@ class dDisconnect : public QDialog
     Q_OBJECT
 
     public:
-        dDisconnect( OdbcTest *parent, QString name );
+        dDisconnect( OdbcTest *pOdbcTest, QString name );
         ~dDisconnect();
 
 	protected:
@@ -68,8 +68,8 @@ class dDisconnect : public QDialog
 		QComboBox *handles;
 		QLabel *l_handle;
 		QTextEdit *in_win;
-		OutputWin *out_win;
-		OdbcTest *odbctest;
+		QTextEdit *out_win;
+		OdbcTest *pOdbcTest;
 		QString txt;
 
 	protected slots:
@@ -81,7 +81,7 @@ class dFullConnect : public QDialog
     Q_OBJECT
 
     public:
-        dFullConnect( OdbcTest *parent, QString name );
+        dFullConnect( OdbcTest *pOdbcTest, QString name );
         ~dFullConnect();
 
 	protected:
@@ -92,8 +92,8 @@ class dFullConnect : public QDialog
 		QListWidget *dsn_list;
 		QTextEdit *in_win;
 		QGroupBox *version, *cursor;
-		OutputWin *out_win;
-		OdbcTest *odbctest;
+		QTextEdit *out_win;
+		OdbcTest *pOdbcTest;
 		QRadioButton *ver_2, *ver_3, *ver_def; 
 		QRadioButton *cur_ifneeded, *cur_use, *cur_driver, *cur_default;
 		QString txt;
@@ -108,7 +108,7 @@ class dGetInfo : public QDialog
     Q_OBJECT
 
     public:
-        dGetInfo( OdbcTest *parent, QString name );
+        dGetInfo( OdbcTest *pOdbcTest, QString name );
         ~dGetInfo();
 
 	protected:
@@ -118,8 +118,8 @@ class dGetInfo : public QDialog
 		QCheckBox *target_valid, *strlen_valid;
 		QLabel *l_handle, *l_type, *l_buffer_len;
 		QTextEdit *in_win;
-		OutputWin *out_win;
-		OdbcTest *odbctest;
+		QTextEdit *out_win;
+		OdbcTest *pOdbcTest;
 		QString txt;
 
 	protected slots:
@@ -133,7 +133,7 @@ class dGetFunctions : public QDialog
     Q_OBJECT
 
     public:
-        dGetFunctions( OdbcTest *parent, QString name );
+        dGetFunctions( OdbcTest *pOdbcTest, QString name );
         ~dGetFunctions();
 
 	protected:
@@ -142,8 +142,8 @@ class dGetFunctions : public QDialog
 		QCheckBox *target_valid;
 		QLabel *l_handle, *l_type;
 		QTextEdit *in_win;
-		OutputWin *out_win;
-		OdbcTest *odbctest;
+		QTextEdit *out_win;
+		OdbcTest *pOdbcTest;
 		QString txt;
 
 	protected slots:
@@ -156,7 +156,7 @@ class dBrowseConnect : public QDialog
     Q_OBJECT
 
     public:
-        dBrowseConnect( OdbcTest *parent, QString name );
+        dBrowseConnect( OdbcTest *pOdbcTest, QString name );
         ~dBrowseConnect();
 
 	protected:
@@ -167,8 +167,8 @@ class dBrowseConnect : public QDialog
 		QLabel *l_handle, *l_out_str, *l_buffer_len;
 		QLabel *l_str_len, *l_in_str;
 		QTextEdit *in_win;
-		OutputWin *out_win;
-		OdbcTest *odbctest;
+		QTextEdit *out_win;
+		OdbcTest *pOdbcTest;
 		QString txt;
 
 	protected slots:
@@ -182,7 +182,7 @@ class dDriverConnect : public QDialog
     Q_OBJECT
 
     public:
-        dDriverConnect( OdbcTest *parent, QString name );
+        dDriverConnect( OdbcTest *pOdbcTest, QString name );
         ~dDriverConnect();
 
 	protected:
@@ -193,8 +193,8 @@ class dDriverConnect : public QDialog
 		QLabel *l_handle, *l_out_str, *l_buffer_len;
 		QLabel *l_str_len, *l_in_str, *l_driver_completion;
 		QTextEdit *in_win;
-		OutputWin *out_win;
-		OdbcTest *odbctest;
+		QTextEdit *out_win;
+		OdbcTest *pOdbcTest;
 		QString txt;
 
 	protected slots:
@@ -208,7 +208,7 @@ class dNativeSQL : public QDialog
     Q_OBJECT
 
     public:
-        dNativeSQL( OdbcTest *parent, QString name );
+        dNativeSQL( OdbcTest *pOdbcTest, QString name );
         ~dNativeSQL();
 
 	protected:
@@ -219,8 +219,8 @@ class dNativeSQL : public QDialog
 		QLabel *l_handle, *l_out_str, *l_buffer_len;
 		QLabel *l_str_len, *l_in_str;
 		QTextEdit *in_win;
-		OutputWin *out_win;
-		OdbcTest *odbctest;
+		QTextEdit *out_win;
+		OdbcTest *pOdbcTest;
 		QString txt;
 
 	protected slots:
@@ -234,7 +234,7 @@ class dAllocConnect : public QDialog
     Q_OBJECT
 
     public:
-        dAllocConnect( OdbcTest *parent, QString name );
+        dAllocConnect( OdbcTest *pOdbcTest, QString name );
         ~dAllocConnect();
 
 	protected:
@@ -243,8 +243,8 @@ class dAllocConnect : public QDialog
 		QCheckBox *handle_valid;
         QComboBox *handles;
         QLabel *l_handles;
-		OutputWin *out_win;
-		OdbcTest *odbctest;
+		QTextEdit *out_win;
+		OdbcTest *pOdbcTest;
 		QString txt;
 
 	protected slots:
@@ -257,7 +257,7 @@ class dFreeConnect : public QDialog
     Q_OBJECT
 
     public:
-        dFreeConnect( OdbcTest *parent, QString name );
+        dFreeConnect( OdbcTest *pOdbcTest, QString name );
         ~dFreeConnect();
 
 	protected:
@@ -265,8 +265,8 @@ class dFreeConnect : public QDialog
 		QTextEdit *in_win;
 		QComboBox *handles;
 		QLabel *l_handles;
-		OutputWin *out_win;
-		OdbcTest *odbctest;
+		QTextEdit *out_win;
+		OdbcTest *pOdbcTest;
 		QString txt;
 
 	protected slots:

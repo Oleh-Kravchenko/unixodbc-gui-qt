@@ -37,7 +37,7 @@ class dError : public QDialog
     Q_OBJECT
 
     public:
-		dError( OdbcTest *parent, QString name );
+		dError( OdbcTest *pOdbcTest, QString name );
         ~dError();
 
 	protected:
@@ -47,8 +47,8 @@ class dError : public QDialog
 		QCheckBox *native_valid, *error_valid, *perror_valid, *sqlstate_valid;
 		QLineEdit *buffer_len;
 		QTextEdit *in_win;
-		OutputWin *out_win;
-		OdbcTest *odbctest;
+		QTextEdit *out_win;
+		OdbcTest *pOdbcTest;
 		QString txt;
 
 	protected slots:
@@ -64,7 +64,7 @@ class dGetDiagRec : public QDialog
     Q_OBJECT
 
     public:
-		dGetDiagRec( OdbcTest *parent, QString name );
+		dGetDiagRec( OdbcTest *pOdbcTest, QString name );
         ~dGetDiagRec();
 
 	protected:
@@ -74,8 +74,8 @@ class dGetDiagRec : public QDialog
 		QCheckBox *native_valid, *error_valid, *perror_valid, *sqlstate_valid;
 		QLineEdit *buffer_len, *rec_num;
 		QTextEdit *in_win;
-		OutputWin *out_win;
-		OdbcTest *odbctest;
+		QTextEdit *out_win;
+		OdbcTest *pOdbcTest;
 		QString txt;
 
 	protected slots:
@@ -92,7 +92,7 @@ class dGetDiagField : public QDialog
     Q_OBJECT
 
     public:
-		dGetDiagField( OdbcTest *parent, QString name );
+		dGetDiagField( OdbcTest *pOdbcTest, QString name );
         ~dGetDiagField();
 
 	protected:
@@ -102,8 +102,8 @@ class dGetDiagField : public QDialog
 		QCheckBox *diag_ptr_valid, *strlen_valid;
 		QLineEdit *buffer_len, *rec_num;
 		QTextEdit *in_win;
-		OutputWin *out_win;
-		OdbcTest *odbctest;
+		QTextEdit *out_win;
+		OdbcTest *pOdbcTest;
 		QString txt;
 
 	protected slots:

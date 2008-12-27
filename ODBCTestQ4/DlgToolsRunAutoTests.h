@@ -37,12 +37,12 @@ class DlgToolsRunAutoTests : public QDialog
     Q_OBJECT
 
 public:
-    DlgToolsRunAutoTests( OdbcTest *parent, QString name );
+    DlgToolsRunAutoTests( OdbcTest *pOdbcTest, QString name );
     ~DlgToolsRunAutoTests();
 
 protected:
     QPushButton *run_list, *ok, *cancel, *log_file;
-    OdbcTest *odbctest;
+    OdbcTest *pOdbcTest;
     QComboBox *rlist;
     QLabel *l_tests, *l_sources, *l_log;
     QGroupBox *output, *options;

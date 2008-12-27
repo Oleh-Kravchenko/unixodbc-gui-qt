@@ -30,12 +30,12 @@
 #include "DlgToolsNewSource.h"
 #include "OdbcTest.h"
 
-DlgToolsManageTest::DlgToolsManageTest( OdbcTest *parent, QString name )
-    : QDialog( parent )
+DlgToolsManageTest::DlgToolsManageTest( OdbcTest *pOdbcTest, QString name )
+    : QDialog( pOdbcTest )
 {
     setWindowTitle( name );
 
-    odbctest = parent;
+    this->pOdbcTest = pOdbcTest;
 
     close = new QPushButton( "Close", this );
     close->setGeometry( 270,80, 70,25 );
@@ -47,40 +47,40 @@ DlgToolsManageTest::DlgToolsManageTest( OdbcTest *parent, QString name )
     del->setGeometry( 270,140, 70,25 );
 
     test_source = new QComboBox( this );
-    test_source -> setGeometry( 100, 20, 250, 20 );
+    test_source->setGeometry( 100, 20, 250, 20 );
 
     l_ts = new QLabel( "Test Source:", this );
-    l_ts -> setGeometry( 10, 20, 80, 20 );
+    l_ts->setGeometry( 10, 20, 80, 20 );
 
     param = new QGroupBox( "Connect Parameters", this );
-    param -> setGeometry( 10, 60, 240, 125 );
+    param->setGeometry( 10, 60, 240, 125 );
 
     dsn = new QComboBox( this );
-    dsn -> setGeometry( 80, 90, 150, 20 );
+    dsn->setGeometry( 80, 90, 150, 20 );
 
     l_dsn = new QLabel( "DSN:", this );
-    l_dsn -> setGeometry( 20, 90, 60, 20 );
+    l_dsn->setGeometry( 20, 90, 60, 20 );
 
     uid = new QLineEdit( this );
-    uid -> setGeometry( 80, 120, 150, 20 );
-    uid -> setMaxLength( 128 );
+    uid->setGeometry( 80, 120, 150, 20 );
+    uid->setMaxLength( 128 );
 
     l_uid = new QLabel( "UID:", this );
-    l_uid -> setGeometry( 20, 120, 60, 20 );
+    l_uid->setGeometry( 20, 120, 60, 20 );
 
     pwd = new QLineEdit( this );
-    pwd -> setGeometry( 80, 150, 150, 20 );
-    pwd -> setMaxLength( 128 );
+    pwd->setGeometry( 80, 150, 150, 20 );
+    pwd->setMaxLength( 128 );
 
     l_pwd = new QLabel( "PWD:", this );
-    l_pwd -> setGeometry( 20, 150, 60, 20 );
+    l_pwd->setGeometry( 20, 150, 60, 20 );
 
     kw = new QLineEdit( this );
-    kw -> setGeometry( 80, 200, 250, 20 );
-    kw -> setMaxLength( 128 );
+    kw->setGeometry( 80, 200, 250, 20 );
+    kw->setMaxLength( 128 );
 
     l_kw = new QLabel( "Keywords:", this );
-    l_kw -> setGeometry( 10, 200, 60, 20 );
+    l_kw->setGeometry( 10, 200, 60, 20 );
 
     connect( close, SIGNAL(clicked()), SLOT(Ok()) );
     connect( close, SIGNAL(clicked()), SLOT(accept()) );
@@ -95,7 +95,7 @@ DlgToolsManageTest::DlgToolsManageTest( OdbcTest *parent, QString name )
     {
         for ( int nEntry = 0; nEntry < gOdbcTools->ini.vectorSectionEntries[nSection].size(); nEntry++ )
         {
-            test_source -> addItem( gOdbcTools->ini.vectorSectionEntries[nSection][nEntry].at( 0 ) );
+            test_source->addItem( gOdbcTools->ini.vectorSectionEntries[nSection][nEntry].at( 0 ) );
         }
     }
 
@@ -136,9 +136,9 @@ void DlgToolsManageTest::Activated( const QString &str )
     // did we find section...
     if ( nSection < 0 )
     {
-        uid -> clear();
-        pwd -> clear();
-        kw -> clear();
+        uid->clear();
+        pwd->clear();
+        kw->clear();
         return;
     }
 
@@ -154,24 +154,24 @@ void DlgToolsManageTest::Activated( const QString &str )
         }
         else if ( stringName == "LOGIN0" )
         {
-            uid -> setText( stringValue );
+            uid->setText( stringValue );
         }
         else if ( stringName == "PASSWORD0" )
         {
-            pwd -> setText( stringValue );
+            pwd->setText( stringValue );
         }
         else if ( stringName == "KEYWORDS" )
         {
-            kw -> setText( stringValue );
+            kw->setText( stringValue );
         }
     }
 }
 
 void DlgToolsManageTest::Activated( int val )
 {
-    if ( test_source -> count() > 0 )
+    if ( test_source->count() > 0 )
     {
-        Activated( test_source -> itemText( val ) );
+        Activated( test_source->itemText( val ) );
     }
 }
 
@@ -180,7 +180,7 @@ void DlgToolsManageTest::Ok()
     //
     // find driver name
     // 
-    QString driver = test_source -> currentText();
+    QString driver = test_source->currentText();
 
     if ( driver.isNull() )
     {
@@ -207,17 +207,17 @@ void DlgToolsManageTest::Ok()
     //
     // Add the entries
     //
-    gOdbcTools->ini.appendEntry( nSection, "SERVER0", dsn -> currentText() );
-    gOdbcTools->ini.appendEntry( nSection, "LOGIN0", uid -> text() );
-    gOdbcTools->ini.appendEntry( nSection, "PASSWORD0", pwd -> text() );
-    gOdbcTools->ini.appendEntry( nSection, "KEYWORDS", kw -> text() );
+    gOdbcTools->ini.appendEntry( nSection, "SERVER0", dsn->currentText() );
+    gOdbcTools->ini.appendEntry( nSection, "LOGIN0", uid->text() );
+    gOdbcTools->ini.appendEntry( nSection, "PASSWORD0", pwd->text() );
+    gOdbcTools->ini.appendEntry( nSection, "KEYWORDS", kw->text() );
 }
 
 void DlgToolsManageTest::NewSource()
 {
-    DlgToolsNewSource *dlg = new DlgToolsNewSource( this -> odbctest, "New Test Sources", this );
+    DlgToolsNewSource *dlg = new DlgToolsNewSource( this->odbctest, "New Test Sources", this );
 
-    dlg -> exec();
+    dlg->exec();
 
     delete dlg;
 
@@ -225,7 +225,7 @@ void DlgToolsManageTest::NewSource()
     // fill up combo box
     //
 
-    test_source -> clear();
+    test_source->clear();
 
     int nSection = gOdbcTools->ini.indexSection( "SQL_DRIVERS" );
     int last = 0;
@@ -234,21 +234,21 @@ void DlgToolsManageTest::NewSource()
     {
         for ( int nEntry = 0; nEntry < gOdbcTools->ini.vectorSectionEntries[nSection].size(); nEntry++ )
         {
-            test_source -> addItem( gOdbcTools->ini.vectorSectionEntries[nSection][nEntry].at( 0 ) );
+            test_source->addItem( gOdbcTools->ini.vectorSectionEntries[nSection][nEntry].at( 0 ) );
             last ++;
         }
     }
     Activated( last - 1 );
-    test_source -> setCurrentIndex( last - 1 );
+    test_source->setCurrentIndex( last - 1 );
 }
 
 void DlgToolsManageTest::DelSource()
 {
-    if ( test_source -> count() == 0 )
+    if ( test_source->count() == 0 )
         return;
 
     // which driver is current...
-    QString driver = test_source -> currentText();
+    QString driver = test_source->currentText();
     
     // do we really want to do this...
     if ( QMessageBox::information( this, "OdbcTest",
@@ -268,7 +268,7 @@ void DlgToolsManageTest::DelSource()
 
     // reload drivers list...
     {
-        test_source -> clear();
+        test_source->clear();
     
         int nSection = gOdbcTools->ini.indexSection( "SQL_DRIVERS" );
     
@@ -276,11 +276,11 @@ void DlgToolsManageTest::DelSource()
         {
             for ( int nEntry = 0; nEntry < gOdbcTools->ini.vectorSectionEntries[nSection].size(); nEntry++ )
             {
-                test_source -> addItem( gOdbcTools->ini.vectorSectionEntries[nSection][nEntry].at( 0 ) );
+                test_source->addItem( gOdbcTools->ini.vectorSectionEntries[nSection][nEntry].at( 0 ) );
             }
         }
         Activated( 0 );
-        test_source -> setCurrentIndex( 0 );
+        test_source->setCurrentIndex( 0 );
     }
 }
 

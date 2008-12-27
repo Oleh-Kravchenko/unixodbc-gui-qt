@@ -29,12 +29,12 @@
 #include "DlgToolsNewSource.h"
 #include "OdbcTest.h"
 
-DlgToolsNewSource::DlgToolsNewSource( OdbcTest *parent, QString name, dManageTest *ptest )
-: QDialog( parent )
+DlgToolsNewSource::DlgToolsNewSource( OdbcTest *pOdbcTest, QString name, dManageTest *ptest )
+: QDialog( pOdbcTest )
 {
     setWindowTitle( name );
 
-    odbctest = parent;
+    this->pOdbcTest = pOdbcTest;
     parent_test = ptest;
 
     cancel = new QPushButton( "Close", this );
@@ -44,11 +44,11 @@ DlgToolsNewSource::DlgToolsNewSource( OdbcTest *parent, QString name, dManageTes
     ok->setGeometry( 110,50, 70,25 );
 
     source = new QLineEdit( this );
-    source -> setGeometry( 100, 20, 250, 20 );
-    source -> setMaxLength( 128 );
+    source->setGeometry( 100, 20, 250, 20 );
+    source->setMaxLength( 128 );
 
     l_dsn = new QLabel( "Test Source:", this );
-    l_dsn -> setGeometry( 10, 20, 90, 20 );
+    l_dsn->setGeometry( 10, 20, 90, 20 );
 
     connect( ok, SIGNAL(clicked()), SLOT(Ok()) );
     connect( ok, SIGNAL(clicked()), SLOT(accept()) );
@@ -71,7 +71,7 @@ void DlgToolsNewSource::Ok()
         return;
 
     // does it exist?
-    if ( ini["SQL_DRIVERS"].contains( source -> text() ) )
+    if ( ini["SQL_DRIVERS"].contains( source->text() ) )
     {
         QMessageBox::critical( this, "OdbcTest", "Source (" + source->text() + ") already defined" );
         return;
@@ -80,8 +80,8 @@ void DlgToolsNewSource::Ok()
     // add it...
     ini["SQL_DRIVERS"].insert( source->text(), "Installed" );
 
-    parent_test -> test_source -> addItem( source->text() );
-    parent_test -> Activated( source->text() );
+    parent_test->test_source->addItem( source->text() );
+    parent_test->Activated( source->text() );
 }
 
 

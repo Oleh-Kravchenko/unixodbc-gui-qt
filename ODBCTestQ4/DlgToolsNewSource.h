@@ -38,12 +38,12 @@ class DlgToolsNewSource : public QDialog
     Q_OBJECT
 
 public:
-    DlgToolsNewSource( OdbcTest *parent, QString name, DlgToolsManageTest *ptest );
+    DlgToolsNewSource( OdbcTest *pOdbcTest, QString name, DlgToolsManageTest *ptest );
     ~DlgToolsNewSource();
 
 protected:
     QPushButton *ok, *cancel;
-    OdbcTest *odbctest;
+    OdbcTest *pOdbcTest;
     QLineEdit *source;
     QLabel *l_dsn;
     DlgToolsManageTest *parent_test;

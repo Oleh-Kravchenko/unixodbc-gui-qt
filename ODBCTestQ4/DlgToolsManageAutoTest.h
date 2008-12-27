@@ -37,12 +37,12 @@ class DlgToolsManageAutoTest : public QDialog
     Q_OBJECT
 
 public:
-    DlgToolsManageAutoTest( OdbcTest *parent, QString name );
+    DlgToolsManageAutoTest( OdbcTest *pOdbcTest, QString name );
     ~DlgToolsManageAutoTest();
 
 protected:
     QPushButton *   close, *add, *remove, *from;
-    OdbcTest *      odbctest;
+    OdbcTest *      pOdbcTest;
     QLabel *        l_avail, *l_name, *l_lib, *l_so, *l_installed, *s_from, *s_name, *s_lib;
     QListWidget *   lib_list, *test_list;
     char            curr_dir[ 256 ];

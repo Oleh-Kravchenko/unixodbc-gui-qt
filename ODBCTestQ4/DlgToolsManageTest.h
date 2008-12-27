@@ -38,14 +38,14 @@ class DlgToolsManageTest : public QDialog
     Q_OBJECT
 
 public:
-    DlgToolsManageTest( OdbcTest *parent, QString name );
+    DlgToolsManageTest( OdbcTest *pOdbcTest, QString name );
     ~DlgToolsManageTest();
 
     friend class DlgToolsNewSource;
 
 protected:
     QPushButton *close, *nw, *del;
-    OdbcTest *odbctest;
+    OdbcTest *pOdbcTest;
     QComboBox *test_source;
     QComboBox*dsn;
     QLabel *l_dsn, *l_ts, *l_uid, *l_pwd, *l_kw;

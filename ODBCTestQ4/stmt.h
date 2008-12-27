@@ -37,7 +37,7 @@ class dPrepare : public QDialog
     Q_OBJECT
 
     public:
-		dPrepare( OdbcTest *parent, QString name );
+		dPrepare( OdbcTest *pOdbcTest, QString name );
         ~dPrepare();
 
 	protected:
@@ -45,8 +45,8 @@ class dPrepare : public QDialog
 		QComboBox *handles, *str, *name_len;
 		QLabel *l_handle, *l_str, *l_name_len;
 		QTextEdit *in_win;
-		OutputWin *out_win;
-		OdbcTest *odbctest;
+		QTextEdit *out_win;
+		OdbcTest *pOdbcTest;
 		QString txt;
 
 	protected slots:
@@ -58,7 +58,7 @@ class dExecute : public QDialog
     Q_OBJECT
 
     public:
-		dExecute( OdbcTest *parent, QString name );
+		dExecute( OdbcTest *pOdbcTest, QString name );
         ~dExecute();
 
 	protected:
@@ -66,8 +66,8 @@ class dExecute : public QDialog
 		QComboBox *handles;
 		QLabel *l_handle;
 		QTextEdit *in_win;
-		OutputWin *out_win;
-		OdbcTest *odbctest;
+		QTextEdit *out_win;
+		OdbcTest *pOdbcTest;
 		QString txt;
 
 	protected slots:
@@ -79,7 +79,7 @@ class dExecDirect : public QDialog
     Q_OBJECT
 
     public:
-		dExecDirect( OdbcTest *parent, QString name );
+		dExecDirect( OdbcTest *pOdbcTest, QString name );
         ~dExecDirect();
 
 	protected:
@@ -87,8 +87,8 @@ class dExecDirect : public QDialog
 		QComboBox *handles, *str, *name_len;
 		QLabel *l_handle, *l_str, *l_name_len;
 		QTextEdit *in_win;
-		OutputWin *out_win;
-		OdbcTest *odbctest;
+		QTextEdit *out_win;
+		OdbcTest *pOdbcTest;
 		QString txt;
 
 	protected slots:
@@ -100,7 +100,7 @@ class dNumParams : public QDialog
     Q_OBJECT
 
     public:
-        dNumParams( OdbcTest *parent, QString name );
+        dNumParams( OdbcTest *pOdbcTest, QString name );
         ~dNumParams();
 
 	protected:
@@ -109,8 +109,8 @@ class dNumParams : public QDialog
 		QCheckBox *valid;
 		QLabel *l_handle;
 		QTextEdit *in_win;
-		OutputWin *out_win;
-		OdbcTest *odbctest;
+		QTextEdit *out_win;
+		OdbcTest *pOdbcTest;
 		QString txt;
 
 	protected slots:
@@ -123,7 +123,7 @@ class dCancel : public QDialog
     Q_OBJECT
 
     public:
-		dCancel( OdbcTest *parent, QString name );
+		dCancel( OdbcTest *pOdbcTest, QString name );
         ~dCancel();
 
 	protected:
@@ -131,8 +131,8 @@ class dCancel : public QDialog
 		QComboBox *handles;
 		QLabel *l_handle;
 		QTextEdit *in_win;
-		OutputWin *out_win;
-		OdbcTest *odbctest;
+		QTextEdit *out_win;
+		OdbcTest *pOdbcTest;
 		QString txt;
 
 	protected slots:
@@ -144,7 +144,7 @@ class dCloseCursor : public QDialog
     Q_OBJECT
 
     public:
-		dCloseCursor( OdbcTest *parent, QString name );
+		dCloseCursor( OdbcTest *pOdbcTest, QString name );
         ~dCloseCursor();
 
 	protected:
@@ -152,8 +152,8 @@ class dCloseCursor : public QDialog
 		QComboBox *handles;
 		QLabel *l_handle;
 		QTextEdit *in_win;
-		OutputWin *out_win;
-		OdbcTest *odbctest;
+		QTextEdit *out_win;
+		OdbcTest *pOdbcTest;
 		QString txt;
 
 	protected slots:
@@ -165,7 +165,7 @@ class dGetCursorName : public QDialog
     Q_OBJECT
 
     public:
-		dGetCursorName( OdbcTest *parent, QString name );
+		dGetCursorName( OdbcTest *pOdbcTest, QString name );
         ~dGetCursorName();
 
 	protected:
@@ -175,8 +175,8 @@ class dGetCursorName : public QDialog
 		QCheckBox *name_valid, *cursor_valid;
 		QLineEdit *buffer_len;
 		QTextEdit *in_win;
-		OutputWin *out_win;
-		OdbcTest *odbctest;
+		QTextEdit *out_win;
+		OdbcTest *pOdbcTest;
 		QString txt;
 
 	protected slots:
@@ -190,7 +190,7 @@ class dFreeStmt : public QDialog
     Q_OBJECT
 
     public:
-		dFreeStmt( OdbcTest *parent, QString name );
+		dFreeStmt( OdbcTest *pOdbcTest, QString name );
         ~dFreeStmt();
 
 	protected:
@@ -198,8 +198,8 @@ class dFreeStmt : public QDialog
 		QComboBox *handles, *option;
 		QLabel *l_handle, *l_option;
 		QTextEdit *in_win;
-		OutputWin *out_win;
-		OdbcTest *odbctest;
+		QTextEdit *out_win;
+		OdbcTest *pOdbcTest;
 		QString txt;
 
 	protected slots:
@@ -211,7 +211,7 @@ class dSetCursorName : public QDialog
     Q_OBJECT
 
     public:
-		dSetCursorName( OdbcTest *parent, QString name );
+		dSetCursorName( OdbcTest *pOdbcTest, QString name );
         ~dSetCursorName();
 
 	protected:
@@ -219,8 +219,8 @@ class dSetCursorName : public QDialog
 		QComboBox *handles, *str, *name_len;
 		QLabel *l_handle, *l_str, *l_name_len;
 		QTextEdit *in_win;
-		OutputWin *out_win;
-		OdbcTest *odbctest;
+		QTextEdit *out_win;
+		OdbcTest *pOdbcTest;
 		QString txt;
 
 	protected slots:
@@ -232,7 +232,7 @@ class dDescribeParam : public QDialog
     Q_OBJECT
 
     public:
-        dDescribeParam( OdbcTest *parent, QString name );
+        dDescribeParam( OdbcTest *pOdbcTest, QString name );
         ~dDescribeParam();
 
 	protected:
@@ -245,8 +245,8 @@ class dDescribeParam : public QDialog
 		QCheckBox *size_valid;
 		QCheckBox *null_valid;
 		QTextEdit *in_win;
-		OutputWin *out_win;
-		OdbcTest *odbctest;
+		QTextEdit *out_win;
+		OdbcTest *pOdbcTest;
 		QString txt;
 		const char *data_type_to_str( int );
 
@@ -263,7 +263,7 @@ class dParamData : public QDialog
     Q_OBJECT
 
     public:
-        dParamData( OdbcTest *parent, QString name );
+        dParamData( OdbcTest *pOdbcTest, QString name );
         ~dParamData();
 
 	protected:
@@ -272,8 +272,8 @@ class dParamData : public QDialog
 		QLabel *l_handle;
 		QCheckBox *value_valid;
 		QTextEdit *in_win;
-		OutputWin *out_win;
-		OdbcTest *odbctest;
+		QTextEdit *out_win;
+		OdbcTest *pOdbcTest;
 		QString txt;
 
 	protected slots:
@@ -286,7 +286,7 @@ class dParamOption : public QDialog
     Q_OBJECT
 
     public:
-        dParamOption( OdbcTest *parent, QString name );
+        dParamOption( OdbcTest *pOdbcTest, QString name );
         ~dParamOption();
 
 	protected:
@@ -297,8 +297,8 @@ class dParamOption : public QDialog
 		QLabel *l_param_num, *l_crow_num;
 		QCheckBox *pirow_valid;
 		QTextEdit *in_win;
-		OutputWin *out_win;
-		OdbcTest *odbctest;
+		QTextEdit *out_win;
+		OdbcTest *pOdbcTest;
 		QString txt;
 
 	protected slots:
@@ -311,7 +311,7 @@ class dPutData : public QDialog
     Q_OBJECT
 
     public:
-		dPutData( OdbcTest *parent, QString name );
+		dPutData( OdbcTest *pOdbcTest, QString name );
         ~dPutData();
 
 	protected:
@@ -319,8 +319,8 @@ class dPutData : public QDialog
 		QComboBox *handles, *data_ptr, *str_len;
 		QLabel *l_handle, *l_data_ptr, *l_str_len;
 		QTextEdit *in_win;
-		OutputWin *out_win;
-		OdbcTest *odbctest;
+		QTextEdit *out_win;
+		OdbcTest *pOdbcTest;
 		QString txt;
 
 	protected slots:
@@ -332,7 +332,7 @@ class dBindParameter : public QDialog
     Q_OBJECT
 
     public:
-		dBindParameter( OdbcTest *parent, QString name );
+		dBindParameter( OdbcTest *pOdbcTest, QString name );
         ~dBindParameter();
 
 	protected:
@@ -345,8 +345,8 @@ class dBindParameter : public QDialog
         QLabel *l_column_size, *l_decimal_digits, *l_buffer_length;
 		QCheckBox *len_data_at_exec;
 		QTextEdit *in_win;
-		OutputWin *out_win;
-		OdbcTest *odbctest;
+		QTextEdit *out_win;
+		OdbcTest *pOdbcTest;
 		QString txt;
 
 	protected slots:
@@ -358,7 +358,7 @@ class dBindParam : public QDialog
     Q_OBJECT
 
     public:
-		dBindParam( OdbcTest *parent, QString name );
+		dBindParam( OdbcTest *pOdbcTest, QString name );
         ~dBindParam();
 
 	protected:
@@ -371,8 +371,8 @@ class dBindParam : public QDialog
         QLabel *l_column_size, *l_decimal_digits;
 		QCheckBox *len_data_at_exec;
 		QTextEdit *in_win;
-		OutputWin *out_win;
-		OdbcTest *odbctest;
+		QTextEdit *out_win;
+		OdbcTest *pOdbcTest;
 		QString txt;
 
 	protected slots:
@@ -384,7 +384,7 @@ class dAllocStmt : public QDialog
     Q_OBJECT
 
     public:
-        dAllocStmt( OdbcTest *parent, QString name );
+        dAllocStmt( OdbcTest *pOdbcTest, QString name );
         ~dAllocStmt();
 
 	protected:
@@ -393,8 +393,8 @@ class dAllocStmt : public QDialog
 		QCheckBox *handle_valid;
         QComboBox *handles;
         QLabel *l_handles;
-		OutputWin *out_win;
-		OdbcTest *odbctest;
+		QTextEdit *out_win;
+		OdbcTest *pOdbcTest;
 		QString txt;
 
 	protected slots:

@@ -37,7 +37,7 @@ class dCopyDesc : public QDialog
     Q_OBJECT
 
     public:
-		dCopyDesc( OdbcTest *parent, QString name );
+		dCopyDesc( OdbcTest *pOdbcTest, QString name );
         ~dCopyDesc();
 
 	protected:
@@ -45,8 +45,8 @@ class dCopyDesc : public QDialog
 		QComboBox *handle1, *handle2;
 		QLabel *l_handle1, *l_handle2;
 		QTextEdit *in_win;
-		OutputWin *out_win;
-		OdbcTest *odbctest;
+		QTextEdit *out_win;
+		OdbcTest *pOdbcTest;
 		QString txt;
 
 	protected slots:
@@ -58,7 +58,7 @@ class dGetDescField : public QDialog
     Q_OBJECT
 
     public:
-		dGetDescField( OdbcTest *parent, QString name );
+		dGetDescField( OdbcTest *pOdbcTest, QString name );
         ~dGetDescField();
 
 	protected:
@@ -68,8 +68,8 @@ class dGetDescField : public QDialog
 		QCheckBox *ptr_valid, *strlen_valid;
 		QLineEdit *buffer_len, *rec_num;
 		QTextEdit *in_win;
-		OutputWin *out_win;
-		OdbcTest *odbctest;
+		QTextEdit *out_win;
+		OdbcTest *pOdbcTest;
 		QString txt;
 
 	protected slots:
@@ -83,7 +83,7 @@ class dGetDescRec : public QDialog
     Q_OBJECT
 
     public:
-		dGetDescRec( OdbcTest *parent, QString name );
+		dGetDescRec( OdbcTest *pOdbcTest, QString name );
         ~dGetDescRec();
 
 	protected:
@@ -94,8 +94,8 @@ class dGetDescRec : public QDialog
         QCheckBox *length_valid, *precision_valid, *scale_valid, *nullable_valid;
 		QLineEdit *buffer_len, *rec_num;
 		QTextEdit *in_win;
-		OutputWin *out_win;
-		OdbcTest *odbctest;
+		QTextEdit *out_win;
+		OdbcTest *pOdbcTest;
 		QString txt;
 
 	protected slots:

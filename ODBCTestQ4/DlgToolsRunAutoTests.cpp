@@ -33,83 +33,83 @@
 	(lpa[((pos) / CQBITS)] |= (1 << ((pos) - (CQBITS * ((pos) / CQBITS)))))
 #define SETBIT(p1,p2) setqbit(p1,(p2)-1)
 
-DlgToolsRunAutoTests::DlgToolsRunAutoTests( OdbcTest *parent, QString name )
-    : QDialog( parent )
+DlgToolsRunAutoTests::DlgToolsRunAutoTests( OdbcTest *pOdbcTest, QString name )
+    : QDialog( pOdbcTest )
 {
     setWindowTitle( name );
 
-    odbctest = parent;
+    this->pOdbcTest = pOdbcTest;
 
     init_ini_list( parent );
 
     l_tests = new QLabel( "Auto Tests:", this );
-    l_tests -> setGeometry( 10, 15, 60, 20 );
+    l_tests->setGeometry( 10, 15, 60, 20 );
 
     tests = new QTreeWidget( this );
 
-    tests -> setGeometry( 10, 40, 300, 150 );
-//    tests -> addColumn( "Tests", -1 );
-    tests -> setRootIsDecorated( TRUE );
-    tests -> setSelectionMode( QAbstractItemView::MultiSelection );
-//    tests -> setSorting( -1 );
-    tests -> header()->hide();
+    tests->setGeometry( 10, 40, 300, 150 );
+//    tests->addColumn( "Tests", -1 );
+    tests->setRootIsDecorated( TRUE );
+    tests->setSelectionMode( QAbstractItemView::MultiSelection );
+//    tests->setSorting( -1 );
+    tests->header()->hide();
 
     l_sources = new QLabel( "Test Sources:", this );
-    l_sources -> setGeometry( 320, 15, 80, 20 );
+    l_sources->setGeometry( 320, 15, 80, 20 );
 
     sources = new QListWidget( this );
-    sources -> setSelectionMode( QListWidget::MultiSelection );
+    sources->setSelectionMode( QListWidget::MultiSelection );
 
-    sources -> setGeometry( 320, 40, 150, 220 );
+    sources->setGeometry( 320, 40, 150, 220 );
 
     output = new QGroupBox( "Output", this );
 
-    output -> setGeometry( 10, 200, 90, 80 );
+    output->setGeometry( 10, 200, 90, 80 );
 
     b_log_file = new QCheckBox( "Log File", output );
-    b_log_file -> setGeometry( 10, 20, 70, 20 );
+    b_log_file->setGeometry( 10, 20, 70, 20 );
 
     b_screen = new QCheckBox( "Screen", output );
-    b_screen -> setGeometry( 10, 50, 70, 20 );
-    b_screen -> setChecked( TRUE );
+    b_screen->setGeometry( 10, 50, 70, 20 );
+    b_screen->setChecked( TRUE );
 
     options = new QGroupBox( "Options", this );
 
-    options -> setGeometry( 110, 200, 200, 80 );
+    options->setGeometry( 110, 200, 200, 80 );
 
     b_debug = new QCheckBox( "Debug", options );
-    b_debug -> setGeometry( 10, 20, 80, 20 );
+    b_debug->setGeometry( 10, 20, 80, 20 );
 
     b_isolate = new QCheckBox( "Isolate tests", options );
-    b_isolate -> setGeometry( 10, 50, 100, 20 );
+    b_isolate->setGeometry( 10, 50, 100, 20 );
 
     b_cursor = new QCheckBox( "Cursor Library", options );
-    b_cursor -> setGeometry( 90, 20, 100, 20 );
-    b_cursor -> setTristate( TRUE );
+    b_cursor->setGeometry( 90, 20, 100, 20 );
+    b_cursor->setTristate( TRUE );
 
     run_list = new QPushButton( "Run List...", this );
-    run_list -> setGeometry( 10, 290, 70, 25 );
-    run_list -> setEnabled( FALSE );
+    run_list->setGeometry( 10, 290, 70, 25 );
+    run_list->setEnabled( FALSE );
 
     rlist = new QComboBox( this );
-    rlist -> setGeometry( 100, 290, 150, 20 );
-    rlist -> insertItem( 0, "<Default>" );
-    rlist -> setEnabled( FALSE );
+    rlist->setGeometry( 100, 290, 150, 20 );
+    rlist->insertItem( 0, "<Default>" );
+    rlist->setEnabled( FALSE );
 
     ok = new QPushButton( "Ok", this );
-    ok -> setGeometry( 320, 290, 70, 25 );
-    ok -> setEnabled( FALSE );
+    ok->setGeometry( 320, 290, 70, 25 );
+    ok->setEnabled( FALSE );
 
     cancel = new QPushButton( "Cancel", this );
-    cancel -> setGeometry( 400, 290, 70, 25 );
+    cancel->setGeometry( 400, 290, 70, 25 );
 
     log_file = new QPushButton( "Log File...", this );
-    log_file -> setGeometry( 10, 320, 70, 25 );
-    log_file -> setEnabled( FALSE );
+    log_file->setGeometry( 10, 320, 70, 25 );
+    log_file->setEnabled( FALSE );
 
     l_log = new QLabel( "auto.log", this );
-    l_log -> setGeometry( 89, 320, 380, 20 );
-    l_log -> setEnabled( FALSE );
+    l_log->setGeometry( 89, 320, 380, 20 );
+    l_log->setEnabled( FALSE );
 
     connect( ok, SIGNAL(clicked()), SLOT(Ok()) );
     connect( ok, SIGNAL(clicked()), SLOT(accept()) );
@@ -134,14 +134,14 @@ DlgToolsRunAutoTests::DlgToolsRunAutoTests( OdbcTest *parent, QString name )
     {
         prop *p;
 
-        for ( p = s -> first(); 
+        for ( p = s->first(); 
             p != 0; 
-            p = s -> next())
+            p = s->next())
         {
-            sources -> addItem( p -> name() );
+            sources->addItem( p->name() );
         }
     }
-    sources -> addItem( "ODBC Test Handles" );
+    sources->addItem( "ODBC Test Handles" );
 
 
     MYQListViewItem *top = NULL;  
@@ -159,11 +159,11 @@ DlgToolsRunAutoTests::DlgToolsRunAutoTests( OdbcTest *parent, QString name )
 
         top = new MYQListViewItem( tests, top, "All" );  
         last_test = NULL ;
-        for ( p = s -> first(); 
+        for ( p = s->first(); 
             p != 0; 
-            p = s -> next())
+            p = s->next())
         {
-            add_auto_test( p -> name(), top, &last_test );
+            add_auto_test( p->name(), top, &last_test );
         }
     }
 
@@ -175,20 +175,20 @@ DlgToolsRunAutoTests::DlgToolsRunAutoTests( OdbcTest *parent, QString name )
     {
         prop *p, *p1;
 
-        for ( p = s -> first(); 
+        for ( p = s->first(); 
             p != 0; 
-            p = s -> next())
+            p = s->next())
         {
-            section *s1 = find_section( p -> name() );
+            section *s1 = find_section( p->name() );
             if ( s1 )
             {
-                top = new MYQListViewItem( tests, top, p -> name());  
+                top = new MYQListViewItem( tests, top, p->name());  
                 last_test = NULL ;
-                for ( p1 = s1-> first(); 
+                for ( p1 = s1->first(); 
                     p1 != 0; 
-                    p1 = s1-> next())
+                    p1 = s1->next())
                 {
-                    add_auto_test( p1 -> name(), top, &last_test );
+                    add_auto_test( p1->name(), top, &last_test );
                 }
             }
         }
@@ -226,22 +226,22 @@ void DlgToolsRunAutoTests::Ok()
     // set up callback, handle
     // (callback activity will need our main window)
     //
-    static_odbctest = odbctest;
+    static_odbctest = pOdbcTest;
 
-    for ( i = 0; i < sources -> count(); i ++ )
+    for ( i = 0; i < sources->count(); i ++ )
     {
-        if ( sources -> isSelected( i ))
+        if ( sources->isSelected( i ))
         {
             MYQListViewItem *group;
 
-            QString src = sources -> text( i );
+            QString src = sources->text( i );
 
             // walk tree
 
-            group = (MYQListViewItem *) tests -> firstChild();
+            group = (MYQListViewItem *) tests->firstChild();
             while ( group )
             {
-                if ( group -> isSelected())
+                if ( group->isSelected())
                 {
                     sprintf( msg, "Now executing Group %s on source %s",
                              group->group().toAscii().constData(), src.toAscii().constData());
@@ -252,9 +252,9 @@ void DlgToolsRunAutoTests::Ok()
                     if ( src == "ODBC Test Handles" )
                     {
                         src_section = NULL;
-                        server_info.henv = odbctest->get_handle( SQL_HANDLE_ENV );
-                        server_info.hdbc = odbctest->get_handle( SQL_HANDLE_DBC );
-                        server_info.hstmt = odbctest->get_handle( SQL_HANDLE_STMT );
+                        server_info.henv = pOdbcTest->get_handle( SQL_HANDLE_ENV );
+                        server_info.hdbc = pOdbcTest->get_handle( SQL_HANDLE_DBC );
+                        server_info.hstmt = pOdbcTest->get_handle( SQL_HANDLE_STMT );
 
                     }
                     else
@@ -272,24 +272,24 @@ void DlgToolsRunAutoTests::Ok()
                     server_info.szKeywords[ 0 ] = '\0';
                     server_info.cErrors = 0;
 
-                    if ( b_debug -> isChecked())
+                    if ( b_debug->isChecked())
                         server_info.fDebug = 1;
                     else
                         server_info.fDebug = 0;
 
-                    if ( b_isolate -> isChecked())
+                    if ( b_isolate->isChecked())
                         server_info.fIsolate = 1;
                     else
                         server_info.fIsolate = 0;
 
-                    if ( b_screen -> isChecked())
+                    if ( b_screen->isChecked())
                         server_info.fScreen = 1;
                     else
                         server_info.fScreen = 0;
 
                     server_info.vCursorLib = cursor_state;
 
-                    if ( b_log_file -> isChecked())
+                    if ( b_log_file->isChecked())
                     {
                         strcpy( server_info.szLogFile, l_log->text().toAscii().constData() );
                         server_info.fLog = 1;
@@ -304,23 +304,23 @@ void DlgToolsRunAutoTests::Ok()
 
                     if ( src_section )
                     {
-                        for ( prop *prop = src_section->first(); prop != 0; prop = src_section -> next())
+                        for ( prop *prop = src_section->first(); prop != 0; prop = src_section->next())
                         {
-                            if ( strcmp( prop -> name(), "SERVER0" ) == 0 )
+                            if ( strcmp( prop->name(), "SERVER0" ) == 0 )
                             {
-                                strcpy( server_info.szValidServer0, prop -> value());
+                                strcpy( server_info.szValidServer0, prop->value());
                             }
-                            else if ( strcmp( prop -> name(), "LOGIN0" ) == 0 )
+                            else if ( strcmp( prop->name(), "LOGIN0" ) == 0 )
                             {
-                                strcpy( server_info.szValidLogin0, prop -> value());
+                                strcpy( server_info.szValidLogin0, prop->value());
                             }
-                            else if ( strcmp( prop -> name(), "PASSWORD0" ) == 0 )
+                            else if ( strcmp( prop->name(), "PASSWORD0" ) == 0 )
                             {
-                                strcpy( server_info.szValidPassword0, prop -> value());
+                                strcpy( server_info.szValidPassword0, prop->value());
                             }
-                            else if ( strcmp( prop -> name(), "KEYWORDS" ) == 0 )
+                            else if ( strcmp( prop->name(), "KEYWORDS" ) == 0 )
                             {
-                                strcpy( server_info.szKeywords, prop -> value());
+                                strcpy( server_info.szKeywords, prop->value());
                             }
                         }
                     }
@@ -331,11 +331,11 @@ void DlgToolsRunAutoTests::Ok()
                     sprintf( msg, "Keywords: %s", server_info.szKeywords );
                     print_to_odbctest( &server_info, msg, 0 );
 
-                    MYQListViewItem *sect = group -> firstChild();
+                    MYQListViewItem *sect = group->firstChild();
 
                     while ( sect )
                     {
-                        if ( sect -> isSelected())
+                        if ( sect->isSelected())
                         {
                             sprintf( msg, "Now Executing Auto Test: %s", sect->name().toAscii().constData());
                             print_to_odbctest( &server_info, msg, 1 );
@@ -357,11 +357,11 @@ void DlgToolsRunAutoTests::Ok()
 
                             if ( s )
                             {
-                                for ( prop *prop = s->first(); prop != 0; prop = s -> next())
+                                for ( prop *prop = s->first(); prop != 0; prop = s->next())
                                 {
-                                    if ( strcmp( prop -> name(), "DLL" ) == 0 )
+                                    if ( strcmp( prop->name(), "DLL" ) == 0 )
                                     {
-                                        lt_dlhandle handle = lt_dlopen( prop -> value());
+                                        lt_dlhandle handle = lt_dlopen( prop->value());
                                         //
                                         // open the lib
                                         //
@@ -375,12 +375,12 @@ void DlgToolsRunAutoTests::Ok()
 
                                             if ( !pfAutoTestFunc )
                                             {
-                                                sprintf( msg, "Can't Find AutoTestFunc in %s", prop -> value());
+                                                sprintf( msg, "Can't Find AutoTestFunc in %s", prop->value());
                                                 print_to_odbctest( &server_info, msg, 1 );
                                             }
                                             else if ( !pfAutoTestName )
                                             {
-                                                sprintf( msg, "Can't Find AutoTestName in %s", prop -> value());
+                                                sprintf( msg, "Can't Find AutoTestName in %s", prop->value());
                                                 print_to_odbctest( &server_info, msg, 1 );
                                             }
                                             else
@@ -405,32 +405,32 @@ void DlgToolsRunAutoTests::Ok()
                                                     server_info.hwnd = (void*)callback_function;
 
                                                     // now we are ready
-                                                    if ( b_isolate -> isChecked())
+                                                    if ( b_isolate->isChecked())
                                                     {
-                                                        MYQListViewItem *test = sect -> firstChild();
+                                                        MYQListViewItem *test = sect->firstChild();
 
                                                         while ( test )
                                                         {
-                                                            if ( test -> isSelected())
+                                                            if ( test->isSelected())
                                                             {
                                                                 SETBIT(server_info.rglMask, test->index());
                                                                 pfAutoTestFunc(&server_info);
                                                             }
-                                                            test = test -> nextSibling();
+                                                            test = test->nextSibling();
                                                         }
                                                     }
                                                     else
                                                     {
-                                                        MYQListViewItem *test = sect -> firstChild();
+                                                        MYQListViewItem *test = sect->firstChild();
 
                                                         memset( server_info.rglMask, 0, sizeof(unsigned int) * size );
                                                         while ( test )
                                                         {
-                                                            if ( test -> isSelected())
+                                                            if ( test->isSelected())
                                                             {
                                                                 SETBIT(server_info.rglMask, test->index());
                                                             }
-                                                            test = test -> nextSibling();
+                                                            test = test->nextSibling();
                                                         }
                                                         pfAutoTestFunc(&server_info);
                                                     }
@@ -444,7 +444,7 @@ void DlgToolsRunAutoTests::Ok()
                                         }
                                         else
                                         {
-                                            sprintf( msg, "Can't open %s", prop -> value());
+                                            sprintf( msg, "Can't open %s", prop->value());
                                             print_to_odbctest( &server_info, msg, 1 );
                                         }
                                     }
@@ -454,10 +454,10 @@ void DlgToolsRunAutoTests::Ok()
                             sprintf( msg, "Time finished %s", QTime::currentTime().toString().toAscii().constData() );
                             print_to_odbctest( &server_info, msg, 1 );
                         }
-                        sect = sect -> nextSibling();
+                        sect = sect->nextSibling();
                     }
                 }
-                group = group -> nextSibling();
+                group = group->nextSibling();
             }
         }
     }
@@ -469,12 +469,12 @@ void DlgToolsRunAutoTests::Log()
     QFileDialog dlg( this );
 
     dlg.setFileMode( QFileDialog::AnyFile );
-    dlg.selectFile( l_log -> text() );
+    dlg.selectFile( l_log->text() );
 
     if ( dlg.exec() == QDialog::Accepted )
     {
         QString result = dlg.selectedFiles().at( 0 );
-        l_log -> setText( result );
+        l_log->setText( result );
     }
 } 
 
@@ -482,13 +482,13 @@ void DlgToolsRunAutoTests::LogChanged( int state )
 {
     if ( state )
     {
-        log_file -> setEnabled( TRUE );
-        l_log -> setEnabled( TRUE );
+        log_file->setEnabled( TRUE );
+        l_log->setEnabled( TRUE );
     }
     else
     {
-        log_file -> setEnabled( FALSE );
-        l_log -> setEnabled( FALSE );
+        log_file->setEnabled( FALSE );
+        l_log->setEnabled( FALSE );
     }
 }
 
@@ -514,9 +514,9 @@ void DlgToolsRunAutoTests::add_auto_test( const char * test_name, MYQListViewIte
 
     if ( s )
     {
-        for ( prop *prop = s->first(); prop != 0; prop = s -> next())
+        for ( prop *prop = s->first(); prop != 0; prop = s->next())
         {
-            if ( strcmp( prop -> name(), "DLL" ) == 0 )
+            if ( strcmp( prop->name(), "DLL" ) == 0 )
             {
                 /*
                  * initialize libtool
@@ -526,7 +526,7 @@ void DlgToolsRunAutoTests::add_auto_test( const char * test_name, MYQListViewIte
                 //
                 // open the lib
                 //
-                lt_dlhandle handle = lt_dlopen( prop -> value());
+                lt_dlhandle handle = lt_dlopen( prop->value());
                 if ( handle )
                 {
                     void *pfAutoTestFunc;
@@ -595,9 +595,9 @@ void DlgToolsRunAutoTests::TestsChanged()
     // are any of the sources selected?
     {
         /* 
-            for ( int i = 0; i < sources -> count(); i ++ )
+            for ( int i = 0; i < sources->count(); i ++ )
             {
-                if ( sources -> isSelected( i ) )
+                if ( sources->isSelected( i ) )
                 {
                     ok1 = 1;
                     break;
@@ -611,15 +611,15 @@ void DlgToolsRunAutoTests::TestsChanged()
     // are any of the tests selected?
     {
         /*
-        MYQListViewItem *group = (MYQListViewItem*) tests -> firstChild();
+        MYQListViewItem *group = (MYQListViewItem*) tests->firstChild();
         while( group )
         {
-            if ( group -> isSelected())
+            if ( group->isSelected())
             {
                 ok2 = 1;
                 break;
             }
-            group = group -> nextSibling();
+            group = group->nextSibling();
         }
         */
         if ( tests->selectedItems().count() )
@@ -629,11 +629,11 @@ void DlgToolsRunAutoTests::TestsChanged()
     // 
     if ( ok1 && ok2 )
     {
-        ok -> setEnabled( TRUE );
+        ok->setEnabled( TRUE );
     }
     else
     {
-        ok -> setEnabled( FALSE );
+        ok->setEnabled( FALSE );
     }
 }
 
@@ -653,7 +653,7 @@ void OdbcTest::manage_test()
 {
     dManageTest *dlg = new dManageTest( this, "Manage Test Sources" );
 
-    dlg -> exec();
+    dlg->exec();
 
     delete dlg;
 }
@@ -662,7 +662,7 @@ void OdbcTest::manage_auto_test()
 {
     dManageAutoTest *dlg = new dManageAutoTest( this, "Manage Auto Test" );
 
-    dlg -> exec();
+    dlg->exec();
 
     delete dlg;
 }
@@ -671,7 +671,7 @@ void OdbcTest::manage_test_groups()
 {
     dManageTestGroup *dlg = new dManageTestGroup( this, "Manage Test Groups" );
 
-    dlg -> exec();
+    dlg->exec();
 
     delete dlg;
 }
@@ -680,7 +680,7 @@ void OdbcTest::run_auto_tests()
 {
     DlgToolsRunAutoTests *dlg = new DlgToolsRunAutoTests( this, "Run Auto Tests" );
 
-    dlg -> exec();
+    dlg->exec();
 
     delete dlg;
 }

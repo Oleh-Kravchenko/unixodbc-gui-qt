@@ -308,12 +308,12 @@ OdbcTest::OdbcTest( QWidget *parent )
     this->setGeometry( 0, 0, 500, 250 );
 
 	split = new QSplitter( Qt::Vertical, this );
-	split -> setOpaqueResize( FALSE );
+	split->setOpaqueResize( FALSE );
 	setCentralWidget( split );
     in_win 	= new QTextEdit( split );
     out_win = new QTextEdit( split );
-	out_win -> setReadOnly( TRUE );
-	out_win -> setMaxLines( 1000 );
+	out_win->setReadOnly( TRUE );
+	out_win->setMaxLines( 1000 );
 }
 
 OdbcTest::~OdbcTest()
@@ -376,7 +376,7 @@ void OdbcTest::fill_list_box( attr_value *attr, QComboBox *lst )
 		{
 			sprintf( txt, "%d", attr[ i ].value );
 		}
-		lst -> insertItem( i, txt );
+		lst->insertItem( i, txt );
 	}
 }
 
@@ -403,7 +403,7 @@ void OdbcTest::fill_list_box( attr_options *attr, QComboBox *lst )
 		{
 			sprintf( txt, "%d", attr[ i ].attr );
 		}
-		lst -> insertItem( i, txt );
+		lst->insertItem( i, txt );
 	}
 }
 
@@ -457,7 +457,7 @@ OdbcHandle * OdbcTest::fill_handle_list( int type, QComboBox *lst )
 OdbcHandle *OdbcTest::extract_handle_list( int type, QComboBox *lst )
 {
 	QListIterator<OdbcHandle*> 	it( listHandle );
-	int 					index = lst -> currentIndex(); 
+	int 					index = lst->currentIndex(); 
 	int 					i = 0;
 	OdbcHandle *				hand = NULL;
 
@@ -513,7 +513,7 @@ void OdbcTest::dumpError( int type, SQLHANDLE hnd )
 
 	if ( !SQL_SUCCEEDED( ret ))
 	{
-		out_win->insertLineLimited( "SQLGetDiagField( SQL_DIAG_NUMBER ) failed" );
+		out_win->append( "SQLGetDiagField( SQL_DIAG_NUMBER ) failed" );
 		return;
 	}
 
@@ -530,14 +530,14 @@ void OdbcTest::dumpError( int type, SQLHANDLE hnd )
 
 		if ( !SQL_SUCCEEDED( ret ))
 	    {
-			out_win->insertLineLimited( "SQLGetDiagRec() failed" );
+			out_win->append( "SQLGetDiagRec() failed" );
 			return;
 		}
 
 		sprintf( txt, "Diag(%s):%s:%d:%s",
 			handle, sqlstate, native, message_text );
 
-		out_win->insertLineLimited( txt );
+		out_win->append( txt );
 	}
 }
 
@@ -1011,7 +1011,7 @@ void OdbcTest::createMenus()
 	// Installer...
 	pmenuInstaller          = menuBar()->addMenu( tr("&Installer") );
 
-	// Installer -> Data Sources...
+	// Installer->Data Sources...
 	pmenuDataSources        = pmenuInstaller->addMenu( tr("DataSources") );
 	pmenuDataSources->addAction( pactionManageDataSources       );
 	pmenuDataSources->addAction( pactionRemoveDefaultDataSource );
@@ -1021,7 +1021,7 @@ void OdbcTest::createMenus()
 	pmenuDataSources->addAction( pactionRemoveDSNFromIni        );
 	pmenuDataSources->addAction( pactionWriteDSNToIni           );
 
-	// Installer -> Drivers...
+	// Installer->Drivers...
 	pmenuDrivers            = pmenuInstaller->addMenu( tr("Drivers") );
 	pmenuDrivers->addAction( pactionRemoveDrivers       );
 	pmenuDrivers->addAction( pactionConfigDrivers       );
@@ -1029,29 +1029,29 @@ void OdbcTest::createMenus()
 	pmenuDrivers->addAction( pactionInstallDriverEx     );
 	pmenuDrivers->addAction( pactionGetInstalledDrivers );
 
-	// Installer -> DriverManager...
+	// Installer->DriverManager...
 	pmenuDriverManager      = pmenuInstaller->addMenu( tr("DriverManager") );
 	pmenuDriverManager->addAction( pactionRemoveDriverManager  );
 	pmenuDriverManager->addAction( pactionInstallDriverManager );
 
-	// Installer -> DataSourceName...
+	// Installer->DataSourceName...
 	pmenuFileDataSourceName	= pmenuInstaller->addMenu( tr("FileDataSourceName") );
 	pmenuFileDataSourceName->addAction( pactionReadFileDSN  );
 	pmenuFileDataSourceName->addAction( pactionWriteFileDSN );
 
-	// Installer -> ProfileStrings...
+	// Installer->ProfileStrings...
 	pmenuProfileStrings     = pmenuInstaller->addMenu( tr("ProfileStrings") );
 	pmenuProfileStrings->addAction( pactionWritePrivateProfileString  );
 	pmenuProfileStrings->addAction( pactionGetPrivateProfileString );
 
-	// Installer -> Translator...
+	// Installer->Translator...
 	pmenuTranslator         = pmenuInstaller->addMenu( tr("Translator") );
 	pmenuTranslator->addAction( pactionInstallTranslator   );
 	pmenuTranslator->addAction( pactionInstallTranslatorEx );
 	pmenuTranslator->addAction( pactionRemoveTranslator    );
 	pmenuTranslator->addAction( pactionGetTranslator       );
 
-	// Installer -> ConfigMode...
+	// Installer->ConfigMode...
 	pmenuConfigMode         = pmenuInstaller->addMenu( tr("ConfigMode") );
 	pmenuConfigMode->addAction( pactionSetConfigMode );
 	pmenuConfigMode->addAction( pactionGetConfigMode );

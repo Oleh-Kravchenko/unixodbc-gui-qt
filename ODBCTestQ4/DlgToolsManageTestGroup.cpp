@@ -30,12 +30,12 @@
 #include "DlgToolsNewGroup.h"
 #include "OdbcTest.h"
 
-DlgToolsManageTestGroup::DlgToolsManageTestGroup( OdbcTest *parent, QString name )
-    : QDialog( parent )
+DlgToolsManageTestGroup::DlgToolsManageTestGroup( OdbcTest *pOdbcTest, QString name )
+    : QDialog( pOdbcTest )
 {
     setWindowTitle( name );
 
-    odbctest = parent;
+    this->pOdbcTest = pOdbcTest;
 
     nw = new QPushButton( "New", this );
     nw->setGeometry( 300,15, 70,25 );
@@ -53,22 +53,22 @@ DlgToolsManageTestGroup::DlgToolsManageTestGroup( OdbcTest *parent, QString name
     close->setGeometry( 280,200, 70,25 );
 
     group = new QComboBox( this );
-    group -> setGeometry( 100, 15, 180, 20 );
+    group->setGeometry( 100, 15, 180, 20 );
 
     l_group = new QLabel( "Test Group:", this );
-    l_group -> setGeometry( 10, 15, 60, 20 );
+    l_group->setGeometry( 10, 15, 60, 20 );
 
     l_auto = new QLabel( "Installed Auto Tests:", this );
-    l_auto -> setGeometry( 10, 60, 160, 20 );
+    l_auto->setGeometry( 10, 60, 160, 20 );
 
     l_sauto = new QLabel( "Selected Auto Tests:", this );
-    l_sauto -> setGeometry( 370, 60, 160, 20 );
+    l_sauto->setGeometry( 370, 60, 160, 20 );
 
     auto_list = new QListWidget( this );
-    auto_list -> setGeometry( 10, 80, 250, 160 );
+    auto_list->setGeometry( 10, 80, 250, 160 );
 
     sauto_list = new QListWidget( this );
-    sauto_list -> setGeometry( 370, 80, 250, 160 );
+    sauto_list->setGeometry( 370, 80, 250, 160 );
 
     connect( close, SIGNAL(clicked()), SLOT(Ok()) );
     connect( close, SIGNAL(clicked()), SLOT(accept()) );
@@ -87,11 +87,11 @@ DlgToolsManageTestGroup::DlgToolsManageTestGroup( OdbcTest *parent, QString name
     {
         prop *p;
 
-        for ( p = s -> first(); 
+        for ( p = s->first(); 
             p != 0; 
-            p = s -> next())
+            p = s->next())
         {
-            group -> addItem( p -> name() );
+            group->addItem( p->name() );
         }
     }
 
@@ -157,13 +157,13 @@ void DlgToolsManageTestGroup::Activated( const QString & )
 
 void DlgToolsManageTestGroup::Activated( int val )
 {
-    if ( group -> count() > 0 )
-        Activated( group -> itemText( val ) );
+    if ( group->count() > 0 )
+        Activated( group->itemText( val ) );
 }
 
 void DlgToolsManageTestGroup::Add()
 {
-    QListWidgetItem *pListWidgetItem = auto_list -> currentItem();
+    QListWidgetItem *pListWidgetItem = auto_list->currentItem();
     if ( !pListWidgetItem )
         return;
 
@@ -173,7 +173,7 @@ void DlgToolsManageTestGroup::Add()
 
 void DlgToolsManageTestGroup::Remove()
 {
-    QListWidgetItem *pListWidgetItem = sauto_list -> currentItem();
+    QListWidgetItem *pListWidgetItem = sauto_list->currentItem();
     if ( !pListWidgetItem )
         return;
 
@@ -183,16 +183,16 @@ void DlgToolsManageTestGroup::Remove()
 
 void DlgToolsManageTestGroup::New()
 {
-    DlgToolsNewGroup *dlg = new DlgToolsNewGroup( this -> odbctest, "New Test Group", this );
+    DlgToolsNewGroup *dlg = new DlgToolsNewGroup( this->odbctest, "New Test Group", this );
 
-    dlg -> exec();
+    dlg->exec();
 
     delete dlg;
 }
 
 void DlgToolsManageTestGroup::Delete()
 {
-    if ( group -> count() == 0 )
+    if ( group->count() == 0 )
         return;
 
     if ( QMessageBox::information( this, "OdbcTest",
@@ -210,7 +210,7 @@ void DlgToolsManageTestGroup::Delete()
     gOdbcTools->ini.removeSection( group->currentText() );
 
     // reload list...
-    group -> clear();
+    group->clear();
 
     s = find_section( "GROUPS" );
 
@@ -218,14 +218,14 @@ void DlgToolsManageTestGroup::Delete()
     {
         prop *p;
 
-        for ( p = s -> first(); 
+        for ( p = s->first(); 
             p != 0; 
-            p = s -> next())
+            p = s->next())
         {
-            group -> addItem( p -> name() );
+            group->addItem( p->name() );
         }
     }
-    group -> setCurrentIndex( 0 );
+    group->setCurrentIndex( 0 );
     Activated( 0 );
 }
 

@@ -66,7 +66,7 @@ SQLRETURN ret;
 SQLINTEGER type;
 const char *handle;
 
-	switch( types -> currentIndex())
+	switch( types->currentIndex())
 	{
 		case 0:
 			type = SQL_HANDLE_ENV;
@@ -93,69 +93,69 @@ const char *handle;
 	 * get input handle
 	 */
 
-    Handle *hand = odbctest->extract_handle_list( -1, handles );
+    OdbcHandle *hand = pOdbcTest->extract_handle_list( -1, handles );
 
 	if ( hand )
-		in_handle = hand -> getHandle();
+		in_handle = hand->getHandle();
 
 	/*
 	 * set output handle to something
 	 */
 	out_handle = 0;
 
-	if ( valid -> isChecked() )
+	if ( valid->isChecked() )
 		ret = SQLAllocHandle( type, in_handle, SQL_NULL_HANDLE );
 	else
 		ret = SQLAllocHandle( type, in_handle, &out_handle );
 
-	odbctest -> out_win -> insertLineLimited( "SQLAllocHandle():" );
-	odbctest -> out_win -> insertLineLimited( "  In:" );
+	pOdbcTest->out_win->append( "SQLAllocHandle():" );
+	pOdbcTest->out_win->append( "  In:" );
 	txt.sprintf( "    Handle Type: %s", handle );
-	odbctest -> out_win -> insertLineLimited( txt );
+	pOdbcTest->out_win->append( txt );
 	if ( in_handle )
 	    txt.sprintf( "    InputHandle: %p", in_handle );
 	else
 	    txt.sprintf( "    InputHandle: SQL_NULL_HANDLE" );
-	odbctest -> out_win -> insertLineLimited( txt );
-	if ( valid -> isChecked() )
+	pOdbcTest->out_win->append( txt );
+	if ( valid->isChecked() )
 		txt.sprintf( "    OutputHandle: SQL_NULL_HANDLE" );
 	else
 		txt.sprintf( "    OutputHandle: %p", &out_handle );
-	odbctest -> out_win -> insertLineLimited( txt );
+	pOdbcTest->out_win->append( txt );
 
-	odbctest -> out_win -> insertLineLimited( "  Return:" );
-	txt.sprintf( "    %s=%d", odbctest->return_as_text( ret ), ret );
-	odbctest -> out_win -> insertLineLimited( txt );
+	pOdbcTest->out_win->append( "  Return:" );
+	txt.sprintf( "    %s=%d", pOdbcTest->return_as_text( ret ), ret );
+	pOdbcTest->out_win->append( txt );
 
-	odbctest -> out_win -> insertLineLimited( "  Out:" );
+	pOdbcTest->out_win->append( "  Out:" );
 	if ( out_handle )
 		txt.sprintf( "    *OutputHandle: %p", out_handle );
 	else
 		txt.sprintf( "    *OutputHandle: <unmodified>" );
-	odbctest -> out_win -> insertLineLimited( txt );
-	odbctest -> out_win -> insertLineLimited( "" );
+	pOdbcTest->out_win->append( txt );
+	pOdbcTest->out_win->append( "" );
 
 	if ( SQL_SUCCEEDED( ret ))
 	{
-	    odbctest->listHandle.append( new Handle( type, out_handle, odbctest->listHandle ));
+	    pOdbcTest->listHandle.append( new OdbcHandle( type, out_handle, pOdbcTest->listHandle ));
 	}
 }
 
 void dAllocHandle::out_handle_ptr_clkd()
 {
-	if ( valid -> isChecked() )
-	    valid -> setText( "OutputHandlePtr: SQL_NULL_HANDLE" );
+	if ( valid->isChecked() )
+	    valid->setText( "OutputHandlePtr: SQL_NULL_HANDLE" );
 	else
-	    valid -> setText( "OutputHandlePtr: VALID" );
+	    valid->setText( "OutputHandlePtr: VALID" );
 }
 
-dAllocHandle::dAllocHandle( OdbcTest *parent, QString name )
-        : QDialog( parent )
+dAllocHandle::dAllocHandle( OdbcTest *pOdbcTest, QString name )
+        : QDialog( pOdbcTest )
 {
 	setWindowTitle( name );
     setModal( true );
 
-	odbctest = parent;
+	this->pOdbcTest = pOdbcTest;
 
     ok = new QPushButton( "OK", this );
     ok->setGeometry( 90,10, 70,25 );
@@ -167,28 +167,28 @@ dAllocHandle::dAllocHandle( OdbcTest *parent, QString name )
     help->setGeometry( 250,10, 70,25 );
 
 	handles = new QComboBox( this );
-	handles -> setGeometry( 120, 80, 200, 20 );
+	handles->setGeometry( 120, 80, 200, 20 );
 
-	odbctest->fill_handle_list( -1, handles );
+	pOdbcTest->fill_handle_list( -1, handles );
 
 	types = new QComboBox( this );
-	types -> setGeometry( 120, 50, 200, 20 );
+	types->setGeometry( 120, 50, 200, 20 );
 
-	types -> insertItem( 0, "SQL_HANDLE_ENV=1 (3.0)" );
-	types -> insertItem( 1, "SQL_HANDLE_DBC=2 (3.0)" );
-	types -> insertItem( 2, "SQL_HANDLE_STMT=3 (3.0)" );
-	types -> insertItem( 3, "SQL_HANDLE_DESC=3 (3.0)" );
+	types->insertItem( 0, "SQL_HANDLE_ENV=1 (3.0)" );
+	types->insertItem( 1, "SQL_HANDLE_DBC=2 (3.0)" );
+	types->insertItem( 2, "SQL_HANDLE_STMT=3 (3.0)" );
+	types->insertItem( 3, "SQL_HANDLE_DESC=3 (3.0)" );
 
 	valid = new QCheckBox( "OutputHandlePtr: VALID", this );
-	valid -> setGeometry( 10, 120, 200, 15 );
+	valid->setGeometry( 10, 120, 200, 15 );
 
 	connect( valid, SIGNAL( clicked()), this, SLOT( out_handle_ptr_clkd()));
 
 	l_handle = new QLabel( "InputHandle:", this );
-	l_handle -> setGeometry( 10, 80, 70, 20 );
+	l_handle->setGeometry( 10, 80, 70, 20 );
 
 	l_types = new QLabel( "HandleType:", this );
-	l_types -> setGeometry( 10, 50, 70, 20 );
+	l_types->setGeometry( 10, 50, 70, 20 );
 
     connect( cancel, SIGNAL(clicked()), SLOT(reject()) );
     connect( ok, SIGNAL(clicked()), SLOT(Ok()) );
@@ -214,7 +214,7 @@ SQLRETURN ret;
 SQLINTEGER type;
 const char *handle;
 
-	switch( types -> currentIndex())
+	switch( types->currentIndex())
 	{
 		case 0:
 			type = SQL_HANDLE_ENV;
@@ -241,41 +241,41 @@ const char *handle;
 	 * get input handle
 	 */
 
-    Handle *hand = odbctest->extract_handle_list( -1, handles );
+    OdbcHandle *hand = pOdbcTest->extract_handle_list( -1, handles );
 
 	if ( hand )
-		in_handle = hand -> getHandle();
+		in_handle = hand->getHandle();
 
 	ret = SQLFreeHandle( type, in_handle );
 
-	odbctest -> out_win -> insertLineLimited( "SQLFreeHandle():" );
-	odbctest -> out_win -> insertLineLimited( "  In:" );
+	pOdbcTest->out_win->append( "SQLFreeHandle():" );
+	pOdbcTest->out_win->append( "  In:" );
 	txt.sprintf( "    Handle Type: %s", handle );
-	odbctest -> out_win -> insertLineLimited( txt );
+	pOdbcTest->out_win->append( txt );
 	if ( in_handle )
 	    txt.sprintf( "    InputHandle: %p", in_handle );
 	else
 	    txt.sprintf( "    InputHandle: SQL_NULL_HANDLE" );
-	odbctest -> out_win -> insertLineLimited( txt );
+	pOdbcTest->out_win->append( txt );
 
-	odbctest -> out_win -> insertLineLimited( "  Return:" );
-	txt.sprintf( "    %s=%d", odbctest->return_as_text( ret ), ret );
-	odbctest -> out_win -> insertLineLimited( txt );
-	odbctest -> out_win -> insertLineLimited( "" );
+	pOdbcTest->out_win->append( "  Return:" );
+	txt.sprintf( "    %s=%d", pOdbcTest->return_as_text( ret ), ret );
+	pOdbcTest->out_win->append( txt );
+	pOdbcTest->out_win->append( "" );
 
 	if ( SQL_SUCCEEDED( ret ))
 	{
-		odbctest->listHandle.removeOne( hand );
+		pOdbcTest->listHandle.removeOne( hand );
         delete hand;
 	}
 }
 
-dFreeHandle::dFreeHandle( OdbcTest *parent, QString name )
-        : QDialog( parent )
+dFreeHandle::dFreeHandle( OdbcTest *pOdbcTest, QString name )
+        : QDialog( pOdbcTest )
 {
 	setWindowTitle( name );
     setModal( true );
-	odbctest = parent;
+	this->pOdbcTest = pOdbcTest;
 
     ok = new QPushButton( "OK", this );
     ok->setGeometry( 90,10, 70,25 );
@@ -287,23 +287,23 @@ dFreeHandle::dFreeHandle( OdbcTest *parent, QString name )
     help->setGeometry( 250,10, 70,25 );
 
 	handles = new QComboBox( this );
-	handles -> setGeometry( 120, 80, 200, 20 );
+	handles->setGeometry( 120, 80, 200, 20 );
 
-	odbctest->fill_handle_list( -1, handles );
+	pOdbcTest->fill_handle_list( -1, handles );
 
 	types = new QComboBox( this );
-	types -> setGeometry( 120, 50, 200, 20 );
+	types->setGeometry( 120, 50, 200, 20 );
 
-	types -> insertItem( 0, "SQL_HANDLE_ENV=1 (3.0)" );
-	types -> insertItem( 1, "SQL_HANDLE_DBC=2 (3.0)" );
-	types -> insertItem( 2, "SQL_HANDLE_STMT=3 (3.0)" );
-	types -> insertItem( 3, "SQL_HANDLE_DESC=3 (3.0)" );
+	types->insertItem( 0, "SQL_HANDLE_ENV=1 (3.0)" );
+	types->insertItem( 1, "SQL_HANDLE_DBC=2 (3.0)" );
+	types->insertItem( 2, "SQL_HANDLE_STMT=3 (3.0)" );
+	types->insertItem( 3, "SQL_HANDLE_DESC=3 (3.0)" );
 
 	l_handle = new QLabel( "InputHandle:", this );
-	l_handle -> setGeometry( 10, 80, 70, 20 );
+	l_handle->setGeometry( 10, 80, 70, 20 );
 
 	l_types = new QLabel( "HandleType:", this );
-	l_types -> setGeometry( 10, 50, 70, 20 );
+	l_types->setGeometry( 10, 50, 70, 20 );
 
     connect( cancel, SIGNAL(clicked()), SLOT(reject()) );
     connect( ok, SIGNAL(clicked()), SLOT(Ok()) );
@@ -323,63 +323,63 @@ dFreeHandle::~dFreeHandle()
 
 void dDataSources::server_clkd()
 {
-	if ( server_valid -> isChecked() )
-	    server_valid -> setText( "ServerName: SQL_NULL_POINTER" );
+	if ( server_valid->isChecked() )
+	    server_valid->setText( "ServerName: SQL_NULL_POINTER" );
 	else
-	    server_valid -> setText( "ServerName: VALID" );
+	    server_valid->setText( "ServerName: VALID" );
 }
 
 void dDataSources::description_clkd()
 {
-	if ( description_valid -> isChecked() )
-	    description_valid -> setText( "Description: SQL_NULL_POINTER" );
+	if ( description_valid->isChecked() )
+	    description_valid->setText( "Description: SQL_NULL_POINTER" );
 	else
-	    description_valid -> setText( "Description: VALID" );
+	    description_valid->setText( "Description: VALID" );
 }
 
 void dDataSources::nlp1_clkd()
 {
-	if ( nlp1_valid -> isChecked() )
-	    nlp1_valid -> setText( "NameLengthPtr1: SQL_NULL_POINTER" );
+	if ( nlp1_valid->isChecked() )
+	    nlp1_valid->setText( "NameLengthPtr1: SQL_NULL_POINTER" );
 	else
-	    nlp1_valid -> setText( "NameLengthPtr1: VALID" );
+	    nlp1_valid->setText( "NameLengthPtr1: VALID" );
 }
 
 void dDataSources::nlp2_clkd()
 {
-	if ( nlp2_valid -> isChecked() )
-	    nlp2_valid -> setText( "NameLengthPtr2: SQL_NULL_POINTER" );
+	if ( nlp2_valid->isChecked() )
+	    nlp2_valid->setText( "NameLengthPtr2: SQL_NULL_POINTER" );
 	else
-	    nlp2_valid -> setText( "NameLengthPtr2: VALID" );
+	    nlp2_valid->setText( "NameLengthPtr2: VALID" );
 }
 
 void dDataSources::Ok()
 {
-    Handle *env = odbctest->extract_handle_list( SQL_HANDLE_ENV, handles );
+    OdbcHandle *env = pOdbcTest->extract_handle_list( SQL_HANDLE_ENV, handles );
 	SQLHANDLE in_handle = SQL_NULL_HANDLE;
     SQLCHAR *server_name, *description;
     SQLSMALLINT bl1, bl2, *nlp1, *nlp2, nl1, nl2;
     SQLUSMALLINT direc;
     
 	if ( env )
-		in_handle = env -> getHandle();
+		in_handle = env->getHandle();
 
-	odbctest -> out_win -> insertLineLimited( "SQLDataSources():" );
-	odbctest -> out_win -> insertLineLimited( "  In:" );
+	pOdbcTest->out_win->append( "SQLDataSources():" );
+	pOdbcTest->out_win->append( "  In:" );
 
 	if ( in_handle )
 		txt.sprintf( "    Environment Handle: %p", in_handle );
 	else
 		txt.sprintf( "    Environment Handle: SQL_NULL_HENV" );
-	odbctest -> out_win -> insertLineLimited( txt );
+	pOdbcTest->out_win->append( txt );
 
-	direc = data_sources_directions[ direction -> currentIndex() ].value;
+	direc = data_sources_directions[ direction->currentIndex() ].value;
 	txt.sprintf( "    Direction: %s=%d", 
-		data_sources_directions[ direction -> currentIndex() ].text,
-		data_sources_directions[ direction -> currentIndex() ].value );
+		data_sources_directions[ direction->currentIndex() ].text,
+		data_sources_directions[ direction->currentIndex() ].value );
 
-    bl1 = server_len -> text().toInt();
-	if ( server_valid -> isChecked() )
+    bl1 = server_len->text().toInt();
+	if ( server_valid->isChecked() )
     {
         server_name = NULL;
 	    txt.sprintf( "    ServerName: <null pointer>" );
@@ -393,9 +393,9 @@ void dDataSources::Ok()
 
 		txt.sprintf( "    ServerName: %p", bl1 );
     }
-	odbctest -> out_win -> insertLineLimited( txt );
+	pOdbcTest->out_win->append( txt );
 
-	if ( nlp1_valid -> isChecked() )
+	if ( nlp1_valid->isChecked() )
     {
         nlp1 = NULL;
 	    txt.sprintf( "    NameLengthPtr 1: <null pointer>" );
@@ -406,10 +406,10 @@ void dDataSources::Ok()
         nlp1 = &nl1;
 	    txt.sprintf( "    NameLengthPtr 1: %p", nlp1 );
     }
-	odbctest -> out_win -> insertLineLimited( txt );
+	pOdbcTest->out_win->append( txt );
 
-    bl2 = description_len -> text().toInt();
-	if ( description_valid -> isChecked() )
+    bl2 = description_len->text().toInt();
+	if ( description_valid->isChecked() )
     {
         description = NULL;
 	    txt.sprintf( "    Description: <null pointer>" );
@@ -423,9 +423,9 @@ void dDataSources::Ok()
 
 		txt.sprintf( "    Description: %p", bl1 );
     }
-	odbctest -> out_win -> insertLineLimited( txt );
+	pOdbcTest->out_win->append( txt );
 
-	if ( nlp2_valid -> isChecked() )
+	if ( nlp2_valid->isChecked() )
     {
         nlp2 = NULL;
 	    txt.sprintf( "    NameLengthPtr 2: <null pointer>" );
@@ -436,22 +436,22 @@ void dDataSources::Ok()
         nlp2 = &nl2;
 	    txt.sprintf( "    NameLengthPtr 2: %p", nlp2 );
     }
-	odbctest -> out_win -> insertLineLimited( txt );
+	pOdbcTest->out_win->append( txt );
 
     SQLRETURN ret = SQLDataSources( in_handle, direc, server_name, bl1, nlp1,
             description, bl2, nlp2 );
 
-	odbctest -> out_win -> insertLineLimited( "  Return:" );
-	txt.sprintf( "    %s=%d", odbctest->return_as_text( ret ), ret );
-	odbctest -> out_win -> insertLineLimited( txt );
+	pOdbcTest->out_win->append( "  Return:" );
+	txt.sprintf( "    %s=%d", pOdbcTest->return_as_text( ret ), ret );
+	pOdbcTest->out_win->append( txt );
 
     if ( SQL_SUCCEEDED( ret ))
     {
-        odbctest -> out_win -> insertLineLimited( "  Out:" );
+        pOdbcTest->out_win->append( "  Out:" );
         if ( server_name )
         {
 	        txt.sprintf( "    ServerName: %s", server_name );
-            odbctest -> out_win -> insertLineLimited( txt );
+            pOdbcTest->out_win->append( txt );
         }
         if ( nlp1 )
         {
@@ -463,12 +463,12 @@ void dDataSources::Ok()
             {
                 txt.sprintf( "    *NameLengthPtr 1: %d", nl1 );
             }
-            odbctest -> out_win -> insertLineLimited( txt );
+            pOdbcTest->out_win->append( txt );
         }
         if ( description )
         {
 	        txt.sprintf( "    Description: %s", description );
-            odbctest -> out_win -> insertLineLimited( txt );
+            pOdbcTest->out_win->append( txt );
         }
         if ( nlp2 )
         {
@@ -480,11 +480,11 @@ void dDataSources::Ok()
             {
                 txt.sprintf( "    *NameLengthPtr 2: %d", nl2 );
             }
-            odbctest -> out_win -> insertLineLimited( txt );
+            pOdbcTest->out_win->append( txt );
         }
     }
 
-    odbctest -> out_win -> insertLineLimited( "" );
+    pOdbcTest->out_win->append( "" );
 
     if ( server_name )
         delete server_name;
@@ -492,13 +492,13 @@ void dDataSources::Ok()
         delete description;
 }
 
-dDataSources::dDataSources( OdbcTest *parent, QString name )
-        : QDialog( parent )
+dDataSources::dDataSources( OdbcTest *pOdbcTest, QString name )
+        : QDialog( pOdbcTest )
 {
 	setWindowTitle( name );
     setModal( true );
 
-	odbctest = parent;
+	this->pOdbcTest = pOdbcTest;
 
     ok = new QPushButton( "OK", this );
     ok->setGeometry( 190,10, 70,25 );
@@ -510,46 +510,46 @@ dDataSources::dDataSources( OdbcTest *parent, QString name )
     help->setGeometry( 350,10, 70,25 );
 
 	handles = new QComboBox( this );
-	handles -> setGeometry( 130, 50, 200, 20 );
-	odbctest->fill_handle_list( SQL_HANDLE_ENV, handles );
+	handles->setGeometry( 130, 50, 200, 20 );
+	pOdbcTest->fill_handle_list( SQL_HANDLE_ENV, handles );
 
 	l_handles = new QLabel( "Environment Handle:", this );
-	l_handles -> setGeometry( 10, 50, 120, 20 );
+	l_handles->setGeometry( 10, 50, 120, 20 );
 
 	direction = new QComboBox( this );
-	direction -> setGeometry( 130, 80, 200, 20 );
-	parent->fill_list_box( data_sources_directions, direction );
+	direction->setGeometry( 130, 80, 200, 20 );
+	pOdbcTest->fill_list_box( data_sources_directions, direction );
 
 	l_direction = new QLabel( "Direction:", this );
-	l_direction -> setGeometry( 10, 80, 120, 20 );
+	l_direction->setGeometry( 10, 80, 120, 20 );
 
 	server_valid = new QCheckBox( "ServerName: VALID", this );
-	server_valid -> setGeometry( 10, 110, 300, 15 );
+	server_valid->setGeometry( 10, 110, 300, 15 );
 
 	server_len = new QLineEdit( this );
-    server_len -> setGeometry( 350, 110, 70, 20 );
-	server_len -> setMaxLength( 6 );
-	server_len -> setText( "300" );
+    server_len->setGeometry( 350, 110, 70, 20 );
+	server_len->setMaxLength( 6 );
+	server_len->setText( "300" );
 
 	l_server_len = new QLabel( "BufferLength 1:", this );
-    l_server_len -> setGeometry( 240, 110, 100, 20 );
+    l_server_len->setGeometry( 240, 110, 100, 20 );
 
 	nlp1_valid = new QCheckBox( "Name Length Ptr 1: VALID", this );
-	nlp1_valid -> setGeometry( 10, 140, 300, 15 );
+	nlp1_valid->setGeometry( 10, 140, 300, 15 );
 
 	description_valid = new QCheckBox( "Description: VALID", this );
-	description_valid -> setGeometry( 10, 170, 300, 15 );
+	description_valid->setGeometry( 10, 170, 300, 15 );
 
 	description_len = new QLineEdit( this );
-    description_len -> setGeometry( 350, 170, 70, 20 );
-	description_len -> setMaxLength( 6 );
-	description_len -> setText( "300" );
+    description_len->setGeometry( 350, 170, 70, 20 );
+	description_len->setMaxLength( 6 );
+	description_len->setText( "300" );
 
 	l_description_len = new QLabel( "BufferLength 2:", this );
-    l_description_len -> setGeometry( 240, 170, 100, 20 );
+    l_description_len->setGeometry( 240, 170, 100, 20 );
 
 	nlp2_valid = new QCheckBox( "Name Length Ptr 2: VALID", this );
-	nlp2_valid -> setGeometry( 10, 200, 300, 15 );
+	nlp2_valid->setGeometry( 10, 200, 300, 15 );
 
     connect( cancel, SIGNAL(clicked()), SLOT(reject()) );
     connect( ok, SIGNAL(clicked()), SLOT(Ok()) );
@@ -582,63 +582,63 @@ dDataSources::~dDataSources()
 
 void dDrivers::server_clkd()
 {
-	if ( server_valid -> isChecked() )
-	    server_valid -> setText( "ServerName: SQL_NULL_POINTER" );
+	if ( server_valid->isChecked() )
+	    server_valid->setText( "ServerName: SQL_NULL_POINTER" );
 	else
-	    server_valid -> setText( "ServerName: VALID" );
+	    server_valid->setText( "ServerName: VALID" );
 }
 
 void dDrivers::description_clkd()
 {
-	if ( description_valid -> isChecked() )
-	    description_valid -> setText( "Description: SQL_NULL_POINTER" );
+	if ( description_valid->isChecked() )
+	    description_valid->setText( "Description: SQL_NULL_POINTER" );
 	else
-	    description_valid -> setText( "Description: VALID" );
+	    description_valid->setText( "Description: VALID" );
 }
 
 void dDrivers::nlp1_clkd()
 {
-	if ( nlp1_valid -> isChecked() )
-	    nlp1_valid -> setText( "NameLengthPtr1: SQL_NULL_POINTER" );
+	if ( nlp1_valid->isChecked() )
+	    nlp1_valid->setText( "NameLengthPtr1: SQL_NULL_POINTER" );
 	else
-	    nlp1_valid -> setText( "NameLengthPtr1: VALID" );
+	    nlp1_valid->setText( "NameLengthPtr1: VALID" );
 }
 
 void dDrivers::nlp2_clkd()
 {
-	if ( nlp2_valid -> isChecked() )
-	    nlp2_valid -> setText( "NameLengthPtr2: SQL_NULL_POINTER" );
+	if ( nlp2_valid->isChecked() )
+	    nlp2_valid->setText( "NameLengthPtr2: SQL_NULL_POINTER" );
 	else
-	    nlp2_valid -> setText( "NameLengthPtr2: VALID" );
+	    nlp2_valid->setText( "NameLengthPtr2: VALID" );
 }
 
 void dDrivers::Ok()
 {
-    Handle *env = odbctest->extract_handle_list( SQL_HANDLE_ENV, handles );
+    OdbcHandle *env = pOdbcTest->extract_handle_list( SQL_HANDLE_ENV, handles );
 	SQLHANDLE in_handle = SQL_NULL_HANDLE;
     SQLCHAR *server_name, *description;
     SQLSMALLINT bl1, bl2, *nlp1, *nlp2, nl1, nl2;
     SQLUSMALLINT direc;
     
 	if ( env )
-		in_handle = env -> getHandle();
+		in_handle = env->getHandle();
 
-	odbctest -> out_win -> insertLineLimited( "SQLDrivers():" );
-	odbctest -> out_win -> insertLineLimited( "  In:" );
+	pOdbcTest->out_win->append( "SQLDrivers():" );
+	pOdbcTest->out_win->append( "  In:" );
 
 	if ( in_handle )
 		txt.sprintf( "    Environment Handle: %p", in_handle );
 	else
 		txt.sprintf( "    Environment Handle: SQL_NULL_HENV" );
-	odbctest -> out_win -> insertLineLimited( txt );
+	pOdbcTest->out_win->append( txt );
 
-	direc = drivers_directions[ direction -> currentIndex() ].value;
+	direc = drivers_directions[ direction->currentIndex() ].value;
 	txt.sprintf( "    Direction: %s=%d", 
-		data_sources_directions[ direction -> currentIndex() ].text,
-		data_sources_directions[ direction -> currentIndex() ].value );
+		data_sources_directions[ direction->currentIndex() ].text,
+		data_sources_directions[ direction->currentIndex() ].value );
 
-    bl1 = server_len -> text().toInt();
-	if ( server_valid -> isChecked() )
+    bl1 = server_len->text().toInt();
+	if ( server_valid->isChecked() )
     {
         server_name = NULL;
 	    txt.sprintf( "    ServerName: <null pointer>" );
@@ -652,9 +652,9 @@ void dDrivers::Ok()
 
 		txt.sprintf( "    ServerName: %p", bl1 );
     }
-	odbctest -> out_win -> insertLineLimited( txt );
+	pOdbcTest->out_win->append( txt );
 
-	if ( nlp1_valid -> isChecked() )
+	if ( nlp1_valid->isChecked() )
     {
         nlp1 = NULL;
 	    txt.sprintf( "    NameLengthPtr 1: <null pointer>" );
@@ -665,10 +665,10 @@ void dDrivers::Ok()
         nlp1 = &nl1;
 	    txt.sprintf( "    NameLengthPtr 1: %p", nlp1 );
     }
-	odbctest -> out_win -> insertLineLimited( txt );
+	pOdbcTest->out_win->append( txt );
 
-    bl2 = description_len -> text().toInt();
-	if ( description_valid -> isChecked() )
+    bl2 = description_len->text().toInt();
+	if ( description_valid->isChecked() )
     {
         description = NULL;
 	    txt.sprintf( "    Description: <null pointer>" );
@@ -682,9 +682,9 @@ void dDrivers::Ok()
 
 		txt.sprintf( "    Description: %p", bl1 );
     }
-	odbctest -> out_win -> insertLineLimited( txt );
+	pOdbcTest->out_win->append( txt );
 
-	if ( nlp2_valid -> isChecked() )
+	if ( nlp2_valid->isChecked() )
     {
         nlp2 = NULL;
 	    txt.sprintf( "    NameLengthPtr 2: <null pointer>" );
@@ -695,22 +695,22 @@ void dDrivers::Ok()
         nlp2 = &nl2;
 	    txt.sprintf( "    NameLengthPtr 2: %p", nlp2 );
     }
-	odbctest -> out_win -> insertLineLimited( txt );
+	pOdbcTest->out_win->append( txt );
 
     SQLRETURN ret = SQLDrivers( in_handle, direc, server_name, bl1, nlp1,
             description, bl2, nlp2 );
 
-	odbctest -> out_win -> insertLineLimited( "  Return:" );
-	txt.sprintf( "    %s=%d", odbctest->return_as_text( ret ), ret );
-	odbctest -> out_win -> insertLineLimited( txt );
+	pOdbcTest->out_win->append( "  Return:" );
+	txt.sprintf( "    %s=%d", pOdbcTest->return_as_text( ret ), ret );
+	pOdbcTest->out_win->append( txt );
 
     if ( SQL_SUCCEEDED( ret ))
     {
-        odbctest -> out_win -> insertLineLimited( "  Out:" );
+        pOdbcTest->out_win->append( "  Out:" );
         if ( server_name )
         {
 	        txt.sprintf( "    ServerName: %s", server_name );
-            odbctest -> out_win -> insertLineLimited( txt );
+            pOdbcTest->out_win->append( txt );
         }
         if ( nlp1 )
         {
@@ -722,12 +722,12 @@ void dDrivers::Ok()
             {
                 txt.sprintf( "    *NameLengthPtr 1: %d", nl1 );
             }
-            odbctest -> out_win -> insertLineLimited( txt );
+            pOdbcTest->out_win->append( txt );
         }
         if ( description )
         {
 	        txt.sprintf( "    Description: %s", description );
-            odbctest -> out_win -> insertLineLimited( txt );
+            pOdbcTest->out_win->append( txt );
         }
         if ( nlp2 )
         {
@@ -739,11 +739,11 @@ void dDrivers::Ok()
             {
                 txt.sprintf( "    *NameLengthPtr 2: %d", nl2 );
             }
-            odbctest -> out_win -> insertLineLimited( txt );
+            pOdbcTest->out_win->append( txt );
         }
     }
 
-    odbctest -> out_win -> insertLineLimited( "" );
+    pOdbcTest->out_win->append( "" );
 
     if ( server_name )
         delete server_name;
@@ -751,13 +751,13 @@ void dDrivers::Ok()
         delete description;
 }
 
-dDrivers::dDrivers( OdbcTest *parent, QString name )
-        : QDialog( parent )
+dDrivers::dDrivers( OdbcTest *pOdbcTest, QString name )
+        : QDialog( pOdbcTest )
 {
 	setWindowTitle( name );
     setModal( true );
 
-	odbctest = parent;
+	this->pOdbcTest = pOdbcTest;
 
     ok = new QPushButton( "OK", this );
     ok->setGeometry( 190,10, 70,25 );
@@ -769,46 +769,46 @@ dDrivers::dDrivers( OdbcTest *parent, QString name )
     help->setGeometry( 350,10, 70,25 );
 
 	handles = new QComboBox( this );
-	handles -> setGeometry( 130, 50, 200, 20 );
-	odbctest->fill_handle_list( SQL_HANDLE_ENV, handles );
+	handles->setGeometry( 130, 50, 200, 20 );
+	pOdbcTest->fill_handle_list( SQL_HANDLE_ENV, handles );
 
 	l_handles = new QLabel( "Environment Handle:", this );
-	l_handles -> setGeometry( 10, 50, 120, 20 );
+	l_handles->setGeometry( 10, 50, 120, 20 );
 
 	direction = new QComboBox( this );
-	direction -> setGeometry( 130, 80, 200, 20 );
-	parent->fill_list_box( drivers_directions, direction );
+	direction->setGeometry( 130, 80, 200, 20 );
+	pOdbcTest->fill_list_box( drivers_directions, direction );
 
 	l_direction = new QLabel( "Direction:", this );
-	l_direction -> setGeometry( 10, 80, 120, 20 );
+	l_direction->setGeometry( 10, 80, 120, 20 );
 
 	server_valid = new QCheckBox( "ServerName: VALID", this );
-	server_valid -> setGeometry( 10, 110, 300, 15 );
+	server_valid->setGeometry( 10, 110, 300, 15 );
 
 	server_len = new QLineEdit( this );
-    server_len -> setGeometry( 350, 110, 70, 20 );
-	server_len -> setMaxLength( 6 );
-	server_len -> setText( "300" );
+    server_len->setGeometry( 350, 110, 70, 20 );
+	server_len->setMaxLength( 6 );
+	server_len->setText( "300" );
 
 	l_server_len = new QLabel( "BufferLength 1:", this );
-    l_server_len -> setGeometry( 240, 110, 100, 20 );
+    l_server_len->setGeometry( 240, 110, 100, 20 );
 
 	nlp1_valid = new QCheckBox( "Name Length Ptr 1: VALID", this );
-	nlp1_valid -> setGeometry( 10, 140, 300, 15 );
+	nlp1_valid->setGeometry( 10, 140, 300, 15 );
 
 	description_valid = new QCheckBox( "Description: VALID", this );
-	description_valid -> setGeometry( 10, 170, 300, 15 );
+	description_valid->setGeometry( 10, 170, 300, 15 );
 
 	description_len = new QLineEdit( this );
-    description_len -> setGeometry( 350, 170, 70, 20 );
-	description_len -> setMaxLength( 6 );
-	description_len -> setText( "300" );
+    description_len->setGeometry( 350, 170, 70, 20 );
+	description_len->setMaxLength( 6 );
+	description_len->setText( "300" );
 
 	l_description_len = new QLabel( "BufferLength 2:", this );
-    l_description_len -> setGeometry( 240, 170, 100, 20 );
+    l_description_len->setGeometry( 240, 170, 100, 20 );
 
 	nlp2_valid = new QCheckBox( "Name Length Ptr 2: VALID", this );
-	nlp2_valid -> setGeometry( 10, 200, 300, 15 );
+	nlp2_valid->setGeometry( 10, 200, 300, 15 );
 
     connect( cancel, SIGNAL(clicked()), SLOT(reject()) );
     connect( ok, SIGNAL(clicked()), SLOT(Ok()) );
@@ -843,52 +843,52 @@ void dEndTran::sel_handle( int /* index */ )
 {
     int handle_t;
 
-	handles -> clear();
-	handle_t = handle_type_struct[ handle_type -> currentIndex() ].value;
+	handles->clear();
+	handle_t = handle_type_struct[ handle_type->currentIndex() ].value;
 
-	odbctest->fill_handle_list( handle_t, handles );
+	pOdbcTest->fill_handle_list( handle_t, handles );
 }
 
 void dEndTran::Ok()
 {
-    int htype = handle_type_struct[ handle_type -> currentIndex() ].value;
-    Handle *hand = odbctest->extract_handle_list( htype, handles );
+    int htype = handle_type_struct[ handle_type->currentIndex() ].value;
+    OdbcHandle *hand = pOdbcTest->extract_handle_list( htype, handles );
 	SQLHANDLE in_handle = SQL_NULL_HANDLE;
     SQLSMALLINT completion;
 
 	if ( hand  )
-		in_handle = hand -> getHandle();
+		in_handle = hand->getHandle();
 
-	odbctest -> out_win -> insertLineLimited( "SQLEndTran():" );
-	odbctest -> out_win -> insertLineLimited( "  In:" );
+	pOdbcTest->out_win->append( "SQLEndTran():" );
+	pOdbcTest->out_win->append( "  In:" );
 
-    txt.sprintf( "    Handle Type: %s", handle_type_struct[ handle_type -> currentIndex() ].text );
-	odbctest -> out_win -> insertLineLimited( txt );
+    txt.sprintf( "    Handle Type: %s", handle_type_struct[ handle_type->currentIndex() ].text );
+	pOdbcTest->out_win->append( txt );
 
 	if ( in_handle )
 		txt.sprintf( "    Handle: %p", in_handle );
 	else
 		txt.sprintf( "    Handle: SQL_NULL_HANDLE" );
-	odbctest -> out_win -> insertLineLimited( txt );
+	pOdbcTest->out_win->append( txt );
 
-    completion = completion_type_struct[ completion_type -> currentIndex() ].value;
+    completion = completion_type_struct[ completion_type->currentIndex() ].value;
 
     SQLRETURN ret = SQLEndTran( htype, in_handle, completion );
 
-	odbctest -> out_win -> insertLineLimited( "  Return:" );
-	txt.sprintf( "    %s=%d", odbctest->return_as_text( ret ), ret );
-	odbctest -> out_win -> insertLineLimited( txt );
+	pOdbcTest->out_win->append( "  Return:" );
+	txt.sprintf( "    %s=%d", pOdbcTest->return_as_text( ret ), ret );
+	pOdbcTest->out_win->append( txt );
 
-	odbctest -> out_win -> insertLineLimited( "" );
+	pOdbcTest->out_win->append( "" );
 }
 
-dEndTran::dEndTran( OdbcTest *parent, QString name )
-        : QDialog( parent )
+dEndTran::dEndTran( OdbcTest *pOdbcTest, QString name )
+        : QDialog( pOdbcTest )
 {
 	setWindowTitle( name );
     setModal( true );
 
-	odbctest = parent;
+	this->pOdbcTest = pOdbcTest;
 
     ok = new QPushButton( "OK", this );
     ok->setGeometry( 110,10, 70,25 );
@@ -900,25 +900,25 @@ dEndTran::dEndTran( OdbcTest *parent, QString name )
     help->setGeometry( 270,10, 70,25 );
 
 	handle_type = new QComboBox( this );
-	handle_type -> setGeometry( 130, 50, 200, 20 );
-	parent->fill_list_box( handle_type_struct, handle_type );
+	handle_type->setGeometry( 130, 50, 200, 20 );
+	pOdbcTest->fill_list_box( handle_type_struct, handle_type );
 
 	l_handle_type = new QLabel( "Handle Type:", this );
-	l_handle_type -> setGeometry( 10, 50, 120, 20 );
+	l_handle_type->setGeometry( 10, 50, 120, 20 );
 
 	handles = new QComboBox( this );
-	handles -> setGeometry( 130, 80, 200, 20 );
-	odbctest->fill_handle_list( SQL_HANDLE_ENV, handles );
+	handles->setGeometry( 130, 80, 200, 20 );
+	pOdbcTest->fill_handle_list( SQL_HANDLE_ENV, handles );
 
 	l_handles = new QLabel( "Handle:", this );
-	l_handles -> setGeometry( 10, 80, 120, 20 );
+	l_handles->setGeometry( 10, 80, 120, 20 );
 
 	completion_type = new QComboBox( this );
-	completion_type -> setGeometry( 130, 110, 200, 20 );
-	parent->fill_list_box( completion_type_struct, completion_type );
+	completion_type->setGeometry( 130, 110, 200, 20 );
+	pOdbcTest->fill_list_box( completion_type_struct, completion_type );
 
 	l_completion_type = new QLabel( "Completion Type:", this );
-	l_completion_type -> setGeometry( 10, 110, 120, 20 );
+	l_completion_type->setGeometry( 10, 110, 120, 20 );
 
     connect( cancel, SIGNAL(clicked()), SLOT(reject()) );
     connect( ok, SIGNAL(clicked()), SLOT(Ok()) );
@@ -942,20 +942,20 @@ dEndTran::~dEndTran()
 
 void dAllocEnv::handle_clkd()
 {
-	if ( handle_valid -> isChecked() )
-	    handle_valid -> setText( "phenv: SQL_NULL_POINTER" );
+	if ( handle_valid->isChecked() )
+	    handle_valid->setText( "phenv: SQL_NULL_POINTER" );
 	else
-	    handle_valid -> setText( "phenv: VALID" );
+	    handle_valid->setText( "phenv: VALID" );
 }
 
 void dAllocEnv::Ok()
 {
     SQLHENV henv, *henv_ptr;
 
-	odbctest -> out_win -> insertLineLimited( "SQLAllocEnv():" );
-	odbctest -> out_win -> insertLineLimited( "  In:" );
+	pOdbcTest->out_win->append( "SQLAllocEnv():" );
+	pOdbcTest->out_win->append( "  In:" );
 
-    if ( handle_valid -> isChecked())
+    if ( handle_valid->isChecked())
     {
         henv_ptr = NULL;
 		txt.sprintf( "    phenv: SQL_NULL_HANDLE" );
@@ -965,31 +965,31 @@ void dAllocEnv::Ok()
         henv_ptr = &henv;
 		txt.sprintf( "    phenv: %p", henv_ptr );
     }
-	odbctest -> out_win -> insertLineLimited( txt );
+	pOdbcTest->out_win->append( txt );
 
     SQLRETURN ret = SQLAllocEnv( henv_ptr );
 
-	odbctest -> out_win -> insertLineLimited( "  Return:" );
-	txt.sprintf( "    %s=%d", odbctest->return_as_text( ret ), ret );
-	odbctest -> out_win -> insertLineLimited( txt );
+	pOdbcTest->out_win->append( "  Return:" );
+	txt.sprintf( "    %s=%d", pOdbcTest->return_as_text( ret ), ret );
+	pOdbcTest->out_win->append( txt );
 
     if ( SQL_SUCCEEDED( ret ) && henv_ptr )
     {
 		txt.sprintf( "    *phenv: %p", henv );
-	    odbctest -> out_win -> insertLineLimited( txt );
+	    pOdbcTest->out_win->append( txt );
 
-		odbctest->listHandle.append( new Handle( SQL_HANDLE_ENV, henv ) );
+		pOdbcTest->listHandle.append( new OdbcHandle( SQL_HANDLE_ENV, henv ) );
     }
 
-	odbctest -> out_win -> insertLineLimited( "" );
+	pOdbcTest->out_win->append( "" );
 }
 
-dAllocEnv::dAllocEnv( OdbcTest *parent, QString name )
-        : QDialog( parent )
+dAllocEnv::dAllocEnv( OdbcTest *pOdbcTest, QString name )
+        : QDialog( pOdbcTest )
 {
 	setWindowTitle( name );
 
-	odbctest = parent;
+	this->pOdbcTest = pOdbcTest;
 
     ok = new QPushButton( "OK", this );
     ok->setGeometry( 90,10, 70,25 );
@@ -1001,7 +1001,7 @@ dAllocEnv::dAllocEnv( OdbcTest *parent, QString name )
     help->setGeometry( 250,10, 70,25 );
 
 	handle_valid = new QCheckBox( "phenv: VALID", this );
-	handle_valid -> setGeometry( 10, 50, 300, 15 );
+	handle_valid->setGeometry( 10, 50, 300, 15 );
 
     connect( cancel, SIGNAL(clicked()), SLOT(reject()) );
     connect( ok, SIGNAL(clicked()), SLOT(Ok()) );
@@ -1019,42 +1019,42 @@ dAllocEnv::~dAllocEnv()
 
 void dFreeEnv::Ok()
 {
-    Handle *env = odbctest->extract_handle_list( SQL_HANDLE_ENV, handles );
+    OdbcHandle *env = pOdbcTest->extract_handle_list( SQL_HANDLE_ENV, handles );
 	SQLHANDLE in_handle = SQL_NULL_HANDLE;
     
 	if ( env )
-		in_handle = env -> getHandle();
+		in_handle = env->getHandle();
 
-	odbctest -> out_win -> insertLineLimited( "SQLFreeEnv():" );
-	odbctest -> out_win -> insertLineLimited( "  In:" );
+	pOdbcTest->out_win->append( "SQLFreeEnv():" );
+	pOdbcTest->out_win->append( "  In:" );
 
 	if ( in_handle )
 		txt.sprintf( "    henv: %p", in_handle );
 	else
 		txt.sprintf( "    henv: SQL_NULL_HENV" );
-	odbctest -> out_win -> insertLineLimited( txt );
+	pOdbcTest->out_win->append( txt );
 
     SQLRETURN ret = SQLFreeEnv( in_handle );
 
-	odbctest -> out_win -> insertLineLimited( "  Return:" );
-	txt.sprintf( "    %s=%d", odbctest->return_as_text( ret ), ret );
-	odbctest -> out_win -> insertLineLimited( txt );
+	pOdbcTest->out_win->append( "  Return:" );
+	txt.sprintf( "    %s=%d", pOdbcTest->return_as_text( ret ), ret );
+	pOdbcTest->out_win->append( txt );
 
     if ( SQL_SUCCEEDED( ret ) && in_handle )
     {
-		odbctest->listHandle.removeOne( env );
+		pOdbcTest->listHandle.removeOne( env );
         delete env;
     }
 
-	odbctest -> out_win -> insertLineLimited( "" );
+	pOdbcTest->out_win->append( "" );
 }
 
-dFreeEnv::dFreeEnv( OdbcTest *parent, QString name )
-        : QDialog( parent )
+dFreeEnv::dFreeEnv( OdbcTest *pOdbcTest, QString name )
+        : QDialog( pOdbcTest )
 {
 	setWindowTitle( name );
 
-	odbctest = parent;
+	this->pOdbcTest = pOdbcTest;
 
     ok = new QPushButton( "OK", this );
     ok->setGeometry( 90,10, 70,25 );
@@ -1066,11 +1066,11 @@ dFreeEnv::dFreeEnv( OdbcTest *parent, QString name )
     help->setGeometry( 250,10, 70,25 );
 
 	handles = new QComboBox( this );
-	handles -> setGeometry( 120, 50, 200, 20 );
-	odbctest->fill_handle_list( SQL_HANDLE_ENV, handles );
+	handles->setGeometry( 120, 50, 200, 20 );
+	pOdbcTest->fill_handle_list( SQL_HANDLE_ENV, handles );
 
 	l_handles = new QLabel( "henv:", this );
-	l_handles -> setGeometry( 10, 50, 100, 20 );
+	l_handles->setGeometry( 10, 50, 100, 20 );
 
     connect( cancel, SIGNAL(clicked()), SLOT(reject()) );
     connect( ok, SIGNAL(clicked()), SLOT(Ok()) );
@@ -1088,49 +1088,49 @@ dFreeEnv::~dFreeEnv()
 
 void dTransact::Ok()
 {
-    Handle *ehand = odbctest->extract_handle_list( SQL_HANDLE_ENV, ehandles );
-    Handle *chand = odbctest->extract_handle_list( SQL_HANDLE_DBC, chandles );
+    OdbcHandle *ehand = pOdbcTest->extract_handle_list( SQL_HANDLE_ENV, ehandles );
+    OdbcHandle *chand = pOdbcTest->extract_handle_list( SQL_HANDLE_DBC, chandles );
 	SQLHANDLE ein_handle = SQL_NULL_HANDLE;
 	SQLHANDLE cin_handle = SQL_NULL_HANDLE;
     SQLSMALLINT completion;
 
 	if ( ehand  )
-		ein_handle = ehand -> getHandle();
+		ein_handle = ehand->getHandle();
 	if ( chand  )
-		cin_handle = chand -> getHandle();
+		cin_handle = chand->getHandle();
 
-	odbctest -> out_win -> insertLineLimited( "SQLTransact():" );
-	odbctest -> out_win -> insertLineLimited( "  In:" );
+	pOdbcTest->out_win->append( "SQLTransact():" );
+	pOdbcTest->out_win->append( "  In:" );
 
 	if ( ein_handle )
 		txt.sprintf( "    henv: %p", ein_handle );
 	else
 		txt.sprintf( "    henv: SQL_NULL_HENV" );
-	odbctest -> out_win -> insertLineLimited( txt );
+	pOdbcTest->out_win->append( txt );
 
 	if ( cin_handle )
 		txt.sprintf( "    hdbc: %p", cin_handle );
 	else
 		txt.sprintf( "    hdbc: SQL_NULL_HDBC" );
-	odbctest -> out_win -> insertLineLimited( txt );
+	pOdbcTest->out_win->append( txt );
 
-    completion = completion_type_struct[ completion_type -> currentIndex() ].value;
+    completion = completion_type_struct[ completion_type->currentIndex() ].value;
 
     SQLRETURN ret = SQLTransact( ein_handle, cin_handle, completion );
 
-	odbctest -> out_win -> insertLineLimited( "  Return:" );
-	txt.sprintf( "    %s=%d", odbctest->return_as_text( ret ), ret );
-	odbctest -> out_win -> insertLineLimited( txt );
+	pOdbcTest->out_win->append( "  Return:" );
+	txt.sprintf( "    %s=%d", pOdbcTest->return_as_text( ret ), ret );
+	pOdbcTest->out_win->append( txt );
 
-	odbctest -> out_win -> insertLineLimited( "" );
+	pOdbcTest->out_win->append( "" );
 }
 
-dTransact::dTransact( OdbcTest *parent, QString name )
-        : QDialog( parent )
+dTransact::dTransact( OdbcTest *pOdbcTest, QString name )
+        : QDialog( pOdbcTest )
 {
 	setWindowTitle( name );
     setModal( true );
-	odbctest = parent;
+	this->pOdbcTest = pOdbcTest;
 
     ok = new QPushButton( "OK", this );
     ok->setGeometry( 110,10, 70,25 );
@@ -1142,25 +1142,25 @@ dTransact::dTransact( OdbcTest *parent, QString name )
     help->setGeometry( 270,10, 70,25 );
 
 	ehandles = new QComboBox( this );
-	ehandles -> setGeometry( 130, 50, 200, 20 );
-	odbctest->fill_handle_list( SQL_HANDLE_ENV, ehandles );
+	ehandles->setGeometry( 130, 50, 200, 20 );
+	pOdbcTest->fill_handle_list( SQL_HANDLE_ENV, ehandles );
 
 	l_ehandles = new QLabel( "henv:", this );
-	l_ehandles -> setGeometry( 10, 50, 120, 20 );
+	l_ehandles->setGeometry( 10, 50, 120, 20 );
 
 	chandles = new QComboBox( this );
-	chandles -> setGeometry( 130, 80, 200, 20 );
-	odbctest->fill_handle_list( SQL_HANDLE_DBC, chandles );
+	chandles->setGeometry( 130, 80, 200, 20 );
+	pOdbcTest->fill_handle_list( SQL_HANDLE_DBC, chandles );
 
 	l_chandles = new QLabel( "hdbc:", this );
-	l_chandles -> setGeometry( 10, 80, 120, 20 );
+	l_chandles->setGeometry( 10, 80, 120, 20 );
 
 	completion_type = new QComboBox( this );
-	completion_type -> setGeometry( 130, 110, 200, 20 );
-	parent->fill_list_box( completion_type_struct, completion_type );
+	completion_type->setGeometry( 130, 110, 200, 20 );
+	pOdbcTest->fill_list_box( completion_type_struct, completion_type );
 
 	l_completion_type = new QLabel( "fType Type:", this );
-	l_completion_type -> setGeometry( 10, 110, 120, 20 );
+	l_completion_type->setGeometry( 10, 110, 120, 20 );
 
     connect( cancel, SIGNAL(clicked()), SLOT(reject()) );
     connect( ok, SIGNAL(clicked()), SLOT(Ok()) );
@@ -1184,7 +1184,7 @@ void OdbcTest::sqlallochandle()
 {
 	dAllocHandle *dlg = new dAllocHandle( this, "SQLAllocHandle" );
 
-	dlg -> exec();
+	dlg->exec();
 
 	delete dlg;
 }
@@ -1193,7 +1193,7 @@ void OdbcTest::sqldatasources()
 {
 	dDataSources *dlg = new dDataSources( this, "SQLDataSources" );
 
-	dlg -> exec();
+	dlg->exec();
 
 	delete dlg;
 }
@@ -1202,7 +1202,7 @@ void OdbcTest::sqldrivers()
 {
 	dDrivers *dlg = new dDrivers( this, "SQLDrivers" );
 
-	dlg -> exec();
+	dlg->exec();
 
 	delete dlg;
 }
@@ -1211,7 +1211,7 @@ void OdbcTest::sqlendtran()
 {
 	dEndTran *dlg = new dEndTran( this, "SQLEndTran" );
 
-	dlg -> exec();
+	dlg->exec();
 
 	delete dlg;
 }
@@ -1220,7 +1220,7 @@ void OdbcTest::sqlfreehandle()
 {
 	dFreeHandle *dlg = new dFreeHandle( this, "SQLFreeHandle" );
 
-	dlg -> exec();
+	dlg->exec();
 
 	delete dlg;
 }
@@ -1229,7 +1229,7 @@ void OdbcTest::sqlallocenv()
 {
 	dAllocEnv *dlg = new dAllocEnv( this, "SQLAllocEnv" );
 
-	dlg -> exec();
+	dlg->exec();
 
 	delete dlg;
 }
@@ -1238,7 +1238,7 @@ void OdbcTest::sqlfreeenv()
 {
 	dFreeEnv *dlg = new dFreeEnv( this, "SQLFreeEnv" );
 
-	dlg -> exec();
+	dlg->exec();
 
 	delete dlg;
 }
@@ -1247,7 +1247,7 @@ void OdbcTest::sqltransact()
 {
 	dTransact *dlg = new dTransact( this, "SQLTransact" );
 
-	dlg -> exec();
+	dlg->exec();
 
 	delete dlg;
 }
