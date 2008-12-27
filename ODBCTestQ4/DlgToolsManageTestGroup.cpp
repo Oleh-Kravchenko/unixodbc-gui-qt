@@ -27,15 +27,14 @@
  **********************************************************************/
 
 #include "DlgToolsManageTestGroup.h"
+#include "DlgToolsNewGroup.h"
 
-dManageTestGroup::dManageTestGroup( OdbcTest *parent, QString name )
-: QDialog( parent )
+DlgToolsManageTestGroup::DlgToolsManageTestGroup( OdbcTest *parent, QString name )
+    : QDialog( parent )
 {
     setWindowTitle( name );
 
     odbctest = parent;
-
-    init_ini_list( parent );
 
     nw = new QPushButton( "New", this );
     nw->setGeometry( 300,15, 70,25 );
@@ -100,9 +99,11 @@ dManageTestGroup::dManageTestGroup( OdbcTest *parent, QString name )
              this, SLOT( Activated(const QString &)));
 }
 
-dManageTestGroup::~dManageTestGroup()
+DlgToolsManageTestGroup::~DlgToolsManageTestGroup()
 {
-    replace_ini_list( odbctest );
+    if ( !gOdbcTools->ini.write() )
+        QMessageBox::critical( odbctest, "OdbcTest", QString( tr("Failed to write %1") ).arg( gOdbcTools->ini.fileIni.fileName() ) );
+
     delete close;
     delete add;
     delete remove;
@@ -116,7 +117,7 @@ dManageTestGroup::~dManageTestGroup()
     delete sauto_list;
 }
 
-void dManageTestGroup::Ok()
+void DlgToolsManageTestGroup::Ok()
 {
 }
 
@@ -125,14 +126,92 @@ void dManageTestGroup::Ok()
 // is in the group section, if so it goes in the selected, else the installed list
 //
 
-void dManageTestGroup::update_test_lists( void )
+void DlgToolsManageTestGroup::update_test_lists( void )
 {
-    section *s = find_section( "Auto Tests" );
-    QString current_text = group->currentText();
-    section *s_group = find_section( current_text );
+    QString current_text        = group->currentText();
+    int     nSectionAutoTests   = gOdbcTools->ini.indexSection( "Auto Tests" );
+    int     nSectionGroup       = gOdbcTools->ini.indexSection( current_text );
 
     auto_list->clear();
     sauto_list->clear();
+
+    if ( nSectionAutoTests < 0 )
+        return;
+
+    // for each "Auto Tests"...
+    for ( int nEntry = 0; nEntry < gOdbcTools->ini.vectorSectionEntries[nSectionAutoTests].size(); nEntry++ )
+    {
+        QString stringTest = gOdbcTools->ini.vectorSectionEntries[nSectionAutoTests][nEntry].at( 0 );
+        if ( gOdbcTools->ini.indexEntry( nSectionGroup, stringTest ) >= 0 )
+            sauto_list->addItem( stringTest );
+        else
+            auto_list->addItem( stringTest );
+    }
+}
+
+void DlgToolsManageTestGroup::Activated( const QString & )
+{
+    update_test_lists();
+}
+
+void DlgToolsManageTestGroup::Activated( int val )
+{
+    if ( group -> count() > 0 )
+        Activated( group -> itemText( val ) );
+}
+
+void DlgToolsManageTestGroup::Add()
+{
+    QListWidgetItem *pListWidgetItem = auto_list -> currentItem();
+    if ( !pListWidgetItem )
+        return;
+
+    gOdbcTools->ini.appendEntry( group->currentText(), pListWidgetItem->text(), "Installed" );
+    update_test_lists();
+}
+
+void DlgToolsManageTestGroup::Remove()
+{
+    QListWidgetItem *pListWidgetItem = sauto_list -> currentItem();
+    if ( !pListWidgetItem )
+        return;
+
+    gOdbcTools->ini.removeEntry( group->currentText(), pListWidgetItem->text() );
+    update_test_lists();
+}
+
+void DlgToolsManageTestGroup::New()
+{
+    DlgToolsNewGroup *dlg = new DlgToolsNewGroup( this -> odbctest, "New Test Group", this );
+
+    dlg -> exec();
+
+    delete dlg;
+}
+
+void DlgToolsManageTestGroup::Delete()
+{
+    if ( group -> count() == 0 )
+        return;
+
+    if ( QMessageBox::information( this, "OdbcTest",
+                                   QString( "Delete the test group %1?" ).arg( group->currentText() ),
+                                   "&Delete", "&Cancel", 0,
+                                   0, 1 ) != 0 )
+    {
+        return;
+    }
+
+    // remove from GROUPS section...
+    gOdbcTools->ini.removeEntry( "GROUPS", group->currentText() );
+
+    // remove its section...
+    gOdbcTools->ini.removeSection( group->currentText() );
+
+    // reload list...
+    group -> clear();
+
+    s = find_section( "GROUPS" );
 
     if ( s )
     {
@@ -142,166 +221,11 @@ void dManageTestGroup::update_test_lists( void )
             p != 0; 
             p = s -> next())
         {
-            prop *atprop;
-            int found = 0;
-
-            for ( atprop = s_group -> first();
-                atprop != 0;
-                atprop = s_group -> next())
-            {
-                if ( strcmp( atprop -> name(), p -> name()) == 0 )
-                {
-                    found = 1;
-                    break;
-                }
-            }
-            if ( found )
-            {
-                sauto_list->insertItem( p->name());
-            }
-            else
-            {
-                auto_list->insertItem( p->name());
-            }
+            group -> addItem( p -> name() );
         }
     }
-}
-
-void dManageTestGroup::Activated( const QString &str )
-{
-    update_test_lists();
-}
-
-void dManageTestGroup::Activated( int val )
-{
-    if ( group -> count() > 0 )
-        Activated( group -> text( val ));
-}
-
-void dManageTestGroup::Add()
-{
-    int index = auto_list -> currentItem();
-    QString current_text = group->currentText();
-
-    if ( index >= 0 )
-    {
-        QListBoxItem *lbi = auto_list -> item( index );
-
-        section *s = find_section( current_text );
-        prop *p = new prop( lbi -> text(), "Installed" );
-        s -> append( p );
-
-        update_test_lists();
-    }
-}
-
-void dManageTestGroup::Remove()
-{
-    int index = sauto_list -> currentItem();
-    QString current_group = group->currentText();
-
-    if ( index >= 0 )
-    {
-        QListBoxItem *lbi = sauto_list -> item( index );
-
-        section *s = find_section( current_group );
-        prop *p;
-
-        //
-        // find element
-        //
-        for ( p = s->first(); p != 0; p = s -> next())
-        {
-            if ( strcmp( p -> name(), lbi -> text()) == 0 )
-            {
-                s -> remove( p );
-                break;
-            }
-        }
-        update_test_lists();
-    }
-}
-
-void dManageTestGroup::New()
-{
-    dNewGroup *dlg = new dNewGroup( this -> odbctest, "New Test Group", this );
-
-    dlg -> exec();
-
-    delete dlg;
-}
-
-void dManageTestGroup::Delete()
-{
-    if ( group -> count() == 0 )
-    {
-        return;
-    }
-
-    QString grp = group -> currentText();
-
-    char msg [128];
-
-    sprintf( msg, "Delete the test group %s ?", grp.toAscii().constData());
-
-    if ( QMessageBox::information( this, "OdbcTest",
-                                   msg,
-                                   "&Delete", "&Cancel", 0,
-                                   0, 1 ) == 0 )
-    {
-        //
-        // Remove it from the GROUPS section
-        //
-        section *s = find_section( "GROUPS" );
-
-        if ( s )
-        {
-            prop *p;
-
-            for ( p = s -> first(); 
-                p != 0; 
-                p = s -> next())
-            {
-                if ( strcmp( p -> name(), grp.toAscii().constData()) == 0 )
-                {
-                    s -> remove( p );
-                    break;
-                }
-            }
-        }
-
-        //
-        // remove the section
-        //
-        s = find_section( grp.toAscii().constData());
-        if ( s )
-        {
-            ini_list.removeOne( s );
-            remove_section( odbctest, s );
-        }
-
-        //
-        // fill up combo box
-        //
-
-        group -> clear();
-
-        s = find_section( "GROUPS" );
-
-        if ( s )
-        {
-            prop *p;
-
-            for ( p = s -> first(); 
-                p != 0; 
-                p = s -> next())
-            {
-                group -> addItem( p -> name() );
-            }
-        }
-        group -> setCurrentIndex( 0 );
-        Activated( 0 );
-    }
+    group -> setCurrentIndex( 0 );
+    Activated( 0 );
 }
 
 

@@ -29,37 +29,37 @@
 #ifndef DLGTOOLSRUNAUTOTESTS_H
 #define DLGTOOLSRUNAUTOTESTS_H
 
-#include "odbctest.h"
+#include "tools.h"
 
 class DlgToolsRunAutoTests : public QDialog 
 {
     Q_OBJECT
 
-    public:
-		DlgToolsRunAutoTests( OdbcTest *parent, QString name );
-        ~DlgToolsRunAutoTests();
+public:
+    DlgToolsRunAutoTests( OdbcTest *parent, QString name );
+    ~DlgToolsRunAutoTests();
 
-	protected:
-		QPushButton *run_list, *ok, *cancel, *log_file;
-		OdbcTest *odbctest;
-		QComboBox *rlist;
-		QLabel *l_tests, *l_sources, *l_log;
-		QGroupBox *output, *options;
-        QListWidget *sources;
-        QTreeWidget *tests;
-        QCheckBox *b_log_file, *b_screen, *b_debug, *b_isolate, *b_cursor;
+protected:
+    QPushButton *run_list, *ok, *cancel, *log_file;
+    OdbcTest *odbctest;
+    QComboBox *rlist;
+    QLabel *l_tests, *l_sources, *l_log;
+    QGroupBox *output, *options;
+    QListWidget *sources;
+    QTreeWidget *tests;
+    QCheckBox *b_log_file, *b_screen, *b_debug, *b_isolate, *b_cursor;
 
-        void add_auto_test( const char * test_name, MYQListViewItem *top, MYQListViewItem **last_test );
+    void add_auto_test( const char * test_name, MYQListViewItem *top, MYQListViewItem **last_test );
 
-	protected slots:
-		void Ok();
-        void Log();
-        void LogChanged(int);
-        void CursorChanged(int);
-        void TestsChanged();
+protected slots:
+    void Ok();
+    void Log();
+    void LogChanged(int);
+    void CursorChanged(int);
+    void TestsChanged();
 
-    private:
-        int cursor_state;
+private:
+    int cursor_state;
 };
 
 

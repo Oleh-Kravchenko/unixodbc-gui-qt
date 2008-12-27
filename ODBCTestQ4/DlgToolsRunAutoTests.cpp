@@ -28,8 +28,12 @@
 
 #include "DlgToolsRunAutoTests.h"
 
+#define setqbit(lpa, pos)	\
+	(lpa[((pos) / CQBITS)] |= (1 << ((pos) - (CQBITS * ((pos) / CQBITS)))))
+#define SETBIT(p1,p2) setqbit(p1,(p2)-1)
+
 DlgToolsRunAutoTests::DlgToolsRunAutoTests( OdbcTest *parent, QString name )
-: QDialog( parent )
+    : QDialog( parent )
 {
     setWindowTitle( name );
 
@@ -219,6 +223,7 @@ void DlgToolsRunAutoTests::Ok()
 
     //
     // set up callback, handle
+    // (callback activity will need our main window)
     //
     static_odbctest = odbctest;
 
@@ -335,7 +340,7 @@ void DlgToolsRunAutoTests::Ok()
                             print_to_odbctest( &server_info, msg, 1 );
                             sprintf( msg, "Source: %s", src.toAscii().constData());
                             print_to_odbctest( &server_info, msg, 1 );
-                            sprintf( msg, "Time started %s", get_time_str());
+                            sprintf( msg, "Time started %s", QTime::currentTime().toString().toAscii().constData() );
                             print_to_odbctest( &server_info, msg, 1 );
 
                             // run tests
@@ -445,7 +450,7 @@ void DlgToolsRunAutoTests::Ok()
                                 }
                             }
 
-                            sprintf( msg, "Time finished %s", get_time_str());
+                            sprintf( msg, "Time finished %s", QTime::currentTime().toString().toAscii().constData() );
                             print_to_odbctest( &server_info, msg, 1 );
                         }
                         sect = sect -> nextSibling();

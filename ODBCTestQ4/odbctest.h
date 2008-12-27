@@ -4,8 +4,7 @@
  * 
  */
 
-#ifndef ODBCTEST_H
-#define ODBCTEST_H
+#pragma once
 
 /* bring in standard C stuff */
 #include <stdio.h>
@@ -23,10 +22,7 @@
 # endif
 #endif
 
-/* we use libtool to dynamically/explicitly load libs */
-#include <ltdl.h>
-
-/* this will bring in a lot of the ODBC stuff we need */
+/* this will bring in the ODBC 'test' stuff we need (and then some) */
 #include <autotest.h>
 
 /* bring in more ODBC stuff */
@@ -34,9 +30,6 @@
 
 /* this brings in all of the Qt stuff we need */
 #include <QtGui>
-
-/* bring in our ini stuff - we use it read/write some system info */
-#include <ini.h>
 
 /*
  * structure that defines the options and values
@@ -106,13 +99,21 @@ private:
 	int max_lines;
 };
 
+/*!
+ * \brief   Main application class for ODBCTestQ4. 
+ *  
+ *          This contains or invokes all of our functionality. This is
+ *          instantiated in main().
+ * 
+ */
 class OdbcTest : public QMainWindow
 {
     Q_OBJECT
-
 public:
     OdbcTest( QWidget *parent=0 );
     ~OdbcTest();
+
+    QSettings * pSettings;      // an ini file usually called Gator.ini where we store configuration for our tests
 
 	QSplitter *split;
 	QTextEdit *in_win;
@@ -431,4 +432,4 @@ private:
     void createMenus();
 };
 
-#endif // ODBCTEST_H
+

@@ -26,16 +26,42 @@
  * 
  */
 
-#ifndef TOOLS_H
-#define TOOLS_H
+#pragma once
 
 #include "odbctest.h"
 
-#define setqbit(lpa, pos)	\
-	(lpa[((pos) / CQBITS)] |= (1 << ((pos) - (CQBITS * ((pos) / CQBITS)))))
-#define SETBIT(p1,p2) setqbit(p1,(p2)-1)
+/*!
+ * \brief   Supports ODBCTestQ4. 
+ *  
+ *          This class serves as a namespace and as a global. The idea is we
+ *          create just 1 instance of this, make it global, and use it through-out
+ *          the ODBCTestQ4 code. The principle features can be grouped as follows;
+ *  
+ *          - global settings handle
+ *          - methods to produce output on behalf of test plugin (via callback_function)
+ *          - convenience methods (loading list boxs etc)
+ *  
+ *          This global is instantiated in the OdbcTest constructor.
+ *  
+ * \author  pharvey (12/27/2008)
+ */
+class OdbcTools
+{
+public:
+    OdbcTools( OdbcTest *pOdbcTest );
+    ~OdbcTools();
 
-QMap<QString,QMap<QString,QString>> ini;
+    OdbcTest *  pOdbcTest;
+    QSettings * pSettings;
+
+    void post_to_odbctest( lpSERVERINFO lps );
+    void print_to_odbctest( lpSERVERINFO lps, char *str, int log );
+    int  show_message_box( int style, const char *title, const char *msg );
+    void fill_dsn_list( QComboBox *box );
+    void set_dsn_list( QComboBox *box, const QString &str );
+};
+
+// our global...
+extern OdbcTools *gOdbcTools;
 
 
-#endif

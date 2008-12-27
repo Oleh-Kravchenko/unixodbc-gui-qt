@@ -29,34 +29,36 @@
 #ifndef DLGTOOLSMANAGETEST_H
 #define DLGTOOLSMANAGETEST_H
 
-#include "odbctest.h"
+#include "tools.h"
+
+class DlgToolsNewSource;
 
 class DlgToolsManageTest : public QDialog 
 {
     Q_OBJECT
 
-    public:
-		DlgToolsManageTest( OdbcTest *parent, QString name );
-        ~DlgToolsManageTest();
+public:
+    DlgToolsManageTest( OdbcTest *parent, QString name );
+    ~DlgToolsManageTest();
 
-    friend class dNewSource;
+    friend class DlgToolsNewSource;
 
-	protected:
-		QPushButton *close, *nw, *del;
-		OdbcTest *odbctest;
-		QComboBox *test_source;
-        QComboBox*dsn;
-		QLabel *l_dsn, *l_ts, *l_uid, *l_pwd, *l_kw;
-		QLineEdit *uid, *pwd, *kw;
-		QButtonGroup *param;
+protected:
+    QPushButton *close, *nw, *del;
+    OdbcTest *odbctest;
+    QComboBox *test_source;
+    QComboBox*dsn;
+    QLabel *l_dsn, *l_ts, *l_uid, *l_pwd, *l_kw;
+    QLineEdit *uid, *pwd, *kw;
+    QGroupBox *param;
 
 
-	protected slots:
-		void Ok();
-        void NewSource();
-        void DelSource();
-		void Activated( int index );
-		void Activated( const QString &str );
+protected slots:
+    void Ok();
+    void NewSource();
+    void DelSource();
+    void Activated( int index );
+    void Activated( const QString &str );
 };
 
 #endif

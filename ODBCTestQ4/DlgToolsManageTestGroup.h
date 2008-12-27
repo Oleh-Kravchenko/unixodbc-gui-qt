@@ -29,7 +29,9 @@
 #ifndef DLGTOOLSMANAGETESTGROUP_H
 #define DLGTOOLSMANAGETESTGROUP_H
 
-#include "odbctest.h"
+#include "tools.h"
+
+class DlgToolsNewGroup;
 
 class DlgToolsManageTestGroup : public QDialog 
 {
@@ -39,7 +41,7 @@ public:
     DlgToolsManageTestGroup( OdbcTest *parent, QString name );
     ~DlgToolsManageTestGroup();
 
-    friend class dNewGroup;
+    friend class DlgToolsNewGroup;
 
 protected:
     QPushButton *close, *nw, *del, *add, *remove;

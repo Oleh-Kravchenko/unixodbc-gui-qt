@@ -8,26 +8,23 @@ TARGET  = ODBCTestQ4
 VERSION = %V_MAJOUR%.%V_MINOR%.%V_RELEASE%
 DESTDIR	= ../bin
 
-INCLUDEPATH	+= ../ini
-LIBS		+= -L../lib -lini
-
 HEADERS		= \
 		attr.h \
 		catalog.h \
 		conn.h \
 		desc.h \
 		diag.h \
-		env.h \
-		odbctest.h \
-		results.h \
-		stmt.h \
-		tools.h \
 		DlgToolsManageAutoTest.h \
 		DlgToolsManageTestGroup.h \
 		DlgToolsManageTest.h \
 		DlgToolsNewGroup.h \
 		DlgToolsNewSource.h \
-		DlgToolsRunAutoTests.h
+		DlgToolsRunAutoTests.h \
+		env.h \
+		OdbcHandle.h \
+		OdbcTest.h \
+		results.h \
+		stmt.h
 
 
 SOURCES 	= \
@@ -36,18 +33,19 @@ SOURCES 	= \
 		conn.cpp \
 		desc.cpp \
 		diag.cpp \
-		edit.cpp \
-		env.cpp \
-		installer.cpp \
-		odbctest.cpp \
-		open.cpp \
-		results.cpp \
-		stmt.cpp \
-		tools.cpp \
 		DlgToolsManageAutoTest.cpp \
 		DlgToolsManageTest.cpp \
 		DlgToolsManageTestGroup.cpp \
 		DlgToolsNewGroup.cpp \
 		DlgToolsNewSource.cpp \
-		DlgToolsRunAutoTests.cpp
+		DlgToolsRunAutoTests.cpp \
+		edit.cpp \
+		env.cpp \
+		installer.cpp \
+		main.cpp \
+		OdbcHandle.cpp \
+		OdbcTest.cpp \
+		open.cpp \
+		results.cpp \
+		stmt.cpp
 

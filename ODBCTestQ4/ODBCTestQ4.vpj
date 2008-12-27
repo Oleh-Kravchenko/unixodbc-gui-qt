@@ -66,6 +66,9 @@
 			<F N="edit.cpp"/>
 			<F N="env.cpp"/>
 			<F N="installer.cpp"/>
+			<F N="main.cpp"/>
+			<F N="OdbcHandle.cpp"/>
+			<F N="OdbcTest.cpp"/>
 			<F N="odbctest.cpp"/>
 			<F N="open.cpp"/>
 			<F N="results.cpp"/>
@@ -87,6 +90,8 @@
 			<F N="DlgToolsNewSource.h"/>
 			<F N="DlgToolsRunAutoTests.h"/>
 			<F N="env.h"/>
+			<F N="OdbcHandle.h"/>
+			<F N="OdbcTest.h"/>
 			<F N="odbctest.h"/>
 			<F N="results.h"/>
 			<F N="stmt.h"/>

@@ -35,19 +35,19 @@ class DlgToolsNewGroup : public QDialog
 {
     Q_OBJECT
 
-    public:
-		DlgToolsNewGroup( OdbcTest *parent, QString name, dManageTestGroup *ptest );
-        ~DlgToolsNewGroup();
+public:
+    DlgToolsNewGroup( OdbcTest *parent, QString name, DlgToolsManageTestGroup *ptest );
+    ~DlgToolsNewGroup();
 
-	protected:
-		QPushButton *ok, *cancel;
-		OdbcTest *odbctest;
-		QLineEdit *source;
-        QLabel *l_dsn;
-        dManageTestGroup *parent_test;
+protected:
+    QPushButton *ok, *cancel;
+    OdbcTest *odbctest;
+    QLineEdit *source;
+    QLabel *l_dsn;
+    DlgToolsManageTestGroup *parent_test;
 
-	protected slots:
-		void Ok();
+protected slots:
+    void Ok();
 };
 
 #endif

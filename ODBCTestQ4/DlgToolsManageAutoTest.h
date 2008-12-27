@@ -29,32 +29,32 @@
 #ifndef DLGTOOLSMANAGEAUTOTEST_H
 #define DLGTOOLSMANAGEAUTOTEST_H
 
-#include "odbctest.h"
+#include "tools.h"
 
 class DlgToolsManageAutoTest : public QDialog 
 {
     Q_OBJECT
 
-    public:
-		DlgToolsManageAutoTest( OdbcTest *parent, QString name );
-        ~DlgToolsManageAutoTest();
+public:
+    DlgToolsManageAutoTest( OdbcTest *parent, QString name );
+    ~DlgToolsManageAutoTest();
 
-	protected:
-		QPushButton *close, *add, *remove, *from;
-		OdbcTest *odbctest;
-		QLabel *l_avail, *l_name, *l_lib, *l_so, *l_installed, *s_from, *s_name, *s_lib;
-		QListWidget *lib_list, *test_list;
-        char curr_dir[ 256 ];
+protected:
+    QPushButton *   close, *add, *remove, *from;
+    OdbcTest *      odbctest;
+    QLabel *        l_avail, *l_name, *l_lib, *l_so, *l_installed, *s_from, *s_name, *s_lib;
+    QListWidget *   lib_list, *test_list;
+    char            curr_dir[ 256 ];
 
-        void SetPath( QString &str );
-        void SetPath( const char *str );
+    void SetPath( QString &str );
+    void SetPath( const char *str );
 
-	protected slots:
-		void Ok();
-        void From();
-        void Add();
-        void ListSelect( const QString &name );
-        void Remove();
+protected slots:
+    void Ok();
+    void From();
+    void Add();
+    void ListSelect( const QString &name );
+    void Remove();
 };
 
 #endif

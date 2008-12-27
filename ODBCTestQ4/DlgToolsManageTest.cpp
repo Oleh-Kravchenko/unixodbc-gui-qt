@@ -27,15 +27,14 @@
  **********************************************************************/
 
 #include "DlgToolsManageTest.h"
+#include "DlgToolsNewSource.h"
 
 DlgToolsManageTest::DlgToolsManageTest( OdbcTest *parent, QString name )
-: QDialog( parent, name, TRUE )
+    : QDialog( parent )
 {
     setWindowTitle( name );
 
     odbctest = parent;
-
-    init_ini_list( parent );
 
     close = new QPushButton( "Close", this );
     close->setGeometry( 270,80, 70,25 );
@@ -46,36 +45,36 @@ DlgToolsManageTest::DlgToolsManageTest( OdbcTest *parent, QString name )
     del = new QPushButton( "Delete", this );
     del->setGeometry( 270,140, 70,25 );
 
-    test_source = new QComboBox( FALSE, this, "test Source" );
+    test_source = new QComboBox( this );
     test_source -> setGeometry( 100, 20, 250, 20 );
 
     l_ts = new QLabel( "Test Source:", this );
     l_ts -> setGeometry( 10, 20, 80, 20 );
 
-    param = new QButtonGroup( "Connect Parameters", this );
+    param = new QGroupBox( "Connect Parameters", this );
     param -> setGeometry( 10, 60, 240, 125 );
 
-    dsn = new QComboBox( FALSE, this, "dsn" );
+    dsn = new QComboBox( this );
     dsn -> setGeometry( 80, 90, 150, 20 );
 
     l_dsn = new QLabel( "DSN:", this );
     l_dsn -> setGeometry( 20, 90, 60, 20 );
 
-    uid = new QLineEdit( this, "uid" );
+    uid = new QLineEdit( this );
     uid -> setGeometry( 80, 120, 150, 20 );
     uid -> setMaxLength( 128 );
 
     l_uid = new QLabel( "UID:", this );
     l_uid -> setGeometry( 20, 120, 60, 20 );
 
-    pwd = new QLineEdit( this, "pwd" );
+    pwd = new QLineEdit( this );
     pwd -> setGeometry( 80, 150, 150, 20 );
     pwd -> setMaxLength( 128 );
 
     l_pwd = new QLabel( "PWD:", this );
     l_pwd -> setGeometry( 20, 150, 60, 20 );
 
-    kw = new QLineEdit( this, "Keywords" );
+    kw = new QLineEdit( this );
     kw -> setGeometry( 80, 200, 250, 20 );
     kw -> setMaxLength( 128 );
 
@@ -89,41 +88,31 @@ DlgToolsManageTest::DlgToolsManageTest( OdbcTest *parent, QString name )
 
     connect( del, SIGNAL(clicked()), SLOT(DelSource()) );
 
-    //
-    // fill up combo box
-    //
-
-    section *s = find_section( "SQL_DRIVERS" );
-
-    if ( s )
+    // load driver list...
+    int nSection = gOdbcTools->ini.indexSection( "SQL_DRIVERS" );
+    if ( nSection >= 0 )
     {
-        prop *p;
-
-        for ( p = s -> first(); 
-            p != 0; 
-            p = s -> next())
+        for ( int nEntry = 0; nEntry < gOdbcTools->ini.vectorSectionEntries[nSection].size(); nEntry++ )
         {
-            test_source -> insertItem( p -> name());
+            test_source -> addItem( gOdbcTools->ini.vectorSectionEntries[nSection][nEntry].at( 0 ) );
         }
     }
 
-    //
-    // fill the list of DSN's
-    //
-
-    fill_dsn_list( odbctest, dsn );
+    // load dsn list...
+    gOdbcTools->fill_dsn_list( dsn );
 
     //
     // set up other fields
     //
     Activated( 0 );
-    connect( test_source, SIGNAL(activated(const QString &)), 
-             this, SLOT( Activated(const QString &)));
+    connect( test_source, SIGNAL(activated(const QString &)), this, SLOT( Activated(const QString &)));
 }
 
 DlgToolsManageTest::~DlgToolsManageTest()
 {
-    replace_ini_list( odbctest );
+    if ( !gOdbcTools->ini.write() )
+        QMessageBox::critical( odbctest, "OdbcTest", QString( tr("Failed to write %1") ).arg( gOdbcTools->ini.fileIni.fileName() ) );
+
     delete close;
     delete nw;
     delete del;
@@ -140,35 +129,40 @@ DlgToolsManageTest::~DlgToolsManageTest()
 
 void DlgToolsManageTest::Activated( const QString &str )
 {
-    section *s = find_section( str.toAscii().constData() );
+    // find section...
+    int nSection = gOdbcTools->ini.indexSection( str );
 
-    if ( s )
-    {
-        for ( prop *prop = s->first(); prop != 0; prop = s -> next())
-        {
-            if ( strcmp( prop -> name(), "SERVER0" ) == 0 )
-            {
-                set_dsn_list( dsn, prop->value());
-            }
-            else if ( strcmp( prop -> name(), "LOGIN0" ) == 0 )
-            {
-                uid -> setText( prop -> value());
-            }
-            else if ( strcmp( prop -> name(), "PASSWORD0" ) == 0 )
-            {
-                pwd -> setText( prop -> value());
-            }
-            else if ( strcmp( prop -> name(), "KEYWORDS" ) == 0 )
-            {
-                kw -> setText( prop -> value());
-            }
-        }
-    }
-    else
+    // did we find section...
+    if ( nSection < 0 )
     {
         uid -> clear();
         pwd -> clear();
         kw -> clear();
+        return;
+    }
+
+    // load dsn details...
+    for ( int nEntry = 0; nEntry < gOdbcTools->ini.vectorSectionEntries[nSection].size(); nEntry++ )
+    {
+        QString stringName  = gOdbcTools->ini.vectorSectionEntries[nSection][nEntry].at( 0 );
+        QString stringValue = gOdbcTools->ini.vectorSectionEntries[nSection][nEntry].at( 1 );
+
+        if ( stringName == "SERVER0" )
+        {
+            gOdbcTools->set_dsn_list( dsn, stringValue );
+        }
+        else if ( stringName == "LOGIN0" )
+        {
+            uid -> setText( stringValue );
+        }
+        else if ( stringName == "PASSWORD0" )
+        {
+            pwd -> setText( stringValue );
+        }
+        else if ( stringName == "KEYWORDS" )
+        {
+            kw -> setText( stringValue );
+        }
     }
 }
 
@@ -176,7 +170,7 @@ void DlgToolsManageTest::Activated( int val )
 {
     if ( test_source -> count() > 0 )
     {
-        Activated( test_source -> text( val ));
+        Activated( test_source -> itemText( val ) );
     }
 }
 
@@ -196,37 +190,31 @@ void DlgToolsManageTest::Ok()
     // Get section
     // 
 
-    section *s = find_section( driver.toAscii().constData());
-    if ( s )
+    int nSection = gOdbcTools->ini.indexSection( driver );
+    if ( nSection >= 0 )
     {
         //
         // remove all its entries
         //
-        s -> clear();
+        gOdbcTools->ini.vectorSectionEntries[nSection].clear();
     }
     else
     {
-        s = new section( driver.toAscii().constData());
-        ini_list.append( s );
+        nSection = gOdbcTools->ini.appendSection( driver );
     }
 
     //
     // Add the entries
     //
-
-    prop *p = new prop( "SERVER0", dsn -> currentText());
-    s -> append( p );
-    p = new prop( "LOGIN0", uid -> text());
-    s -> append( p );
-    p = new prop( "PASSWORD0", pwd -> text());
-    s -> append( p );
-    p = new prop( "KEYWORDS", kw -> text());
-    s -> append( p );
+    gOdbcTools->ini.appendEntry( nSection, "SERVER0", dsn -> currentText() );
+    gOdbcTools->ini.appendEntry( nSection, "LOGIN0", uid -> text() );
+    gOdbcTools->ini.appendEntry( nSection, "PASSWORD0", pwd -> text() );
+    gOdbcTools->ini.appendEntry( nSection, "KEYWORDS", kw -> text() );
 }
 
 void DlgToolsManageTest::NewSource()
 {
-    dNewSource *dlg = new dNewSource( this -> odbctest, "New Test Sources", this );
+    DlgToolsNewSource *dlg = new DlgToolsNewSource( this -> odbctest, "New Test Sources", this );
 
     dlg -> exec();
 
@@ -238,95 +226,60 @@ void DlgToolsManageTest::NewSource()
 
     test_source -> clear();
 
-    section *s = find_section( "SQL_DRIVERS" );
+    int nSection = gOdbcTools->ini.indexSection( "SQL_DRIVERS" );
     int last = 0;
 
-    if ( s )
+    if ( nSection >= 0 )
     {
-        prop *p;
-
-        for ( p = s -> first(); 
-            p != 0; 
-            p = s -> next())
+        for ( int nEntry = 0; nEntry < gOdbcTools->ini.vectorSectionEntries[nSection].size(); nEntry++ )
         {
-            test_source -> insertItem( p -> name());
+            test_source -> addItem( gOdbcTools->ini.vectorSectionEntries[nSection][nEntry].at( 0 ) );
             last ++;
         }
     }
     Activated( last - 1 );
-    test_source -> setCurrentItem( last - 1 );
+    test_source -> setCurrentIndex( last - 1 );
 }
 
 void DlgToolsManageTest::DelSource()
 {
     if ( test_source -> count() == 0 )
+        return;
+
+    // which driver is current...
+    QString driver = test_source -> currentText();
+    
+    // do we really want to do this...
+    if ( QMessageBox::information( this, "OdbcTest",
+                                   QString( "Delete the test source %1?" ).arg( driver ),
+                                   "&Delete", "&Cancel", 0,
+                                   0, 1 ) != 0 )
+
     {
         return;
     }
 
-    QString driver = test_source -> currentText();
+    // remove from master list...
+    gOdbcTools->ini.removeEntry( "SQL_DRIVERS", driver );
 
-    char msg [128];
+    // remove section...
+    gOdbcTools->ini.removeSection( driver );
 
-    sprintf( msg, "Delete the test source %s ?", driver.toAscii().constData());
-
-    if ( QMessageBox::information( this, "OdbcTest",
-                                   msg,
-                                   "&Delete", "&Cancel", 0,
-                                   0, 1 ) == 0 )
+    // reload drivers list...
     {
-        //
-        // Remove it from the SQL_DRIVERS section
-        //
-        section *s = find_section( "SQL_DRIVERS" );
-
-        if ( s )
-        {
-            prop *p;
-
-            for ( p = s -> first(); 
-                p != 0; 
-                p = s -> next())
-            {
-                if ( strcmp( p -> name(), driver.toAscii().constData()) == 0 )
-                {
-                    s -> remove( p );
-                    break;
-                }
-            }
-        }
-
-        //
-        // remove the section
-        //
-        s = find_section( driver.toAscii().constData());
-        if ( s )
-        {
-            ini_list.removeRef( s );
-            remove_section( odbctest, s );
-        }
-
-        //
-        // fill up combo box
-        //
-
         test_source -> clear();
-
-        s = find_section( "SQL_DRIVERS" );
-
-        if ( s )
+    
+        int nSection = gOdbcTools->ini.indexSection( "SQL_DRIVERS" );
+    
+        if ( nSection >= 0 )
         {
-            prop *p;
-
-            for ( p = s -> first(); 
-                p != 0; 
-                p = s -> next())
+            for ( int nEntry = 0; nEntry < gOdbcTools->ini.vectorSectionEntries[nSection].size(); nEntry++ )
             {
-                test_source -> insertItem( p -> name());
+                test_source -> addItem( gOdbcTools->ini.vectorSectionEntries[nSection][nEntry].at( 0 ) );
             }
         }
         Activated( 0 );
-        test_source -> setCurrentItem( 0 );
+        test_source -> setCurrentIndex( 0 );
     }
 }
 

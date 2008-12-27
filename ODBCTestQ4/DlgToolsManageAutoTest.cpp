@@ -29,13 +29,11 @@
 #include "DlgToolsManageAutoTest.h"
 
 DlgToolsManageAutoTest::DlgToolsManageAutoTest( OdbcTest *parent, QString name )
-: QDialog( parent, name, TRUE )
+    : QDialog( parent )
 {
     setWindowTitle( name );
 
     odbctest = parent;
-
-    init_ini_list( parent );
 
     from = new QPushButton( "From", this );
     from->setGeometry( 10,18, 70,25 );
@@ -52,10 +50,10 @@ DlgToolsManageAutoTest::DlgToolsManageAutoTest( OdbcTest *parent, QString name )
     close = new QPushButton( "Close", this );
     close->setGeometry( 180,200, 70,25 );
 
-    lib_list = new QListBox( this, "Lib List" );
+    lib_list = new QListWidget( this );
     lib_list -> setGeometry( 10, 80, 150, 160 );
 
-    test_list = new QListBox( this, "Test List" );
+    test_list = new QListWidget( this );
     test_list -> setGeometry( 270, 80, 250, 160 );
 
     l_avail = new QLabel( "Available Test Libs:", this );
@@ -82,21 +80,13 @@ DlgToolsManageAutoTest::DlgToolsManageAutoTest( OdbcTest *parent, QString name )
     connect( add,  SIGNAL(clicked()), SLOT(Add()) );
     connect( remove,  SIGNAL(clicked()), SLOT(Remove()) );
 
-    //
-    // fill up combo box
-    //
-
-    section *s = find_section( "Auto Tests" );
-
-    if ( s )
+    // load test list...
+    int nSection = gOdbcTools->ini.indexSection( "Auto Tests" );
+    if ( nSection >= 0 )
     {
-        prop *p;
-
-        for ( p = s -> first(); 
-            p != 0; 
-            p = s -> next())
+        for ( int nEntry = 0; nEntry < gOdbcTools->ini.vectorSectionEntries[nSection].size(); nEntry++ )
         {
-            test_list -> insertItem( p -> name());
+            test_list -> addItem( gOdbcTools->ini.vectorSectionEntries[nSection][nEntry].at( 0 ) );
         }
     }
 
@@ -114,7 +104,9 @@ DlgToolsManageAutoTest::DlgToolsManageAutoTest( OdbcTest *parent, QString name )
 
 DlgToolsManageAutoTest::~DlgToolsManageAutoTest()
 {
-    replace_ini_list( odbctest );
+    if ( !gOdbcTools->ini.write() )
+        QMessageBox::critical( odbctest, "OdbcTest", QString( tr("Failed to write %1") ).arg( gOdbcTools->ini.fileIni.fileName() ) );
+
     delete close;
     delete add;
     delete remove;
@@ -153,21 +145,21 @@ void DlgToolsManageAutoTest::SetPath( const char *path )
     if ( q_d.exists())
     {
         q_d.setFilter( QDir::Files | QDir::Hidden );
-        for ( int i=0; i < q_d.count(); i++ )
+        for ( uint i=0; i < q_d.count(); i++ )
         {
-            lib_list -> insertItem( q_d[i] );
+            lib_list ->addItem( q_d[i] );
         }
     }
 }
 
 void DlgToolsManageAutoTest::Add()
 {
-    int index = lib_list -> currentItem();
+    int index = lib_list ->currentRow();
 
     if ( index >= 0 )
     {
-        QListBoxItem *lbi = lib_list -> item( index );
-        const char *name = lbi -> text();
+        QListWidgetItem *lbi = lib_list -> item( index );
+//        const char *name = lbi -> text().toAscii().constData();
 
         QDir q_d( s_from->text());
 
@@ -243,69 +235,66 @@ void DlgToolsManageAutoTest::Add()
                 return;
             }
 
-            //
-            // if we are here, we can add it
-            //
-            //
-            section *s = find_section( test_name );
-
-            if ( s )
+            // does test already exist...
             {
-                char msg[ 256 ];
-
-                sprintf( msg, "Auto test '%s'already installed", test_name );
-
-                QMessageBox::information( odbctest, "OdbcTest", msg );
-                lt_dlclose( handle );
-                return;
+                int nSection = gOdbcTools->ini.vectorSections.indexOf( test_name );
+    
+                if ( nSection >= 0 )
+                {
+                    QMessageBox::information( odbctest, "OdbcTest", QString( tr("Auto test '%1'already installed") ).arg( test_name ) );
+                    lt_dlclose( handle );
+                    return;
+                }
+    
             }
 
-            char number[ 64 ];
-            s = find_section( "Auto Tests" );
+            // add test to master list...
+            {
+                char number[ 64 ];
+                sprintf( number, "%d", count );
+    
+                int nSection = gOdbcTools->ini.vectorSections.indexOf( "Auto Tests" );
+                gOdbcTools->ini.appendEntry( nSection, test_name, number );
+            }
 
-            sprintf( number, "%d", count );
-            prop *p = new prop( test_name, number );
-            s -> append( p );
-
-            s = new section( test_name );
-            ini_list.append( s );
-
-            p = new prop( "DLL", path.toAscii().constData());
-            s -> append( p );
+            // add test section & entries...
+            {
+                int nSection = gOdbcTools->ini.appendSection( test_name );
+                gOdbcTools->ini.appendEntry( nSection, "DLL", path );
+            }
 
             lt_dlclose( handle );
 
-            s = find_section( "Auto Tests" );
-
-            test_list -> clear();
-
-            if ( s )
+            // reload list...
             {
-                prop *p;
-
-                for ( p = s -> first(); 
-                    p != 0; 
-                    p = s -> next())
+                int nSection = gOdbcTools->ini.vectorSections.indexOf( "Auto Tests" );
+    
+                test_list -> clear();
+    
+                if ( nSection >= 0 )
                 {
-                    test_list -> insertItem( p -> name());
+                    for ( int nEntry = 0; nEntry < gOdbcTools->ini.vectorSectionEntries[nSection].size(); nEntry++ )
+                    {
+                        test_list -> addItem( gOdbcTools->ini.vectorSectionEntries[nSection][nEntry].at( 0 ) );
+                    }
                 }
+                test_list -> setCurrentItem( 0 );
+    
+                ListSelect( test_name );
             }
-            test_list -> setCurrentItem( 0 );
-
-            ListSelect( test_name );
         }
     }
 }
 
 void DlgToolsManageAutoTest::From()
 {
-    QFileDialog *dlg = new QFileDialog( this, "fred", TRUE );
+    QFileDialog *dlg = new QFileDialog( this, "fred" );
 
-    dlg -> setMode( QFileDialog::Directory );
+    dlg -> setFileMode( QFileDialog::Directory );
 
     if ( dlg -> exec() == QDialog::Accepted )
     {
-        QString result = dlg -> selectedFile();
+        QString result = dlg -> directory().absolutePath();
         SetPath( result );
     }
 
@@ -314,18 +303,20 @@ void DlgToolsManageAutoTest::From()
 
 void DlgToolsManageAutoTest::ListSelect( const QString &name )
 {
-    section *s = find_section( name.toAscii().constData());
+    int nSection = gOdbcTools->ini.vectorSections.indexOf( name );
 
-    if ( s )
+    if ( nSection >= 0 )
     {
-        s_name -> setText( name.toAscii().constData());
+        s_name -> setText( name );
         s_lib -> setText( "" );
 
-        for ( prop *prop = s->first(); prop != 0; prop = s -> next())
+        // get the DLL name...
+        for ( int nEntry = 0; nEntry < gOdbcTools->ini.vectorSectionEntries[nSection].size(); nEntry++ )
         {
-            if ( strcmp( prop -> name(), "DLL" ) == 0 )
+            if ( gOdbcTools->ini.vectorSectionEntries[nSection][nEntry].at( 0 ) == "DLL" )
             {
-                s_lib -> setText( prop->value());
+                s_lib -> setText( gOdbcTools->ini.vectorSectionEntries[nSection][nEntry].at( 1 ) );
+                break;
             }
         }
     }
@@ -338,74 +329,38 @@ void DlgToolsManageAutoTest::ListSelect( const QString &name )
 
 void DlgToolsManageAutoTest::Remove()
 {
-    int index = test_list -> currentItem();
+    int nSection = test_list -> currentRow();
 
-    if ( index >= 0 )
+    if ( nSection >= 0 )
     {
-        QString autotest = test_list->text(index);
+        // remove from master list...
+        gOdbcTools->ini.removeEntry( "Auto Tests", gOdbcTools->ini.vectorSections[nSection] );
+        
+        // remove section & entries...
+        gOdbcTools->ini.removeSection( nSection );
 
-        //
-        // remove it from the Auto Test section
-        //
-
-        section *s = find_section( "Auto Tests" );
-
-        if ( s )
+        // reload list...
         {
-            prop *p;
+            int nSection = gOdbcTools->ini.vectorSections.indexOf( "Auto Tests" );
 
-            for ( p = s -> first(); 
-                p != 0; 
-                p = s -> next())
+            test_list -> clear();
+
+            if ( nSection >= 0 )
             {
-                if ( strcmp( p -> name(), autotest.toAscii().constData()) == 0 )
+                for ( int nEntry = 0; nEntry < gOdbcTools->ini.vectorSectionEntries[nSection].size(); nEntry++ )
                 {
-                    s -> remove( p );
-                    break;
+                    test_list -> addItem( gOdbcTools->ini.vectorSectionEntries[nSection][nEntry].at( 0 ) );
                 }
             }
-        }
 
-        //
-        // remove the section
-        //
-
-        s = find_section( autotest );
-        if ( s )
-        {
-            ini_list.removeOne( s );
-            remove_section( odbctest, s );
-        }
-
-        //
-        // update combo box
-        //
-
-        s = find_section( "Auto Tests" );
-
-        s_name -> setText( "" );
-        s_lib -> setText( "" );
-
-        test_list -> clear();
-
-        if ( s )
-        {
-            prop *p;
-            int first = 1;
-
-            for ( p = s -> first(); 
-                p != 0; 
-                p = s -> next())
+            // select first item...
+            if ( test_list->count() )
             {
-                test_list -> insertItem( p -> name());
-                if ( first )
-                {
-                    ListSelect( p -> name());
-                    first = 0;
-                }
+                test_list -> setCurrentItem( 0 );
+                ListSelect( test_list -> currentItem()->text() );
             }
+
         }
-        test_list -> setCurrentItem( 0 );
     }
 }
 

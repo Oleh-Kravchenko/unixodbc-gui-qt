@@ -389,6 +389,16 @@ void OdbcTest::dumpError( int type, SQLHANDLE hnd )
 OdbcTest::OdbcTest( QWidget *parent )
     : QMainWindow( parent )
 {
+    /*! 
+     *  Open the test configuration file once and allow all supporting code to use it. Let Qt
+     *  delete the object when this (its parent) deconstructs. The settings will automatically
+     *  sync to disk at that time.
+     *  
+     *  \note   Using QSettings to read/write ini files imposes some limitations. The main
+     *          one is that slashs in directory names need to be escaped.
+     */
+    pSettings = new QSettings( QDir::homePath() + "Gator.ini", QSettings::IniFormat, this );
+
 /*
     QPopupMenu *file = new QPopupMenu( this );
 	int id;
