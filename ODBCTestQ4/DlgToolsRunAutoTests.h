@@ -50,7 +50,7 @@ protected:
     QTreeWidget *tests;
     QCheckBox *b_log_file, *b_screen, *b_debug, *b_isolate, *b_cursor;
 
-    void add_auto_test( const char * test_name, MYQListViewItem *top, MYQListViewItem **last_test );
+    void add_auto_test( const QString &stringTest, QTreeWidgetItem *top, QTreeWidgetItem **last_test );
 
 protected slots:
     void Ok();

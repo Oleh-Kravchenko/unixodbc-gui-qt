@@ -40,8 +40,6 @@ DlgToolsRunAutoTests::DlgToolsRunAutoTests( OdbcTest *pOdbcTest, QString name )
 
     this->pOdbcTest = pOdbcTest;
 
-    init_ini_list( parent );
-
     l_tests = new QLabel( "Auto Tests:", this );
     l_tests->setGeometry( 10, 15, 60, 20 );
 
@@ -126,69 +124,57 @@ DlgToolsRunAutoTests::DlgToolsRunAutoTests( OdbcTest *pOdbcTest, QString name )
     connect( sources, SIGNAL(selectionChanged()), SLOT(TestsChanged()));
     connect( tests, SIGNAL(selectionChanged()), SLOT(TestsChanged()));
 
-    //
-    // Fill test sources
-    //
-    section *s = find_section( "SQL_DRIVERS" );
-    if ( s )
-    {
-        prop *p;
-
-        for ( p = s->first(); 
-            p != 0; 
-            p = s->next())
-        {
-            sources->addItem( p->name() );
-        }
-    }
+    // load list...
+    pOdbcTest->pSettings->beginGroup( "SQL_DRIVERS" );
+    sources->addItems( pOdbcTest->pSettings->allKeys() );
     sources->addItem( "ODBC Test Handles" );
+    pOdbcTest->pSettings->endGroup();
 
-
-    MYQListViewItem *top = NULL;  
-    MYQListViewItem *last_test = NULL;  
-
-    //
-    // fill auto tests
-    //
-
-    s = find_section( "Auto Tests" );
-
-    if ( s )
+    // load treeview...
     {
-        prop *p;
-
-        top = new MYQListViewItem( tests, top, "All" );  
-        last_test = NULL ;
-        for ( p = s->first(); 
-            p != 0; 
-            p = s->next())
+        QTreeWidgetItem *top = NULL;  
+        QTreeWidgetItem *last_test = NULL;  
+    
+        // load treeview with all "Auto Tests"...    
         {
-            add_auto_test( p->name(), top, &last_test );
-        }
-    }
-
-    //
-    // fill individual tests
-    //
-    s = find_section( "GROUPS" );
-    if ( s )
-    {
-        prop *p, *p1;
-
-        for ( p = s->first(); 
-            p != 0; 
-            p = s->next())
-        {
-            section *s1 = find_section( p->name() );
-            if ( s1 )
+            // get all "Auto Tests"...
+            pOdbcTest->pSettings->beginGroup( "Auto Tests" );
+            QStringList stringlistAutoTests = pOdbcTest->pSettings->allKeys();
+            pOdbcTest->pSettings->endGroup();
+                
+            top = new QTreeWidgetItem( tests, top );  
+            top->setText( 0, "All" );
+            last_test = NULL ;
+                
+            // load treeview with all tests...
+            foreach( QString stringAutoTest, stringlistAutoTests )
             {
-                top = new MYQListViewItem( tests, top, p->name());  
+                add_auto_test( stringAutoTest, top, &last_test );
+            }
+        }
+    
+        // load treeview with all "GROUPS"...
+        {
+            // get all "GROUPS"...
+            pOdbcTest->pSettings->beginGroup( "GROUPS" );
+            QStringList stringlistGroups = pOdbcTest->pSettings->allKeys();
+            pOdbcTest->pSettings->endGroup();
+
+            foreach( QString stringGroup, stringlistGroups )
+            {
+                // get all tests in group...
+                pOdbcTest->pSettings->beginGroup( stringGroup );
+                QStringList stringlistTests = pOdbcTest->pSettings->allKeys();
+                pOdbcTest->pSettings->endGroup();
+
+                top = new QTreeWidgetItem( tests, top );  
+                top->setText( 0, stringGroup );
                 last_test = NULL ;
-                for ( p1 = s1->first(); 
-                    p1 != 0; 
-                    p1 = s1->next())
+
+                // load treeview with all tests in group...
+                foreach( QString stringTest, stringlistTests )
                 {
-                    add_auto_test( p1->name(), top, &last_test );
+                    add_auto_test( stringTest, top, &last_test );
                 }
             }
         }
@@ -229,33 +215,140 @@ DlgToolsRunAutoTests::~DlgToolsRunAutoTests()
     delete l_log;
 }
 
+/*!
+ * \brief   Run the tests. 
+ *  
+ *          For each selected Source (SQL_DRIVER) run selected Tests (Auto Tests). The
+ *          Sources are processed in the order found in the UI. The Tests are also
+ *          processed in the order found in the UI. The Groups (of tests) are processed
+ *          last. One should find that the order reflects the order of things in the
+ *          settings file.
+ * 
+ */
 void DlgToolsRunAutoTests::Ok()
 {
+    SERVERINFO ServerInfo;
+
+    // Init ServerInfo. The values are refined later in this method but more can be
+    // done to set these values ie from settings file. 
+    ServerInfo.cBuff                = 0;
+    ServerInfo.cErrors              = 0;
+    ServerInfo.failed               = 0;
+    ServerInfo.fDebug               = ( b_debug->isChecked() ? true : false );
+    ServerInfo.fIsolate             = ( b_isolate->isChecked() ? true : false );
+    ServerInfo.fLog                 = ( b_log_file->isChecked() ? true : false );
+    ServerInfo.fScreen              = ( b_screen->isChecked() ? true : false );
+    ServerInfo.hdbc                 = SQL_NULL_HANDLE;
+    ServerInfo.henv                 = SQL_NULL_HANDLE;
+    ServerInfo.hLoadedInst          = NULL;
+    ServerInfo.hstmt                = SQL_NULL_HANDLE;
+    ServerInfo.rglMask              = 0;
+    *(ServerInfo.szBuff)            = '\0';
+    *(ServerInfo.szKeywords)        = '\0';
+    *(ServerInfo.szLogFile)         = '\0';
+    *(ServerInfo.szSource)          = '\0';
+    *(ServerInfo.szValidLogin0)     = '\0';
+    *(ServerInfo.szValidPassword0)  = '\0';
+    *(ServerInfo.szValidServer0)    = '\0';
+    ServerInfo.vCursorLib           = SQL_CUR_USE_DRIVER;
+
+    if ( b_log_file->isChecked() ) strcpy( ServerInfo.szLogFile, l_log->text().toAscii().constData() );
+
+    /* hwnd
+     *                                                                                                  .
+     * This app and test libraries decide at build-time to link for Qt so pass QTextEdit* for hwnd. The test 
+     * libraries should not care what we store in hwnd as it is simply passed along to szLogPrintf and 
+     * szMessageBox. 
+     *  
+     * Qt based implementations of szLogPrintf and szMessageBox are found in the gtrtstQ4 library. This app 
+     * and the test libraries just need to link to gtrtstQ4. 
+     *  
+     * The upshot of this is that the test libraries are completely generic code and are simply built (linked) to 
+     * support this, Qt, implementation. 
+     *  
+     */
+    ServerInfo.hwnd                 = pOdbcTest->out_win;   
+
+
+    // for each selected source (SQL_DRIVER)...
+    foreach( QListWidgetItem *pListWidgetItem, sources->selectedItems() )
+    {
+        QString             stringSource            = pListWidgetItem->text();
+        QTreeWidgetItem *   ptreewidgetitemGroup    = tests->firstChild();
+
+        while ( ptreewidgetitemGroup )
+        {
+            if ( !ptreewidgetitemGroup->isSelected() )
+            {
+                ptreewidgetitemGroup = ptreewidgetitemGroup->nextSibling();
+                continue;
+            }
+
+            QString stringGroup = ptreewidgetitemGroup->text( 0 );            
+            QString stringMessage;
+
+            if ( stringSource == "ODBC Test Handles" )
+            {
+                server_info.henv = pOdbcTest->get_handle( SQL_HANDLE_ENV );
+                server_info.hdbc = pOdbcTest->get_handle( SQL_HANDLE_DBC );
+                server_info.hstmt = pOdbcTest->get_handle( SQL_HANDLE_STMT );
+
+            }
+            else
+            {
+                server_info.henv = NULL;
+                server_info.hdbc = NULL;
+                server_info.hstmt = NULL;
+
+                pOdbcTest->pSettings->beginGroup( stringSource );
+                strcpy( ServerInfo.szValidServer0, pOdbcTest->pSettings->value( "SERVER0" ).toString().toAscii().constData() );
+                strcpy( ServerInfo.szValidLogin0, pOdbcTest->pSettings->value( "LOGIN0" ).toString().toAscii().constData() );
+                strcpy( ServerInfo.szValidPassword0, pOdbcTest->pSettings->value( "PASSWORD0" ).toString().toAscii().constData() );
+                strcpy( ServerInfo.szKeywords, pOdbcTest->pSettings->value( "KEYWORDS" ).toString().toAscii().constData() );
+                pOdbcTest->pSettings->endGroup();
+            }
+
+            strcpy( ServerInfo.szSource, stringSource.toAscii().constData() );
+
+            stringMessage = QString( tr("Now executing Group %1 on source %2") ).arg( stringGroup ).arg( stringSource ); // we format the message here so we can use tr()
+            szLogPrintf( &ServerInfo, false, stringMessage.toLatin1().constData() );
+            stringMessage = QString( tr("Keywords: %1") ).arg( ServerInfo.szKeywords );
+            szLogPrintf( &ServerInfo, false, stringMessage.toLatin1().constData() );
+
+            // tests...
+            QTreeWidgetItem *ptreewidgetitemTest = ptreewidgetitemGroup->firstChild();
+
+            while ( ptreewidgetitemTest )
+            {
+                if ( !ptreewidgetitemTest->isSelected() )
+                {
+                    ptreewidgetitemTest = ptreewidgetitemTest->nextSibling();
+                    continue;
+                }
+            }
+
+        }
+    }
+
++++
     //
     // use each selected source with all selected tests
     //
     int i;
     QString group_name;
     SERVERINFO server_info;
-    char msg[ 1024 ];
-
-    //
-    // set up callback, handle
-    // (callback activity will need our main window)
-    //
-    static_odbctest = pOdbcTest;
 
     for ( i = 0; i < sources->count(); i ++ )
     {
-        if ( sources->isSelected( i ))
+        if ( sources->isSelected( i ) )
         {
-            MYQListViewItem *group;
+            QTreeWidgetItem *group;
 
             QString src = sources->text( i );
 
             // walk tree
 
-            group = (MYQListViewItem *) tests->firstChild();
+            group = (QTreeWidgetItem *) tests->firstChild();
             while ( group )
             {
                 if ( group->isSelected())
@@ -348,7 +441,7 @@ void DlgToolsRunAutoTests::Ok()
                     sprintf( msg, "Keywords: %s", server_info.szKeywords );
                     print_to_odbctest( &server_info, msg, 0 );
 
-                    MYQListViewItem *sect = group->firstChild();
+                    QTreeWidgetItem *sect = group->firstChild();
 
                     while ( sect )
                     {
@@ -424,7 +517,7 @@ void DlgToolsRunAutoTests::Ok()
                                                     // now we are ready
                                                     if ( b_isolate->isChecked())
                                                     {
-                                                        MYQListViewItem *test = sect->firstChild();
+                                                        QTreeWidgetItem *test = sect->firstChild();
 
                                                         while ( test )
                                                         {
@@ -438,7 +531,7 @@ void DlgToolsRunAutoTests::Ok()
                                                     }
                                                     else
                                                     {
-                                                        MYQListViewItem *test = sect->firstChild();
+                                                        QTreeWidgetItem *test = sect->firstChild();
 
                                                         memset( server_info.rglMask, 0, sizeof(unsigned int) * size );
                                                         while ( test )
@@ -525,9 +618,9 @@ void DlgToolsRunAutoTests::CursorChanged( int state )
     }
 }
 
-void DlgToolsRunAutoTests::add_auto_test( const char * test_name, MYQListViewItem *top, MYQListViewItem **item )
+void DlgToolsRunAutoTests::add_auto_test( const QString &stringTest, QTreeWidgetItem *top, QTreeWidgetItem **item )
 {
-    section *s = find_section( test_name );
+    section *s = find_section( stringTest );
 
     if ( s )
     {
@@ -563,7 +656,7 @@ void DlgToolsRunAutoTests::add_auto_test( const char * test_name, MYQListViewIte
                         return;
                     }
 
-                    char test_name[ AUTO_MAX_TEST_NAME + 1 ];
+                    char stringTest[ AUTO_MAX_TEST_NAME + 1 ];
                     char func_name[ AUTO_MAX_TESTCASE_NAME + 1 ];
                     char test_desc[ AUTO_MAX_TESTDESC_NAME + 1 ];
                     UINT count;
@@ -571,15 +664,15 @@ void DlgToolsRunAutoTests::add_auto_test( const char * test_name, MYQListViewIte
                     //
                     // get the test name
                     //
-                    if ( !pfAutoTestName( test_name, &count ))
+                    if ( !pfAutoTestName( stringTest, &count ))
                     {
                         lt_dlclose( handle );
                         return;
                     }
 
-                    *item = new MYQListViewItem( top, *item, test_name );  
+                    *item = new QTreeWidgetItem( top, *item, stringTest );  
 
-                    MYQListViewItem *after = NULL;
+                    QTreeWidgetItem *after = NULL;
 
                     for ( UWORD i = 1; i <= count; i ++ )
                     {
@@ -587,12 +680,12 @@ void DlgToolsRunAutoTests::add_auto_test( const char * test_name, MYQListViewIte
                         {
                             if ( after )
                             {
-                                MYQListViewItem *test = new MYQListViewItem( *item, after, func_name, test_desc, i, test_name );  
+                                QTreeWidgetItem *test = new QTreeWidgetItem( *item, after, func_name, test_desc, i, stringTest );  
                                 after = test;
                             }
                             else
                             {
-                                MYQListViewItem *test = new MYQListViewItem( *item, func_name, test_desc, i, test_name );  
+                                QTreeWidgetItem *test = new QTreeWidgetItem( *item, func_name, test_desc, i, stringTest );  
                                 after = test;
                             }
                         }
@@ -628,7 +721,7 @@ void DlgToolsRunAutoTests::TestsChanged()
     // are any of the tests selected?
     {
         /*
-        MYQListViewItem *group = (MYQListViewItem*) tests->firstChild();
+        QTreeWidgetItem *group = (QTreeWidgetItem*) tests->firstChild();
         while( group )
         {
             if ( group->isSelected())
