@@ -197,7 +197,24 @@ DlgToolsRunAutoTests::DlgToolsRunAutoTests( OdbcTest *pOdbcTest, QString name )
 
 DlgToolsRunAutoTests::~DlgToolsRunAutoTests()
 {
-    replace_ini_list( odbctest );
+    // sync settings with disk (mostly means 'save changes')
+    {
+        pOdbcTest->pSettings->sync();
+        QSettings::Status nStatus = pOdbcTest->pSettings->status();
+        switch ( nStatus )
+        {
+            case QSettings::AccessError:
+                QMessageBox::critical( pOdbcTest, "OdbcTest", QString( tr("AccessError when sync() settings to %1") ).arg( pOdbcTest->pSettings->fileName() ) );
+                break;
+            case QSettings::FormatError:
+                QMessageBox::critical( pOdbcTest, "OdbcTest", QString( tr("FormatError when sync() settings to %1") ).arg( pOdbcTest->pSettings->fileName() ) );
+                break;
+            case QSettings::NoError:
+            default:
+                break;
+        }
+    }
+
     delete l_tests;
     delete tests;
     delete l_sources;

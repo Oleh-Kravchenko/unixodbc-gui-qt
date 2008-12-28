@@ -102,8 +102,23 @@ DlgToolsManageTestGroup::DlgToolsManageTestGroup( OdbcTest *pOdbcTest, QString n
 
 DlgToolsManageTestGroup::~DlgToolsManageTestGroup()
 {
-    if ( !gOdbcTools->ini.write() )
-        QMessageBox::critical( odbctest, "OdbcTest", QString( tr("Failed to write %1") ).arg( gOdbcTools->ini.fileIni.fileName() ) );
+    // sync settings with disk (mostly means 'save changes')
+    {
+        pOdbcTest->pSettings->sync();
+        QSettings::Status nStatus = pOdbcTest->pSettings->status();
+        switch ( nStatus )
+        {
+            case QSettings::AccessError:
+                QMessageBox::critical( pOdbcTest, "OdbcTest", QString( tr("AccessError when sync() settings to %1") ).arg( pOdbcTest->pSettings->fileName() ) );
+                break;
+            case QSettings::FormatError:
+                QMessageBox::critical( pOdbcTest, "OdbcTest", QString( tr("FormatError when sync() settings to %1") ).arg( pOdbcTest->pSettings->fileName() ) );
+                break;
+            case QSettings::NoError:
+            default:
+                break;
+        }
+    }
 
     delete close;
     delete add;

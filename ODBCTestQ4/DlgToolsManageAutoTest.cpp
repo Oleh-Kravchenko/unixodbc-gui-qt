@@ -30,7 +30,7 @@
 #include "OdbcTest.h"
 
 DlgToolsManageAutoTest::DlgToolsManageAutoTest( OdbcTest *pOdbcTest, QString name )
-    : QDialog( pOdbcTest )
+: QDialog( pOdbcTest )
 {
     setWindowTitle( name );
 
@@ -82,13 +82,11 @@ DlgToolsManageAutoTest::DlgToolsManageAutoTest( OdbcTest *pOdbcTest, QString nam
     connect( remove,  SIGNAL(clicked()), SLOT(Remove()) );
 
     // load test list...
-    int nSection = gOdbcTools->ini.indexSection( "Auto Tests" );
-    if ( nSection >= 0 )
     {
-        for ( int nEntry = 0; nEntry < gOdbcTools->ini.vectorSectionEntries[nSection].size(); nEntry++ )
-        {
-            test_list->addItem( gOdbcTools->ini.vectorSectionEntries[nSection][nEntry].at( 0 ) );
-        }
+        pOdbcTest->pSettings->beginGroup( "Auto Tests" );
+//        foreach ( QString stringKey, pOdbcTest->pSettings->allKeys() ) test_list->addItem( pOdbcTest->pSettings->value( stringKey ).toString() );
+        test_list->addItems( pOdbcTest->pSettings->allKeys() );
+        pOdbcTest->pSettings->endGroup();
     }
 
     //
@@ -105,8 +103,23 @@ DlgToolsManageAutoTest::DlgToolsManageAutoTest( OdbcTest *pOdbcTest, QString nam
 
 DlgToolsManageAutoTest::~DlgToolsManageAutoTest()
 {
-    if ( !gOdbcTools->ini.write() )
-        QMessageBox::critical( odbctest, "OdbcTest", QString( tr("Failed to write %1") ).arg( gOdbcTools->ini.fileIni.fileName() ) );
+    // sync settings with disk (mostly means 'save changes')
+    {
+        pOdbcTest->pSettings->sync();
+        QSettings::Status nStatus = pOdbcTest->pSettings->status();
+        switch ( nStatus )
+        {
+            case QSettings::AccessError:
+                QMessageBox::critical( pOdbcTest, "OdbcTest", QString( tr("AccessError when sync() settings to %1") ).arg( pOdbcTest->pSettings->fileName() ) );
+                break;
+            case QSettings::FormatError:
+                QMessageBox::critical( pOdbcTest, "OdbcTest", QString( tr("FormatError when sync() settings to %1") ).arg( pOdbcTest->pSettings->fileName() ) );
+                break;
+            case QSettings::NoError:
+            default:
+                break;
+        }
+    }
 
     delete close;
     delete add;
@@ -157,134 +170,81 @@ void DlgToolsManageAutoTest::Add()
 {
     int index = lib_list ->currentRow();
 
-    if ( index >= 0 )
+    if ( index < 0 )
+        return;
+
+    QListWidgetItem *lbi = lib_list->item( index );
+    QDir q_d( s_from->text());
+    QString path = q_d.filePath ( lbi->text() );
+    QLibrary l( path );
+
+    if ( !l.isLoaded() )
     {
-        QListWidgetItem *lbi = lib_list->item( index );
-//        const char *name = lbi->text().toAscii().constData();
+        QMessageBox::critical( pOdbcTest, "OdbcTest", l.errorString() );
+        return;
+    }
+    
+    //
+    // Try and extract the symbols
+    //
+    void *pfAutoTestDesc, *pfAutoTestFunc;
+    BOOL (*pfAutoTestName)(LPSTR,UINT*);
 
-        QDir q_d( s_from->text());
+    pfAutoTestName = (BOOL(*)(LPSTR,UINT*))l.resolve( "AutoTestName" );
+    pfAutoTestDesc = l.resolve( "AutoTestDesc" );
+    pfAutoTestFunc = l.resolve( "AutoTestFunc" );
 
-        QString path = q_d.filePath ( lbi->text());
+    if ( !pfAutoTestName &&
+         !pfAutoTestDesc && 
+         !pfAutoTestFunc )
+    {
+        QMessageBox::critical( pOdbcTest, "OdbcTest", l.errorString() );
+        QMessageBox::critical( pOdbcTest, "OdbcTest", QString( tr("Could not find one or more of AutoTestName, AutoTestDesc, or AutoTestFunc in auto test\n%1") ).arg( path ) );
+        return;
+    }
 
-        /*
-         * initialize libtool
-         */
+    char szAutoTestName[ AUTO_MAX_TEST_NAME + 1 ];  // name of test as provided by test library
+    UINT nTestCases = 0;                            // each test library may have 0-n test cases
 
-        lt_dlinit();
-
-        lt_dlhandle handle = lt_dlopen( path.toAscii().constData());
-
-        if ( !handle )
+    if ( pfAutoTestName )
+    {
+        // get the test name...
+        if ( !pfAutoTestName( szAutoTestName, &nTestCases ) )
         {
-            char msg[ 256 ];
-
-            sprintf( msg, "Unable to open file %s", lt_dlerror());
-            QMessageBox::critical( odbctest, "OdbcTest", msg );
-        }
-        else
-        {
-            //
-            // Try and extract the symbols
-            //
-            void *pfAutoTestDesc, *pfAutoTestFunc;
-            BOOL (*pfAutoTestName)(LPSTR,UINT*);
-
-            pfAutoTestName = (BOOL(*)(LPSTR,UINT*))lt_dlsym( handle, "AutoTestName" );
-            pfAutoTestDesc = lt_dlsym( handle, "AutoTestDesc" );
-            pfAutoTestFunc = lt_dlsym( handle, "AutoTestFunc" );
-
-            if ( !pfAutoTestName &&
-                 !pfAutoTestDesc && 
-                 !pfAutoTestFunc )
-            {
-                char msg[ 256 ];
-
-                sprintf( msg, "Could not find one or more of AutoTestName, AutoTestDesc, or AutoTestFunc in auto test\n%s", path.toAscii().constData());
-
-                QMessageBox::critical( odbctest, "OdbcTest", msg );
-                lt_dlclose( handle );
-                return;
-            }
-
-            char test_name[ AUTO_MAX_TEST_NAME + 1 ];
-            UINT count;
-
-            if ( pfAutoTestName )
-            {
-                //
-                // get the test name
-                //
-                if ( !pfAutoTestName( test_name, &count ))
-                {
-                    char msg[ 256 ];
-
-                    sprintf( msg, "AutoTestName returned FALSE in %s", path.toAscii().constData());
-
-                    QMessageBox::critical( odbctest, "OdbcTest", msg );
-                    lt_dlclose( handle );
-                    return;
-                }
-            }
-            else
-            {
-                char msg[ 256 ];
-
-                sprintf( msg, "AutoTestName not exported from %s", path.toAscii().constData());
-
-                QMessageBox::critical( odbctest, "OdbcTest", msg );
-                lt_dlclose( handle );
-                return;
-            }
-
-            // does test already exist...
-            {
-                int nSection = gOdbcTools->ini.vectorSections.indexOf( test_name );
-    
-                if ( nSection >= 0 )
-                {
-                    QMessageBox::information( odbctest, "OdbcTest", QString( tr("Auto test '%1'already installed") ).arg( test_name ) );
-                    lt_dlclose( handle );
-                    return;
-                }
-    
-            }
-
-            // add test to master list...
-            {
-                char number[ 64 ];
-                sprintf( number, "%d", count );
-    
-                int nSection = gOdbcTools->ini.vectorSections.indexOf( "Auto Tests" );
-                gOdbcTools->ini.appendEntry( nSection, test_name, number );
-            }
-
-            // add test section & entries...
-            {
-                int nSection = gOdbcTools->ini.appendSection( test_name );
-                gOdbcTools->ini.appendEntry( nSection, "DLL", path );
-            }
-
-            lt_dlclose( handle );
-
-            // reload list...
-            {
-                int nSection = gOdbcTools->ini.vectorSections.indexOf( "Auto Tests" );
-    
-                test_list->clear();
-    
-                if ( nSection >= 0 )
-                {
-                    for ( int nEntry = 0; nEntry < gOdbcTools->ini.vectorSectionEntries[nSection].size(); nEntry++ )
-                    {
-                        test_list->addItem( gOdbcTools->ini.vectorSectionEntries[nSection][nEntry].at( 0 ) );
-                    }
-                }
-                test_list->setCurrentItem( 0 );
-    
-                ListSelect( test_name );
-            }
+            QMessageBox::critical( pOdbcTest, "OdbcTest", QString( tr("AutoTestName returned FALSE in %1") ).arg( path ) );
+            return;
         }
     }
+    else
+    {
+        QMessageBox::critical( pOdbcTest, "OdbcTest", QString( tr("AutoTestName not exported from %1") ).arg( path ) );
+        return;
+    }
+
+    // does test already exist...
+    if ( pOdbcTest->pSettings->contains( szAutoTestName ) )
+    {
+        QMessageBox::information( pOdbcTest, "OdbcTest", QString( tr("Auto test '%1'already installed") ).arg( szAutoTestName ) );
+        return;
+    }
++++
+    // add test to master list...
+    pOdbcTest->pSettings->beginGroup( "Auto Tests" );
+    pOdbcTest->pSettings->setValue( szAutoTestName, nTestCases );
+    pOdbcTest->pSettings->endGroup();
+
+    // add test section & entries...
+    pOdbcTest->pSettings->beginGroup( szAutoTestName );
+    pOdbcTest->pSettings->setValue( "DLL", path ); /*! \todo escape slashs */
+    pOdbcTest->pSettings->endGroup();
+
+    // reload list...
+    pOdbcTest->pSettings->beginGroup( "Auto Tests" );
+    test_list->clear();
+    test_list->addItems( pOdbcTest->pSettings->allKeys() );
+    pOdbcTest->pSettings->endGroup();
+    test_list->setCurrentItem( 0 );
+    ListSelect( szAutoTestName );
 }
 
 void DlgToolsManageAutoTest::From()
@@ -336,7 +296,7 @@ void DlgToolsManageAutoTest::Remove()
     {
         // remove from master list...
         gOdbcTools->ini.removeEntry( "Auto Tests", gOdbcTools->ini.vectorSections[nSection] );
-        
+
         // remove section & entries...
         gOdbcTools->ini.removeSection( nSection );
 
