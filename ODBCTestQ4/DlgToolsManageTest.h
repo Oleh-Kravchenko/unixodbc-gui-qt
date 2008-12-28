@@ -61,4 +61,4 @@ protected slots:
     void Activated( const QString &str );
 };
 
-#endif
+

@@ -54,12 +54,13 @@ public:
 	const char *return_as_text( int ret );
 	void fill_list_box( attr_value *attr, QComboBox *lst );
 	void fill_list_box( attr_options *attr, QComboBox *lst );
+    void fill_dsn_list( QComboBox *box );
 	void dumpError( int type, SQLHANDLE );
 	OdbcHandle *fill_handle_list( int type, QComboBox *lst );
 	OdbcHandle *extract_handle_list( int type, QComboBox *lst );
 	const char *int_type_as_string( SQLINTERVAL );
 	SQLHANDLE get_handle( int type );
-	
+   
 public slots:
     void about();
 	void testhelp();

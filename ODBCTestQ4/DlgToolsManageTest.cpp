@@ -90,17 +90,12 @@ DlgToolsManageTest::DlgToolsManageTest( OdbcTest *pOdbcTest, QString name )
     connect( del, SIGNAL(clicked()), SLOT(DelSource()) );
 
     // load driver list...
-    int nSection = gOdbcTools->ini.indexSection( "SQL_DRIVERS" );
-    if ( nSection >= 0 )
-    {
-        for ( int nEntry = 0; nEntry < gOdbcTools->ini.vectorSectionEntries[nSection].size(); nEntry++ )
-        {
-            test_source->addItem( gOdbcTools->ini.vectorSectionEntries[nSection][nEntry].at( 0 ) );
-        }
-    }
+    pOdbcTest->pSettings->beginGroup( "SQL_DRIVERS" );
+    test_source->addItems( pOdbcTest->pSettings->allKeys() );
+    pOdbcTest->pSettings->endGroup();
 
     // load dsn list...
-    gOdbcTools->fill_dsn_list( dsn );
+    pOdbcTest->fill_dsn_list( dsn );
 
     //
     // set up other fields

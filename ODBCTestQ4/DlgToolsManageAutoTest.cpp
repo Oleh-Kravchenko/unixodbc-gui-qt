@@ -227,7 +227,7 @@ void DlgToolsManageAutoTest::Add()
         QMessageBox::information( pOdbcTest, "OdbcTest", QString( tr("Auto test '%1'already installed") ).arg( szAutoTestName ) );
         return;
     }
-+++
+
     // add test to master list...
     pOdbcTest->pSettings->beginGroup( "Auto Tests" );
     pOdbcTest->pSettings->setValue( szAutoTestName, nTestCases );
@@ -264,22 +264,16 @@ void DlgToolsManageAutoTest::From()
 
 void DlgToolsManageAutoTest::ListSelect( const QString &name )
 {
-    int nSection = gOdbcTools->ini.vectorSections.indexOf( name );
 
-    if ( nSection >= 0 )
+    if ( pOdbcTest->pSettings->contains( name ) )
     {
         s_name->setText( name );
         s_lib->setText( "" );
 
         // get the DLL name...
-        for ( int nEntry = 0; nEntry < gOdbcTools->ini.vectorSectionEntries[nSection].size(); nEntry++ )
-        {
-            if ( gOdbcTools->ini.vectorSectionEntries[nSection][nEntry].at( 0 ) == "DLL" )
-            {
-                s_lib->setText( gOdbcTools->ini.vectorSectionEntries[nSection][nEntry].at( 1 ) );
-                break;
-            }
-        }
+        pOdbcTest->pSettings->beginGroup( name );
+        s_lib->setText( pOdbcTest->pSettings->value( "DLL" ).toString() );
+        pOdbcTest->pSettings->endGroup();
     }
     else
     {
@@ -290,37 +284,31 @@ void DlgToolsManageAutoTest::ListSelect( const QString &name )
 
 void DlgToolsManageAutoTest::Remove()
 {
-    int nSection = test_list->currentRow();
+    QListWidgetItem *pListWidgetItem = test_list->currentItem();
 
-    if ( nSection >= 0 )
+    if ( !pListWidgetItem )
+        return;
+
+    // remove from master list...
+    pOdbcTest->pSettings->beginGroup( "Auto Tests" );
+    pOdbcTest->pSettings->remove( pListWidgetItem->text() );
+    pOdbcTest->pSettings->endGroup();
+
+    // remove section & entries...
+    pOdbcTest->pSettings->remove( pListWidgetItem->text() );
+
+    // reload list...
     {
-        // remove from master list...
-        gOdbcTools->ini.removeEntry( "Auto Tests", gOdbcTools->ini.vectorSections[nSection] );
+        pOdbcTest->pSettings->beginGroup( "Auto Tests" );
+        test_list->clear();
+        test_list->addItems( pOdbcTest->pSettings->allKeys() );
+        pOdbcTest->pSettings->endGroup();
 
-        // remove section & entries...
-        gOdbcTools->ini.removeSection( nSection );
-
-        // reload list...
+        // select first item...
+        if ( test_list->count() )
         {
-            int nSection = gOdbcTools->ini.vectorSections.indexOf( "Auto Tests" );
-
-            test_list->clear();
-
-            if ( nSection >= 0 )
-            {
-                for ( int nEntry = 0; nEntry < gOdbcTools->ini.vectorSectionEntries[nSection].size(); nEntry++ )
-                {
-                    test_list->addItem( gOdbcTools->ini.vectorSectionEntries[nSection][nEntry].at( 0 ) );
-                }
-            }
-
-            // select first item...
-            if ( test_list->count() )
-            {
-                test_list->setCurrentItem( 0 );
-                ListSelect( test_list->currentItem()->text() );
-            }
-
+            test_list->setCurrentItem( 0 );
+            ListSelect( test_list->currentItem()->text() );
         }
     }
 }
