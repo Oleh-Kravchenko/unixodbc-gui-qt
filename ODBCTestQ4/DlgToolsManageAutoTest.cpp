@@ -82,12 +82,9 @@ DlgToolsManageAutoTest::DlgToolsManageAutoTest( OdbcTest *pOdbcTest, QString nam
     connect( remove,  SIGNAL(clicked()), SLOT(Remove()) );
 
     // load test list...
-    {
-        pOdbcTest->pSettings->beginGroup( "Auto Tests" );
-//        foreach ( QString stringKey, pOdbcTest->pSettings->allKeys() ) test_list->addItem( pOdbcTest->pSettings->value( stringKey ).toString() );
-        test_list->addItems( pOdbcTest->pSettings->allKeys() );
-        pOdbcTest->pSettings->endGroup();
-    }
+    pOdbcTest->pSettings->beginGroup( "Auto Tests" );
+    test_list->addItems( pOdbcTest->pSettings->allKeys() );
+    pOdbcTest->pSettings->endGroup();
 
     //
     // Setup the path, initially to the current directory

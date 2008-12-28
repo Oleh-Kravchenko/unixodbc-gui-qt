@@ -55,6 +55,7 @@ public:
 	void fill_list_box( attr_value *attr, QComboBox *lst );
 	void fill_list_box( attr_options *attr, QComboBox *lst );
     void fill_dsn_list( QComboBox *box );
+    void set_dsn_list( QComboBox *box, const QString &stringItem );
 	void dumpError( int type, SQLHANDLE );
 	OdbcHandle *fill_handle_list( int type, QComboBox *lst );
 	OdbcHandle *extract_handle_list( int type, QComboBox *lst );

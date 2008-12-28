@@ -520,6 +520,22 @@ void OdbcTest::fill_dsn_list( QComboBox *box )
     SQLFreeEnv( henv );
 }
 
+void OdbcTest::set_dsn_list( QComboBox *box, const QString &stringItem )
+{
+    int index;
+    QString qstr;
+
+    for ( index = 0; index < box->count(); index ++ )
+    {
+        qstr = box->text( index );
+        if ( qstr == str )
+        {
+            box->setCurrentIndex( index );
+            break;
+        }
+    }
+}
+
 void OdbcTest::dumpError( int type, SQLHANDLE hnd )
 {
     SQLRETURN ret;

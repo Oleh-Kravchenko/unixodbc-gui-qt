@@ -140,11 +140,8 @@ DlgToolsManageTest::~DlgToolsManageTest()
 
 void DlgToolsManageTest::Activated( const QString &str )
 {
-    // find section...
-    int nSection = gOdbcTools->ini.indexSection( str );
-
     // did we find section...
-    if ( nSection < 0 )
+    if ( pOdbcTest->pSettings->contains( str ) )
     {
         uid->clear();
         pwd->clear();
@@ -153,28 +150,27 @@ void DlgToolsManageTest::Activated( const QString &str )
     }
 
     // load dsn details...
-    for ( int nEntry = 0; nEntry < gOdbcTools->ini.vectorSectionEntries[nSection].size(); nEntry++ )
+    pOdbcTest->pSettings->beginGroup( str );
+    foreach ( QString stringKey, pOdbcTest->pSettings->allKeys() ) 
     {
-        QString stringName  = gOdbcTools->ini.vectorSectionEntries[nSection][nEntry].at( 0 );
-        QString stringValue = gOdbcTools->ini.vectorSectionEntries[nSection][nEntry].at( 1 );
-
-        if ( stringName == "SERVER0" )
+        if ( stringKey == "SERVER0" )
         {
-            gOdbcTools->set_dsn_list( dsn, stringValue );
+            pOdbcTest->set_dsn_list( dsn, pOdbcTest->pSettings->value( stringKey ).toString() );
         }
-        else if ( stringName == "LOGIN0" )
+        else if ( stringKey == "LOGIN0" )
         {
-            uid->setText( stringValue );
+            uid->setText( pOdbcTest->pSettings->value( stringKey ).toString() );
         }
-        else if ( stringName == "PASSWORD0" )
+        else if ( stringKey == "PASSWORD0" )
         {
-            pwd->setText( stringValue );
+            pwd->setText( pOdbcTest->pSettings->value( stringKey ).toString() );
         }
-        else if ( stringName == "KEYWORDS" )
+        else if ( stringKey == "KEYWORDS" )
         {
-            kw->setText( stringValue );
+            kw->setText( pOdbcTest->pSettings->value( stringKey ).toString() );
         }
     }
+    pOdbcTest->pSettings->endGroup();
 }
 
 void DlgToolsManageTest::Activated( int val )
@@ -187,69 +183,39 @@ void DlgToolsManageTest::Activated( int val )
 
 void DlgToolsManageTest::Ok()
 {
-    //
-    // find driver name
-    // 
+    // find driver name...
     QString driver = test_source->currentText();
 
-    if ( driver.isNull() )
-    {
+    if ( driver.isEmpty() )
         return;
-    }
 
-    //
-    // Get section
-    // 
-
-    int nSection = gOdbcTools->ini.indexSection( driver );
-    if ( nSection >= 0 )
-    {
-        //
-        // remove all its entries
-        //
-        gOdbcTools->ini.vectorSectionEntries[nSection].clear();
-    }
-    else
-    {
-        nSection = gOdbcTools->ini.appendSection( driver );
-    }
-
-    //
-    // Add the entries
-    //
-    gOdbcTools->ini.appendEntry( nSection, "SERVER0", dsn->currentText() );
-    gOdbcTools->ini.appendEntry( nSection, "LOGIN0", uid->text() );
-    gOdbcTools->ini.appendEntry( nSection, "PASSWORD0", pwd->text() );
-    gOdbcTools->ini.appendEntry( nSection, "KEYWORDS", kw->text() );
+    // apply...
+    pOdbcTest->pSettings->beginGroup( driver );
+    pOdbcTest->pSettings->remove( "" ); // removes all key/values within group
+    pOdbcTest->pSettings->setValue( "SERVER0", dsn->currentText() );
+    pOdbcTest->pSettings->setValue( "LOGIN0", uid->text() );
+    pOdbcTest->pSettings->setValue( "PASSWORD0", pwd->text() );
+    pOdbcTest->pSettings->setValue( "KEYWORDS", kw->text() );
+    pOdbcTest->pSettings->endGroup();
 }
 
 void DlgToolsManageTest::NewSource()
 {
-    DlgToolsNewSource *dlg = new DlgToolsNewSource( this->odbctest, "New Test Sources", this );
+    DlgToolsNewSource *dlg = new DlgToolsNewSource( pOdbcTest, "New Test Sources", this );
 
     dlg->exec();
 
     delete dlg;
 
-    //
-    // fill up combo box
-    //
-
+    // reload list...
+    pOdbcTest->pSettings->beginGroup( "SQL_DRIVERS" );
     test_source->clear();
+    test_source->addItems( pOdbcTest->pSettings->allKeys() );
+    pOdbcTest->pSettings->endGroup();
 
-    int nSection = gOdbcTools->ini.indexSection( "SQL_DRIVERS" );
-    int last = 0;
-
-    if ( nSection >= 0 )
-    {
-        for ( int nEntry = 0; nEntry < gOdbcTools->ini.vectorSectionEntries[nSection].size(); nEntry++ )
-        {
-            test_source->addItem( gOdbcTools->ini.vectorSectionEntries[nSection][nEntry].at( 0 ) );
-            last ++;
-        }
-    }
-    Activated( last - 1 );
-    test_source->setCurrentIndex( last - 1 );
+    // make last (new one) the current one...
+    Activated( test_source->count() - 1 );
+    test_source->setCurrentIndex( test_source->count() - 1 );
 }
 
 void DlgToolsManageTest::DelSource()
@@ -259,7 +225,9 @@ void DlgToolsManageTest::DelSource()
 
     // which driver is current...
     QString driver = test_source->currentText();
-    
+    if ( driver.isEmpty() )
+        return;
+
     // do we really want to do this...
     if ( QMessageBox::information( this, "OdbcTest",
                                    QString( "Delete the test source %1?" ).arg( driver ),
@@ -271,27 +239,22 @@ void DlgToolsManageTest::DelSource()
     }
 
     // remove from master list...
-    gOdbcTools->ini.removeEntry( "SQL_DRIVERS", driver );
+    pOdbcTest->pSettings->beginGroup( "SQL_DRIVERS" );
+    pOdbcTest->pSettings->remove( driver );
+    pOdbcTest->pSettings->endGroup();
 
     // remove section...
-    gOdbcTools->ini.removeSection( driver );
+    pOdbcTest->pSettings->remove( driver );
 
-    // reload drivers list...
-    {
-        test_source->clear();
-    
-        int nSection = gOdbcTools->ini.indexSection( "SQL_DRIVERS" );
-    
-        if ( nSection >= 0 )
-        {
-            for ( int nEntry = 0; nEntry < gOdbcTools->ini.vectorSectionEntries[nSection].size(); nEntry++ )
-            {
-                test_source->addItem( gOdbcTools->ini.vectorSectionEntries[nSection][nEntry].at( 0 ) );
-            }
-        }
-        Activated( 0 );
-        test_source->setCurrentIndex( 0 );
-    }
+    // reload list...
+    pOdbcTest->pSettings->beginGroup( "SQL_DRIVERS" );
+    test_source->clear();
+    test_source->addItems( pOdbcTest->pSettings->allKeys() );
+    pOdbcTest->pSettings->endGroup();
+
+    // make first the current one...
+    Activated( 0 );
+    test_source->setCurrentIndex( 0 );
 }
 
 
