@@ -27,10 +27,11 @@
  **********************************************************************/
 
 #include "DlgToolsNewGroup.h"
+#include "DlgToolsManageTestGroup.h"
 #include "OdbcTest.h"
 
-DlgToolsNewGroup::DlgToolsNewGroup( OdbcTest *pOdbcTest, QString name, dManageTestGroup *ptest )
-: QDialog( parent, name, TRUE )
+DlgToolsNewGroup::DlgToolsNewGroup( OdbcTest *pOdbcTest, QString name, DlgToolsManageTestGroup *ptest )
+    : QDialog( pOdbcTest )
 {
     setWindowTitle( name );
 
@@ -43,7 +44,7 @@ DlgToolsNewGroup::DlgToolsNewGroup( OdbcTest *pOdbcTest, QString name, dManageTe
     ok = new QPushButton( "Ok", this );
     ok->setGeometry( 110,50, 70,25 );
 
-    source = new QLineEdit( this, "Test Group" );
+    source = new QLineEdit( this );
     source->setGeometry( 100, 20, 250, 20 );
     source->setMaxLength( 128 );
 
@@ -66,38 +67,30 @@ DlgToolsNewGroup::~DlgToolsNewGroup()
 
 void DlgToolsNewGroup::Ok()
 {
-    QString name = source->text();
-    prop *p;
+    // sanity check...
+    QString stringGroup = source->text();
+    if ( stringGroup.isEmpty() )
+        return;
 
-    //
-    // check if its allready there
-    //
-    //
-    section *s = find_section( "GROUPS" );
-    if ( s )
+    // add to GROUPS (but only if it it is not already there)...
+    pOdbcTest->pSettings->beginGroup( "GROUPS" );
+    if ( pOdbcTest->pSettings->contains( stringGroup ) )
     {
-        for ( p = s->first(); p != 0; p = s->next())
-        {
-            if ( strcmp( p->name(), name ) == 0 )
-            {
-                char msg[ 128 ];
-
-                sprintf( msg, "Group (%s) already defined", name.toAscii().constData());
-                QMessageBox::critical( this, "OdbcTest", msg );
-                return;
-            }
-        }
-
-        p = new prop( name.toAscii().constData(), "Installed" );
-        s->append( p );
-
-        s = new section( name );
-        ini_list.append( s );
-
-        parent_test->group->insertItem( p->name());
-        parent_test->group->setCurrentItem( parent_test->group->count() - 1 );
-        parent_test->Activated( p->name());
+        
+        QMessageBox::critical( this, "OdbcTest", QString( tr("Group (%1) already defined") ).arg( stringGroup ) );
+        pOdbcTest->pSettings->endGroup();
+        return;
     }
+    pOdbcTest->pSettings->setValue( stringGroup, "Installed" );
+    pOdbcTest->pSettings->endGroup();
+
+    // create the group itself (it is just an empty section)...
+    // pOdbcTest->pSettings->setValue( stringGroup );
+
+    // update the UI...
+    parent_test->group->addItem( stringGroup );
+    parent_test->group->setCurrentIndex( parent_test->group->count() - 1 );
+    parent_test->Activated( stringGroup );
 }
 
 

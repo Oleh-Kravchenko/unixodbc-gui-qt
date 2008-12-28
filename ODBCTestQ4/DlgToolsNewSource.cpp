@@ -27,10 +27,11 @@
  **********************************************************************/
 
 #include "DlgToolsNewSource.h"
+#include "DlgToolsManageTest.h"
 #include "OdbcTest.h"
 
-DlgToolsNewSource::DlgToolsNewSource( OdbcTest *pOdbcTest, QString name, dManageTest *ptest )
-: QDialog( pOdbcTest )
+DlgToolsNewSource::DlgToolsNewSource( OdbcTest *pOdbcTest, QString name, DlgToolsManageTest *ptest )
+    : QDialog( pOdbcTest )
 {
     setWindowTitle( name );
 
@@ -66,22 +67,25 @@ DlgToolsNewSource::~DlgToolsNewSource()
 
 void DlgToolsNewSource::Ok()
 {
-    // sanity check
-    if ( !ini.contains( "SQL_DRIVERS" ) )
+    // sanity check...
+    QString stringSource = source->text();
+    if ( stringSource.isEmpty() )
         return;
 
-    // does it exist?
-    if ( ini["SQL_DRIVERS"].contains( source->text() ) )
+    // add it (if it does not already exist)...
+    pOdbcTest->pSettings->beginGroup( "SQL_DRIVERS" );
+    if ( pOdbcTest->pSettings->contains( stringSource ) )
     {
-        QMessageBox::critical( this, "OdbcTest", "Source (" + source->text() + ") already defined" );
+        QMessageBox::critical( this, "OdbcTest", QString( tr( "Source (%1) already defined") ).arg( stringSource ) );
+        pOdbcTest->pSettings->endGroup();
         return;
     }
+    pOdbcTest->pSettings->setValue( stringSource, "Installed" );
+    pOdbcTest->pSettings->endGroup();
 
-    // add it...
-    ini["SQL_DRIVERS"].insert( source->text(), "Installed" );
-
-    parent_test->test_source->addItem( source->text() );
-    parent_test->Activated( source->text() );
+    // update UI...
+    parent_test->test_source->addItem( stringSource );
+    parent_test->Activated( stringSource );
 }
 
 

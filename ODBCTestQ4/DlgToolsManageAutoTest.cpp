@@ -30,7 +30,7 @@
 #include "OdbcTest.h"
 
 DlgToolsManageAutoTest::DlgToolsManageAutoTest( OdbcTest *pOdbcTest, QString name )
-: QDialog( pOdbcTest )
+    : QDialog( pOdbcTest )
 {
     setWindowTitle( name );
 
