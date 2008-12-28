@@ -77,27 +77,13 @@ DlgToolsManageTestGroup::DlgToolsManageTestGroup( OdbcTest *pOdbcTest, QString n
     connect( nw, SIGNAL(clicked()), SLOT(New()) );
     connect( del, SIGNAL(clicked()), SLOT(Delete()) );
 
-    //
-    // fill up combo box
-    //
-
-    section *s = find_section( "GROUPS" );
-
-    if ( s )
-    {
-        prop *p;
-
-        for ( p = s->first(); 
-            p != 0; 
-            p = s->next())
-        {
-            group->addItem( p->name() );
-        }
-    }
+    // load the list...
+    pOdbcTest->pSettings->beginGroup( "GROUPS" );
+    group->addItems( pOdbcTest->pSettings->allKeys() );
+    pOdbcTest->pSettings->endGroup();
 
     Activated( 0 );
-    connect( group, SIGNAL(activated(const QString &)), 
-             this, SLOT( Activated(const QString &)));
+    connect( group, SIGNAL(activated(const QString &)), this, SLOT( Activated(const QString &)));
 }
 
 DlgToolsManageTestGroup::~DlgToolsManageTestGroup()
@@ -144,24 +130,23 @@ void DlgToolsManageTestGroup::Ok()
 
 void DlgToolsManageTestGroup::update_test_lists( void )
 {
-    QString current_text        = group->currentText();
-    int     nSectionAutoTests   = gOdbcTools->ini.indexSection( "Auto Tests" );
-    int     nSectionGroup       = gOdbcTools->ini.indexSection( current_text );
+    QString stringGroup = group->currentText();
 
     auto_list->clear();
     sauto_list->clear();
 
-    if ( nSectionAutoTests < 0 )
-        return;
+    // get list of "Auto Tests"...
+    pOdbcTest->pSettings->beginGroup( "Auto Tests" );
+    QStringList stringlistAutoTests = pOdbcTest->pSettings->allKeys();
+    pOdbcTest->pSettings->endGroup();
 
     // for each "Auto Tests"...
-    for ( int nEntry = 0; nEntry < gOdbcTools->ini.vectorSectionEntries[nSectionAutoTests].size(); nEntry++ )
+    foreach ( QString stringAutoTest, stringlistAutoTests ) 
     {
-        QString stringTest = gOdbcTools->ini.vectorSectionEntries[nSectionAutoTests][nEntry].at( 0 );
-        if ( gOdbcTools->ini.indexEntry( nSectionGroup, stringTest ) >= 0 )
-            sauto_list->addItem( stringTest );
+        if ( pOdbcTest->pSettings->contains( stringGroup + "/" + stringAutoTest ) )
+            sauto_list->addItem( stringAutoTest );
         else
-            auto_list->addItem( stringTest );
+            auto_list->addItem( stringAutoTest );
     }
 }
 
@@ -182,7 +167,18 @@ void DlgToolsManageTestGroup::Add()
     if ( !pListWidgetItem )
         return;
 
-    gOdbcTools->ini.appendEntry( group->currentText(), pListWidgetItem->text(), "Installed" );
+    QString stringAutoTest = pListWidgetItem->text();
+    if ( stringAutoTest.isEmpty() )
+        return;
+
+    QString stringGroup = group->currentText();
+    if ( stringGroup.isEmpty() )
+        return;
+
+    pOdbcTest->pSettings->beginGroup( stringGroup );
+    pOdbcTest->pSettings->setValue( stringAutoTest, "Installed" );
+    pOdbcTest->pSettings->endGroup();
+
     update_test_lists();
 }
 
@@ -192,13 +188,24 @@ void DlgToolsManageTestGroup::Remove()
     if ( !pListWidgetItem )
         return;
 
-    gOdbcTools->ini.removeEntry( group->currentText(), pListWidgetItem->text() );
+    QString stringAutoTest = pListWidgetItem->text();
+    if ( stringAutoTest.isEmpty() )
+        return;
+
+    QString stringGroup = group->currentText();
+    if ( stringGroup.isEmpty() )
+        return;
+
+    pOdbcTest->pSettings->beginGroup( stringGroup );
+    pOdbcTest->pSettings->remove( stringAutoTest );
+    pOdbcTest->pSettings->endGroup();
+
     update_test_lists();
 }
 
 void DlgToolsManageTestGroup::New()
 {
-    DlgToolsNewGroup *dlg = new DlgToolsNewGroup( this->odbctest, "New Test Group", this );
+    DlgToolsNewGroup *dlg = new DlgToolsNewGroup( pOdbcTest, "New Test Group", this );
 
     dlg->exec();
 
@@ -207,11 +214,12 @@ void DlgToolsManageTestGroup::New()
 
 void DlgToolsManageTestGroup::Delete()
 {
-    if ( group->count() == 0 )
+    QString stringGroup = group->currentText();
+    if ( stringGroup.isEmpty() )
         return;
 
     if ( QMessageBox::information( this, "OdbcTest",
-                                   QString( "Delete the test group %1?" ).arg( group->currentText() ),
+                                   QString( "Delete the test group %1?" ).arg( stringGroup ),
                                    "&Delete", "&Cancel", 0,
                                    0, 1 ) != 0 )
     {
@@ -219,27 +227,20 @@ void DlgToolsManageTestGroup::Delete()
     }
 
     // remove from GROUPS section...
-    gOdbcTools->ini.removeEntry( "GROUPS", group->currentText() );
+    pOdbcTest->pSettings->beginGroup( "GROUPS" );
+    pOdbcTest->pSettings->remove( stringGroup );
+    pOdbcTest->pSettings->endGroup();
 
     // remove its section...
-    gOdbcTools->ini.removeSection( group->currentText() );
+    pOdbcTest->pSettings->remove( stringGroup );
 
     // reload list...
+    pOdbcTest->pSettings->beginGroup( "GROUPS" );
     group->clear();
+    group->addItems( pOdbcTest->pSettings->allKeys() );
+    pOdbcTest->pSettings->endGroup();
 
-    s = find_section( "GROUPS" );
-
-    if ( s )
-    {
-        prop *p;
-
-        for ( p = s->first(); 
-            p != 0; 
-            p = s->next())
-        {
-            group->addItem( p->name() );
-        }
-    }
+    // make first item current...
     group->setCurrentIndex( 0 );
     Activated( 0 );
 }

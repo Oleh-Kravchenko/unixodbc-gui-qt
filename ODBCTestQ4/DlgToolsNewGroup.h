@@ -31,6 +31,7 @@
 #include "OdbcHandle.h"
 
 class OdbcTest;
+class DlgToolsManageTestGroup;
 
 class DlgToolsNewGroup : public QDialog 
 {
