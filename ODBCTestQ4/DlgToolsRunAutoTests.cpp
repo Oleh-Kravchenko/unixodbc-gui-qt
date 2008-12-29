@@ -501,122 +501,123 @@ void DlgToolsRunAutoTests::runTests( SERVERINFO *pServerInfo, QTreeWidgetItem *p
             continue;
         }
 
-        // kick out some progress info...
-        QString stringTest = ptreewidgetitemTest->text( 0 );            
-        QString stringMessage;
-
-        stringMessage = QString( tr("Now Executing Auto Test: %1") ).arg( stringTest );
-        szLogPrintf( pServerInfo, false, stringMessage.toLatin1().constData() );
-        stringMessage = QString( tr("Time started %1") ).arg( QTime::currentTime().toString() );
-        szLogPrintf( pServerInfo, false, stringMessage.toLatin1().constData() );
-        
         // dot it...        
-        runTest( pServerInfo );
+        runTest( pServerInfo, ptreewidgetitemTest );
 
         // next...
         ptreewidgetitemTest = ptreewidgetitemTest->nextSibling();
     }
 }
 
-void DlgToolsRunAutoTests::runTest()
+void DlgToolsRunAutoTests::runTest( SERVERINFO *pServerInfo, QTreeWidgetItem *ptreewidgetitemTest )
 {
-    // 
-+++
-    if ( s )
+    QString stringTest = ptreewidgetitemTest->text( 0 );            
+    QString stringMessage;
+
+    // get test library file name...
+    pOdbcTest->pSettings->beginGroup( stringTest );
+    QString stringTestFileName = pOdbcTest->pSettings->value( "DLL" ).toString();
+    pOdbcTest->pSettings->endGroup();
+
+    if ( stringTestFileName.isEmpty() )
     {
-        for ( prop *prop = s->first(); prop != 0; prop = s->next())
+        stringMessage = QString( tr("Failed to find library name (DLL) in settings for %1 test.") ).arg( stringTest );
+        szLogPrintf( pServerInfo, false, stringMessage.toLatin1().constData() );
+        return;
+    }
+
+    // kick out some progress info...
+    stringMessage = QString( tr("Now Executing Auto Test: %1") ).arg( stringTest );
+    szLogPrintf( pServerInfo, false, stringMessage.toLatin1().constData() );
+    stringMessage = QString( tr("Time started %1") ).arg( QTime::currentTime().toString() );
+    szLogPrintf( pServerInfo, false, stringMessage.toLatin1().constData() );
+
+    // load test library...
+    QLibrary libraryTest( stringTestFileName );
+    
+    if ( !libraryTest.isLoaded() )
+    {
+        stringMessage = QString( tr("Failed to load test library %1") ).arg( stringTestFileName );
+        szLogPrintf( pServerInfo, false, stringMessage.toLatin1().constData() );
+        return;
+    }
+
+    // get our entry points...
+    void (*pfAutoTestFunc)(lpSERVERINFO);
+    BOOL (*pfAutoTestName)(LPSTR,UINT*);
+
+    pfAutoTestFunc = (void(*)(lpSERVERINFO))libraryTest.resolve( "AutoTestFunc" );
+    pfAutoTestName = (BOOL(*)(LPSTR,UINT*))libraryTest.resolve( "AutoTestName" );
+
+    if ( !pfAutoTestFunc )
+    {
+        stringMessage = QString( tr("Failed to resolve AutoTestFunc in library %1") ).arg( stringTestFileName );
+        szLogPrintf( pServerInfo, false, stringMessage.toLatin1().constData() );
+        return;
+    }
+
+    if ( !pfAutoTestName )
+    {
+        stringMessage = QString( tr("Failed to resolve AutoTestName in library %1") ).arg( stringTestFileName );
+        szLogPrintf( pServerInfo, false, stringMessage.toLatin1().constData() );
+        return;
+    }
+
+    // get test name and number of test cases...
+    char szTest[ AUTO_MAX_TEST_NAME + 1 ];
+    UINT nTestCases;
+
+    if ( !pfAutoTestName( szTest, &nTestCases ))
+    {
+        stringMessage = tr("AutoTestName returns FALSE");
+        szLogPrintf( pServerInfo, false, stringMessage.toLatin1().constData() );
+        return;
+    }
+
+    //
+    int size;
+
+    size = nTestCases / (sizeof(unsigned int)*8);
+    size ++;
+
+    pServerInfo->rglMask = (UINT FAR *)calloc( sizeof(unsigned int), size );
+
+    // now we are ready
+    if ( b_isolate->isChecked())
+    {
+        QTreeWidgetItem *test = ptreewidgetitemTest->firstChild();
+
+        while ( test )
         {
-            if ( strcmp( prop->name(), "DLL" ) == 0 )
+            if ( test->isSelected())
             {
-                lt_dlhandle handle = lt_dlopen( prop->value());
-                //
-                // open the lib
-                //
-                if ( handle )
-                {
-                    void (*pfAutoTestFunc)(lpSERVERINFO);
-                    BOOL (*pfAutoTestName)(LPSTR,UINT*);
-    
-                    pfAutoTestFunc = (void(*)(lpSERVERINFO))lt_dlsym( handle, "AutoTestFunc" );
-                    pfAutoTestName = (BOOL(*)(LPSTR,UINT*))lt_dlsym( handle, "AutoTestName" );
-    
-                    if ( !pfAutoTestFunc )
-                    {
-                        sprintf( msg, "Can't Find AutoTestFunc in %s", prop->value());
-                        print_to_odbctest( &server_info, msg, 1 );
-                    }
-                    else if ( !pfAutoTestName )
-                    {
-                        sprintf( msg, "Can't Find AutoTestName in %s", prop->value());
-                        print_to_odbctest( &server_info, msg, 1 );
-                    }
-                    else
-                    {
-                        char test_name[ AUTO_MAX_TEST_NAME + 1 ];
-                        UINT count;
-    
-                        if ( !pfAutoTestName( test_name, &count ))
-                        {
-                            sprintf( msg, "AutoTestName returns FALSE" );
-                            print_to_odbctest( &server_info, msg, 1 );
-                        }
-                        else
-                        {
-                            int size;
-    
-                            size = count / (sizeof(unsigned int)*8);
-                            size ++;
-    
-                            server_info.rglMask = (UINT FAR *)calloc( sizeof(unsigned int), size );
-    
-                            server_info.hwnd = (void*)callback_function;
-    
-                            // now we are ready
-                            if ( b_isolate->isChecked())
-                            {
-                                QTreeWidgetItem *test = sect->firstChild();
-    
-                                while ( test )
-                                {
-                                    if ( test->isSelected())
-                                    {
-                                        SETBIT(server_info.rglMask, test->index());
-                                        pfAutoTestFunc(&server_info);
-                                    }
-                                    test = test->nextSibling();
-                                }
-                            }
-                            else
-                            {
-                                QTreeWidgetItem *test = sect->firstChild();
-    
-                                memset( server_info.rglMask, 0, sizeof(unsigned int) * size );
-                                while ( test )
-                                {
-                                    if ( test->isSelected())
-                                    {
-                                        SETBIT(server_info.rglMask, test->index());
-                                    }
-                                    test = test->nextSibling();
-                                }
-                                pfAutoTestFunc(&server_info);
-                            }
-                            sprintf( msg, "Error Count: %d", server_info.cErrors);
-                            print_to_odbctest( &server_info, msg, 1 );
-    
-                            free( server_info.rglMask );
-                        }
-                    }
-                    lt_dlclose( handle );
-                }
-                else
-                {
-                    sprintf( msg, "Can't open %s", prop->value());
-                    print_to_odbctest( &server_info, msg, 1 );
-                }
+                SETBIT(pServerInfo->rglMask, test->index());
+                pfAutoTestFunc(&server_info);
             }
+            test = test->nextSibling();
         }
     }
+    else
+    {
+        QTreeWidgetItem *test = ptreewidgetitemTest->firstChild();
+
+        memset( pServerInfo->rglMask, 0, sizeof(unsigned int) * size );
+        while ( test )
+        {
+            if ( test->isSelected())
+            {
+                SETBIT(pServerInfo->rglMask, test->index());
+            }
+            test = test->nextSibling();
+        }
+        pfAutoTestFunc(&server_info);
+    }
+    sprintf( msg, "Error Count: %d", pServerInfo->cErrors);
+    print_to_odbctest( &server_info, msg, 1 );
+
+    free( pServerInfo->rglMask );
+
+    lt_dlclose( handle );
     
     sprintf( msg, "Time finished %s", QTime::currentTime().toString().toAscii().constData() );
     print_to_odbctest( &server_info, msg, 1 );
