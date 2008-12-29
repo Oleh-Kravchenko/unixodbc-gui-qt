@@ -61,6 +61,10 @@ protected slots:
 
 private:
     int cursor_state;
+
+    void runSources();
+    void runTests();
+    void runTest();
 };
 
 

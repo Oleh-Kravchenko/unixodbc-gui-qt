@@ -227,10 +227,47 @@ DlgToolsRunAutoTests::~DlgToolsRunAutoTests()
  */
 void DlgToolsRunAutoTests::Ok()
 {
+    /* 
+     * Init a ODBCINSTWND 
+     * --- 
+     *  
+     * This is for SERVERINFO::hwnd.
+     *  
+     * We use a generic handle (ODBCINSTWND) and specify a Qt4 graphical user interface (odbcinstQ4). 
+     *  
+     * The odbcinstQ4 library provides the Qt4 graphical user interface for things like SQLCreateDataSource
+     * and provides szLogPrintf/szMessageBox. The odbcinstQ4 library is a plugin which is loaded by the
+     * odbcinst library (and some others) as needed - it should NOT be used directly by this application 
+     * or by any of the test libraries. The test libraries should never need to interpret SERVERINFO::hwnd - 
+     * they should simply pass it on wherever needed. 
+     *  
+     * This application and test libraries should link to the odbcinst library to get szLogPrintf and 
+     * szMessageBox. 
+     *  
+     * NOTE 
+     *  
+     * It is bad form to have auto tests rely upon any user interaction so a test library which needs 
+     * a viable hwnd should not really happen (not even for SQLDriverConnect). However; szLogPrintf and 
+     * szMessageBox will use it internally.  
+     *  
+     * On MS'sm the szLogPrintf and szMessageBox are found in the gtrtst (gator test) library. Here; we 
+     * get it via the odbcinst library. 
+     *  
+     */
+    ODBCINSTWND Wnd;
+
+    strcpy( Wnd.szUI, "odbcinstQ4" );   // UI plugin to use (Qt4).
+    Wnd.hWnd = pOdbcTest->out_win;      // Output window for szLogPrintf and szMessageBox.
+
+    /* 
+     * Init a SERVERINFO
+     * ---
+     *
+     * More refinements are done as we process.
+     *
+     */
     SERVERINFO ServerInfo;
 
-    // Init ServerInfo. The values are refined later in this method but more can be
-    // done to set these values ie from settings file. 
     ServerInfo.cBuff                = 0;
     ServerInfo.cErrors              = 0;
     ServerInfo.failed               = 0;
@@ -242,6 +279,7 @@ void DlgToolsRunAutoTests::Ok()
     ServerInfo.henv                 = SQL_NULL_HANDLE;
     ServerInfo.hLoadedInst          = NULL;
     ServerInfo.hstmt                = SQL_NULL_HANDLE;
+    ServerInfo.hwnd                 = &Wnd;
     ServerInfo.rglMask              = 0;
     *(ServerInfo.szBuff)            = '\0';
     *(ServerInfo.szKeywords)        = '\0';
@@ -250,327 +288,12 @@ void DlgToolsRunAutoTests::Ok()
     *(ServerInfo.szValidLogin0)     = '\0';
     *(ServerInfo.szValidPassword0)  = '\0';
     *(ServerInfo.szValidServer0)    = '\0';
-    ServerInfo.vCursorLib           = SQL_CUR_USE_DRIVER;
+    ServerInfo.vCursorLib           = cursor_state; 
 
     if ( b_log_file->isChecked() ) strcpy( ServerInfo.szLogFile, l_log->text().toAscii().constData() );
 
-    /* hwnd
-     *                                                                                                  .
-     * This app and test libraries decide at build-time to link for Qt so pass QTextEdit* for hwnd. The test 
-     * libraries should not care what we store in hwnd as it is simply passed along to szLogPrintf and 
-     * szMessageBox. 
-     *  
-     * Qt based implementations of szLogPrintf and szMessageBox are found in the gtrtstQ4 library. This app 
-     * and the test libraries just need to link to gtrtstQ4. 
-     *  
-     * The upshot of this is that the test libraries are completely generic code and are simply built (linked) to 
-     * support this, Qt, implementation. 
-     *  
-     */
-    ServerInfo.hwnd                 = pOdbcTest->out_win;   
-
-
-    // for each selected source (SQL_DRIVER)...
-    foreach( QListWidgetItem *pListWidgetItem, sources->selectedItems() )
-    {
-        QString             stringSource            = pListWidgetItem->text();
-        QTreeWidgetItem *   ptreewidgetitemGroup    = tests->firstChild();
-
-        while ( ptreewidgetitemGroup )
-        {
-            if ( !ptreewidgetitemGroup->isSelected() )
-            {
-                ptreewidgetitemGroup = ptreewidgetitemGroup->nextSibling();
-                continue;
-            }
-
-            QString stringGroup = ptreewidgetitemGroup->text( 0 );            
-            QString stringMessage;
-
-            if ( stringSource == "ODBC Test Handles" )
-            {
-                server_info.henv = pOdbcTest->get_handle( SQL_HANDLE_ENV );
-                server_info.hdbc = pOdbcTest->get_handle( SQL_HANDLE_DBC );
-                server_info.hstmt = pOdbcTest->get_handle( SQL_HANDLE_STMT );
-
-            }
-            else
-            {
-                server_info.henv = NULL;
-                server_info.hdbc = NULL;
-                server_info.hstmt = NULL;
-
-                pOdbcTest->pSettings->beginGroup( stringSource );
-                strcpy( ServerInfo.szValidServer0, pOdbcTest->pSettings->value( "SERVER0" ).toString().toAscii().constData() );
-                strcpy( ServerInfo.szValidLogin0, pOdbcTest->pSettings->value( "LOGIN0" ).toString().toAscii().constData() );
-                strcpy( ServerInfo.szValidPassword0, pOdbcTest->pSettings->value( "PASSWORD0" ).toString().toAscii().constData() );
-                strcpy( ServerInfo.szKeywords, pOdbcTest->pSettings->value( "KEYWORDS" ).toString().toAscii().constData() );
-                pOdbcTest->pSettings->endGroup();
-            }
-
-            strcpy( ServerInfo.szSource, stringSource.toAscii().constData() );
-
-            stringMessage = QString( tr("Now executing Group %1 on source %2") ).arg( stringGroup ).arg( stringSource ); // we format the message here so we can use tr()
-            szLogPrintf( &ServerInfo, false, stringMessage.toLatin1().constData() );
-            stringMessage = QString( tr("Keywords: %1") ).arg( ServerInfo.szKeywords );
-            szLogPrintf( &ServerInfo, false, stringMessage.toLatin1().constData() );
-
-            // tests...
-            QTreeWidgetItem *ptreewidgetitemTest = ptreewidgetitemGroup->firstChild();
-
-            while ( ptreewidgetitemTest )
-            {
-                if ( !ptreewidgetitemTest->isSelected() )
-                {
-                    ptreewidgetitemTest = ptreewidgetitemTest->nextSibling();
-                    continue;
-                }
-            }
-
-        }
-    }
-
-+++
-    //
-    // use each selected source with all selected tests
-    //
-    int i;
-    QString group_name;
-    SERVERINFO server_info;
-
-    for ( i = 0; i < sources->count(); i ++ )
-    {
-        if ( sources->isSelected( i ) )
-        {
-            QTreeWidgetItem *group;
-
-            QString src = sources->text( i );
-
-            // walk tree
-
-            group = (QTreeWidgetItem *) tests->firstChild();
-            while ( group )
-            {
-                if ( group->isSelected())
-                {
-                    sprintf( msg, "Now executing Group %s on source %s",
-                             group->group().toAscii().constData(), src.toAscii().constData());
-                    print_to_odbctest( &server_info, msg, 0 );
-
-                    section *src_section;
-
-                    if ( src == "ODBC Test Handles" )
-                    {
-                        src_section = NULL;
-                        server_info.henv = pOdbcTest->get_handle( SQL_HANDLE_ENV );
-                        server_info.hdbc = pOdbcTest->get_handle( SQL_HANDLE_DBC );
-                        server_info.hstmt = pOdbcTest->get_handle( SQL_HANDLE_STMT );
-
-                    }
-                    else
-                    {
-                        src_section = find_section( src.toAscii().constData() );
-                        server_info.henv = NULL;
-                        server_info.hdbc = NULL;
-                        server_info.hstmt = NULL;
-                    }
-
-                    server_info.szSource[ 0 ] = '\0';
-                    server_info.szValidServer0[ 0 ] = '\0';
-                    server_info.szValidLogin0[ 0 ] = '\0';
-                    server_info.szValidPassword0[ 0 ] = '\0';
-                    server_info.szKeywords[ 0 ] = '\0';
-                    server_info.cErrors = 0;
-
-                    if ( b_debug->isChecked())
-                        server_info.fDebug = 1;
-                    else
-                        server_info.fDebug = 0;
-
-                    if ( b_isolate->isChecked())
-                        server_info.fIsolate = 1;
-                    else
-                        server_info.fIsolate = 0;
-
-                    if ( b_screen->isChecked())
-                        server_info.fScreen = 1;
-                    else
-                        server_info.fScreen = 0;
-
-                    server_info.vCursorLib = cursor_state;
-
-                    if ( b_log_file->isChecked())
-                    {
-                        strcpy( server_info.szLogFile, l_log->text().toAscii().constData() );
-                        server_info.fLog = 1;
-                    }
-                    else
-                    {
-                        server_info.szLogFile[ 0 ] = '\0';
-                        server_info.fLog = 0;
-                    }
-
-                    server_info.hLoadedInst = NULL;
-
-                    if ( src_section )
-                    {
-                        for ( prop *prop = src_section->first(); prop != 0; prop = src_section->next())
-                        {
-                            if ( strcmp( prop->name(), "SERVER0" ) == 0 )
-                            {
-                                strcpy( server_info.szValidServer0, prop->value());
-                            }
-                            else if ( strcmp( prop->name(), "LOGIN0" ) == 0 )
-                            {
-                                strcpy( server_info.szValidLogin0, prop->value());
-                            }
-                            else if ( strcmp( prop->name(), "PASSWORD0" ) == 0 )
-                            {
-                                strcpy( server_info.szValidPassword0, prop->value());
-                            }
-                            else if ( strcmp( prop->name(), "KEYWORDS" ) == 0 )
-                            {
-                                strcpy( server_info.szKeywords, prop->value());
-                            }
-                        }
-                    }
-
-                    strcpy( server_info.szSource, src.toAscii().constData());
-                    server_info.cBuff = 0;
-
-                    sprintf( msg, "Keywords: %s", server_info.szKeywords );
-                    print_to_odbctest( &server_info, msg, 0 );
-
-                    QTreeWidgetItem *sect = group->firstChild();
-
-                    while ( sect )
-                    {
-                        if ( sect->isSelected())
-                        {
-                            sprintf( msg, "Now Executing Auto Test: %s", sect->name().toAscii().constData());
-                            print_to_odbctest( &server_info, msg, 1 );
-                            sprintf( msg, "Source: %s", src.toAscii().constData());
-                            print_to_odbctest( &server_info, msg, 1 );
-                            sprintf( msg, "Time started %s", QTime::currentTime().toString().toAscii().constData() );
-                            print_to_odbctest( &server_info, msg, 1 );
-
-                            // run tests
-                            // open driver
-
-                            section *s = find_section( sect->name().toAscii().constData() );
-
-                            /*
-                             * initialize libtool
-                             */
-
-                            lt_dlinit();
-
-                            if ( s )
-                            {
-                                for ( prop *prop = s->first(); prop != 0; prop = s->next())
-                                {
-                                    if ( strcmp( prop->name(), "DLL" ) == 0 )
-                                    {
-                                        lt_dlhandle handle = lt_dlopen( prop->value());
-                                        //
-                                        // open the lib
-                                        //
-                                        if ( handle )
-                                        {
-                                            void (*pfAutoTestFunc)(lpSERVERINFO);
-                                            BOOL (*pfAutoTestName)(LPSTR,UINT*);
-
-                                            pfAutoTestFunc = (void(*)(lpSERVERINFO))lt_dlsym( handle, "AutoTestFunc" );
-                                            pfAutoTestName = (BOOL(*)(LPSTR,UINT*))lt_dlsym( handle, "AutoTestName" );
-
-                                            if ( !pfAutoTestFunc )
-                                            {
-                                                sprintf( msg, "Can't Find AutoTestFunc in %s", prop->value());
-                                                print_to_odbctest( &server_info, msg, 1 );
-                                            }
-                                            else if ( !pfAutoTestName )
-                                            {
-                                                sprintf( msg, "Can't Find AutoTestName in %s", prop->value());
-                                                print_to_odbctest( &server_info, msg, 1 );
-                                            }
-                                            else
-                                            {
-                                                char test_name[ AUTO_MAX_TEST_NAME + 1 ];
-                                                UINT count;
-
-                                                if ( !pfAutoTestName( test_name, &count ))
-                                                {
-                                                    sprintf( msg, "AutoTestName returns FALSE" );
-                                                    print_to_odbctest( &server_info, msg, 1 );
-                                                }
-                                                else
-                                                {
-                                                    int size;
-
-                                                    size = count / (sizeof(unsigned int)*8);
-                                                    size ++;
-
-                                                    server_info.rglMask = (UINT FAR *)calloc( sizeof(unsigned int), size );
-
-                                                    server_info.hwnd = (void*)callback_function;
-
-                                                    // now we are ready
-                                                    if ( b_isolate->isChecked())
-                                                    {
-                                                        QTreeWidgetItem *test = sect->firstChild();
-
-                                                        while ( test )
-                                                        {
-                                                            if ( test->isSelected())
-                                                            {
-                                                                SETBIT(server_info.rglMask, test->index());
-                                                                pfAutoTestFunc(&server_info);
-                                                            }
-                                                            test = test->nextSibling();
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        QTreeWidgetItem *test = sect->firstChild();
-
-                                                        memset( server_info.rglMask, 0, sizeof(unsigned int) * size );
-                                                        while ( test )
-                                                        {
-                                                            if ( test->isSelected())
-                                                            {
-                                                                SETBIT(server_info.rglMask, test->index());
-                                                            }
-                                                            test = test->nextSibling();
-                                                        }
-                                                        pfAutoTestFunc(&server_info);
-                                                    }
-                                                    sprintf( msg, "Error Count: %d", server_info.cErrors);
-                                                    print_to_odbctest( &server_info, msg, 1 );
-
-                                                    free( server_info.rglMask );
-                                                }
-                                            }
-                                            lt_dlclose( handle );
-                                        }
-                                        else
-                                        {
-                                            sprintf( msg, "Can't open %s", prop->value());
-                                            print_to_odbctest( &server_info, msg, 1 );
-                                        }
-                                    }
-                                }
-                            }
-
-                            sprintf( msg, "Time finished %s", QTime::currentTime().toString().toAscii().constData() );
-                            print_to_odbctest( &server_info, msg, 1 );
-                        }
-                        sect = sect->nextSibling();
-                    }
-                }
-                group = group->nextSibling();
-            }
-        }
-    }
+    // do it
+    runSources( &ServerInfo );
 }
 
 void DlgToolsRunAutoTests::Log()
@@ -696,6 +419,207 @@ void DlgToolsRunAutoTests::add_auto_test( const QString &stringTest, QTreeWidget
             }
         }
     }
+}
+
+void DlgToolsRunAutoTests::runSources( SERVERINFO *pServerInfo )
+{
+    // for each selected source (SQL_DRIVER)...
+    foreach( QListWidgetItem *pListWidgetItem, sources->selectedItems() )
+    {
+        QString stringSource = pListWidgetItem->text();
+
+        // init some SERVERINFO stuff...
+        strcpy( pServerInfo->szSource, stringSource.toAscii().constData() );
+
+        pOdbcTest->pSettings->beginGroup( stringSource );
+        strcpy( pServerInfo->szValidServer0, pOdbcTest->pSettings->value( "SERVER0" ).toString().toAscii().constData() );
+        strcpy( pServerInfo->szValidLogin0, pOdbcTest->pSettings->value( "LOGIN0" ).toString().toAscii().constData() );
+        strcpy( pServerInfo->szValidPassword0, pOdbcTest->pSettings->value( "PASSWORD0" ).toString().toAscii().constData() );
+        strcpy( pServerInfo->szKeywords, pOdbcTest->pSettings->value( "KEYWORDS" ).toString().toAscii().constData() );
+        pOdbcTest->pSettings->endGroup();
+
+        // do it...
+        runGroups( pServerInfo, stringSource );
+    }
+}
+
+void DlgToolsRunAutoTests::runGroups( SERVERINFO *pServerInfo, const QString &stringSource )
+{
+    // process groups (1st level in tree)...
+    QTreeWidgetItem *ptreewidgetitemGroup = tests->firstChild();
+
+    while ( ptreewidgetitemGroup )
+    {
+        if ( !ptreewidgetitemGroup->isSelected() )
+        {
+            ptreewidgetitemGroup = ptreewidgetitemGroup->nextSibling();
+            continue;
+        }
+
+        // init/reinit some SERVERINFO stuff (reinit in case test messed with it)...
+        if ( stringSource == "ODBC Test Handles" )
+        {
+            pServerInfo->henv = pOdbcTest->get_handle( SQL_HANDLE_ENV );
+            pServerInfo->hdbc = pOdbcTest->get_handle( SQL_HANDLE_DBC );
+            pServerInfo->hstmt = pOdbcTest->get_handle( SQL_HANDLE_STMT );
+
+        }
+        else
+        {
+            pServerInfo->henv = NULL;
+            pServerInfo->hdbc = NULL;
+            pServerInfo->hstmt = NULL;
+        }
+
+        // kick out some progress info...
+        QString stringGroup = ptreewidgetitemGroup->text( 0 );            
+        QString stringMessage;
+
+        stringMessage = QString( tr("Now executing Group %1 on source %2") ).arg( stringGroup ).arg( stringSource ); // we format the message here so we can use tr()
+        szLogPrintf( pServerInfo, false, stringMessage.toLatin1().constData() );
+        stringMessage = QString( tr("Keywords: %1") ).arg( pServerInfo->szKeywords );
+        szLogPrintf( pServerInfo, false, stringMessage.toLatin1().constData() );
+
+        // do it...
+        runTests( pServerInfo, ptreewidgetitemGroup );
+
+        // next...
+        ptreewidgetitemGroup = ptreewidgetitemGroup->nextSibling();
+    }
+}
+
+void DlgToolsRunAutoTests::runTests( SERVERINFO *pServerInfo, QTreeWidgetItem *ptreewidgetitemGroup )
+{
+    // process tests (2nd level in tree)...
+    QTreeWidgetItem *ptreewidgetitemTest = ptreewidgetitemGroup->firstChild();
+
+    while ( ptreewidgetitemTest )
+    {
+        if ( !ptreewidgetitemTest->isSelected() )
+        {
+            ptreewidgetitemTest = ptreewidgetitemTest->nextSibling();
+            continue;
+        }
+
+        // kick out some progress info...
+        QString stringTest = ptreewidgetitemTest->text( 0 );            
+        QString stringMessage;
+
+        stringMessage = QString( tr("Now Executing Auto Test: %1") ).arg( stringTest );
+        szLogPrintf( pServerInfo, false, stringMessage.toLatin1().constData() );
+        stringMessage = QString( tr("Time started %1") ).arg( QTime::currentTime().toString() );
+        szLogPrintf( pServerInfo, false, stringMessage.toLatin1().constData() );
+        
+        // dot it...        
+        runTest( pServerInfo );
+
+        // next...
+        ptreewidgetitemTest = ptreewidgetitemTest->nextSibling();
+    }
+}
+
+void DlgToolsRunAutoTests::runTest()
+{
+    // 
++++
+    if ( s )
+    {
+        for ( prop *prop = s->first(); prop != 0; prop = s->next())
+        {
+            if ( strcmp( prop->name(), "DLL" ) == 0 )
+            {
+                lt_dlhandle handle = lt_dlopen( prop->value());
+                //
+                // open the lib
+                //
+                if ( handle )
+                {
+                    void (*pfAutoTestFunc)(lpSERVERINFO);
+                    BOOL (*pfAutoTestName)(LPSTR,UINT*);
+    
+                    pfAutoTestFunc = (void(*)(lpSERVERINFO))lt_dlsym( handle, "AutoTestFunc" );
+                    pfAutoTestName = (BOOL(*)(LPSTR,UINT*))lt_dlsym( handle, "AutoTestName" );
+    
+                    if ( !pfAutoTestFunc )
+                    {
+                        sprintf( msg, "Can't Find AutoTestFunc in %s", prop->value());
+                        print_to_odbctest( &server_info, msg, 1 );
+                    }
+                    else if ( !pfAutoTestName )
+                    {
+                        sprintf( msg, "Can't Find AutoTestName in %s", prop->value());
+                        print_to_odbctest( &server_info, msg, 1 );
+                    }
+                    else
+                    {
+                        char test_name[ AUTO_MAX_TEST_NAME + 1 ];
+                        UINT count;
+    
+                        if ( !pfAutoTestName( test_name, &count ))
+                        {
+                            sprintf( msg, "AutoTestName returns FALSE" );
+                            print_to_odbctest( &server_info, msg, 1 );
+                        }
+                        else
+                        {
+                            int size;
+    
+                            size = count / (sizeof(unsigned int)*8);
+                            size ++;
+    
+                            server_info.rglMask = (UINT FAR *)calloc( sizeof(unsigned int), size );
+    
+                            server_info.hwnd = (void*)callback_function;
+    
+                            // now we are ready
+                            if ( b_isolate->isChecked())
+                            {
+                                QTreeWidgetItem *test = sect->firstChild();
+    
+                                while ( test )
+                                {
+                                    if ( test->isSelected())
+                                    {
+                                        SETBIT(server_info.rglMask, test->index());
+                                        pfAutoTestFunc(&server_info);
+                                    }
+                                    test = test->nextSibling();
+                                }
+                            }
+                            else
+                            {
+                                QTreeWidgetItem *test = sect->firstChild();
+    
+                                memset( server_info.rglMask, 0, sizeof(unsigned int) * size );
+                                while ( test )
+                                {
+                                    if ( test->isSelected())
+                                    {
+                                        SETBIT(server_info.rglMask, test->index());
+                                    }
+                                    test = test->nextSibling();
+                                }
+                                pfAutoTestFunc(&server_info);
+                            }
+                            sprintf( msg, "Error Count: %d", server_info.cErrors);
+                            print_to_odbctest( &server_info, msg, 1 );
+    
+                            free( server_info.rglMask );
+                        }
+                    }
+                    lt_dlclose( handle );
+                }
+                else
+                {
+                    sprintf( msg, "Can't open %s", prop->value());
+                    print_to_odbctest( &server_info, msg, 1 );
+                }
+            }
+        }
+    }
+    
+    sprintf( msg, "Time finished %s", QTime::currentTime().toString().toAscii().constData() );
+    print_to_odbctest( &server_info, msg, 1 );
 }
 
 void DlgToolsRunAutoTests::TestsChanged()
