@@ -62,9 +62,11 @@ protected slots:
 private:
     int cursor_state;
 
-    void runSources();
-    void runTests();
-    void runTest();
+    void runSources( SERVERINFO *pServerInfo );
+    void runGroups( SERVERINFO *pServerInfo, const QString &stringSource );
+    void runTests( SERVERINFO *pServerInfo, QTreeWidgetItem *ptreewidgetitemGroup );
+    void runTest( SERVERINFO *pServerInfo, QTreeWidgetItem *ptreewidgetitemTest );
+    void runTestCases( SERVERINFO *pServerInfo, QTreeWidgetItem *ptreewidgetitemTest, AUTOTESTFUNC pAutoTestFunc, UINT nTestCases );
 };
 
 

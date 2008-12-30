@@ -280,7 +280,7 @@ void DlgToolsRunAutoTests::Ok()
     ServerInfo.hLoadedInst          = NULL;
     ServerInfo.hstmt                = SQL_NULL_HANDLE;
     ServerInfo.hwnd                 = &Wnd;
-    ServerInfo.rglMask              = 0;
+    ServerInfo.rglMask              = NULL;
     *(ServerInfo.szBuff)            = '\0';
     *(ServerInfo.szKeywords)        = '\0';
     *(ServerInfo.szLogFile)         = '\0';
@@ -446,15 +446,12 @@ void DlgToolsRunAutoTests::runSources( SERVERINFO *pServerInfo )
 void DlgToolsRunAutoTests::runGroups( SERVERINFO *pServerInfo, const QString &stringSource )
 {
     // process groups (1st level in tree)...
-    QTreeWidgetItem *ptreewidgetitemGroup = tests->firstChild();
+    QTreeWidgetItem *ptreewidgetitemGroup = NULL;
 
-    while ( ptreewidgetitemGroup )
+    for ( int n = 0; (ptreewidgetitemGroup = tests->topLevelItem( n )); n++ )
     {
         if ( !ptreewidgetitemGroup->isSelected() )
-        {
-            ptreewidgetitemGroup = ptreewidgetitemGroup->nextSibling();
             continue;
-        }
 
         // init/reinit some SERVERINFO stuff (reinit in case test messed with it)...
         if ( stringSource == "ODBC Test Handles" )
@@ -476,36 +473,27 @@ void DlgToolsRunAutoTests::runGroups( SERVERINFO *pServerInfo, const QString &st
         QString stringMessage;
 
         stringMessage = QString( tr("Now executing Group %1 on source %2") ).arg( stringGroup ).arg( stringSource ); // we format the message here so we can use tr()
-        szLogPrintf( pServerInfo, false, stringMessage.toLatin1().constData() );
+        szLogPrintf( pServerInfo, false, stringMessage.toLatin1().data() );
         stringMessage = QString( tr("Keywords: %1") ).arg( pServerInfo->szKeywords );
-        szLogPrintf( pServerInfo, false, stringMessage.toLatin1().constData() );
+        szLogPrintf( pServerInfo, false, stringMessage.toLatin1().data() );
 
         // do it...
         runTests( pServerInfo, ptreewidgetitemGroup );
-
-        // next...
-        ptreewidgetitemGroup = ptreewidgetitemGroup->nextSibling();
     }
 }
 
 void DlgToolsRunAutoTests::runTests( SERVERINFO *pServerInfo, QTreeWidgetItem *ptreewidgetitemGroup )
 {
     // process tests (2nd level in tree)...
-    QTreeWidgetItem *ptreewidgetitemTest = ptreewidgetitemGroup->firstChild();
+    QTreeWidgetItem *ptreewidgetitemTest = NULL;
 
-    while ( ptreewidgetitemTest )
+    for ( int n = 0; (ptreewidgetitemTest = ptreewidgetitemGroup->child( n )); n++ )
     {
         if ( !ptreewidgetitemTest->isSelected() )
-        {
-            ptreewidgetitemTest = ptreewidgetitemTest->nextSibling();
             continue;
-        }
 
         // dot it...        
         runTest( pServerInfo, ptreewidgetitemTest );
-
-        // next...
-        ptreewidgetitemTest = ptreewidgetitemTest->nextSibling();
     }
 }
 
@@ -522,15 +510,15 @@ void DlgToolsRunAutoTests::runTest( SERVERINFO *pServerInfo, QTreeWidgetItem *pt
     if ( stringTestFileName.isEmpty() )
     {
         stringMessage = QString( tr("Failed to find library name (DLL) in settings for %1 test.") ).arg( stringTest );
-        szLogPrintf( pServerInfo, false, stringMessage.toLatin1().constData() );
+        szLogPrintf( pServerInfo, false, stringMessage.toLatin1().data() );
         return;
     }
 
     // kick out some progress info...
     stringMessage = QString( tr("Now Executing Auto Test: %1") ).arg( stringTest );
-    szLogPrintf( pServerInfo, false, stringMessage.toLatin1().constData() );
+    szLogPrintf( pServerInfo, false, stringMessage.toLatin1().data() );
     stringMessage = QString( tr("Time started %1") ).arg( QTime::currentTime().toString() );
-    szLogPrintf( pServerInfo, false, stringMessage.toLatin1().constData() );
+    szLogPrintf( pServerInfo, false, stringMessage.toLatin1().data() );
 
     // load test library...
     QLibrary libraryTest( stringTestFileName );
@@ -538,28 +526,34 @@ void DlgToolsRunAutoTests::runTest( SERVERINFO *pServerInfo, QTreeWidgetItem *pt
     if ( !libraryTest.isLoaded() )
     {
         stringMessage = QString( tr("Failed to load test library %1") ).arg( stringTestFileName );
-        szLogPrintf( pServerInfo, false, stringMessage.toLatin1().constData() );
+        szLogPrintf( pServerInfo, false, stringMessage.toLatin1().data() );
         return;
     }
 
     // get our entry points...
-    void (*pfAutoTestFunc)(lpSERVERINFO);
-    BOOL (*pfAutoTestName)(LPSTR,UINT*);
+//    void (*pfAutoTestFunc)(lpSERVERINFO);
+//    BOOL (*pfAutoTestName)(LPSTR,UINT*);
 
-    pfAutoTestFunc = (void(*)(lpSERVERINFO))libraryTest.resolve( "AutoTestFunc" );
-    pfAutoTestName = (BOOL(*)(LPSTR,UINT*))libraryTest.resolve( "AutoTestName" );
+    AUTOTESTNAME pAutoTestName;
+    AUTOTESTFUNC pAutoTestFunc;
 
-    if ( !pfAutoTestFunc )
+//    pfAutoTestFunc = (void(*)(lpSERVERINFO))libraryTest.resolve( "AutoTestFunc" );
+//    pfAutoTestName = (BOOL(*)(LPSTR,UINT*))libraryTest.resolve( "AutoTestName" );
+
+    pAutoTestName = (AUTOTESTNAME)libraryTest.resolve( "AutoTestName" );
+    pAutoTestFunc = (AUTOTESTFUNC)libraryTest.resolve( "AutoTestFunc" );
+
+    if ( !pAutoTestFunc )
     {
         stringMessage = QString( tr("Failed to resolve AutoTestFunc in library %1") ).arg( stringTestFileName );
-        szLogPrintf( pServerInfo, false, stringMessage.toLatin1().constData() );
+        szLogPrintf( pServerInfo, false, stringMessage.toLatin1().data() );
         return;
     }
 
-    if ( !pfAutoTestName )
+    if ( !pAutoTestName )
     {
         stringMessage = QString( tr("Failed to resolve AutoTestName in library %1") ).arg( stringTestFileName );
-        szLogPrintf( pServerInfo, false, stringMessage.toLatin1().constData() );
+        szLogPrintf( pServerInfo, false, stringMessage.toLatin1().data() );
         return;
     }
 
@@ -567,60 +561,69 @@ void DlgToolsRunAutoTests::runTest( SERVERINFO *pServerInfo, QTreeWidgetItem *pt
     char szTest[ AUTO_MAX_TEST_NAME + 1 ];
     UINT nTestCases;
 
-    if ( !pfAutoTestName( szTest, &nTestCases ))
+    if ( !pAutoTestName( szTest, &nTestCases ) )
     {
         stringMessage = tr("AutoTestName returns FALSE");
-        szLogPrintf( pServerInfo, false, stringMessage.toLatin1().constData() );
+        szLogPrintf( pServerInfo, false, stringMessage.toLatin1().data() );
         return;
     }
 
+    // do it...
+    runTestCases( pServerInfo, ptreewidgetitemTest, pAutoTestFunc, nTestCases );
+
     //
-    int size;
+    stringMessage = QString( tr("Time finished %s") ).arg( QTime::currentTime().toString() );
+    szLogPrintf( pServerInfo, false, stringMessage.toLatin1().data() );
+}
+
+void DlgToolsRunAutoTests::runTestCases( SERVERINFO *pServerInfo, QTreeWidgetItem *ptreewidgetitemTest, AUTOTESTFUNC pAutoTestFunc, UINT nTestCases )
+{
+    QString stringMessage;
+    int     size;
 
     size = nTestCases / (sizeof(unsigned int)*8);
     size ++;
 
+    // init mask...
     pServerInfo->rglMask = (UINT FAR *)calloc( sizeof(unsigned int), size );
 
-    // now we are ready
+    // for each test case call into test library... 
     if ( b_isolate->isChecked())
     {
-        QTreeWidgetItem *test = ptreewidgetitemTest->firstChild();
+        QTreeWidgetItem *ptreewidgetitemTestCase = NULL;
 
-        while ( test )
+        for ( int n = 0; (ptreewidgetitemTestCase = ptreewidgetitemTest->child( n )); n++ )
         {
-            if ( test->isSelected())
+            if ( ptreewidgetitemTestCase->isSelected())
             {
-                SETBIT(pServerInfo->rglMask, test->index());
-                pfAutoTestFunc(&server_info);
+                SETBIT( pServerInfo->rglMask, ptreewidgetitemTest->indexOfChild( ptreewidgetitemTestCase ) );
+                pAutoTestFunc( pServerInfo );
             }
-            test = test->nextSibling();
         }
     }
+    // call into test library once... 
     else
     {
-        QTreeWidgetItem *test = ptreewidgetitemTest->firstChild();
+        QTreeWidgetItem *ptreewidgetitemTestCase = NULL;
 
         memset( pServerInfo->rglMask, 0, sizeof(unsigned int) * size );
-        while ( test )
+
+        for ( int n = 0; (ptreewidgetitemTestCase = ptreewidgetitemTest->child( n )); n++ )
         {
-            if ( test->isSelected())
+            if ( ptreewidgetitemTestCase->isSelected())
             {
-                SETBIT(pServerInfo->rglMask, test->index());
+                SETBIT(pServerInfo->rglMask, ptreewidgetitemTest->indexOfChild( ptreewidgetitemTestCase ) );
             }
-            test = test->nextSibling();
         }
-        pfAutoTestFunc(&server_info);
+        pAutoTestFunc( pServerInfo );
     }
-    sprintf( msg, "Error Count: %d", pServerInfo->cErrors);
-    print_to_odbctest( &server_info, msg, 1 );
 
+    // errors?
+    stringMessage = QString( tr("Error Count: %1") ).arg( pServerInfo->cErrors );
+    szLogPrintf( pServerInfo, false, stringMessage.toLatin1().data() );
+
+    // fini mask...
     free( pServerInfo->rglMask );
-
-    lt_dlclose( handle );
-    
-    sprintf( msg, "Time finished %s", QTime::currentTime().toString().toAscii().constData() );
-    print_to_odbctest( &server_info, msg, 1 );
 }
 
 void DlgToolsRunAutoTests::TestsChanged()

@@ -53,8 +53,13 @@
 /* this will bring in the ODBC 'test' stuff we need (and then some) */
 #include <autotest.h>
 
+typedef BOOL (*AUTOTESTNAME)(LPSTR,UINT*);
+typedef BOOL (*AUTOTESTDESC)(UWORD,LPSTR,LPSTR);
+typedef void (*AUTOTESTFUNC)(SERVERINFO*);
+
 /* bring in more ODBC stuff */
 #include <sqlucode.h>
+#include <odbcinst.h>
 
 /* this brings in all of the Qt stuff we need */
 #include <QtGui>
