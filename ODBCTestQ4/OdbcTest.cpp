@@ -313,7 +313,7 @@ OdbcTest::OdbcTest( QWidget *parent )
     in_win  = new QTextEdit( split );
     out_win = new QTextEdit( split );
     out_win->setReadOnly( TRUE );
-    out_win->setMaxLines( 1000 );
+//    out_win->setMaxLines( 1000 );
 }
 
 OdbcTest::~OdbcTest()

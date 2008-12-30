@@ -26,6 +26,9 @@
  * 
  **********************************************************************/
 
+#include "DlgToolsManageTest.h"
+#include "DlgToolsManageAutoTest.h"
+#include "DlgToolsManageTestGroup.h"
 #include "DlgToolsRunAutoTests.h"
 #include "OdbcTest.h"
 
@@ -343,81 +346,59 @@ void DlgToolsRunAutoTests::CursorChanged( int state )
 
 void DlgToolsRunAutoTests::add_auto_test( const QString &stringTest, QTreeWidgetItem *top, QTreeWidgetItem **item )
 {
-    section *s = find_section( stringTest );
+    // get test library file name...
+    pOdbcTest->pSettings->beginGroup( stringTest );
+    QString stringTestFileName = pOdbcTest->pSettings->value( "DLL" ).toString();
+    pOdbcTest->pSettings->endGroup();
 
-    if ( s )
+    if ( stringTestFileName.isEmpty() )
+        return;
+
+    // load test library...
+    QLibrary libraryTest( stringTestFileName );
+
+    if ( !libraryTest.isLoaded() )
+        return;
+
+    // get our entry points...
+    AUTOTESTNAME pAutoTestName = (AUTOTESTNAME)libraryTest.resolve( "AutoTestName" );
+    AUTOTESTDESC pAutoTestDesc = (AUTOTESTDESC)libraryTest.resolve( "AutoTestDesc" );
+    AUTOTESTFUNC pAutoTestFunc = (AUTOTESTFUNC)libraryTest.resolve( "AutoTestFunc" );
+
+    if ( !pAutoTestName || !pAutoTestDesc || !pAutoTestFunc )
+        return;
+
+    // get test name, number of test cases...
+    char szTest[ AUTO_MAX_TEST_NAME + 1 ];
+    UINT nTestCases;
+
+    if ( !pAutoTestName( szTest, &nTestCases ) )
+        return;
+
+    // add test...
+    QTreeWidgetItem *ptreewidgetitemTest = *item = new QTreeWidgetItem( top, *item );  
+    ptreewidgetitemTest->setText( 0, szTest );
+
+    // add test cases...
+    QTreeWidgetItem *ptreewidgetitemTestCase = NULL;
+
+    for ( UWORD i = 1; i <= nTestCases; i ++ )
     {
-        for ( prop *prop = s->first(); prop != 0; prop = s->next())
-        {
-            if ( strcmp( prop->name(), "DLL" ) == 0 )
-            {
-                /*
-                 * initialize libtool
-                 */
-                lt_dlinit();
+        // get test case details...
+        char szTestCase[ AUTO_MAX_TESTCASE_NAME + 1 ];
+        char szTestCaseDesc[ AUTO_MAX_TESTDESC_NAME + 1 ];
 
-                //
-                // open the lib
-                //
-                lt_dlhandle handle = lt_dlopen( prop->value());
-                if ( handle )
-                {
-                    void *pfAutoTestFunc;
-                    BOOL (*pfAutoTestName)(LPSTR,UINT*);
-                    BOOL (*pfAutoTestDesc)(UWORD,LPSTR,LPSTR);
+        if ( !pAutoTestDesc( i, szTestCase, szTestCaseDesc ) )
+            continue;
 
-                    pfAutoTestName = (BOOL(*)(LPSTR,UINT*))lt_dlsym( handle, "AutoTestName" );
-                    pfAutoTestDesc = (BOOL(*)(UWORD,LPSTR,LPSTR))lt_dlsym( handle, "AutoTestDesc" );
-                    pfAutoTestFunc = lt_dlsym( handle, "AutoTestFunc" );
+        // create test case tree widget item...
+        if ( ptreewidgetitemTestCase )
+            ptreewidgetitemTestCase = new QTreeWidgetItem( ptreewidgetitemTest, ptreewidgetitemTestCase );
+        else
+            ptreewidgetitemTestCase = new QTreeWidgetItem( ptreewidgetitemTest );  
 
-
-                    if ( !pfAutoTestName ||
-                         !pfAutoTestDesc ||
-                         !pfAutoTestFunc )
-                    {
-                        lt_dlclose( handle );
-                        return;
-                    }
-
-                    char stringTest[ AUTO_MAX_TEST_NAME + 1 ];
-                    char func_name[ AUTO_MAX_TESTCASE_NAME + 1 ];
-                    char test_desc[ AUTO_MAX_TESTDESC_NAME + 1 ];
-                    UINT count;
-
-                    //
-                    // get the test name
-                    //
-                    if ( !pfAutoTestName( stringTest, &count ))
-                    {
-                        lt_dlclose( handle );
-                        return;
-                    }
-
-                    *item = new QTreeWidgetItem( top, *item, stringTest );  
-
-                    QTreeWidgetItem *after = NULL;
-
-                    for ( UWORD i = 1; i <= count; i ++ )
-                    {
-                        if ( pfAutoTestDesc( i, func_name, test_desc ))
-                        {
-                            if ( after )
-                            {
-                                QTreeWidgetItem *test = new QTreeWidgetItem( *item, after, func_name, test_desc, i, stringTest );  
-                                after = test;
-                            }
-                            else
-                            {
-                                QTreeWidgetItem *test = new QTreeWidgetItem( *item, func_name, test_desc, i, stringTest );  
-                                after = test;
-                            }
-                        }
-                    }
-
-                    lt_dlclose( handle );
-                }
-            }
-        }
+        ptreewidgetitemTestCase->setText( 0, szTestCase );
+        ptreewidgetitemTestCase->setText( 1, szTestCaseDesc );
     }
 }
 
@@ -531,17 +512,8 @@ void DlgToolsRunAutoTests::runTest( SERVERINFO *pServerInfo, QTreeWidgetItem *pt
     }
 
     // get our entry points...
-//    void (*pfAutoTestFunc)(lpSERVERINFO);
-//    BOOL (*pfAutoTestName)(LPSTR,UINT*);
-
-    AUTOTESTNAME pAutoTestName;
-    AUTOTESTFUNC pAutoTestFunc;
-
-//    pfAutoTestFunc = (void(*)(lpSERVERINFO))libraryTest.resolve( "AutoTestFunc" );
-//    pfAutoTestName = (BOOL(*)(LPSTR,UINT*))libraryTest.resolve( "AutoTestName" );
-
-    pAutoTestName = (AUTOTESTNAME)libraryTest.resolve( "AutoTestName" );
-    pAutoTestFunc = (AUTOTESTFUNC)libraryTest.resolve( "AutoTestFunc" );
+    AUTOTESTNAME pAutoTestName = (AUTOTESTNAME)libraryTest.resolve( "AutoTestName" );
+    AUTOTESTFUNC pAutoTestFunc = (AUTOTESTFUNC)libraryTest.resolve( "AutoTestFunc" );
 
     if ( !pAutoTestFunc )
     {
@@ -689,7 +661,7 @@ void OdbcTest::trace()
 
 void OdbcTest::manage_test()
 {
-    dManageTest *dlg = new dManageTest( this, "Manage Test Sources" );
+    DlgToolsManageTest *dlg = new DlgToolsManageTest( this, "Manage Test Sources" );
 
     dlg->exec();
 
@@ -698,7 +670,7 @@ void OdbcTest::manage_test()
 
 void OdbcTest::manage_auto_test()
 {
-    dManageAutoTest *dlg = new dManageAutoTest( this, "Manage Auto Test" );
+    DlgToolsManageAutoTest *dlg = new DlgToolsManageAutoTest( this, "Manage Auto Test" );
 
     dlg->exec();
 
@@ -707,7 +679,7 @@ void OdbcTest::manage_auto_test()
 
 void OdbcTest::manage_test_groups()
 {
-    dManageTestGroup *dlg = new dManageTestGroup( this, "Manage Test Groups" );
+    DlgToolsManageTestGroup *dlg = new DlgToolsManageTestGroup( this, "Manage Test Groups" );
 
     dlg->exec();
 
