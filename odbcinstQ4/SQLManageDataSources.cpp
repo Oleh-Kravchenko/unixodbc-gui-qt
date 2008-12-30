@@ -8,6 +8,7 @@
  * \license Copyright unixODBC-GUI-Qt Project 2009, LGPL
  */
 #include <odbcinstext.h>
+#include <autotest.h>
 
 #include <QApplication>
 
@@ -122,6 +123,138 @@ BOOL ODBCManageDataSources( HWND hWnd )
 BOOL ODBCCreateDataSource( HWND hWnd, LPCSTR lpszDS )
 {
     return QT4CreateDataSource( hWnd, lpszDS );
+}
+
+BOOL EXTFUNCDECL FAR ODBCLogPrintf( lpSERVERINFO pServerInfo, BOOL /* bForce */, LPTSTR szFormat, ... )
+{
+    // format the message...
+    va_list va;
+    char szFormatted[ 1024 ];
+
+    va_start( va, szFormat);
+    vsprintf( szFormatted, szFormat, va );
+    va_end( va );
+
+    // ensure text is terminated...
+    pServerInfo -> szBuff[ pServerInfo -> cBuff ] = '\0';
+
+    // to GUI...
+    if ( pServerInfo -> fScreen && pServerInfo->hwnd )
+    {
+        // the app (ie ODBCTestQ4) should have provided a generic window handle...
+        ODBCINSTWND *hWnd = (ODBCINSTWND*)pServerInfo->hwnd;
+
+        if ( hWnd )
+            ((QTextEdit*)hWnd)->append( pServerInfo -> szBuff );
+    }
+
+    // to file...
+    if ( pServerInfo -> fLog )
+    {
+        FILE *fp = fopen( pServerInfo -> szLogFile, "a+" );
+        if ( fp )
+        {
+            fputs( pServerInfo -> szBuff, fp );
+            fputs( "\n", fp );
+            fclose( fp );
+        }
+    }
+
+    // reset...
+    pServerInfo -> cBuff = 0;
+
+    return true;
+}
+
+int EXTFUNCDECL FAR ODBCMessageBox( HWND hwnd, UINT nStyle, LPTSTR szTitle, LPTSTR szFormat, ... )
+{
+    // its pointless to call here if we do not have a hwnd...
+    if ( !hwnd )
+        return 0;
+
+    // the app (ie ODBCTestQ4) should have provided a generic window handle...
+    // ODBCINSTWND *hWnd = (ODBCINSTWND*)hwnd;
+
+    // format the message...
+    va_list ap;
+    char szFormatted[ 1024 ];
+
+    va_start(ap, szFormat);
+    vsprintf (szFormatted, szFormat, ap);
+    va_end(ap);
+
+    // activate buttons...
+    int button0, button1, button2 = 0;
+
+    button0 = QMessageBox::NoButton;
+    button1 = QMessageBox::NoButton;
+    button2 = QMessageBox::NoButton;
+
+    switch ( nStyle & (MB_OK | MB_ABORTRETRYIGNORE | MB_OKCANCEL | MB_RETRYCANCEL | MB_YESNO | MB_YESNOCANCEL) )
+    {
+      case MB_ABORTRETRYIGNORE:
+        button0 = QMessageBox::Abort;
+        button1 = QMessageBox::Retry;
+        button2 = QMessageBox::Ignore;
+        break;
+      case MB_OKCANCEL:
+        button0 = QMessageBox::Ok;
+        button1 = QMessageBox::Cancel;
+        break;
+      case MB_RETRYCANCEL:
+        button0 = QMessageBox::Retry;
+        button1 = QMessageBox::Cancel;
+        break;
+      case MB_YESNO:
+        button0 = QMessageBox::Yes;
+        button1 = QMessageBox::No;
+        break;
+      case MB_YESNOCANCEL:
+        button0 = QMessageBox::Yes;
+        button1 = QMessageBox::No;
+        button2 = QMessageBox::Cancel;
+        break;
+      default:
+        button0 = QMessageBox::Ok;
+        break;
+    }
+
+    // set default button...
+    switch ( nStyle & (MB_DEFBUTTON1 | MB_DEFBUTTON2 | MB_DEFBUTTON3 ) )
+    {
+      case MB_DEFBUTTON1:
+      default:
+        button0 |= QMessageBox::Default;
+        break;
+      case MB_DEFBUTTON2:
+        button1 |= QMessageBox::Default;
+        break;
+      case MB_DEFBUTTON3:
+        button2 |= QMessageBox::Default;
+        break;
+    }
+
+    // icon...
+    QMessageBox::Icon icon = QMessageBox::NoIcon;
+    switch ( nStyle & (MB_ICONINFORMATION | MB_ICONQUESTION | MB_ICONSTOP ) )
+    {
+      case MB_ICONINFORMATION :
+        icon = QMessageBox::Information;
+        break;
+      case MB_ICONQUESTION:
+        icon = QMessageBox::Warning;
+        break;
+      case MB_ICONSTOP:
+        icon = QMessageBox::Critical;
+        break;
+      default:
+        icon = QMessageBox::NoIcon;
+        break;
+    }
+
+    QMessageBox MessageBox( szTitle, szFormatted, icon, button0, button1, button2 );
+
+    return MessageBox.exec();
 }
 
 #ifdef __cplusplus
