@@ -2092,7 +2092,7 @@ dAllocStmt::~dAllocStmt()
     delete l_handles;
 }
 
-void OdbcTest::sqlbindparameter()
+void OdbcTest::slotBindParameter()
 {
 	dBindParameter *dlg = new dBindParameter( this, "SQLBindParameter" );
 
@@ -2101,7 +2101,7 @@ void OdbcTest::sqlbindparameter()
 	delete dlg;
 }
 
-void OdbcTest::sqlcancel()
+void OdbcTest::slotCancel()
 {
 	dCancel *dlg = new dCancel( this, "SQLCancel" );
 
@@ -2110,7 +2110,7 @@ void OdbcTest::sqlcancel()
 	delete dlg;
 }
 
-void OdbcTest::sqlclosecursor()
+void OdbcTest::slotCloseCursor()
 {
 	dCloseCursor *dlg = new dCloseCursor( this, "SQLCloseCursor" );
 
@@ -2119,7 +2119,7 @@ void OdbcTest::sqlclosecursor()
 	delete dlg;
 }
 
-void OdbcTest::sqldescribeparam()
+void OdbcTest::slotDescribeParam()
 {
 	dDescribeParam *dlg = new dDescribeParam( this, "SQLDescribeParam" );
 
@@ -2128,7 +2128,7 @@ void OdbcTest::sqldescribeparam()
 	delete dlg;
 }
 
-void OdbcTest::sqlexecute()
+void OdbcTest::slotExecute()
 {
 	dExecute *dlg = new dExecute( this, "SQLExecute" );
 
@@ -2137,7 +2137,7 @@ void OdbcTest::sqlexecute()
 	delete dlg;
 }
 
-void OdbcTest::sqlexecdirect()
+void OdbcTest::slotExecDirect()
 {
 	dExecDirect *dlg = new dExecDirect( this, "SQLExecDirect" );
 
@@ -2146,7 +2146,7 @@ void OdbcTest::sqlexecdirect()
 	delete dlg;
 }
 
-void OdbcTest::sqlfreestmt()
+void OdbcTest::slotFreeStmt()
 {
 	dFreeStmt *dlg = new dFreeStmt( this, "SQLFreeStmt" );
 
@@ -2155,7 +2155,7 @@ void OdbcTest::sqlfreestmt()
 	delete dlg;
 }
 
-void OdbcTest::sqlgetcursorname()
+void OdbcTest::slotGetCursorName()
 {
 	dGetCursorName *dlg = new dGetCursorName( this, "SQLGetCursorName" );
 
@@ -2164,7 +2164,7 @@ void OdbcTest::sqlgetcursorname()
 	delete dlg;
 }
 
-void OdbcTest::sqlnumparams()
+void OdbcTest::slotNumParams()
 {
 	dNumParams *dlg = new dNumParams( this, "SQLNumParams" );
 
@@ -2173,7 +2173,7 @@ void OdbcTest::sqlnumparams()
 	delete dlg;
 }
 
-void OdbcTest::sqlparamdata()
+void OdbcTest::slotParamData()
 {
 	dParamData *dlg = new dParamData( this, "SQLParamData" );
 
@@ -2182,7 +2182,7 @@ void OdbcTest::sqlparamdata()
 	delete dlg;
 }
 
-void OdbcTest::sqlparamoptions()
+void OdbcTest::slotParamOptions()
 {
 	dParamOption *dlg = new dParamOption( this, "SQLParamOptions" );
 
@@ -2191,7 +2191,7 @@ void OdbcTest::sqlparamoptions()
 	delete dlg;
 }
 
-void OdbcTest::sqlprepare()
+void OdbcTest::slotPrepare()
 {
 	dPrepare *dlg = new dPrepare( this, "SQLPrepare" );
 
@@ -2200,7 +2200,7 @@ void OdbcTest::sqlprepare()
 	delete dlg;
 }
 
-void OdbcTest::sqlputdata()
+void OdbcTest::slotPutData()
 {
 	dPutData *dlg = new dPutData( this, "SQLPutData" );
 
@@ -2209,7 +2209,7 @@ void OdbcTest::sqlputdata()
 	delete dlg;
 }
 
-void OdbcTest::sqlsetcursorname()
+void OdbcTest::slotSetCursorName()
 {
 	dSetCursorName *dlg = new dSetCursorName( this, "SQLSetCursorName" );
 
@@ -2218,7 +2218,7 @@ void OdbcTest::sqlsetcursorname()
 	delete dlg;
 }
 
-void OdbcTest::sqlallocstmt()
+void OdbcTest::slotAllocStmt()
 {
 	dAllocStmt *dlg = new dAllocStmt( this, "SQLAllocStmt" );
 
@@ -2227,7 +2227,7 @@ void OdbcTest::sqlallocstmt()
 	delete dlg;
 }
 
-void OdbcTest::sqlbindparam()
+void OdbcTest::slotBindParam()
 {
 	dBindParam *dlg = new dBindParam( this, "SQLBindParam" );
 
@@ -2236,19 +2236,19 @@ void OdbcTest::sqlbindparam()
 	delete dlg;
 }
 
-void OdbcTest::fillparam()
+void OdbcTest::slotFillParam()
 {
     QMessageBox::about( this, "ODBC Test",
 			"Not yet implemented" );
 }
 
-void OdbcTest::showparam()
+void OdbcTest::slotShowParam()
 {
     QMessageBox::about( this, "ODBC Test",
 			"Not yet implemented" );
 }
 
-void OdbcTest::showcursorsettings()
+void OdbcTest::slotShowCursorSettings()
 {
     QMessageBox::about( this, "ODBC Test",
 			"Not yet implemented" );

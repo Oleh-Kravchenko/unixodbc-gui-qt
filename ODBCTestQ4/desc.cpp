@@ -848,7 +848,7 @@ dGetDescRec::~dGetDescRec()
     delete l_rec_num;
 }
 
-void OdbcTest::sqlcopydesc()
+void OdbcTest::slotCopyDesc()
 {
 	dCopyDesc *dlg = new dCopyDesc( this, "SQLCopyDesc" );
 
@@ -857,7 +857,7 @@ void OdbcTest::sqlcopydesc()
 	delete dlg;
 }
 
-void OdbcTest::sqlgetdescfield()
+void OdbcTest::slotGetDescField()
 {
 	dGetDescField *dlg = new dGetDescField( this, "SQLGetDescField" );
 
@@ -866,7 +866,7 @@ void OdbcTest::sqlgetdescfield()
 	delete dlg;
 }
 
-void OdbcTest::sqlgetdescrec()
+void OdbcTest::slotGetDescRec()
 {
 	dGetDescRec *dlg = new dGetDescRec( this, "SQLGetDescRec" );
 
@@ -875,19 +875,19 @@ void OdbcTest::sqlgetdescrec()
 	delete dlg;
 }
 
-void OdbcTest::sqlsetdescfield()
+void OdbcTest::slotSetDescField()
 {
     QMessageBox::about( this, "ODBC Test",
 			"Not yet implemented" );
 }
 
-void OdbcTest::sqlsetdescrec()
+void OdbcTest::slotSetDescRec()
 {
     QMessageBox::about( this, "ODBC Test",
 			"Not yet implemented" );
 }
 
-void OdbcTest::getdescriptorsall()
+void OdbcTest::slotGetDescAll()
 {
     QMessageBox::about( this, "ODBC Test",
 			"Not yet implemented" );

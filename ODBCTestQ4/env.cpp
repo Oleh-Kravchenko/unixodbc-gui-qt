@@ -1180,7 +1180,7 @@ dTransact::~dTransact()
     delete l_completion_type;
 }
 
-void OdbcTest::sqlallochandle()
+void OdbcTest::slotAllocHandle()
 {
 	dAllocHandle *dlg = new dAllocHandle( this, "SQLAllocHandle" );
 
@@ -1189,7 +1189,7 @@ void OdbcTest::sqlallochandle()
 	delete dlg;
 }
 
-void OdbcTest::sqldatasources()
+void OdbcTest::slotDataSources()
 {
 	dDataSources *dlg = new dDataSources( this, "SQLDataSources" );
 
@@ -1198,7 +1198,7 @@ void OdbcTest::sqldatasources()
 	delete dlg;
 }
 
-void OdbcTest::sqldrivers()
+void OdbcTest::slotDrivers()
 {
 	dDrivers *dlg = new dDrivers( this, "SQLDrivers" );
 
@@ -1207,7 +1207,7 @@ void OdbcTest::sqldrivers()
 	delete dlg;
 }
 
-void OdbcTest::sqlendtran()
+void OdbcTest::slotEndTran()
 {
 	dEndTran *dlg = new dEndTran( this, "SQLEndTran" );
 
@@ -1216,7 +1216,7 @@ void OdbcTest::sqlendtran()
 	delete dlg;
 }
 
-void OdbcTest::sqlfreehandle()
+void OdbcTest::slotFreeHandle()
 {
 	dFreeHandle *dlg = new dFreeHandle( this, "SQLFreeHandle" );
 
@@ -1225,7 +1225,7 @@ void OdbcTest::sqlfreehandle()
 	delete dlg;
 }
 
-void OdbcTest::sqlallocenv()
+void OdbcTest::slotAllocEnv()
 {
 	dAllocEnv *dlg = new dAllocEnv( this, "SQLAllocEnv" );
 
@@ -1234,7 +1234,7 @@ void OdbcTest::sqlallocenv()
 	delete dlg;
 }
 
-void OdbcTest::sqlfreeenv()
+void OdbcTest::slotFreeEnv()
 {
 	dFreeEnv *dlg = new dFreeEnv( this, "SQLFreeEnv" );
 
@@ -1243,7 +1243,7 @@ void OdbcTest::sqlfreeenv()
 	delete dlg;
 }
 
-void OdbcTest::sqltransact()
+void OdbcTest::slotTransact()
 {
 	dTransact *dlg = new dTransact( this, "SQLTransact" );
 
@@ -1252,13 +1252,13 @@ void OdbcTest::sqltransact()
 	delete dlg;
 }
 
-void OdbcTest::datasourcesall()
+void OdbcTest::slotDataSourcesAll()
 {
     QMessageBox::about( this, "ODBC Test",
 			"Not yet implemented" );
 }
 
-void OdbcTest::driversall()
+void OdbcTest::slotDriversAll()
 {
     QMessageBox::about( this, "ODBC Test",
 			"Not yet implemented" );

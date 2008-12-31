@@ -39,13 +39,13 @@ SOURCES 	= \
 		DlgToolsNewGroup.cpp \
 		DlgToolsNewSource.cpp \
 		DlgToolsRunAutoTests.cpp \
-		edit.cpp \
+#		edit.cpp \
 		env.cpp \
 		installer.cpp \
 		main.cpp \
 		OdbcHandle.cpp \
 		OdbcTest.cpp \
-		open.cpp \
+#		open.cpp \
 		results.cpp \
 		stmt.cpp
 

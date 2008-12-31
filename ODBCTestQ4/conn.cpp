@@ -4425,7 +4425,7 @@ dFreeConnect::~dFreeConnect()
     delete l_handles;
 }
 
-void OdbcTest::sqlbrowseconnect()
+void OdbcTest::slotBrowseConnect()
 {
     dBrowseConnect *dlg = new dBrowseConnect( this, "SQLBrowseConnect" );
 
@@ -4434,7 +4434,7 @@ void OdbcTest::sqlbrowseconnect()
     delete dlg;
 }
 
-void OdbcTest::sqlconnect()
+void OdbcTest::slotConnect()
 {
     dConnect *dlg = new dConnect( this, "SQLConnect" );
 
@@ -4443,7 +4443,7 @@ void OdbcTest::sqlconnect()
     delete dlg;
 }
 
-void OdbcTest::sqldriverconnect()
+void OdbcTest::slotDriverConnect()
 {
     dDriverConnect *dlg = new dDriverConnect( this, "SQLDriverConnect" );
 
@@ -4452,7 +4452,7 @@ void OdbcTest::sqldriverconnect()
     delete dlg;
 }
 
-void OdbcTest::sqldisconnect()
+void OdbcTest::slotDisconnect()
 {
     dDisconnect *dlg = new dDisconnect( this, "SQLDisconnect" );
 
@@ -4461,7 +4461,7 @@ void OdbcTest::sqldisconnect()
     delete dlg;
 }
 
-void OdbcTest::sqlgetinfo()
+void OdbcTest::slotGetInfo()
 {
     dGetInfo *dlg = new dGetInfo( this, "GetInfo" );
 
@@ -4470,7 +4470,7 @@ void OdbcTest::sqlgetinfo()
     delete dlg;
 }
 
-void OdbcTest::sqlgetfunctions()
+void OdbcTest::slotGetFunctions()
 {
     dGetFunctions *dlg = new dGetFunctions( this, "GetFunctions" );
 
@@ -4479,7 +4479,7 @@ void OdbcTest::sqlgetfunctions()
     delete dlg;
 }
 
-void OdbcTest::sqlnativesql()
+void OdbcTest::slotNativeSql()
 {
     dNativeSQL *dlg = new dNativeSQL( this, "NativeSql" );
 
@@ -4488,7 +4488,7 @@ void OdbcTest::sqlnativesql()
     delete dlg;
 }
 
-void OdbcTest::fullconnect()
+void OdbcTest::slotFullConnect()
 {
     dFullConnect *dlg = new dFullConnect( this, "FullConnect" );
 
@@ -4497,13 +4497,13 @@ void OdbcTest::fullconnect()
     delete dlg;
 }
 
-void OdbcTest::fulldisconnect()
+void OdbcTest::slotFullDisconnect()
 {
     QMessageBox::about( this, "ODBC Test",
                         "Not yet implemented" );
 }
 
-void OdbcTest::sqlallocconnect()
+void OdbcTest::slotAllocConnect()
 {
     dAllocConnect *dlg = new dAllocConnect( this, "AllocConnect" );
 
@@ -4512,7 +4512,7 @@ void OdbcTest::sqlallocconnect()
     delete dlg;
 }
 
-void OdbcTest::sqlfreeconnect()
+void OdbcTest::slotFreeConnect()
 {
     dFreeConnect *dlg = new dFreeConnect( this, "FreeConnect" );
 
@@ -4521,7 +4521,7 @@ void OdbcTest::sqlfreeconnect()
     delete dlg;
 }
 
-void OdbcTest::getinfodbc( SQLHANDLE hdbc )
+void OdbcTest::getInfoOdbc( SQLHANDLE hdbc )
 {
     attr_options *opt = info_options;
 
@@ -4660,7 +4660,7 @@ void OdbcTest::getinfodbc( SQLHANDLE hdbc )
     }
 }
 
-void OdbcTest::getinfoall()
+void OdbcTest::slotGetInfoAll()
 {
     /*
      * look for a connection handle
@@ -4692,15 +4692,15 @@ void OdbcTest::getinfoall()
     }
     else if ( handle_count == 1 )
     {
-        getinfodbc( hdbc );
+        getInfoOdbc( hdbc );
     }
     else
     {
-        getinfodbc();
+        getInfoOdbc();
     }
 }
 
-void OdbcTest::getfunctionsall()
+void OdbcTest::slotGetFunctionsAll()
 {
     QMessageBox::about( this, "ODBC Test",
                         "Not yet implemented" );

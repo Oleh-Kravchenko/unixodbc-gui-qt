@@ -647,19 +647,19 @@ void DlgToolsRunAutoTests::TestsChanged()
     }
 }
 
-void OdbcTest::options()
+void OdbcTest::slotOptions()
 {
     QMessageBox::about( this, "ODBC Test",
                         "Not yet implemented" );
 }
 
-void OdbcTest::trace()
+void OdbcTest::slotTrace()
 {
     QMessageBox::about( this, "ODBC Test",
                         "Not yet implemented" );
 }
 
-void OdbcTest::manage_test()
+void OdbcTest::slotManageTestSources()
 {
     DlgToolsManageTest *dlg = new DlgToolsManageTest( this, "Manage Test Sources" );
 
@@ -668,7 +668,7 @@ void OdbcTest::manage_test()
     delete dlg;
 }
 
-void OdbcTest::manage_auto_test()
+void OdbcTest::slotManageAutoTests()
 {
     DlgToolsManageAutoTest *dlg = new DlgToolsManageAutoTest( this, "Manage Auto Test" );
 
@@ -677,7 +677,7 @@ void OdbcTest::manage_auto_test()
     delete dlg;
 }
 
-void OdbcTest::manage_test_groups()
+void OdbcTest::slotManageTestGroups()
 {
     DlgToolsManageTestGroup *dlg = new DlgToolsManageTestGroup( this, "Manage Test Groups" );
 
@@ -686,7 +686,7 @@ void OdbcTest::manage_test_groups()
     delete dlg;
 }
 
-void OdbcTest::run_auto_tests()
+void OdbcTest::slotRunAutoTests()
 {
     DlgToolsRunAutoTests *dlg = new DlgToolsRunAutoTests( this, "Run Auto Tests" );
 

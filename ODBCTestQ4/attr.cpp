@@ -2848,7 +2848,7 @@ dGetConnectOption::~dGetConnectOption()
     delete target_valid;
 }
 
-void OdbcTest::sqlsetstmtattr()
+void OdbcTest::slotSetStmtAttr()
 {
     dSetStmtAttr *dlg = new dSetStmtAttr( this, "SQLSetStmtAttr" );
 
@@ -2857,7 +2857,7 @@ void OdbcTest::sqlsetstmtattr()
     delete dlg;
 }
 
-void OdbcTest::sqlgetstmtattr()
+void OdbcTest::slotGetStmtAttr()
 {
     dGetStmtAttr *dlg = new dGetStmtAttr( this, "SQLGetStmtAttr" );
 
@@ -2866,7 +2866,7 @@ void OdbcTest::sqlgetstmtattr()
     delete dlg;
 }
 
-void OdbcTest::sqlsetconnectattr()
+void OdbcTest::slotSetConnectAttr()
 {
     dSetConnAttr *dlg = new dSetConnAttr( this, "SQLSetConnectAttr" );
 
@@ -2875,7 +2875,7 @@ void OdbcTest::sqlsetconnectattr()
     delete dlg;
 }
 
-void OdbcTest::sqlgetconnectattr()
+void OdbcTest::slotGetConnectAttr()
 {
     dGetConnAttr *dlg = new dGetConnAttr( this, "SQLGetConnectAttr" );
 
@@ -2884,7 +2884,7 @@ void OdbcTest::sqlgetconnectattr()
     delete dlg;
 }
 
-void OdbcTest::sqlsetenvattr()
+void OdbcTest::slotSetEnvAttr()
 {
     dSetEnvAttr *dlg = new dSetEnvAttr( this, "SQLSetEnvAttr" );
 
@@ -2893,7 +2893,7 @@ void OdbcTest::sqlsetenvattr()
     delete dlg;
 }
 
-void OdbcTest::sqlgetenvattr()
+void OdbcTest::slotGetEnvAttr()
 {
     dGetEnvAttr *dlg = new dGetEnvAttr( this, "SQLGetEnvAttr" );
 
@@ -2902,7 +2902,7 @@ void OdbcTest::sqlgetenvattr()
     delete dlg;
 }
 
-void OdbcTest::sqlsetstmtoption()
+void OdbcTest::slotSetStmtOption()
 {
     dSetStmtOption *dlg = new dSetStmtOption( this, "SQLSetStmtOption" );
 
@@ -2911,7 +2911,7 @@ void OdbcTest::sqlsetstmtoption()
     delete dlg;
 }
 
-void OdbcTest::sqlgetstmtoption()
+void OdbcTest::slotGetStmtOption()
 {
     dGetStmtOption *dlg = new dGetStmtOption( this, "SQLGetStmtOption" );
 
@@ -2920,7 +2920,7 @@ void OdbcTest::sqlgetstmtoption()
     delete dlg;
 }
 
-void OdbcTest::sqlsetconnectoption()
+void OdbcTest::slotSetConnectOption()
 {
     dSetConnectOption *dlg = new dSetConnectOption( this, "SQLSetConnectOption" );
 
@@ -2929,7 +2929,7 @@ void OdbcTest::sqlsetconnectoption()
     delete dlg;
 }
 
-void OdbcTest::sqlgetconnectoption()
+void OdbcTest::slotGetConnectOption()
 {
     dGetConnectOption *dlg = new dGetConnectOption( this, "SQLGetConnectOption" );
 
@@ -2938,7 +2938,7 @@ void OdbcTest::sqlgetconnectoption()
     delete dlg;
 }
 
-void OdbcTest::setcursoratributes()
+void OdbcTest::slotSetCursorAttributes()
 {
     QMessageBox::about( this, "ODBC Test",
                         "Not yet implemented" );

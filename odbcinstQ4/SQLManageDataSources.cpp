@@ -106,8 +106,11 @@ extern "C" {
 /*!
  * \brief   Plugin in entry point.
  *
- *          This entry point is called to implement the SQLManageDataSources call. This
- *          plugin does it using Qt4.
+ *          This entry point is called to implement the SQLManageDataSources call.
+ * 
+ *          This plugin does it using Qt4.
+ * 
+ *          The typical way to get to here is to call into odbcinst via SQLManageDataSource. 
  */
 BOOL ODBCManageDataSources( HWND hWnd )
 {
@@ -117,24 +120,29 @@ BOOL ODBCManageDataSources( HWND hWnd )
 /*!
  * \brief   Plugin in entry point.
  *
- *          This entry point is called to implement the SQLCreateDataSource call. This
- *          plugin does it using Qt4.
+ *          This entry point is called to implement the SQLCreateDataSource call.
+ * 
+ *          This plugin does it using Qt4.
+ * 
+ *          The typical way to get to here is to call into odbcinst via SQLCreateDataSource. 
  */
 BOOL ODBCCreateDataSource( HWND hWnd, LPCSTR lpszDS )
 {
     return QT4CreateDataSource( hWnd, lpszDS );
 }
 
-BOOL EXTFUNCDECL FAR ODBCLogPrintf( lpSERVERINFO pServerInfo, BOOL /* bForce */, LPTSTR szFormat, ... )
+/*!
+ * \brief   Plugin in entry point.
+ *
+ *          This entry point is called to implement the szLogPrintf call used by auto tests managed/run
+ *          by ODBCTestQ4.
+ * 
+ *          This plugin does it using Qt4.
+ * 
+ *          The typical way to get to here is to call into odbcinst via szLogPrintf. 
+ */
+BOOL EXTFUNCDECL FAR ODBCLogPrintf( lpSERVERINFO pServerInfo )
 {
-    // format the message...
-    va_list va;
-    char szFormatted[ 1024 ];
-
-    va_start( va, szFormat);
-    vsprintf( szFormatted, szFormat, va );
-    va_end( va );
-
     // ensure text is terminated...
     pServerInfo -> szBuff[ pServerInfo -> cBuff ] = '\0';
 
@@ -166,9 +174,19 @@ BOOL EXTFUNCDECL FAR ODBCLogPrintf( lpSERVERINFO pServerInfo, BOOL /* bForce */,
     return true;
 }
 
+/*!
+ * \brief   Plugin in entry point.
+ *
+ *          This entry point is called to implement the szMessageBox call used by auto tests managed/run
+ *          by ODBCTestQ4.
+ * 
+ *          This plugin does it using Qt4.
+ * 
+ *          The typical way to get to here is to call into odbcinst via szMessageBox. 
+ */
 int EXTFUNCDECL FAR ODBCMessageBox( HWND hwnd, UINT nStyle, LPTSTR szTitle, LPTSTR szFormat, ... )
 {
-    // its pointless to call here if we do not have a hwnd...
+    // ok - you can call here with a null hwnd - but that is reason to question your code...
     if ( !hwnd )
         return 0;
 

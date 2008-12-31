@@ -897,7 +897,7 @@ dGetDiagField::~dGetDiagField()
     delete l_rec_num;
 }
 
-void OdbcTest::sqlgetdiagrec()
+void OdbcTest::slotGetDiagRec()
 {
     dGetDiagRec *dlg = new dGetDiagRec( this, "SQLGetDiagRec" );
 
@@ -906,7 +906,7 @@ void OdbcTest::sqlgetdiagrec()
     delete dlg;
 }
 
-void OdbcTest::sqlgetdiagfield()
+void OdbcTest::slotGetDiagField()
 {
     dGetDiagField *dlg = new dGetDiagField( this, "SQLGetDiagField" );
 
@@ -915,7 +915,7 @@ void OdbcTest::sqlgetdiagfield()
     delete dlg;
 }
 
-void OdbcTest::sqlerror()
+void OdbcTest::slotError()
 {
     dError *dlg = new dError( this, "SQLError" );
 
@@ -924,7 +924,7 @@ void OdbcTest::sqlerror()
     delete dlg;
 }
 
-void OdbcTest::errorall()
+void OdbcTest::slotErrorsAll()
 {
     QMessageBox::about( this, "ODBC Test",
                         "Not yet implemented" );

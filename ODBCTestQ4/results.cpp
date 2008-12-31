@@ -2717,13 +2717,13 @@ dSetScrollOptions::~dSetScrollOptions()
     delete l_rowset;
 }
 
-void OdbcTest::sqlbindcol()
+void OdbcTest::slotBindCol()
 {
     QMessageBox::about( this, "ODBC Test",
                         "Not yet implemented" );
 }
 
-void OdbcTest::sqlbulkoperations()
+void OdbcTest::slotBulkOperations()
 {
     dBulkOperations *dlg = new dBulkOperations( this, "SQLBulkOperations" );
 
@@ -2732,7 +2732,7 @@ void OdbcTest::sqlbulkoperations()
     delete dlg;
 }
 
-void OdbcTest::sqlcolattribute()
+void OdbcTest::slotColAttribute()
 {
     dColAttribute *dlg = new dColAttribute( this, "SQLColAttribute" );
 
@@ -2741,7 +2741,7 @@ void OdbcTest::sqlcolattribute()
     delete dlg;
 }
 
-void OdbcTest::sqlcolattributes()
+void OdbcTest::slotColAttributes()
 {
     dColAttributes *dlg = new dColAttributes( this, "SQLColAttributes" );
 
@@ -2750,7 +2750,7 @@ void OdbcTest::sqlcolattributes()
     delete dlg;
 }
 
-void OdbcTest::sqldescribecol()
+void OdbcTest::slotDescribeCol()
 {
     dDescribeCol *dlg = new dDescribeCol( this, "SQLDescribeCol" );
 
@@ -2759,7 +2759,7 @@ void OdbcTest::sqldescribecol()
     delete dlg;
 }
 
-void OdbcTest::sqlextendedfetch()
+void OdbcTest::slotExtendedFetch()
 {
     dExtendedFetch *dlg = new dExtendedFetch( this, "SQLExtendedFetch" );
 
@@ -2768,7 +2768,7 @@ void OdbcTest::sqlextendedfetch()
     delete dlg;
 }
 
-void OdbcTest::sqlfetch()
+void OdbcTest::slotFetch()
 {
     dFetch *dlg = new dFetch( this, "SQLFetch" );
 
@@ -2777,7 +2777,7 @@ void OdbcTest::sqlfetch()
     delete dlg;
 }
 
-void OdbcTest::sqlfetchscroll()
+void OdbcTest::slotFetchScroll()
 {
     dFetchScroll *dlg = new dFetchScroll( this, "SQLFetchScroll" );
 
@@ -2786,7 +2786,7 @@ void OdbcTest::sqlfetchscroll()
     delete dlg;
 }
 
-void OdbcTest::sqlgetdata()
+void OdbcTest::slotGetData()
 {
     dGetData *dlg = new dGetData( this, "SQLGetData" );
 
@@ -2795,7 +2795,7 @@ void OdbcTest::sqlgetdata()
     delete dlg;
 }
 
-void OdbcTest::sqlmoreresults()
+void OdbcTest::slotMoreResults()
 {
     dMoreResults *dlg = new dMoreResults( this, "SQLMoreResults" );
 
@@ -2804,7 +2804,7 @@ void OdbcTest::sqlmoreresults()
     delete dlg;
 }
 
-void OdbcTest::sqlnumresultscols()
+void OdbcTest::slotNumResultCols()
 {
     dNumResultCols *dlg = new dNumResultCols( this, "SQLNumResultCols" );
 
@@ -2813,7 +2813,7 @@ void OdbcTest::sqlnumresultscols()
     delete dlg;
 }
 
-void OdbcTest::sqlrowcount()
+void OdbcTest::slotRowCount()
 {
     dRowCount *dlg = new dRowCount( this, "SQLRowCount" );
 
@@ -2822,7 +2822,7 @@ void OdbcTest::sqlrowcount()
     delete dlg;
 }
 
-void OdbcTest::sqlsetpos()
+void OdbcTest::slotSetPos()
 {
     dSetPos *dlg = new dSetPos( this, "SQLSetPos" );
 
@@ -2831,7 +2831,7 @@ void OdbcTest::sqlsetpos()
     delete dlg;
 }
 
-void OdbcTest::sqlsetscrolloptions()
+void OdbcTest::slotSetScrollOptions()
 {
     dSetScrollOptions *dlg = new dSetScrollOptions( this, "SQLSetScrollOptions" );
 
@@ -2840,25 +2840,25 @@ void OdbcTest::sqlsetscrolloptions()
     delete dlg;
 }
 
-void OdbcTest::bindcolall()
+void OdbcTest::slotBindColAll()
 {
     QMessageBox::about( this, "ODBC Test",
                         "Not yet implemented" );
 }
 
-void OdbcTest::describecolall()
+void OdbcTest::slotDescribeColAll()
 {
     QMessageBox::about( this, "ODBC Test",
                         "Not yet implemented" );
 }
 
-void OdbcTest::fetchall()
+void OdbcTest::slotFetchAll()
 {
     QMessageBox::about( this, "ODBC Test",
                         "Not yet implemented" );
 }
 
-void OdbcTest::getdatastmt( SQLHANDLE hstmt )
+void OdbcTest::getDataStmt( SQLHANDLE hstmt )
 {
     SQLRETURN ret;
     SQLSMALLINT column_count;
@@ -3022,7 +3022,7 @@ void OdbcTest::getdatastmt( SQLHANDLE hstmt )
     delete col_info;
 }
 
-void OdbcTest::getdataall()
+void OdbcTest::slotGetDataAll()
 {
     /*
      * look for a statement handle
@@ -3055,21 +3055,21 @@ void OdbcTest::getdataall()
     }
     else if ( handle_count == 1 )
     {
-        getdatastmt( hstmt );
+        getDataStmt( hstmt );
     }
     else
     {
-        getdatastmt();
+        getDataStmt();
     }
 }
 
-void OdbcTest::showboundcols()
+void OdbcTest::slotShowBoundCols()
 {
     QMessageBox::about( this, "ODBC Test",
                         "Not yet implemented" );
 }
 
-void OdbcTest::displayrowset()
+void OdbcTest::slotDisplayRowSet()
 {
     QMessageBox::about( this, "ODBC Test",
                         "Not yet implemented" );

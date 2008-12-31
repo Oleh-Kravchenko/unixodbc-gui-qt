@@ -41,267 +41,6 @@ OdbcTest::OdbcTest( QWidget *parent )
      */
     pSettings = new QSettings( QDir::homePath() + "Gator.ini", QSettings::IniFormat, this );
 
-/*
-    QPopupMenu *file = new QPopupMenu( this );
-    int id;
-
-    file->insertItem( "E&xit", qApp, SLOT(quit()), CTRL+Key_Q );
-
-    QPopupMenu* diag = new QPopupMenu( this );
-    diag->insertItem( "SQLGetDiag&Rec...", this, SLOT(sqlgetdiagrec()) );
-    diag->insertItem( "SQLGetDiag&Field...", this, SLOT(sqlgetdiagfield()) );
-    diag->insertItem( "SQL&Error...", this, SLOT(sqlerror()) );
-    diag->insertSeparator();
-    id = diag->insertItem( "Errors &All", this, SLOT(errorall()) );
-    diag->setItemEnabled( id, FALSE );
-
-    QPopupMenu* env = new QPopupMenu( this );
-    env->insertItem( "SQL&AllocEnv...", this, SLOT(sqlallocenv()) );
-    env->insertItem( "SQL&AllocHandle...", this, SLOT(sqlallochandle()) );
-    env->insertItem( "SQLDataS&ources...", this, SLOT(sqldatasources()) );
-    env->insertItem( "S&QLDrivers...", this, SLOT(sqldrivers()) );
-    env->insertItem( "SQL&FreeEnv...", this, SLOT(sqlfreeenv()) );
-    env->insertItem( "SQLF&reeHandle...", this, SLOT(sqlfreehandle()) );
-    env->insertItem( "SQLE&ndTran...", this, SLOT(sqlendtran()) );
-    env->insertItem( "SQL&Transact...", this, SLOT(sqltransact()) );
-    env->insertSeparator();
-    id = env->insertItem( "Data &Sources All", this, SLOT(datasourcesall()) );
-    env->setItemEnabled( id, FALSE );
-    id = env->insertItem( "Dri&vers All", this, SLOT(driversall()) );
-    env->setItemEnabled( id, FALSE );
-
-    QPopupMenu* conn = new QPopupMenu( this );
-    conn->insertItem( "SQL&AllocConnect...", this, SLOT(sqlallocconnect()) );
-    conn->insertItem( "SQL&BrowseConnect...", this, SLOT(sqlbrowseconnect()) );
-    conn->insertItem( "SQL&Connect...", this, SLOT(sqlconnect()) );
-    conn->insertItem( "SQLD&riverConnect...", this, SLOT(sqldriverconnect()) );
-    conn->insertItem( "SQL&Disconnect...", this, SLOT(sqldisconnect()) );
-    conn->insertItem( "SQL&FreeConnect...", this, SLOT(sqlfreeconnect()) );
-    conn->insertItem( "S&QLGetFunctions...", this, SLOT(sqlgetfunctions()) );
-    conn->insertItem( "SQLGet&Info...", this, SLOT(sqlgetinfo()) );
-    conn->insertItem( "SQLN&ativeSQL...", this, SLOT(sqlnativesql()) );
-    conn->setItemEnabled( id, FALSE );
-    conn->insertSeparator();
-    conn->insertItem( "F&ull Connect...", this, SLOT(fullconnect()), Qt::CTRL+Qt::Key_F );
-    id = conn->insertItem( "Fu&ll Disconnect", this, SLOT(fulldisconnect()), Qt::CTRL+Qt::Key_D );
-    conn->setItemEnabled( id, FALSE );
-    conn->insertItem( "G&et Info All", this, SLOT(getinfoall()) );
-    id = conn->insertItem( "Get &Functions All", this, SLOT(getfunctionsall()) );
-    conn->setItemEnabled( id, FALSE );
-
-    QPopupMenu* desc = new QPopupMenu( this );
-    desc->insertItem( "SQLCop&yDesc...", this, SLOT(sqlcopydesc()) );
-    desc->insertItem( "SQLGetDesc&Field...", this, SLOT(sqlgetdescfield()) );
-    desc->insertItem( "SQLG&etDescRec...", this, SLOT(sqlgetdescrec()) );
-    id = desc->insertItem( "SQLSetDescF&ield...", this, SLOT(sqlsetdescfield()) );
-    desc->setItemEnabled( id, FALSE );
-    id = desc->insertItem( "SQLS&etDescRec...", this, SLOT(sqlsetdescrec()) );
-    desc->setItemEnabled( id, FALSE );
-    desc->insertSeparator();
-    id = desc->insertItem( "Get Descriptors All", this, SLOT(getdescriptorsall()) );
-    desc->setItemEnabled( id, FALSE );
-
-    QPopupMenu* stmt = new QPopupMenu( this );
-    stmt->insertItem( "SQL&AllocStmt...", this, SLOT(sqlallocstmt()) );
-    id = stmt->insertItem( "S&QLBindParam...", this, SLOT(sqlbindparam()) );
-    stmt->setItemEnabled( id, FALSE );
-    id = stmt->insertItem( "SQL&BindParameter...", this, SLOT(sqlbindparameter()) );
-    stmt->setItemEnabled( id, FALSE );
-    stmt->insertItem( "SQL&Cancel...", this, SLOT(sqlcancel()) );
-    stmt->insertItem( "SQLCl&oseCursor...", this, SLOT(sqlclosecursor()) );
-    stmt->insertItem( "SQLDe&scribeParam...", this, SLOT(sqldescribeparam()) );
-    stmt->insertItem( "SQL&Execute...", this, SLOT(sqlexecute()) );
-    stmt->insertItem( "SQLExec&Direct...", this, SLOT(sqlexecdirect()) );
-    stmt->insertItem( "SQL&FreeStmt...", this, SLOT(sqlfreestmt()) );
-    stmt->insertItem( "SQL&GetCursorName...", this, SLOT(sqlgetcursorname()) );
-    stmt->insertItem( "SQL&NumParams...", this, SLOT(sqlnumparams()) );
-    stmt->insertItem( "SQLPara&mData...", this, SLOT(sqlparamdata()) );
-    stmt->insertItem( "SQLPa&ramOptions...", this, SLOT(sqlparamoptions()) );
-    stmt->insertItem( "SQL&Prepare...", this, SLOT(sqlprepare()) );
-    stmt->insertItem( "SQLP&utData...", this, SLOT(sqlputdata()) );
-    stmt->insertItem( "SQ&LSetCursorName...", this, SLOT(sqlsetcursorname()) );
-    stmt->insertSeparator();
-    id = stmt->insertItem( "F&ill Param...", this, SLOT(fillparam()) );
-    stmt->setItemEnabled( id, FALSE );
-    id = stmt->insertItem( "Sho&w Param...", this, SLOT(showparam()) );
-    stmt->setItemEnabled( id, FALSE );
-    id = stmt->insertItem( "S&how Cursor Settings...", this, SLOT(showcursorsettings()) );
-    stmt->setItemEnabled( id, FALSE );
-
-    QPopupMenu* attr = new QPopupMenu( this );
-    attr->insertItem( "SQLSet&StmtAttr...", this, SLOT(sqlsetstmtattr()) );
-    attr->insertItem( "SQLGetS&tmtAttr...", this, SLOT(sqlgetstmtattr()) );
-    attr->insertItem( "SQLSetStmt&Option...", this, SLOT(sqlsetstmtoption()) );
-    attr->insertItem( "SQLGetStmtOpt&ion...", this, SLOT(sqlgetstmtoption()) );
-    attr->insertSeparator();
-    attr->insertItem( "SQLSetConnect&Attr...", this, SLOT(sqlsetconnectattr()) );
-    attr->insertItem( "SQLGetC&onnectAttr...", this, SLOT(sqlgetconnectattr()) );
-    attr->insertItem( "SQLSetConnectO&ption...", this, SLOT(sqlsetconnectoption()) );
-    attr->insertItem( "SQLGetC&onnectOp&tion...", this, SLOT(sqlgetconnectoption()) );
-    attr->insertSeparator();
-    attr->insertItem( "SQLSet&EnvAttr...", this, SLOT(sqlsetenvattr()) );
-    attr->insertItem( "SQLGetE&nvAttr...", this, SLOT(sqlgetenvattr()) );
-    attr->insertSeparator();
-    id = attr->insertItem( "Set &Cursor Attributes...", this, SLOT(setcursoratributes()) );
-    attr->setItemEnabled( id, FALSE );
-
-    QPopupMenu* results = new QPopupMenu( this );
-    id = results->insertItem( "SQL&BindCol...", this, SLOT(sqlbindcol()) );
-    results->setItemEnabled( id, FALSE );
-    results->insertItem( "SQLBul&kOperations...", this, SLOT(sqlbulkoperations()) );
-    results->insertItem( "S&QLColAttributes...", this, SLOT(sqlcolattributes()) );
-    results->insertItem( "SQLColAttribute...", this, SLOT(sqlcolattribute()) );
-    results->insertItem( "SQL&DescribeCol...", this, SLOT(sqldescribecol()) );
-    results->insertItem( "SQLE&xtendedFetch...", this, SLOT(sqlextendedfetch()) );
-    results->insertItem( "SQL&Fetch...", this, SLOT(sqlfetch()) );
-    results->insertItem( "SQLFetc&hScroll...", this, SLOT(sqlfetchscroll()) );
-    results->insertItem( "SQL&GetData...", this, SLOT(sqlgetdata()) );
-    results->insertItem( "SQL&MoreResults...", this, SLOT(sqlmoreresults()) );
-    results->insertItem( "SQL&NumResultsCols...", this, SLOT(sqlnumresultscols()) );
-    results->insertItem( "SQL&RowCount...", this, SLOT(sqlrowcount()) );
-    results->insertItem( "SQL&SetPos...", this, SLOT(sqlsetpos()) );
-    results->insertItem( "SQLS&etScrollOptions...", this, SLOT(sqlsetscrolloptions()) );
-
-    results->insertSeparator();
-    id = results->insertItem( "B&ind Col All", this, SLOT(bindcolall()) );
-    results->setItemEnabled( id, FALSE );
-    id = results->insertItem( "Describe C&ol All", this, SLOT(describecolall()) );
-    results->setItemEnabled( id, FALSE );
-    id = results->insertItem( "Fetch &All", this, SLOT(fetchall()) );
-    results->setItemEnabled( id, FALSE );
-    results->insertItem( "Get Data A&ll", this, SLOT(getdataall()) );
-    id = results->insertItem( "Sho&w Bound Cols", this, SLOT(showboundcols()) );
-    results->setItemEnabled( id, FALSE );
-    id = results->insertItem( "Display Rowset", this, SLOT(displayrowset()) );
-    results->setItemEnabled( id, FALSE );
-
-    QPopupMenu* catalog = new QPopupMenu( this );
-    catalog->insertItem( "SQL&Columns...", this, SLOT(sqlcolumns()) );
-    catalog->insertItem( "SQL&ColumnPrivileges...", this, SLOT(sqlcolumnprivileges()) );
-    catalog->insertItem( "SQL&GetTypeInfo...", this, SLOT(sqlgettypeinfo()) );
-    catalog->insertItem( "SQL&ForeignKeys...", this, SLOT(sqlforeignkeys()) );
-    catalog->insertItem( "SQL&PrimaryKeys...", this, SLOT(sqlprimarykeys()) );
-    catalog->insertItem( "SQLP&rocedures...", this, SLOT(sqlprocedures()) );
-    catalog->insertItem( "SQLProc&edureColumns...", this, SLOT(sqlprocedurecolumns()) );
-    catalog->insertItem( "SQLSpecia&lColumns...", this, SLOT(sqlspecialcolumns()) );
-    catalog->insertItem( "SQL&Statistics...", this, SLOT(sqlstatistics()) );
-    catalog->insertItem( "SQL&Tables...", this, SLOT(sqltables()) );
-    catalog->insertItem( "SQLT&ablePrivileges...", this, SLOT(sqltableprivileges()) );
-
-    QPopupMenu* datasources = new QPopupMenu( this );
-    datasources->insertItem( "SQL&ManageDataSources...", this, SLOT(sqlmanagedatasources()) );
-    datasources->insertItem( "SQL&RemoveDefaultDataSource...", this, SLOT(sqlremovedefaultdatasource()) );
-    datasources->insertItem( "SQL&ConfigDataSource...", this, SLOT(sqlconfigdatasource()) );
-    datasources->insertItem( "SQ&LCreatDataSource...", this, SLOT(sqlcreatedatasource()) );
-    datasources->insertItem( "SQL&ValidDSN...", this, SLOT(sqlvaliddsn()) );
-    datasources->insertItem( "SQLR&emoveDSNFromIni...", this, SLOT(sqlremovedsnfromini()) );
-    datasources->insertItem( "SQLWriteDSNTo&Ini...", this, SLOT(sqlwritedsntoini()) );
-
-    QPopupMenu* drivers = new QPopupMenu( this );
-    id = drivers->insertItem( "SQLRemo&veDrivers...", this, SLOT(sqlremovedrivers()) );
-    drivers->setItemEnabled( id, FALSE );
-    id = drivers->insertItem( "S&QLConfigDrivers...", this, SLOT(sqlconfigdrivers()) );
-    drivers->setItemEnabled( id, FALSE );
-    id = drivers->insertItem( "SQLI&nstallDriver...", this, SLOT(sqlinstalldriver()) );
-    drivers->setItemEnabled( id, FALSE );
-    id = drivers->insertItem( "SQLI&nstallDriverEx...", this, SLOT(sqlinstalldriverex()) );
-    drivers->setItemEnabled( id, FALSE );
-    id = drivers->insertItem( "SQLGetInstalledDrivers...", this, SLOT(sqlgetinstalleddrivers()) );
-    drivers->setItemEnabled( id, FALSE );
-
-    QPopupMenu* drivermanager = new QPopupMenu( this );
-    id = drivermanager->insertItem( "SQL&RemoveDriverManager...", this, SLOT(sqlremovedrivermanager()) );
-    drivermanager->setItemEnabled( id, FALSE );
-    id = drivermanager->insertItem( "SQL&InstallDriverManager...", this, SLOT(sqlinstalldrivermanager()) );
-    drivermanager->setItemEnabled( id, FALSE );
-
-    QPopupMenu* filedsn = new QPopupMenu( this );
-    id = filedsn->insertItem( "SQL&ReadFileDSN...", this, SLOT(sqlreadfiledsn()) );
-    filedsn->setItemEnabled( id, FALSE );
-    id = filedsn->insertItem( "SQL&WriteFileDSN...", this, SLOT(sqlwritefiledsn()) );
-    filedsn->setItemEnabled( id, FALSE );
-
-    QPopupMenu* profilestrings = new QPopupMenu( this );
-    id = profilestrings->insertItem( "SQL&WritePrivateProfileString...", 
-        this, SLOT(sqlwriteprivateprofilestring()) );
-    profilestrings->setItemEnabled( id, FALSE );
-    id = profilestrings->insertItem( "SQL&GetPrivateProfileString...", 
-        this, SLOT(sqlgetprivateprofilestring()) );
-    profilestrings->setItemEnabled( id, FALSE );
-
-    QPopupMenu* translator = new QPopupMenu( this );
-    id = translator->insertItem( "SQL&InstallTranslator...", 
-        this, SLOT(sqlinstalltranslator()) );
-    translator->setItemEnabled( id, FALSE );
-    id = translator->insertItem( "SQLI&nstallTranslatorEx...", 
-        this, SLOT(sqlinstalltranslatorex()) );
-    translator->setItemEnabled( id, FALSE );
-    id = translator->insertItem( "SQL&RemoveTranslator...", 
-        this, SLOT(sqlremovetranslator()) );
-    translator->setItemEnabled( id, FALSE );
-    id = translator->insertItem( "SQL&GetTranslator...", 
-        this, SLOT(sqlgettranslator()) );
-    translator->setItemEnabled( id, FALSE );
-
-    QPopupMenu* configmode = new QPopupMenu( this );
-    id = configmode->insertItem( "SQL&SetConfigMode...", 
-        this, SLOT(sqlsetconfigmode()) );
-    configmode->setItemEnabled( id, FALSE );
-    id = configmode->insertItem( "SQL&GetConfigMode...", 
-        this, SLOT(sqlgetconfigmode()) );
-    configmode->setItemEnabled( id, FALSE );
-
-    QPopupMenu* installer = new QPopupMenu( this );
-    id = installer->insertItem( "&Data Sources...", datasources );
-    installer->setItemEnabled( id, FALSE );
-    id = installer->insertItem( "Dri&vers...", drivers );
-    installer->setItemEnabled( id, FALSE );
-    id = installer->insertItem( "Driver&Manager...", drivermanager );
-    installer->setItemEnabled( id, FALSE );
-    id = installer->insertItem( "&File DSN...", filedsn );
-    installer->setItemEnabled( id, FALSE );
-    id = installer->insertItem( "&Profile Strings...", profilestrings );
-    installer->setItemEnabled( id, FALSE );
-    id = installer->insertItem( "&Translator...", translator );
-    installer->setItemEnabled( id, FALSE );
-    id = installer->insertItem( "C&onfig Mode...", configmode );
-    installer->setItemEnabled( id, FALSE );
-
-    QPopupMenu* tools = new QPopupMenu( this );
-    id = tools->insertItem( "&Options..", this, SLOT(options()) );
-    tools->setItemEnabled( id, FALSE );
-    id = tools->insertItem( "T&race..", this, SLOT(trace()) );
-    tools->setItemEnabled( id, FALSE );
-    tools->insertSeparator();
-    tools->insertItem( "Manage Test &Sources...", this, SLOT(manage_test()) );
-    tools->insertItem( "&Manage Auto Tests...", this, SLOT(manage_auto_test()) );
-    tools->insertItem( "&Manage Test &Groups...", this, SLOT(manage_test_groups()) );
-    tools->insertItem( "Run Auto &Tests...", this, SLOT(run_auto_tests()) );
-
-    QPopupMenu *help = new QPopupMenu( this );
-    id = help->insertItem( "ODBC Test &Help", this, SLOT(testhelp()) );
-    help->setItemEnabled( id, FALSE );
-    id = help->insertItem( "API A&PI Help", this, SLOT(apihelp()) );
-    help->setItemEnabled( id, FALSE );
-    help->insertItem( "About ODBC Test...", this, SLOT(about()) );
-
-    menu = new QMenuBar( this );
-
-    menu->insertItem( "&File", file );
-    menu->insertItem( "Dia&g", diag );
-    menu->insertItem( "E&nv", env );
-    menu->insertItem( "&Conn", conn );
-    menu->insertItem( "&Desc", desc );
-    menu->insertItem( "&Stmt", stmt );
-    menu->insertItem( "&Attr", attr );
-    menu->insertItem( "&Results", results );
-    menu->insertItem( "Cata&log", catalog );
-    menu->insertItem( "&Installer", installer );
-    menu->insertItem( "&Tools", tools );
-    menu->insertSeparator();
-    menu->insertItem( "&Help", help );
-    menu->setSeparator( QMenuBar::InWindowsStyle );
-*/
     createActions();
     createMenus();
 
@@ -321,6 +60,11 @@ OdbcTest::~OdbcTest()
     // delete all handles
     while ( !listHandle.isEmpty() )
         delete listHandle.takeFirst();
+}
+
+void OdbcTest::slotExit()
+{
+    qApp->quit();
 }
 
 const char * OdbcTest::return_as_text( int ret )
@@ -596,19 +340,19 @@ void OdbcTest::dumpError( int type, SQLHANDLE hnd )
     }
 }
 
-void OdbcTest::apihelp()
+void OdbcTest::slotHelpApi()
 {
     QMessageBox::about( this, "ODBC Test",
                         "Not yet implemented" );
 }
 
-void OdbcTest::testhelp()
+void OdbcTest::slotHelpTest()
 {
     QMessageBox::about( this, "ODBC Test",
                         "Not yet implemented" );
 }
 
-void OdbcTest::about()
+void OdbcTest::slotHelpAbout()
 {
     QMessageBox::about( this, "ODBC Test",
                         "This program is part of the unixODBC SDK.\n"
@@ -694,7 +438,7 @@ void OdbcTest::createActions()
     pactionFreeConnect                      = new QAction( tr("FreeConnect"), this );    
     pactionGetFunctions                     = new QAction( tr("GetFunctions"), this );    
     pactionGetInfo                          = new QAction( tr("GetInfo"), this );    
-    pactionNativeSQL                        = new QAction( tr("NativeSQL"), this );    
+    pactionNativeSql                        = new QAction( tr("NativeSQL"), this );    
     pactionFullConnect                      = new QAction( tr("FullConnect"), this );    
     pactionFullDisconnect                   = new QAction( tr("FullDisconnect"), this );    
     pactionGetInfoAll                       = new QAction( tr("GetInfoAll"), this );    
@@ -754,7 +498,7 @@ void OdbcTest::createActions()
     pactionFetchAll                         = new QAction( tr("FetchAll"), this );    
     pactionGetDataAll                       = new QAction( tr("GetDataAll"), this );    
     pactionShowBoundCols                    = new QAction( tr("ShowBoundCols"), this );    
-    pactionDisplayRowset                    = new QAction( tr("DisplayRowset"), this );    
+    pactionDisplayRowSet                    = new QAction( tr("DisplayRowSet"), this );    
     pactionColumns                          = new QAction( tr("Columns"), this );    
     pactionColumnPrivileges                 = new QAction( tr("ColumnPrivileges"), this );    
     pactionGetTypeInfo                      = new QAction( tr("GetTypeInfo"), this );    
@@ -823,7 +567,7 @@ void OdbcTest::createActions()
     connect( pactionFreeConnect              , SIGNAL(triggered()), this, SLOT(slotFreeConnect              ()) );
     connect( pactionGetFunctions             , SIGNAL(triggered()), this, SLOT(slotGetFunctions             ()) );
     connect( pactionGetInfo                  , SIGNAL(triggered()), this, SLOT(slotGetInfo                  ()) );
-    connect( pactionNativeSQL                , SIGNAL(triggered()), this, SLOT(slotNativeSQL                ()) );
+    connect( pactionNativeSql                , SIGNAL(triggered()), this, SLOT(slotNativeSql                ()) );
     connect( pactionFullConnect              , SIGNAL(triggered()), this, SLOT(slotFullConnect              ()) );
     connect( pactionFullDisconnect           , SIGNAL(triggered()), this, SLOT(slotFullDisconnect           ()) );
     connect( pactionGetInfoAll               , SIGNAL(triggered()), this, SLOT(slotGetInfoAll               ()) );
@@ -883,7 +627,7 @@ void OdbcTest::createActions()
     connect( pactionFetchAll                 , SIGNAL(triggered()), this, SLOT(slotFetchAll                 ()) );
     connect( pactionGetDataAll               , SIGNAL(triggered()), this, SLOT(slotGetDataAll               ()) );
     connect( pactionShowBoundCols            , SIGNAL(triggered()), this, SLOT(slotShowBoundCols            ()) );
-    connect( pactionDisplayRowset            , SIGNAL(triggered()), this, SLOT(slotDisplayRowset            ()) );
+    connect( pactionDisplayRowSet            , SIGNAL(triggered()), this, SLOT(slotDisplayRowSet            ()) );
     connect( pactionColumns                  , SIGNAL(triggered()), this, SLOT(slotColumns                  ()) );
     connect( pactionColumnPrivileges         , SIGNAL(triggered()), this, SLOT(slotColumnPrivileges         ()) );
     connect( pactionGetTypeInfo              , SIGNAL(triggered()), this, SLOT(slotGetTypeInfo              ()) );
@@ -969,7 +713,7 @@ void OdbcTest::createMenus()
     pmenuConnection->addAction( pactionFreeConnect     );
     pmenuConnection->addAction( pactionGetFunctions    );
     pmenuConnection->addAction( pactionGetInfo         );
-    pmenuConnection->addAction( pactionNativeSQL       );
+    pmenuConnection->addAction( pactionNativeSql       );
     pmenuConnection->addSeparator();
     pmenuConnection->addAction( pactionFullConnect     );
     pmenuConnection->addAction( pactionFullDisconnect  );
@@ -1047,7 +791,7 @@ void OdbcTest::createMenus()
     pmenuResults->addAction( pactionFetchAll         );
     pmenuResults->addAction( pactionGetDataAll       );
     pmenuResults->addAction( pactionShowBoundCols    );
-    pmenuResults->addAction( pactionDisplayRowset    );
+    pmenuResults->addAction( pactionDisplayRowSet    );
 
     // Catalog...
     pmenuCatalog            = menuBar()->addMenu( tr("Cata&log") );

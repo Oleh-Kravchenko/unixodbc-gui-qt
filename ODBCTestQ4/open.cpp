@@ -28,19 +28,19 @@
 
 #include "OdbcTest.h"
 
-void OdbcTest::open()
+void OdbcTest::slotOpen()
 {
     QMessageBox::about( this, "ODBC Test",
 			"Not yet implemented" );
 }
 
-void OdbcTest::saveas()
+void OdbcTest::slotSaveAs()
 {
     QMessageBox::about( this, "ODBC Test",
 			"Not yet implemented" );
 }
 
-void OdbcTest::saveopt()
+void OdbcTest::slotSaveOpt()
 {
     QMessageBox::about( this, "ODBC Test",
 			"Not yet implemented" );

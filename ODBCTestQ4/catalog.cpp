@@ -3080,7 +3080,7 @@ dSpecialColumns::~dSpecialColumns()
     delete l_ident;
 }
 
-void OdbcTest::sqlcolumns()
+void OdbcTest::slotColumns()
 {
     dColumns *dlg = new dColumns( this, "SQLColumns" );
 
@@ -3089,7 +3089,7 @@ void OdbcTest::sqlcolumns()
     delete dlg;
 }
 
-void OdbcTest::sqlcolumnprivileges()
+void OdbcTest::slotColumnPrivileges()
 {
     dColumnPrivileges *dlg = new dColumnPrivileges( this, "SQLColumnPrivileges" );
 
@@ -3098,7 +3098,7 @@ void OdbcTest::sqlcolumnprivileges()
     delete dlg;
 }
 
-void OdbcTest::sqlgettypeinfo()
+void OdbcTest::slotGetTypeInfo()
 {
     dGetTypeInfo *dlg = new dGetTypeInfo( this, "SQLGetTypeInfo" );
 
@@ -3107,7 +3107,7 @@ void OdbcTest::sqlgettypeinfo()
     delete dlg;
 }
 
-void OdbcTest::sqlforeignkeys()
+void OdbcTest::slotForeignKeys()
 {
     dForeignKeys *dlg = new dForeignKeys( this, "SQLForeignKeys" );
 
@@ -3116,7 +3116,7 @@ void OdbcTest::sqlforeignkeys()
     delete dlg;
 }
 
-void OdbcTest::sqlprimarykeys()
+void OdbcTest::slotPrimaryKeys()
 {
     dPrimaryKeys *dlg = new dPrimaryKeys( this, "SQLPrimaryKeys" );
 
@@ -3125,7 +3125,7 @@ void OdbcTest::sqlprimarykeys()
     delete dlg;
 }
 
-void OdbcTest::sqlprocedures()
+void OdbcTest::slotProcedures()
 {
     dProcedures *dlg = new dProcedures( this, "SQLProcedures" );
 
@@ -3134,7 +3134,7 @@ void OdbcTest::sqlprocedures()
     delete dlg;
 }
 
-void OdbcTest::sqlprocedurecolumns()
+void OdbcTest::slotProcedureColumns()
 {
     dProcedureColumns *dlg = new dProcedureColumns( this, "SQLProcedureColumns" );
 
@@ -3143,7 +3143,7 @@ void OdbcTest::sqlprocedurecolumns()
     delete dlg;
 }
 
-void OdbcTest::sqlspecialcolumns()
+void OdbcTest::slotSpecialColumns()
 {
     dSpecialColumns *dlg = new dSpecialColumns( this, "SQLSpecialColumns" );
 
@@ -3152,7 +3152,7 @@ void OdbcTest::sqlspecialcolumns()
     delete dlg;
 }
 
-void OdbcTest::sqlstatistics()
+void OdbcTest::slotStatistics()
 {
     dStatistics *dlg = new dStatistics( this, "SQLStatistics" );
 
@@ -3161,7 +3161,7 @@ void OdbcTest::sqlstatistics()
     delete dlg;
 }
 
-void OdbcTest::sqltables()
+void OdbcTest::slotTables()
 {
     dTables *dlg = new dTables( this, "SQLTables" );
 
@@ -3170,7 +3170,7 @@ void OdbcTest::sqltables()
     delete dlg;
 }
 
-void OdbcTest::sqltableprivileges()
+void OdbcTest::slotTablePrivileges()
 {
     dTablePrivileges *dlg = new dTablePrivileges( this, "SQLTablePrivileges" );
 

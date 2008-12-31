@@ -28,145 +28,145 @@
 
 #include "OdbcTest.h"
 
-void OdbcTest::sqlmanagedatasources()
+void OdbcTest::slotManageDataSources()
 {
     QMessageBox::about( this, "ODBC Test",
 			"Not yet implemented" );
 }
 
-void OdbcTest::sqlremovedefaultdatasource()
+void OdbcTest::slotRemoveDefaultDataSource()
 {
     QMessageBox::about( this, "ODBC Test",
 			"Not yet implemented" );
 }
 
-void OdbcTest::sqlconfigdatasource()
+void OdbcTest::slotConfigDataSource()
 {
     QMessageBox::about( this, "ODBC Test",
 			"Not yet implemented" );
 }
 
-void OdbcTest::sqlcreatedatasource()
+void OdbcTest::slotCreateDataSource()
 {
     QMessageBox::about( this, "ODBC Test",
 			"Not yet implemented" );
 }
 
-void OdbcTest::sqlvaliddsn()
+void OdbcTest::slotValidDSN()
 {
     QMessageBox::about( this, "ODBC Test",
 			"Not yet implemented" );
 }
 
-void OdbcTest::sqlremovedsnfromini()
+void OdbcTest::slotRemoveDSNFromIni()
 {
     QMessageBox::about( this, "ODBC Test",
 			"Not yet implemented" );
 }
 
-void OdbcTest::sqlwritedsntoini()
+void OdbcTest::slotWriteDSNToIni()
 {
     QMessageBox::about( this, "ODBC Test",
 			"Not yet implemented" );
 }
 
-void OdbcTest::sqlremovedrivers()
+void OdbcTest::slotRemoveDrivers()
 {
     QMessageBox::about( this, "ODBC Test",
 			"Not yet implemented" );
 }
 
-void OdbcTest::sqlconfigdrivers()
+void OdbcTest::slotConfigDrivers()
 {
     QMessageBox::about( this, "ODBC Test",
 			"Not yet implemented" );
 }
 
-void OdbcTest::sqlinstalldriver()
+void OdbcTest::slotInstallDriver()
 {
     QMessageBox::about( this, "ODBC Test",
 			"Not yet implemented" );
 }
 
-void OdbcTest::sqlinstalldriverex()
+void OdbcTest::slotInstallDriverEx()
 {
     QMessageBox::about( this, "ODBC Test",
 			"Not yet implemented" );
 }
 
-void OdbcTest::sqlgetinstalleddrivers()
+void OdbcTest::slotGetInstalledDrivers()
 {
     QMessageBox::about( this, "ODBC Test",
 			"Not yet implemented" );
 }
 
-void OdbcTest::sqlremovedrivermanager()
+void OdbcTest::slotRemoveDriverManager()
 {
     QMessageBox::about( this, "ODBC Test",
 			"Not yet implemented" );
 }
 
-void OdbcTest::sqlinstalldrivermanager()
+void OdbcTest::slotInstallDriverManager()
 {
     QMessageBox::about( this, "ODBC Test",
 			"Not yet implemented" );
 }
 
-void OdbcTest::sqlreadfiledsn()
+void OdbcTest::slotReadFileDSN()
 {
     QMessageBox::about( this, "ODBC Test",
 			"Not yet implemented" );
 }
 
-void OdbcTest::sqlwritefiledsn()
+void OdbcTest::slotWriteFileDSN()
 {
     QMessageBox::about( this, "ODBC Test",
 			"Not yet implemented" );
 }
 
-void OdbcTest::sqlwriteprivateprofilestring()
+void OdbcTest::slotWritePrivateProfileString()
 {
     QMessageBox::about( this, "ODBC Test",
 			"Not yet implemented" );
 }
 
-void OdbcTest::sqlgetprivateprofilestring()
+void OdbcTest::slotGetPrivateProfileString()
 {
     QMessageBox::about( this, "ODBC Test",
 			"Not yet implemented" );
 }
 
-void OdbcTest::sqlinstalltranslator()
+void OdbcTest::slotInstallTranslator()
 {
     QMessageBox::about( this, "ODBC Test",
 			"Not yet implemented" );
 }
 
-void OdbcTest::sqlinstalltranslatorex()
+void OdbcTest::slotInstallTranslatorEx()
 {
     QMessageBox::about( this, "ODBC Test",
 			"Not yet implemented" );
 }
 
-void OdbcTest::sqlremovetranslator()
+void OdbcTest::slotRemoveTranslator()
 {
     QMessageBox::about( this, "ODBC Test",
 			"Not yet implemented" );
 }
 
-void OdbcTest::sqlgettranslator()
+void OdbcTest::slotGetTranslator()
 {
     QMessageBox::about( this, "ODBC Test",
 			"Not yet implemented" );
 }
 
-void OdbcTest::sqlsetconfigmode()
+void OdbcTest::slotSetConfigMode()
 {
     QMessageBox::about( this, "ODBC Test",
 			"Not yet implemented" );
 }
 
-void OdbcTest::sqlgetconfigmode()
+void OdbcTest::slotGetConfigMode()
 {
     QMessageBox::about( this, "ODBC Test",
 			"Not yet implemented" );
