@@ -2943,3 +2943,4 @@ void OdbcTest::setcursoratributes()
     QMessageBox::about( this, "ODBC Test",
                         "Not yet implemented" );
 }
+
