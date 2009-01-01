@@ -30,8 +30,15 @@
 
 void OdbcTest::slotManageDataSources()
 {
-    QMessageBox::about( this, "ODBC Test",
-			"Not yet implemented" );
+    ODBCINSTWND Wnd;
+
+    strcpy( Wnd.szUI, "odbcinstQ4" );
+    Wnd.hWnd = this;
+
+    if ( !SQLManageDataSources( &Wnd ) )
+    {
+        QMessageBox::about( this, "ODBC Test", "SQLManageDataSources() returned FALSE." );
+    }
 }
 
 void OdbcTest::slotRemoveDefaultDataSource()
@@ -48,8 +55,15 @@ void OdbcTest::slotConfigDataSource()
 
 void OdbcTest::slotCreateDataSource()
 {
-    QMessageBox::about( this, "ODBC Test",
-			"Not yet implemented" );
+    ODBCINSTWND Wnd;
+
+    strcpy( Wnd.szUI, "odbcinstQ4" );
+    Wnd.hWnd = this;
+
+    if ( !SQLCreateDataSource( &Wnd, NULL ) )
+    {
+        QMessageBox::about( this, "ODBC Test", "SQLCreateDataSource() returned FALSE." );
+    }
 }
 
 void OdbcTest::slotValidDSN()

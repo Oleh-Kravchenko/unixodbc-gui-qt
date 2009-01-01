@@ -53,10 +53,14 @@ OdbcTest::OdbcTest( QWidget *parent )
     out_win = new QTextEdit( split );
     out_win->setReadOnly( TRUE );
 //    out_win->setMaxLines( 1000 );
+
+    readApplicationState();
 }
 
 OdbcTest::~OdbcTest()
 {
+    writeApplicationState();
+
     // delete all handles
     while ( !listHandle.isEmpty() )
         delete listHandle.takeFirst();
@@ -870,6 +874,26 @@ void OdbcTest::createMenus()
     pmenuHelp->addAction( pactionHelpTest );
     pmenuHelp->addAction( pactionHelpApi );
     pmenuHelp->addAction( pactionHelpAbout );
+}
+
+void OdbcTest::readApplicationState()
+{
+    QSettings settings( "unixODBC-GUI-Qt", "OdbcTestQ4" );
+
+    settings.beginGroup( "MainWindow" );
+    resize(settings.value( "size", QSize( 400, 400 ) ).toSize() );
+    move(settings.value( "pos", QPoint( 200, 200 ) ).toPoint() );
+    settings.endGroup();
+}
+
+void OdbcTest::writeApplicationState()
+{
+    QSettings settings( "unixODBC-GUI-Qt", "OdbcTestQ4" );
+
+    settings.beginGroup( "MainWindow" );
+    settings.setValue( "size", size() );
+    settings.setValue( "pos", pos() );
+    settings.endGroup();
 }
 
 

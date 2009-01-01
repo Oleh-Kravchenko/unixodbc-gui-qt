@@ -355,6 +355,8 @@ private:
 
     void createActions();
     void createMenus();
+    void readApplicationState();
+    void writeApplicationState();
 };
 
 
