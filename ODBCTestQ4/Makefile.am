@@ -1,102 +1,127 @@
-if QT
-if QT4
+bin_PROGRAMS = ODBCTestQ4
 
-else
+INCLUDES = $(QT_CXXFLAGS) -DSYSTEM_FILE_PATH=\"@sysconfdir@\" $(LTDLINCL)
 
-bin_PROGRAMS = odbctest
-
-INCLUDES = -I@top_srcdir@/include $(QT_CXXFLAGS) -DSYSTEM_FILE_PATH=\"@sysconfdir@\" $(LTDLINCL)
-
-odbctest_LDADD = \
+ODBCTestQ4_LDADD = \
 	$(QT_LDFLAGS) \
 	$(QT_LIBS) \
-	../ini/libinilc.la \
 	../odbcinst/libodbcinst.la \
 	../DriverManager/libodbc.la \
-	$(LIBLTDL) $(LIBADD_DL) 
 
-odbctest_DEPENDANCIES = ../odbcinst/libodbcinst.la ../DriverManager/libodbc.la
+ODBCTestQ4_DEPENDANCIES = ../odbcinst/libodbcinst.la ../DriverManager/libodbc.la
 
-odbctest_SOURCES = \
-	tools.cpp \
-	stmt.cpp \
-	results.cpp \
-	open.cpp \
-	odbctest.cpp \
-	installer.cpp \
-	env.cpp \
-	edit.cpp \
+ODBCTestQ4_SOURCES = \
+	attr.cpp \
+	catalog.cpp \
+	conn.cpp \
 	desc.cpp \
 	diag.cpp \
-	conn.cpp \
-	catalog.cpp \
-	attr.cpp \
-	moc_results.cpp \
-	moc_stmt.cpp \
-	moc_odbctest.cpp \
-	moc_desc.cpp \
-	moc_diag.cpp \
-	moc_env.cpp \
-	moc_catalog.cpp \
-	moc_conn.cpp \
-	moc_attr.cpp \
-	moc_tools.cpp
+	DlgToolsManageAutoTest.cpp \
+	DlgToolsManageTest.cpp \
+	DlgToolsManageTestGroup.cpp \
+	DlgToolsNewGroup.cpp \
+	DlgToolsNewSource.cpp \
+	DlgToolsRunAutoTests.cpp \
+	env.cpp \
+	installer.cpp \
+	main.cpp \
+	OdbcHandle.cpp \
+	OdbcTest.cpp \
+	results.cpp \
+	stmt.cpp \
+	mattr.cpp \
+	mcatalog.cpp \
+	mconn.cpp \
+	mdesc.cpp \
+	mdiag.cpp \
+	mDlgToolsManageAutoTest.cpp \
+	mDlgToolsManageTest.cpp \
+	mDlgToolsManageTestGroup.cpp \
+	mDlgToolsNewGroup.cpp \
+	mDlgToolsNewSource.cpp \
+	mDlgToolsRunAutoTests.cpp \
+	menv.cpp \
+	mOdbcTest.cpp \
+	mresults.cpp \
+	mstmt.cpp
 
-moc_results.cpp: @srcdir@/results.h
-	@MOC@ @srcdir@/results.h -o moc_results.cpp
+mresults.cpp: @srcdir@/results.h
+	@MOC@ @srcdir@/results.h -o mresults.cpp
 
-moc_stmt.cpp: @srcdir@/stmt.h
-	@MOC@ @srcdir@/stmt.h -o moc_stmt.cpp
+mstmt.cpp: @srcdir@/stmt.h
+	@MOC@ @srcdir@/stmt.h -o mstmt.cpp
 
-moc_odbctest.cpp: @srcdir@/odbctest.h
-	@MOC@ @srcdir@/odbctest.h -o moc_odbctest.cpp
+mOdbcTest.cpp: @srcdir@/OdbcTest.h
+	@MOC@ @srcdir@/OdbcTest.h -o mOdbcTest.cpp
 
-moc_desc.cpp: @srcdir@/desc.h
-	@MOC@ @srcdir@/desc.h -o moc_desc.cpp
+mdesc.cpp: @srcdir@/desc.h
+	@MOC@ @srcdir@/desc.h -o mdesc.cpp
 
-moc_diag.cpp: @srcdir@/diag.h
-	@MOC@ @srcdir@/diag.h -o moc_diag.cpp
+mdiag.cpp: @srcdir@/diag.h
+	@MOC@ @srcdir@/diag.h -o mdiag.cpp
 
-moc_env.cpp: @srcdir@/env.h
-	@MOC@ @srcdir@/env.h -o moc_env.cpp
+menv.cpp: @srcdir@/env.h
+	@MOC@ @srcdir@/env.h -o menv.cpp
 
-moc_catalog.cpp: @srcdir@/catalog.h
-	@MOC@ @srcdir@/catalog.h -o moc_catalog.cpp
+mcatalog.cpp: @srcdir@/catalog.h
+	@MOC@ @srcdir@/catalog.h -o mcatalog.cpp
 
-moc_conn.cpp: @srcdir@/conn.h
-	@MOC@ @srcdir@/conn.h -o moc_conn.cpp
+mconn.cpp: @srcdir@/conn.h
+	@MOC@ @srcdir@/conn.h -o mconn.cpp
 
-moc_attr.cpp: @srcdir@/attr.h
-	@MOC@ @srcdir@/attr.h -o moc_attr.cpp
+mattr.cpp: @srcdir@/attr.h
+	@MOC@ @srcdir@/attr.h -o mattr.cpp
 
-moc_tools.cpp: @srcdir@/tools.h
-	@MOC@ @srcdir@/tools.h -o moc_tools.cpp
+mDlgToolsManageAutoTest.cpp: @srcdir@/DlgToolsManageAutoTest.h
+	@MOC@ @srcdir@/DlgToolsManageAutoTest.h -o mDlgToolsManageAutoTest.cpp
+
+mDlgToolsManageTest.cpp: @srcdir@/DlgToolsManageTest.h
+	@MOC@ @srcdir@/DlgToolsManageTest.h -o mDlgToolsManageTest.cpp
+
+mDlgToolsManageTestGroup.cpp: @srcdir@/DlgToolsManageTestGroup.h
+	@MOC@ @srcdir@/DlgToolsManageTestGroup.h -o mDlgToolsManageTestGroup.cpp
+
+mDlgToolsNewGroup.cpp: @srcdir@/DlgToolsNewGroup.h
+	@MOC@ @srcdir@/DlgToolsNewGroup.h -o mDlgToolsNewGroup.cpp
+
+mDlgToolsNewSource.cpp: @srcdir@/DlgToolsNewSource.h
+	@MOC@ @srcdir@/DlgToolsNewSource.h -o mDlgToolsNewSource.cpp
+
+mDlgToolsRunAutoTests.cpp: @srcdir@/DlgToolsRunAutoTests.h
+	@MOC@ @srcdir@/DlgToolsRunAutoTests.h -o mDlgToolsRunAutoTests.cpp
 
 CLEANFILES = \
-	moc_attr.cpp \
-	moc_conn.cpp \
-	moc_diag.cpp \
-	moc_odbctest.cpp \
-	moc_stmt.cpp \
-	moc_catalog.cpp \
-	moc_desc.cpp \
-	moc_env.cpp \
-	moc_results.cpp \
-	moc_tools.cpp
-
-endif
-endif
+	mattr.cpp \
+	mcatalog.cpp \
+	mconn.cpp \
+	mdesc.cpp \
+	mdiag.cpp \
+	mDlgToolsManageAutoTest.cpp \
+	mDlgToolsManageTest.cpp \
+	mDlgToolsManageTestGroup.cpp \
+	mDlgToolsNewGroup.cpp \
+	mDlgToolsNewSource.cpp \
+	mDlgToolsRunAutoTests.cpp \
+	menv.cpp \
+	mOdbcTest.cpp \
+	mresults.cpp \
+	mstmt.cpp
 
 EXTRA_DIST = \
-	results.h \
-	stmt.h \
-	odbctest.h \
-	desc.h \
-	diag.h \
-	env.h \
+	attr.h \
 	catalog.h \
 	conn.h \
-	attr.h \
-	tools.h \
-	tools4.h
+	desc.h \
+	diag.h \
+	DlgToolsManageAutoTest.h \
+	DlgToolsManageTest.h \
+	DlgToolsManageTestGroup.h \
+	DlgToolsNewGroup.h \
+	DlgToolsNewSource.h \
+	DlgToolsRunAutoTests.h \
+	env.h \
+	OdbcHandle.h \
+	OdbcTest.h \
+	results.h \
+	stmt.h
 
