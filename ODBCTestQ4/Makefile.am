@@ -5,10 +5,7 @@ INCLUDES = $(QT_CXXFLAGS) -DSYSTEM_FILE_PATH=\"@sysconfdir@\" $(LTDLINCL)
 ODBCTestQ4_LDADD = \
 	$(QT_LDFLAGS) \
 	$(QT_LIBS) \
-	../odbcinst/libodbcinst.la \
-	../DriverManager/libodbc.la \
-
-ODBCTestQ4_DEPENDANCIES = ../odbcinst/libodbcinst.la ../DriverManager/libodbc.la
+	-lodbc -lodbcinst
 
 ODBCTestQ4_SOURCES = \
 	attr.cpp \
