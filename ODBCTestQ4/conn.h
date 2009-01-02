@@ -32,29 +32,6 @@
 
 class OdbcTest;
 
-class dConnect : public QDialog 
-{
-    Q_OBJECT
-
-    public:
-        dConnect( OdbcTest *pOdbcTest, QString name );
-        ~dConnect();
-
-	protected:
-		QPushButton *ok, *cancel, *help;
-		QComboBox *handles, *server, *user, *auth;
-		QComboBox *server_len, *user_len, *auth_len;
-		QLabel *l_handle, *l_server, *l_user, *l_auth;
-		QLabel *l_server_len, *l_user_len, *l_auth_len;
-		QTextEdit *in_win;
-		QTextEdit *out_win;
-		OdbcTest *pOdbcTest;
-		QString txt;
-
-	protected slots:
-		void Ok();
-};
-
 class dDisconnect : public QDialog 
 {
     Q_OBJECT

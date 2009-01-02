@@ -13,6 +13,7 @@ ODBCTestQ4_SOURCES = \
 	conn.cpp \
 	desc.cpp \
 	diag.cpp \
+	DlgDbcConnect.cpp \
 	DlgToolsManageAutoTest.cpp \
 	DlgToolsManageTest.cpp \
 	DlgToolsManageTestGroup.cpp \
@@ -31,6 +32,7 @@ ODBCTestQ4_SOURCES = \
 	mconn.cpp \
 	mdesc.cpp \
 	mdiag.cpp \
+	mDlgDbcConnect.cpp \
 	mDlgToolsManageAutoTest.cpp \
 	mDlgToolsManageTest.cpp \
 	mDlgToolsManageTestGroup.cpp \
@@ -69,6 +71,9 @@ mconn.cpp: @srcdir@/conn.h
 mattr.cpp: @srcdir@/attr.h
 	@MOC@ @srcdir@/attr.h -o mattr.cpp
 
+mDlgDbcConnect.cpp: @srcdir@/DlgDbcConnect.h
+	@MOC@ @srcdir@/DlgDbcConnect.h -o mDlgDbcConnect.cpp
+
 mDlgToolsManageAutoTest.cpp: @srcdir@/DlgToolsManageAutoTest.h
 	@MOC@ @srcdir@/DlgToolsManageAutoTest.h -o mDlgToolsManageAutoTest.cpp
 
@@ -93,6 +98,7 @@ CLEANFILES = \
 	mconn.cpp \
 	mdesc.cpp \
 	mdiag.cpp \
+	mDlgDbcConnect.cpp \
 	mDlgToolsManageAutoTest.cpp \
 	mDlgToolsManageTest.cpp \
 	mDlgToolsManageTestGroup.cpp \
@@ -110,6 +116,7 @@ EXTRA_DIST = \
 	conn.h \
 	desc.h \
 	diag.h \
+	DlgDbcConnect.h \
 	DlgToolsManageAutoTest.h \
 	DlgToolsManageTest.h \
 	DlgToolsManageTestGroup.h \

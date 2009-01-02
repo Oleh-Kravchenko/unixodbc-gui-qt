@@ -57,6 +57,7 @@
 			<F N="conn.cpp"/>
 			<F N="desc.cpp"/>
 			<F N="diag.cpp"/>
+			<F N="DlgDbcConnect.cpp"/>
 			<F N="DlgToolsManageAutoTest.cpp"/>
 			<F N="DlgToolsManageTest.cpp"/>
 			<F N="DlgToolsManageTestGroup.cpp"/>
@@ -81,6 +82,7 @@
 			<F N="conn.h"/>
 			<F N="desc.h"/>
 			<F N="diag.h"/>
+			<F N="DlgDbcConnect.h"/>
 			<F N="DlgToolsManageAutoTest.h"/>
 			<F N="DlgToolsManageTest.h"/>
 			<F N="DlgToolsManageTestGroup.h"/>
