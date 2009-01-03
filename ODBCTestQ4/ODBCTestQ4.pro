@@ -14,6 +14,7 @@ HEADERS		= \
 		conn.h \
 		desc.h \
 		diag.h \
+		DlgDbcConnect.h \
 		DlgToolsManageAutoTest.h \
 		DlgToolsManageTestGroup.h \
 		DlgToolsManageTest.h \
@@ -33,19 +34,18 @@ SOURCES 	= \
 		conn.cpp \
 		desc.cpp \
 		diag.cpp \
+		DlgDbcConnect.cpp \
 		DlgToolsManageAutoTest.cpp \
 		DlgToolsManageTest.cpp \
 		DlgToolsManageTestGroup.cpp \
 		DlgToolsNewGroup.cpp \
 		DlgToolsNewSource.cpp \
 		DlgToolsRunAutoTests.cpp \
-#		edit.cpp \
 		env.cpp \
 		installer.cpp \
 		main.cpp \
 		OdbcHandle.cpp \
 		OdbcTest.cpp \
-#		open.cpp \
 		results.cpp \
 		stmt.cpp
 

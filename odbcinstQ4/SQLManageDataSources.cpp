@@ -151,7 +151,7 @@ BOOL EXTFUNCDECL FAR ODBCLogPrintf( lpSERVERINFO pServerInfo )
     {
         // the app (ie ODBCTestQ4) should have provided a generic window handle...
         ODBCINSTWND *hWnd = (ODBCINSTWND*)pServerInfo->hwnd;
-
+        // the underlying window handle must be a QTextEdit...
         if ( hWnd )
             ((QTextEdit*)hWnd)->append( pServerInfo -> szBuff );
     }

@@ -31,6 +31,8 @@
 OdbcTest::OdbcTest( QWidget *parent )
 : QMainWindow( parent )
 {
+    setWindowTitle( "ODBC Test" );
+
     /*! 
      *  Open the test configuration file once and allow all supporting code to use it. Let Qt
      *  delete the object when this (its parent) deconstructs. The settings will automatically
@@ -358,11 +360,31 @@ void OdbcTest::slotHelpTest()
 
 void OdbcTest::slotHelpAbout()
 {
-    QMessageBox::about( this, "ODBC Test",
-                        "This program is part of the unixODBC SDK.\n"
-                        "It can be used to test the ODBC API.\n"
-                        "Based on the ODBC test program supplied by Microsoft.\n"
-                        "Written by Nick Gorham." );
+    /*! 
+     * \todo
+     *
+     *  1. create unixODBC.adp
+     *  2. get unixODBC.adp and associated doc to install in various install scenarios
+     *  3. tweek the way we get the path to the doc so its more portable (currently just Linux friendly)
+     *
+     * \sa
+     *
+     *  slotHelp
+     */
+    QProcess *process = new QProcess( this );
+    QString app = QLibraryInfo::location( QLibraryInfo::BinariesPath ) + QLatin1String( "/assistant" );
+
+    process->start( app, QStringList() << QLatin1String( "-enableRemoteControl" ) );
+    if ( !process->waitForStarted() )
+    {
+        QMessageBox::critical(this, tr("ODBC Test"), tr("Could not start Qt Assistant from %1.").arg( app ) );
+        return;
+    }
+
+    // show index page
+    QTextStream str( process );
+    str << QLatin1String( "SetSource qthelp://unixODBC-GUI-Qt/doc/index.html" )
+    << QLatin1Char('\0') << endl;
 }
 
 void OdbcTest::resizeEvent( QResizeEvent * )
@@ -419,134 +441,134 @@ const char *OdbcTest::int_type_as_string( SQLINTERVAL itype )
 
 void OdbcTest::createActions()
 {
-    pactionExit                             = new QAction( tr("Exit"), this );    
-    pactionGetDiagRec                       = new QAction( tr("GetDiagRec"), this );    
-    pactionGetDiagField                     = new QAction( tr("GetDiagField"), this );    
-    pactionError                            = new QAction( tr("Error"), this );    
-    pactionErrorsAll                        = new QAction( tr("ErrorsAll"), this );    
-    pactionAllocEnv                         = new QAction( tr("AllocEnv"), this );    
-    pactionAllocHandle                      = new QAction( tr("AllocHandle"), this );    
-    pactionDataSources                      = new QAction( tr("DataSources"), this );    
-    pactionDrivers                          = new QAction( tr("Drivers"), this );    
-    pactionFreeEnv                          = new QAction( tr("FreeEnv"), this );    
-    pactionFreeHandle                       = new QAction( tr("FreeHandle"), this );    
-    pactionEndTran                          = new QAction( tr("EndTran"), this );    
-    pactionTransact                         = new QAction( tr("Transact"), this );    
-    pactionDataSourcesAll                   = new QAction( tr("DataSourcesAll"), this );    
-    pactionDriversAll                       = new QAction( tr("DriversAll"), this );    
-    pactionAllocConnect                     = new QAction( tr("AllocConnect"), this );    
-    pactionBrowseConnect                    = new QAction( tr("BrowseConnect"), this );    
-    pactionConnect                          = new QAction( tr("Connect"), this );    
-    pactionDriverConnect                    = new QAction( tr("DriverConnect"), this );    
-    pactionDisconnect                       = new QAction( tr("Disconnect"), this );    
-    pactionFreeConnect                      = new QAction( tr("FreeConnect"), this );    
-    pactionGetFunctions                     = new QAction( tr("GetFunctions"), this );    
-    pactionGetInfo                          = new QAction( tr("GetInfo"), this );    
-    pactionNativeSql                        = new QAction( tr("NativeSQL"), this );    
-    pactionFullConnect                      = new QAction( tr("FullConnect"), this );    
-    pactionFullDisconnect                   = new QAction( tr("FullDisconnect"), this );    
-    pactionGetInfoAll                       = new QAction( tr("GetInfoAll"), this );    
-    pactionGetFunctionsAll                  = new QAction( tr("GetFunctionsAll"), this );    
-    pactionCopyDesc                         = new QAction( tr("CopyDesc"), this );    
-    pactionGetDescField                     = new QAction( tr("GetDescField"), this );    
-    pactionGetDescRec                       = new QAction( tr("GetDescRec"), this );    
-    pactionSetDescField                     = new QAction( tr("SetDescField"), this );    
-    pactionSetDescRec                       = new QAction( tr("SetDescRec"), this );    
-    pactionGetDescAll                       = new QAction( tr("GetDescAll"), this );    
-    pactionAllocStmt                        = new QAction( tr("AllocStmt"), this );    
-    pactionBindParam                        = new QAction( tr("BindParam,"), this );    
-    pactionBindParameter                    = new QAction( tr("BindParameter"), this );    
-    pactionCancel                           = new QAction( tr("Cancel"), this );    
-    pactionCloseCursor                      = new QAction( tr("CloseCursor"), this );    
-    pactionDescribeParam                    = new QAction( tr("DescribeParam"), this );    
-    pactionExecute                          = new QAction( tr("Execute"), this );    
-    pactionExecDirect                       = new QAction( tr("ExecDirect"), this );    
-    pactionFreeStmt                         = new QAction( tr("FreeStmt"), this );    
-    pactionGetCursorName                    = new QAction( tr("GetCursorName"), this );    
-    pactionNumParams                        = new QAction( tr("NumParams"), this );    
-    pactionParamData                        = new QAction( tr("ParamData"), this );    
-    pactionParamOptions                     = new QAction( tr("ParamOptions"), this );    
-    pactionPrepare                          = new QAction( tr("Prepare"), this );    
-    pactionPutData                          = new QAction( tr("PutData"), this );    
-    pactionSetCursorName                    = new QAction( tr("SetCursorName"), this );    
-    pactionFillParam                        = new QAction( tr("FillParam"), this );    
-    pactionShowParam                        = new QAction( tr("ShowParam"), this );    
-    pactionShowCursorSettings               = new QAction( tr("ShowCursorSettings"), this );    
-    pactionSetStmtAttr                      = new QAction( tr("SetStmtAttr"), this );    
-    pactionGetStmtAttr                      = new QAction( tr("GetStmtAttr"), this );    
-    pactionSetStmtOption                    = new QAction( tr("SetStmtOption"), this );    
-    pactionGetStmtOption                    = new QAction( tr("GetStmtOption"), this );    
-    pactionSetConnectAttr                   = new QAction( tr("SetConnectAttr"), this );    
-    pactionGetConnectAttr                   = new QAction( tr("GetConnectAttr"), this );    
-    pactionSetConnectOption                 = new QAction( tr("SetConnectOption"), this );    
-    pactionGetConnectOption                 = new QAction( tr("GetConnectOption"), this );    
-    pactionSetEnvAttr                       = new QAction( tr("SetEnvAttr"), this );    
-    pactionGetEnvAttr                       = new QAction( tr("GetEnvAttr"), this );    
-    pactionSetCursorAttributes              = new QAction( tr("SetCursorAttributes"), this );    
-    pactionBindCol                          = new QAction( tr("BindCol"), this );    
-    pactionBulkOperations                   = new QAction( tr("BulkOperations"), this );    
-    pactionColAttributes                    = new QAction( tr("ColAttributes"), this );    
-    pactionColAttribute                     = new QAction( tr("ColAttribute"), this );    
-    pactionDescribeCol                      = new QAction( tr("DescribeCol"), this );    
-    pactionExtendedFetch                    = new QAction( tr("ExtendedFetch"), this );    
-    pactionFetch                            = new QAction( tr("Fetch"), this );    
-    pactionFetchScroll                      = new QAction( tr("FetchScroll"), this );    
-    pactionGetData                          = new QAction( tr("GetData"), this );    
-    pactionMoreResults                      = new QAction( tr("MoreResults"), this );    
-    pactionNumResultCols                    = new QAction( tr("NumResultCols"), this );    
-    pactionRowCount                         = new QAction( tr("RowCount"), this );    
-    pactionSetPos                           = new QAction( tr("SetPos"), this );    
-    pactionSetScrollOptions                 = new QAction( tr("SetScrollOptions"), this );    
-    pactionBindColAll                       = new QAction( tr("BindColAll"), this );    
-    pactionDescribeColAll                   = new QAction( tr("DescribeColAll"), this );    
-    pactionFetchAll                         = new QAction( tr("FetchAll"), this );    
-    pactionGetDataAll                       = new QAction( tr("GetDataAll"), this );    
-    pactionShowBoundCols                    = new QAction( tr("ShowBoundCols"), this );    
-    pactionDisplayRowSet                    = new QAction( tr("DisplayRowSet"), this );    
-    pactionColumns                          = new QAction( tr("Columns"), this );    
-    pactionColumnPrivileges                 = new QAction( tr("ColumnPrivileges"), this );    
-    pactionGetTypeInfo                      = new QAction( tr("GetTypeInfo"), this );    
-    pactionForeignKeys                      = new QAction( tr("ForeignKeys"), this );    
-    pactionPrimaryKeys                      = new QAction( tr("PrimaryKeys"), this );    
-    pactionProcedures                       = new QAction( tr("Procedures"), this );    
-    pactionProcedureColumns                 = new QAction( tr("ProcedureColumns"), this );    
-    pactionSpecialColumns                   = new QAction( tr("SpecialColumns"), this );    
-    pactionStatistics                       = new QAction( tr("Statistics"), this );    
-    pactionTables                           = new QAction( tr("Tables"), this );    
-    pactionTablePrivileges                  = new QAction( tr("TablePrivileges"), this );    
-    pactionManageDataSources                = new QAction( tr("ManageDataSources"), this );    
-    pactionRemoveDefaultDataSource          = new QAction( tr("RemoveDefaultDataSource"), this );    
-    pactionConfigDataSource                 = new QAction( tr("ConfigDataSource"), this );    
-    pactionCreateDataSource                 = new QAction( tr("CreateDataSource"), this );    
-    pactionValidDSN                         = new QAction( tr("ValidDSN"), this );    
-    pactionRemoveDSNFromIni                 = new QAction( tr("RemoveDSNFromIni"), this );    
-    pactionWriteDSNToIni                    = new QAction( tr("WriteDSNToIni"), this );    
-    pactionRemoveDrivers                    = new QAction( tr("RemoveDrivers"), this );    
-    pactionConfigDrivers                    = new QAction( tr("ConfigDrivers"), this );    
-    pactionInstallDriver                    = new QAction( tr("InstallDriver"), this );    
-    pactionInstallDriverEx                  = new QAction( tr("InstallDriverEx"), this );    
-    pactionGetInstalledDrivers              = new QAction( tr("GetInstalledDrivers"), this );    
-    pactionRemoveDriverManager              = new QAction( tr("RemoveDriverManager"), this );    
-    pactionInstallDriverManager             = new QAction( tr("InstallDriverManager"), this );    
-    pactionReadFileDSN                      = new QAction( tr("ReadFileDSN"), this );    
-    pactionWriteFileDSN                     = new QAction( tr("WriteFileDSN"), this );    
-    pactionWritePrivateProfileString        = new QAction( tr("WritePrivateProfileString"), this );    
-    pactionGetPrivateProfileString          = new QAction( tr("GetPrivateProfileString"), this );    
-    pactionInstallTranslator                = new QAction( tr("InstallTranslator"), this );    
-    pactionInstallTranslatorEx              = new QAction( tr("InstallTranslatorEx"), this );    
-    pactionRemoveTranslator                 = new QAction( tr("RemoveTranslator"), this );    
-    pactionGetTranslator                    = new QAction( tr("GetTranslator"), this );    
-    pactionSetConfigMode                    = new QAction( tr("SetConfigMode"), this );    
-    pactionGetConfigMode                    = new QAction( tr("GetConfigMode"), this );    
-    pactionOptions                          = new QAction( tr("Options"), this );    
-    pactionTrace                            = new QAction( tr("Trace"), this );    
-    pactionManageTestSources                = new QAction( tr("ManageTestSources"), this );    
-    pactionManageAutoTests                  = new QAction( tr("ManageAutoTests"), this );    
-    pactionManageTestGroups                 = new QAction( tr("ManageTestGroups"), this );    
-    pactionRunAutoTests                     = new QAction( tr("RunAutoTests"), this );    
-    pactionHelpTest                         = new QAction( tr("HelpTest"), this );    
-    pactionHelpApi                          = new QAction( tr("HelpApi"), this );    
-    pactionHelpAbout                        = new QAction( tr("HelpAbout"), this );    
+    pactionExit                             = new QAction( tr("E&xit"), this );    
+    pactionGetDiagRec                       = new QAction( tr("SQLGetDiag&Rec..."), this );    
+    pactionGetDiagField                     = new QAction( tr("SQLGetDiag&Field..."), this );    
+    pactionError                            = new QAction( tr("SQL&Error..."), this );    
+    pactionErrorsAll                        = new QAction( tr("Errors &All..."), this );    
+    pactionAllocEnv                         = new QAction( tr("SQL&AllocEnv..."), this );    
+    pactionAllocHandle                      = new QAction( tr("SQL&AllocHandle..."), this );    
+    pactionDataSources                      = new QAction( tr("SQLDataS&ources..."), this );    
+    pactionDrivers                          = new QAction( tr("S&QLDrivers..."), this );    
+    pactionFreeEnv                          = new QAction( tr("SQL&FreeEnv..."), this );    
+    pactionFreeHandle                       = new QAction( tr("SQLF&reeHandle..."), this );    
+    pactionEndTran                          = new QAction( tr("SQLE&ndTran..."), this );    
+    pactionTransact                         = new QAction( tr("SQL&Transact..."), this );    
+    pactionDataSourcesAll                   = new QAction( tr("Data &Sources All..."), this );    
+    pactionDriversAll                       = new QAction( tr("Dri&vers All..."), this );    
+    pactionAllocConnect                     = new QAction( tr("SQL&AllocConnect..."), this );    
+    pactionBrowseConnect                    = new QAction( tr("SQL&BrowseConnect..."), this );    
+    pactionConnect                          = new QAction( tr("SQL&Connect..."), this );    
+    pactionDriverConnect                    = new QAction( tr("SQLD&riverConnect..."), this );    
+    pactionDisconnect                       = new QAction( tr("SQL&Disconnect..."), this );    
+    pactionFreeConnect                      = new QAction( tr("SQL&FreeConnect..."), this );    
+    pactionGetFunctions                     = new QAction( tr("S&QLGetFunctions..."), this );    
+    pactionGetInfo                          = new QAction( tr("SQLGet&Info..."), this );    
+    pactionNativeSql                        = new QAction( tr("SQLN&ativeSQL..."), this );    
+    pactionFullConnect                      = new QAction( tr("F&ull Connect..."), this );    
+    pactionFullDisconnect                   = new QAction( tr("Fu&ll Disconnect..."), this );    
+    pactionGetInfoAll                       = new QAction( tr("G&et Info All..."), this );    
+    pactionGetFunctionsAll                  = new QAction( tr("Get &Functions All..."), this );    
+    pactionCopyDesc                         = new QAction( tr("SQLCop&yDesc..."), this );    
+    pactionGetDescField                     = new QAction( tr("SQLGetDesc&Field..."), this );    
+    pactionGetDescRec                       = new QAction( tr("SQLG&etDescRec..."), this );    
+    pactionSetDescField                     = new QAction( tr("SQLSetDescF&ield..."), this );    
+    pactionSetDescRec                       = new QAction( tr("SQLSetDescRec..."), this );    
+    pactionGetDescAll                       = new QAction( tr("Get Desc All..."), this );    
+    pactionAllocStmt                        = new QAction( tr("SQLAllocStmt..."), this );    
+    pactionBindParam                        = new QAction( tr("SQLBindParam,..."), this );    
+    pactionBindParameter                    = new QAction( tr("SQLBindParameter..."), this );    
+    pactionCancel                           = new QAction( tr("SQLCancel..."), this );    
+    pactionCloseCursor                      = new QAction( tr("SQLCloseCursor..."), this );    
+    pactionDescribeParam                    = new QAction( tr("SQLDescribeParam..."), this );    
+    pactionExecute                          = new QAction( tr("SQLExecute..."), this );    
+    pactionExecDirect                       = new QAction( tr("SQLExecDirect..."), this );    
+    pactionFreeStmt                         = new QAction( tr("SQLFreeStmt..."), this );    
+    pactionGetCursorName                    = new QAction( tr("SQLGetCursorName..."), this );    
+    pactionNumParams                        = new QAction( tr("SQLNumParams..."), this );    
+    pactionParamData                        = new QAction( tr("SQLParamData..."), this );    
+    pactionParamOptions                     = new QAction( tr("SQLParamOptions..."), this );    
+    pactionPrepare                          = new QAction( tr("SQLPrepare..."), this );    
+    pactionPutData                          = new QAction( tr("SQLPutData..."), this );    
+    pactionSetCursorName                    = new QAction( tr("SQLSetCursorName..."), this );    
+    pactionFillParam                        = new QAction( tr("Fill Param..."), this );    
+    pactionShowParam                        = new QAction( tr("Show Param..."), this );    
+    pactionShowCursorSettings               = new QAction( tr("Show Cursor Settings..."), this );    
+    pactionSetStmtAttr                      = new QAction( tr("SQLSetStmtAttr..."), this );    
+    pactionGetStmtAttr                      = new QAction( tr("SQLGetStmtAttr..."), this );    
+    pactionSetStmtOption                    = new QAction( tr("SQLSetStmtOption..."), this );    
+    pactionGetStmtOption                    = new QAction( tr("SQLGetStmtOption..."), this );    
+    pactionSetConnectAttr                   = new QAction( tr("SQLSetConnectAttr..."), this );    
+    pactionGetConnectAttr                   = new QAction( tr("SQLGetConnectAttr..."), this );    
+    pactionSetConnectOption                 = new QAction( tr("SQLSetConnectOption..."), this );    
+    pactionGetConnectOption                 = new QAction( tr("SQLGetConnectOption..."), this );    
+    pactionSetEnvAttr                       = new QAction( tr("SQLSetEnvAttr..."), this );    
+    pactionGetEnvAttr                       = new QAction( tr("SQLGetEnvAttr..."), this );    
+    pactionSetCursorAttributes              = new QAction( tr("Set Cursor Attributes..."), this );    
+    pactionBindCol                          = new QAction( tr("SQLBindCol..."), this );    
+    pactionBulkOperations                   = new QAction( tr("SQLBulkOperations..."), this );    
+    pactionColAttributes                    = new QAction( tr("SQLColAttributes..."), this );    
+    pactionColAttribute                     = new QAction( tr("SQLColAttribute..."), this );    
+    pactionDescribeCol                      = new QAction( tr("SQLDescribeCol..."), this );    
+    pactionExtendedFetch                    = new QAction( tr("SQLExtendedFetch..."), this );    
+    pactionFetch                            = new QAction( tr("SQLFetch..."), this );    
+    pactionFetchScroll                      = new QAction( tr("SQLFetchScroll..."), this );    
+    pactionGetData                          = new QAction( tr("SQLGetData..."), this );    
+    pactionMoreResults                      = new QAction( tr("SQLMoreResults..."), this );    
+    pactionNumResultCols                    = new QAction( tr("SQLNumResultCols..."), this );    
+    pactionRowCount                         = new QAction( tr("SQLRowCount..."), this );    
+    pactionSetPos                           = new QAction( tr("SQLSetPos..."), this );    
+    pactionSetScrollOptions                 = new QAction( tr("SQLSetScrollOptions..."), this );    
+    pactionBindColAll                       = new QAction( tr("SQLBindColAll..."), this );    
+    pactionDescribeColAll                   = new QAction( tr("Describe Col All..."), this );    
+    pactionFetchAll                         = new QAction( tr("Fetch All..."), this );    
+    pactionGetDataAll                       = new QAction( tr("Get Data All..."), this );    
+    pactionShowBoundCols                    = new QAction( tr("Show Bound Cols..."), this );    
+    pactionDisplayRowSet                    = new QAction( tr("Display Row Set..."), this );    
+    pactionColumns                          = new QAction( tr("SQLColumns..."), this );    
+    pactionColumnPrivileges                 = new QAction( tr("SQLColumnPrivileges..."), this );    
+    pactionGetTypeInfo                      = new QAction( tr("SQLGetTypeInfo..."), this );    
+    pactionForeignKeys                      = new QAction( tr("SQLForeignKeys..."), this );    
+    pactionPrimaryKeys                      = new QAction( tr("SQLPrimaryKeys..."), this );    
+    pactionProcedures                       = new QAction( tr("SQLProcedures..."), this );    
+    pactionProcedureColumns                 = new QAction( tr("SQLProcedureColumns..."), this );    
+    pactionSpecialColumns                   = new QAction( tr("SQLSpecialColumns..."), this );    
+    pactionStatistics                       = new QAction( tr("SQLStatistics..."), this );    
+    pactionTables                           = new QAction( tr("SQLTables..."), this );    
+    pactionTablePrivileges                  = new QAction( tr("SQLTablePrivileges..."), this );    
+    pactionManageDataSources                = new QAction( tr("SQLManageDataSources..."), this );    
+    pactionRemoveDefaultDataSource          = new QAction( tr("SQLRemoveDefaultDataSource..."), this );    
+    pactionConfigDataSource                 = new QAction( tr("SQLConfigDataSource..."), this );    
+    pactionCreateDataSource                 = new QAction( tr("SQLCreateDataSource..."), this );    
+    pactionValidDSN                         = new QAction( tr("SQLValidDSN..."), this );    
+    pactionRemoveDSNFromIni                 = new QAction( tr("SQLRemoveDSNFromIni..."), this );    
+    pactionWriteDSNToIni                    = new QAction( tr("SQLWriteDSNToIni..."), this );    
+    pactionRemoveDrivers                    = new QAction( tr("SQLRemoveDrivers..."), this );    
+    pactionConfigDrivers                    = new QAction( tr("SQLConfigDrivers..."), this );    
+    pactionInstallDriver                    = new QAction( tr("SQLInstallDriver..."), this );    
+    pactionInstallDriverEx                  = new QAction( tr("SQLInstallDriverEx..."), this );    
+    pactionGetInstalledDrivers              = new QAction( tr("SQLGetInstalledDrivers..."), this );    
+    pactionRemoveDriverManager              = new QAction( tr("SQLRemoveDriverManager..."), this );    
+    pactionInstallDriverManager             = new QAction( tr("SQLInstallDriverManager..."), this );    
+    pactionReadFileDSN                      = new QAction( tr("SQLReadFileDSN..."), this );    
+    pactionWriteFileDSN                     = new QAction( tr("SQLWriteFileDSN..."), this );    
+    pactionWritePrivateProfileString        = new QAction( tr("SQLWritePrivateProfileString..."), this );    
+    pactionGetPrivateProfileString          = new QAction( tr("SQLGetPrivateProfileString..."), this );    
+    pactionInstallTranslator                = new QAction( tr("SQLInstallTranslator..."), this );    
+    pactionInstallTranslatorEx              = new QAction( tr("SQLInstallTranslatorEx..."), this );    
+    pactionRemoveTranslator                 = new QAction( tr("SQLRemoveTranslator..."), this );    
+    pactionGetTranslator                    = new QAction( tr("SQLGetTranslator..."), this );    
+    pactionSetConfigMode                    = new QAction( tr("SQLSetConfigMode..."), this );    
+    pactionGetConfigMode                    = new QAction( tr("SQLGetConfigMode..."), this );    
+    pactionOptions                          = new QAction( tr("Options..."), this );    
+    pactionTrace                            = new QAction( tr("Trace..."), this );    
+    pactionManageTestSources                = new QAction( tr("Manage Test Sources..."), this );    
+    pactionManageAutoTests                  = new QAction( tr("Manage Auto Tests..."), this );    
+    pactionManageTestGroups                 = new QAction( tr("Manage Test Groups..."), this );    
+    pactionRunAutoTests                     = new QAction( tr("Run Auto Tests..."), this );    
+    pactionHelpTest                         = new QAction( tr("&ODBC Test..."), this );    
+    pactionHelpApi                          = new QAction( tr("A&PI..."), this );    
+    pactionHelpAbout                        = new QAction( tr("About..."), this );    
 
     connect( pactionExit                     , SIGNAL(triggered()), this, SLOT(slotExit                     ()) );
     connect( pactionGetDiagRec               , SIGNAL(triggered()), this, SLOT(slotGetDiagRec               ()) );

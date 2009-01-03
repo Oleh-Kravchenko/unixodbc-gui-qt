@@ -5,10 +5,15 @@
 AUTHORS
 ---------------------------------------------------------------
 
-This source code was forked from unixODBC. As such - some or all
-of the authors of unixODBC may have had a hand in this code.
-The following is a list of folks who have contributed to the 
-unixODBC-GUI-Qt project.
+This source code was forked (actually moved) from unixODBC. As 
+such - some or all of the authors of unixODBC may have had a 
+hand in this code. The principle author was Peter Harvey except
+for ODBCTestQ4 where it was Nick Gorham. ODBCTestQ4 was heavily 
+modified, by Peter Harvey, upon creation of this project. See the 
+main unixODBC project for a list of authors.
+
+The following is a list of folks who have since contributed to 
+the unixODBC-GUI-Qt project.
 
 - Peter Harvey
 

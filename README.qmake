@@ -17,7 +17,7 @@ Description:
 	included, do not have the resources to allocate a GNU
 	auto-tools specialist. This means that development
 	time has to be spent in figuring it out. This is particularly
-	bad for someone who just wants to configure the a
+	bad for someone who just wants to configure the
 	build for his/her own purposes.
 
 	Also; at this time, the GNU auto-tools are not a simple
@@ -25,22 +25,21 @@ Description:
 
 Warning:
 
-	This is not a fully baked solution and is therefore not
-	recommended for most people. If you are not into editing
-	qmake project files then you should do the regular GNU
-	build process using the configure script.
+	If you are not into editing qmake project files then you 
+	should do the regular GNU build process using the configure 
+	script.
 
 Requirements:
 
 	Guess what? You are going to need qmake. If you have
 	Qt -dev installed then you probably already have qmake
 	installed. If not then get it from your distro or directly
-	from www.trolltech.com.
+	from www.trolltech.com. You need Qt version 4 or better.
 
 Make & Install:
 
-	The qmake project files have .pro extensions. You may want
-	to edit them to your liking. The top level one is 
+	The qmake project files have .pro & .pri extensions. You
+	may want to edit them to your liking. The top level one is 
 	unixODBC-GUI-Qt.pro and it handles going into the sub 
 	directories.
 
@@ -50,14 +49,14 @@ Make & Install:
 	2. $ make
 	
 	This should drop libraries in ./lib and programs in
-	./bin. This fits in well with the existing ./include.
+	./bin.
 
 	Currently; these qmake project files lack an install but... 
 	
 	PATH
 	
 	You can add the unixODBC-GUI-Qt/.bin to your PATH or copy them
-	somewhere like /usr/local/bin. 
+	somewhere like /usr/bin. 
 
         NOTE: directories with the app extension are OSX apps...
         they can be executed using open i.e. "open <name>.app"
@@ -67,4 +66,4 @@ Make & Install:
 	The ./lib directory may just contain static libs; in which
 	case you do not need to put them into your lib path. If 
 	you built share libs then you must get them into your lib path.
-
+	Ideally; you would copy them to /usr/lib or /usr/lib64.
