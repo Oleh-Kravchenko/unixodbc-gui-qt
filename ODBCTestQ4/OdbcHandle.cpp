@@ -155,7 +155,7 @@ OdbcHandle::~OdbcHandle()
 
 					if ( hand && hand->getType() == SQL_HANDLE_DESC && hand->getStmtHandle() == handle )
 					{
-						handle_list->removeOne( hand );
+						handle_list->removeAll( hand );
 						delete hand;
 						changed = 1;
 						break;

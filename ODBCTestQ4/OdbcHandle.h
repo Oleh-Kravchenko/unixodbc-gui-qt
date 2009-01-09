@@ -36,7 +36,9 @@
 
 /* bring in standard C stuff */
 #include <stdio.h>
-#include <unistd.h>
+#ifdef UNIX
+    #include <unistd.h>
+#endif
 #include <stdlib.h>
 
 #if TIME_WITH_SYS_TIME

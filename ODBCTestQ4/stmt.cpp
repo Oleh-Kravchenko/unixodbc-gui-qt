@@ -367,71 +367,67 @@ dExecute::~dExecute()
 
 void dExecDirect::Ok()
 {
-	const char *sql, *lname;
-    OdbcHandle *hand = pOdbcTest->extract_handle_list( SQL_HANDLE_STMT, handles );
-	SQLHANDLE in_handle = SQL_NULL_HANDLE;
-	SQLINTEGER n_len;
+	// handle...
+	OdbcHandle *hand 		= pOdbcTest->extract_handle_list( SQL_HANDLE_STMT, handles );
+	SQLHANDLE 	hStatement 	= SQL_NULL_HANDLE;
 
 	if ( hand )
-		in_handle = hand->getHandle();
-
-	sql = str->currentText().toAscii().constData();
+		hStatement = hand->getHandle();
 
 	pOdbcTest->out_win->append( "SQLExecDirect():" );
 	pOdbcTest->out_win->append( "  In:" );
-	if ( in_handle )
-		txt.sprintf( "    Statement Handle: %p", in_handle );
+	if ( hStatement )
+		pOdbcTest->out_win->append( QString( tr("    Statement Handle: %1") ).arg( (qlonglong)hStatement ) );
 	else
-		txt.sprintf( "    Statement Handle: SQL_NULL_HSTMT" );
-	pOdbcTest->out_win->append( txt );
+		pOdbcTest->out_win->append( "    Statement Handle: SQL_NULL_HSTMT" );
 
-	if ( strcmp( sql, "<null ptr>" ) == 0 )
+	// text...
+	QString stringSQL = str->currentText();
+	const char *pszSQL = NULL;
+
+	if ( stringSQL == "<null ptr>" || stringSQL.isNull() )
 	{
-		sql = NULL;
+		pszSQL = NULL;
 		pOdbcTest->out_win->append( "    Text: <null ptr>" );
 	}
-	else if ( strcmp( sql, "<empty string>" ) == 0 )
+	else if ( stringSQL == "<empty string>" || stringSQL.isEmpty() )
 	{
-		sql = "";
+		pszSQL = "";
 		pOdbcTest->out_win->append( "    Text: <empty string>" );
 	}
-	else if ( strcmp( sql, "<input window>" ) == 0 )
+	else
 	{
-		QString *s = new QString( pOdbcTest->in_win->toPlainText() );
-		if ( s->isEmpty())
-			sql = "";
-		else if ( s->isNull())
-			sql = NULL;
+		if ( stringSQL == "<input window>" )
+			stringSQL = pOdbcTest->in_win->toPlainText();
+		if ( stringSQL.isEmpty())
+			pszSQL = "";
+		else if ( stringSQL.isNull())
+			pszSQL = NULL;
 		else 
-			sql = s->toAscii().constData();
-		txt.sprintf( "    Text: %s", sql );
-		pOdbcTest->out_win->append( txt );
+			pszSQL = stringSQL.toAscii().constData();
+		pOdbcTest->out_win->append( QString( tr("    Text: %1") ).arg( pszSQL ) );
+	}
+
+	// length...
+	QString 	stringLength = name_len->currentText().toAscii().constData();
+	SQLINTEGER 	nSQL = SQL_NTS;
+
+	if ( stringLength.left( 7 ) == "SQL_NTS" )
+	{
+		nSQL = SQL_NTS;
+		pOdbcTest->out_win->append( tr("    Statement Len: SQL_NTS=-3") );
 	}
 	else
 	{
-		txt.sprintf( "    Text: %s", sql );
-		pOdbcTest->out_win->append( txt );
+		nSQL = stringLength.toInt();
+		pOdbcTest->out_win->append( QString( tr("    Statement Len: %1") ).arg( nSQL ) );
 	}
 
-	lname = name_len->currentText().toAscii().constData();
-
-	if ( strncmp( lname, "SQL_NTS", 7 ) == 0 )
-	{
-		n_len = SQL_NTS;
-		txt.sprintf( "    Statement Len: SQL_NTS=-3" );
-	}
-	else
-	{
-		n_len = atoi( lname );
-		txt.sprintf( "    Statement Len: %d", n_len );
-	}
-	pOdbcTest->out_win->append( txt );
-
-	SQLRETURN ret = SQLExecDirect( in_handle, (SQLCHAR*) sql, n_len );
+	// do it...
+	SQLRETURN nReturn = SQLExecDirect( hStatement, (SQLCHAR*)pszSQL, nSQL );
 
 	pOdbcTest->out_win->append( "  Return:" );
-	txt.sprintf( "    %s=%d", pOdbcTest->return_as_text( ret ), ret );
-	pOdbcTest->out_win->append( txt );
+	pOdbcTest->out_win->append( QString( "    %1=%2" ).arg( pOdbcTest->return_as_text( nReturn ) ).arg( nReturn ) );
 	pOdbcTest->out_win->append( "" );
 }
 
@@ -925,7 +921,7 @@ void dFreeStmt::Ok()
 
     if ( SQL_SUCCEEDED( ret ) && free_stmt_option[ index ].value == SQL_DROP )
     {
-		pOdbcTest->listHandle.removeOne( hand );
+		pOdbcTest->listHandle.removeAll( hand );
         delete hand;
     }
 

@@ -291,164 +291,179 @@ static attr_options null_options[ 3 ] =
 
 void dTables::Ok()
 {
-    const char *cat, *sch, *tab, *typ;
-    const char *lcat, *lsch, *ltab, *ltyp;
-    QString qcat, qsch, qtab, qtyp;
-    QString qlcat, qlsch, qltab, qltyp;
-    int cat_len, sch_len, tab_len, typ_len;
-    OdbcHandle *hand = pOdbcTest->extract_handle_list( SQL_HANDLE_STMT, handles );
-    SQLHANDLE in_handle = SQL_NULL_HANDLE;
-
-    if ( hand )
-        in_handle = hand->getHandle();
-
-    qcat = catalog ->currentText();
-    qsch = schema ->currentText();
-    qtab = table ->currentText();
-    qtyp = type ->currentText();
-    qlcat = catalog_len ->currentText();
-    qlsch = schema_len ->currentText();
-    qltab = table_len ->currentText();
-    qltyp = type_len ->currentText();
-
-    cat = qcat.toAscii().constData();
-    sch = qsch.toAscii().constData();
-    tab = qtab.toAscii().constData();
-    typ = qtyp.toAscii().constData();
-    lcat = qlcat.toAscii().constData();
-    lsch = qlsch.toAscii().constData();
-    ltab = qltab.toAscii().constData();
-    ltyp = qltyp.toAscii().constData();
+    QString stringLength;
 
     pOdbcTest->out_win->append( "SQLTables():" );
     pOdbcTest->out_win->append( "  In:" );
-    if ( in_handle )
-        txt.sprintf( "    Statement Handle: %p", in_handle );
-    else
-        txt.sprintf( "    Statement Handle: SQL_NULL_HSTMT" );
-    pOdbcTest->out_win->append( txt );
 
-    if ( strcmp( cat, "<null ptr>" ) == 0 )
+    // handle...
+    OdbcHandle *hand            = pOdbcTest->extract_handle_list( SQL_HANDLE_STMT, handles );
+    SQLHANDLE   hStatement      = SQL_NULL_HANDLE;
+
+    if ( hand )
+        hStatement = hand->getHandle();
+
+    if ( hStatement )
+        pOdbcTest->out_win->append( QString( tr("    Statement Handle: %1") ).arg( (qulonglong)hStatement ) );
+    else
+        pOdbcTest->out_win->append( tr("    Statement Handle: SQL_NULL_HSTMT") );
+
+    // catalog...
+    QString stringCatalog = catalog ->currentText();
+    const char *pszCatalog = NULL;
+    if ( stringCatalog == "<null ptr>"  || stringCatalog.isNull() )
     {
-        cat = NULL;
+        pszCatalog = NULL;
         pOdbcTest->out_win->append( "    Catalog: <null ptr>" );
     }
-    else if ( strcmp( cat, "<empty string>" ) == 0 )
+    else if ( stringCatalog == "<empty string>" || stringCatalog.isEmpty() )
     {
-        cat = "";
+        pszCatalog = "";
         pOdbcTest->out_win->append( "    Catalog: <empty string>" );
     }
-    else
+    else if ( stringCatalog == "SQL_ALL_CATALOGS" )
     {
-        txt.sprintf( "    Catalog: %s", cat );
-        pOdbcTest->out_win->append( txt );
-    }
-
-    if ( strncmp( lcat, "SQL_NTS", 7 ) == 0 )
-    {
-        cat_len = SQL_NTS;
-        txt.sprintf( "    Catalog Len: SQL_NTS=-3" );
+        pszCatalog = SQL_ALL_CATALOGS;
+        pOdbcTest->out_win->append( QString( tr("    Type: SQL_ALL_CATALOGS=%1") ).arg( SQL_ALL_CATALOGS ) );
     }
     else
     {
-        cat_len = atoi( lcat );
-        txt.sprintf( "    Catalog Len: %d", cat_len );
+        pszCatalog = stringCatalog.toAscii().constData();
+        pOdbcTest->out_win->append( QString( tr("    Catalog: %1") ).arg( pszCatalog ) );
     }
-    pOdbcTest->out_win->append( txt );
 
-    if ( strcmp( sch, "<null ptr>" ) == 0 )
+    // catalog length...
+    stringLength = catalog_len ->currentText();
+    SQLSMALLINT nCatalog = SQL_NTS; 
+    if ( stringLength.left( 7 ) == "SQL_NTS" )
     {
-        sch = NULL;
+        nCatalog = SQL_NTS;
+        pOdbcTest->out_win->append( "    Catalog Len: SQL_NTS=-3" );
+    }
+    else
+    {
+        nCatalog = stringLength.toInt();
+        pOdbcTest->out_win->append( QString( tr("    Catalog Len: %1") ).arg( nCatalog ) );
+    }
+
+    // schema...
+    QString stringSchema = schema->currentText();
+    const char *pszSchema = NULL;
+    if ( stringSchema == "<null ptr>"  || stringSchema.isNull() )
+    {
+        pszSchema = NULL;
         pOdbcTest->out_win->append( "    Schema: <null ptr>" );
     }
-    else if ( strcmp( sch, "<empty string>" ) == 0 )
+    else if ( stringSchema == "<empty string>" || stringSchema.isEmpty() )
     {
-        sch = "";
+        pszSchema = "";
         pOdbcTest->out_win->append( "    Schema: <empty string>" );
     }
-    else
+    else if ( stringSchema == "SQL_ALL_SCHEMAS" )
     {
-        txt.sprintf( "    Schema: %s", sch );
-        pOdbcTest->out_win->append( txt );
-    }
-
-    if ( strncmp( lsch, "SQL_NTS", 7 ) == 0 )
-    {
-        sch_len = SQL_NTS;
-        txt.sprintf( "    Schema Len: SQL_NTS=-3" );
+        pszSchema = SQL_ALL_SCHEMAS;
+        pOdbcTest->out_win->append( QString( tr("    Type: SQL_ALL_SCHEMAS=%1") ).arg( SQL_ALL_SCHEMAS ) );
     }
     else
     {
-        sch_len = atoi( lsch );
-        txt.sprintf( "    Schema Len: %d", sch_len );
+        pszSchema = stringSchema.toAscii().constData();
+        pOdbcTest->out_win->append( QString( tr("    Schema: %1") ).arg( pszSchema ) );
     }
-    pOdbcTest->out_win->append( txt );
 
-    if ( strcmp( tab, "<null ptr>" ) == 0 )
+    // schema length...
+    stringLength = schema_len ->currentText();
+    SQLSMALLINT nSchema = SQL_NTS; 
+    if ( stringLength.left( 7 ) == "SQL_NTS" )
     {
-        tab = NULL;
+        nSchema = SQL_NTS;
+        pOdbcTest->out_win->append( "    Schema Len: SQL_NTS=-3" );
+    }
+    else
+    {
+        nSchema = stringLength.toInt();
+        pOdbcTest->out_win->append( QString( tr("    Schema Len: %1") ).arg( nSchema ) );
+    }
+
+    // table...
+    QString stringTable = table->currentText();
+    const char *pszTable = NULL;
+    if ( stringTable == "<null ptr>"  || stringTable.isNull() )
+    {
+        pszTable = NULL;
         pOdbcTest->out_win->append( "    Table: <null ptr>" );
     }
-    else if ( strcmp( tab, "<empty string>" ) == 0 )
+    else if ( stringTable == "<empty string>" || stringTable.isEmpty() )
     {
-        tab = "";
+        pszTable = "";
         pOdbcTest->out_win->append( "    Table: <empty string>" );
     }
     else
     {
-        txt.sprintf( "    Table: %s", tab );
-        pOdbcTest->out_win->append( txt );
+        pszTable = stringTable.toAscii().constData();
+        pOdbcTest->out_win->append( QString( tr("    Table: %1") ).arg( pszTable ) );
     }
-
-    if ( strncmp( ltab, "SQL_NTS", 7 ) == 0 )
+    
+    // table length...
+    stringLength = table_len ->currentText();
+    SQLSMALLINT nTable = SQL_NTS; 
+    if ( stringLength.left( 7 ) == "SQL_NTS" )
     {
-        tab_len = SQL_NTS;
-        txt.sprintf( "    Table Len: SQL_NTS=-3" );
+        nTable = SQL_NTS;
+        pOdbcTest->out_win->append( "    Table Len: SQL_NTS=-3" );
     }
     else
     {
-        tab_len = atoi( ltab );
-        txt.sprintf( "    Table Len: %d", tab_len );
+        nTable = stringLength.toInt();
+        pOdbcTest->out_win->append( QString( tr("    Table Len: %1") ).arg( nTable ) );
     }
-    pOdbcTest->out_win->append( txt );
 
-    if ( strcmp( typ, "<null ptr>" ) == 0 )
+    // type...
+    QString stringType = type->currentText();
+    const char *pszType = NULL;
+    if ( stringType == "<null ptr>"  || stringType.isNull() )
     {
-        typ = NULL;
-        pOdbcTest->out_win->append( "    Table Type: <null ptr>" );
+        pszType = NULL;
+        pOdbcTest->out_win->append( "    Type: <null ptr>" );
     }
-    else if ( strcmp( typ, "<empty string>" ) == 0 )
+    else if ( stringType == "<empty string>" || stringType.isEmpty() )
     {
-        typ = "";
-        pOdbcTest->out_win->append( "    Table Type: <empty string>" );
+        pszType = "";
+        pOdbcTest->out_win->append( "    Type: <empty string>" );
+    }
+    else if ( stringType == "SQL_ALL_TABLE_TYPES" )
+    {
+        pszType = SQL_ALL_TABLE_TYPES;
+        pOdbcTest->out_win->append( QString( tr("    Type: SQL_ALL_TABLE_TYPES=%1") ).arg( SQL_ALL_TABLE_TYPES ) );
     }
     else
     {
-        txt.sprintf( "    Table Type: %s", typ );
-        pOdbcTest->out_win->append( txt );
+        pszType = stringType.toAscii().constData();
+        pOdbcTest->out_win->append( QString( tr("    Type: %1") ).arg( pszType ) );
     }
 
-    if ( strncmp( ltyp, "SQL_NTS", 7 ) == 0 )
+    // type length...
+    stringLength = type_len->currentText();
+    SQLSMALLINT nType = SQL_NTS; 
+    if ( stringLength.left( 7 ) == "SQL_NTS" )
     {
-        typ_len = SQL_NTS;
-        txt.sprintf( "    Table Type Len: SQL_NTS=-3" );
+        nType = SQL_NTS;
+        pOdbcTest->out_win->append( "    Type Len: SQL_NTS=-3" );
     }
     else
     {
-        typ_len = atoi( ltyp );
-        txt.sprintf( "    Table Type Len: %d", typ_len );
+        nType = stringLength.toInt();
+        pOdbcTest->out_win->append( QString( tr("    Type Len: %1") ).arg( nType ) );
     }
-    pOdbcTest->out_win->append( txt );
 
-    SQLRETURN ret = SQLTables( in_handle, 
-                               (SQLCHAR*)cat, cat_len,
-                               (SQLCHAR*)sch, sch_len, 
-                               (SQLCHAR*)tab, tab_len,
-                               (SQLCHAR*)typ, typ_len );
+    // do it...
+    SQLRETURN nReturn = SQLTables( hStatement, 
+                                   (SQLCHAR*)pszCatalog, nCatalog,
+                                   (SQLCHAR*)pszSchema, nSchema, 
+                                   (SQLCHAR*)pszTable, nTable,
+                                   (SQLCHAR*)pszType, nType );
 
     pOdbcTest->out_win->append( "  Return:" );
-    txt.sprintf( "    %s=%d", pOdbcTest->return_as_text( ret ), ret );
-    pOdbcTest->out_win->append( txt );
+    pOdbcTest->out_win->append( QString( tr("    %1=%2") ).arg( pOdbcTest->return_as_text( nReturn ) ).arg( nReturn ) );
     pOdbcTest->out_win->append( "" );
 }
 
@@ -478,34 +493,43 @@ dTables::dTables( OdbcTest *pOdbcTest, QString name )
     l_handle->setGeometry( 10, 15, 80, 20 );
 
     catalog = new QComboBox( this ); // "catalog"
+    catalog->setEditable( true );
     catalog->setGeometry( 100, 50, 150, 20 );
     l_catalog = new QLabel( "Catalog:", this );
     l_catalog->setGeometry( 10, 50, 90, 20 );
     catalog->insertItem( 0, "<null ptr>" );
     catalog->insertItem( 1, "<empty string>" );
+    catalog->insertItem( 2, "SQL_ALL_CATALOGS" );
 
     schema = new QComboBox( this ); // "schema"
+    schema->setEditable( true );
     schema->setGeometry( 100, 80, 150, 20 );
     l_schema = new QLabel( "Schema:", this );
     l_schema->setGeometry( 10, 80, 90, 20 );
     schema->insertItem( 0, "<null ptr>" );
     schema->insertItem( 1, "<empty string>" );
+    schema->insertItem( 2, "SQL_ALL_SCHEMAS" );
 
     table = new QComboBox( this ); // "table"
+    table->setEditable( true );
     table->setGeometry( 100, 110, 150, 20 );
     l_table = new QLabel( "Table:", this );
     l_table->setGeometry( 10, 110, 90, 20 );
     table->insertItem( 0, "<null ptr>" );
     table->insertItem( 1, "<empty string>" );
 
+    /*! \todo consider getting from SQLGetInfo (with a fallback)... */
     type = new QComboBox( this ); // "table"
+    type->setEditable( true );
     type->setGeometry( 100, 140, 150, 20 );
     l_type = new QLabel( "Table Type:", this );
     l_type->setGeometry( 10, 140, 90, 20 );
     type->insertItem( 0, "<null ptr>" );
     type->insertItem( 1, "<empty string>" );
+    type->insertItem( 2, "SQL_ALL_TABLE_TYPES" );
 
     catalog_len = new QComboBox( this ); // "catalog len"
+    catalog_len->setEditable( true );
     catalog_len->setGeometry( 370, 50, 150, 20 );
     l_catalog_len = new QLabel( "String Length:", this );
     l_catalog_len->setGeometry( 280, 50, 90, 20 );
@@ -513,6 +537,7 @@ dTables::dTables( OdbcTest *pOdbcTest, QString name )
     catalog_len->insertItem( 1, "0" );
 
     schema_len = new QComboBox( this ); // "schema len"
+    schema_len->setEditable( true );
     schema_len->setGeometry( 370, 80, 150, 20 );
     l_schema_len = new QLabel( "String Length:", this );
     l_schema_len->setGeometry( 280, 80, 90, 20 );
@@ -520,6 +545,7 @@ dTables::dTables( OdbcTest *pOdbcTest, QString name )
     schema_len->insertItem( 1, "0" );
 
     table_len = new QComboBox( this ); // "table len"
+    table_len->setEditable( true );
     table_len->setGeometry( 370, 110, 150, 20 );
     l_table_len = new QLabel( "String Length:", this );
     l_table_len->setGeometry( 280, 110, 90, 20 );
@@ -527,6 +553,7 @@ dTables::dTables( OdbcTest *pOdbcTest, QString name )
     table_len->insertItem( 1, "0" );
 
     type_len = new QComboBox( this ); // "type len"
+    type_len->setEditable( true );
     type_len->setGeometry( 370, 140, 150, 20 );
     l_type_len = new QLabel( "String Length:", this );
     l_type_len->setGeometry( 280, 140, 90, 20 );
@@ -915,6 +942,7 @@ dColumnPrivileges::dColumnPrivileges( OdbcTest *pOdbcTest, QString name )
     l_handle->setGeometry( 10, 15, 80, 20 );
 
     catalog = new QComboBox( this );
+    catalog->setEditable( true );
     catalog->setGeometry( 100, 50, 150, 20 );
     l_catalog = new QLabel( "Catalog:", this );
     l_catalog->setGeometry( 10, 50, 90, 20 );
@@ -922,6 +950,7 @@ dColumnPrivileges::dColumnPrivileges( OdbcTest *pOdbcTest, QString name )
     catalog->insertItem( 1, "<empty string>" );
 
     schema = new QComboBox( this );
+    schema->setEditable( true );
     schema->setGeometry( 100, 80, 150, 20 );
     l_schema = new QLabel( "Schema:", this );
     l_schema->setGeometry( 10, 80, 90, 20 );
@@ -929,6 +958,7 @@ dColumnPrivileges::dColumnPrivileges( OdbcTest *pOdbcTest, QString name )
     schema->insertItem( 1, "<empty string>" );
 
     table = new QComboBox( this );
+    table->setEditable( true );
     table->setGeometry( 100, 110, 150, 20 );
     l_table = new QLabel( "Table:", this );
     l_table->setGeometry( 10, 110, 90, 20 );
@@ -936,6 +966,7 @@ dColumnPrivileges::dColumnPrivileges( OdbcTest *pOdbcTest, QString name )
     table->insertItem( 1, "<empty string>" );
 
     column = new QComboBox( this );
+    column->setEditable( true );
     column->setGeometry( 100, 140, 150, 20 );
     l_column = new QLabel( "Column:", this );
     l_column->setGeometry( 10, 140, 90, 20 );
@@ -943,6 +974,7 @@ dColumnPrivileges::dColumnPrivileges( OdbcTest *pOdbcTest, QString name )
     column->insertItem( 1, "<empty string>" );
 
     catalog_len = new QComboBox( this );
+    catalog_len->setEditable( true );
     catalog_len->setGeometry( 370, 50, 150, 20 );
     l_catalog_len = new QLabel( "String Length:", this );
     l_catalog_len->setGeometry( 280, 50, 90, 20 );
@@ -950,6 +982,7 @@ dColumnPrivileges::dColumnPrivileges( OdbcTest *pOdbcTest, QString name )
     catalog_len->insertItem( 1, "0" );
 
     schema_len = new QComboBox( this );
+    schema_len->setEditable( true );
     schema_len->setGeometry( 370, 80, 150, 20 );
     l_schema_len = new QLabel( "String Length:", this );
     l_schema_len->setGeometry( 280, 80, 90, 20 );
@@ -957,6 +990,7 @@ dColumnPrivileges::dColumnPrivileges( OdbcTest *pOdbcTest, QString name )
     schema_len->insertItem( 1, "0" );
 
     table_len = new QComboBox( this );
+    table_len->setEditable( true );
     table_len->setGeometry( 370, 110, 150, 20 );
     l_table_len = new QLabel( "String Length:", this );
     l_table_len->setGeometry( 280, 110, 90, 20 );
@@ -964,6 +998,7 @@ dColumnPrivileges::dColumnPrivileges( OdbcTest *pOdbcTest, QString name )
     table_len->insertItem( 1, "0" );
 
     column_len = new QComboBox( this );
+    column_len->setEditable( true );
     column_len->setGeometry( 370, 140, 150, 20 );
     l_column_len = new QLabel( "String Length:", this );
     l_column_len->setGeometry( 280, 140, 90, 20 );
@@ -1026,6 +1061,7 @@ dColumns::dColumns( OdbcTest *pOdbcTest, QString name )
     l_handle->setGeometry( 10, 15, 80, 20 );
 
     catalog = new QComboBox( this );
+    catalog->setEditable( true );
     catalog->setGeometry( 100, 50, 150, 20 );
     l_catalog = new QLabel( "Catalog:", this );
     l_catalog->setGeometry( 10, 50, 90, 20 );
@@ -1033,6 +1069,7 @@ dColumns::dColumns( OdbcTest *pOdbcTest, QString name )
     catalog->insertItem( 1, "<empty string>" );
 
     schema = new QComboBox( this );
+    schema->setEditable( true );
     schema->setGeometry( 100, 80, 150, 20 );
     l_schema = new QLabel( "Schema:", this );
     l_schema->setGeometry( 10, 80, 90, 20 );
@@ -1040,6 +1077,7 @@ dColumns::dColumns( OdbcTest *pOdbcTest, QString name )
     schema->insertItem( 1, "<empty string>" );
 
     table = new QComboBox( this );
+    table->setEditable( true );
     table->setGeometry( 100, 110, 150, 20 );
     l_table = new QLabel( "Table:", this );
     l_table->setGeometry( 10, 110, 90, 20 );
@@ -1047,6 +1085,7 @@ dColumns::dColumns( OdbcTest *pOdbcTest, QString name )
     table->insertItem( 1, "<empty string>" );
 
     column = new QComboBox( this );
+    column->setEditable( true );
     column->setGeometry( 100, 140, 150, 20 );
     l_column = new QLabel( "Column:", this );
     l_column->setGeometry( 10, 140, 90, 20 );
@@ -1054,6 +1093,7 @@ dColumns::dColumns( OdbcTest *pOdbcTest, QString name )
     column->insertItem( 1, "<empty string>" );
 
     catalog_len = new QComboBox( this );
+    catalog_len->setEditable( true );
     catalog_len->setGeometry( 370, 50, 150, 20 );
     l_catalog_len = new QLabel( "String Length:", this );
     l_catalog_len->setGeometry( 280, 50, 90, 20 );
@@ -1061,6 +1101,7 @@ dColumns::dColumns( OdbcTest *pOdbcTest, QString name )
     catalog_len->insertItem( 1, "0" );
 
     schema_len = new QComboBox( this );
+    schema_len->setEditable( true );
     schema_len->setGeometry( 370, 80, 150, 20 );
     l_schema_len = new QLabel( "String Length:", this );
     l_schema_len->setGeometry( 280, 80, 90, 20 );
@@ -1068,6 +1109,7 @@ dColumns::dColumns( OdbcTest *pOdbcTest, QString name )
     schema_len->insertItem( 1, "0" );
 
     table_len = new QComboBox( this );
+    table_len->setEditable( true );
     table_len->setGeometry( 370, 110, 150, 20 );
     l_table_len = new QLabel( "String Length:", this );
     l_table_len->setGeometry( 280, 110, 90, 20 );
@@ -1075,6 +1117,7 @@ dColumns::dColumns( OdbcTest *pOdbcTest, QString name )
     table_len->insertItem( 1, "0" );
 
     column_len = new QComboBox( this );
+    column_len->setEditable( true );
     column_len->setGeometry( 370, 140, 150, 20 );
     l_column_len = new QLabel( "String Length:", this );
     l_column_len->setGeometry( 280, 140, 90, 20 );
@@ -1371,6 +1414,7 @@ dForeignKeys::dForeignKeys( OdbcTest *pOdbcTest, QString name )
     l_handle->setGeometry( 10, 15, 80, 20 );
 
     catalog = new QComboBox( this );
+    catalog->setEditable( true );
     catalog->setGeometry( 100, 50, 150, 20 );
     l_catalog = new QLabel( "PKCatalog:", this );
     l_catalog->setGeometry( 10, 50, 90, 20 );
@@ -1378,6 +1422,7 @@ dForeignKeys::dForeignKeys( OdbcTest *pOdbcTest, QString name )
     catalog->insertItem( 1, "<empty string>" );
 
     schema = new QComboBox( this );
+    schema->setEditable( true );
     schema->setGeometry( 100, 80, 150, 20 );
     l_schema = new QLabel( "PKSchema:", this );
     l_schema->setGeometry( 10, 80, 90, 20 );
@@ -1385,6 +1430,7 @@ dForeignKeys::dForeignKeys( OdbcTest *pOdbcTest, QString name )
     schema->insertItem( 1, "<empty string>" );
 
     table = new QComboBox( this );
+    table->setEditable( true );
     table->setGeometry( 100, 110, 150, 20 );
     l_table = new QLabel( "PKTable:", this );
     l_table->setGeometry( 10, 110, 90, 20 );
@@ -1392,6 +1438,7 @@ dForeignKeys::dForeignKeys( OdbcTest *pOdbcTest, QString name )
     table->insertItem( 1, "<empty string>" );
 
     fk_catalog = new QComboBox( this );
+    fk_catalog->setEditable( true );
     fk_catalog->setGeometry( 100, 140, 150, 20 );
     fk_l_catalog = new QLabel( "FKCatalog:", this );
     fk_l_catalog->setGeometry( 10, 140, 90, 20 );
@@ -1399,6 +1446,7 @@ dForeignKeys::dForeignKeys( OdbcTest *pOdbcTest, QString name )
     fk_catalog->insertItem( 1, "<empty string>" );
 
     fk_schema = new QComboBox( this );
+    fk_schema->setEditable( true );
     fk_schema->setGeometry( 100, 170, 150, 20 );
     fk_l_schema = new QLabel( "FKSchema:", this );
     fk_l_schema->setGeometry( 10, 170, 90, 20 );
@@ -1406,6 +1454,7 @@ dForeignKeys::dForeignKeys( OdbcTest *pOdbcTest, QString name )
     fk_schema->insertItem( 1, "<empty string>" );
 
     fk_table = new QComboBox( this );
+    fk_table->setEditable( true );
     fk_table->setGeometry( 100, 200, 150, 20 );
     fk_l_table = new QLabel( "FKTable:", this );
     fk_l_table->setGeometry( 10, 200, 90, 20 );
@@ -1413,6 +1462,7 @@ dForeignKeys::dForeignKeys( OdbcTest *pOdbcTest, QString name )
     fk_table->insertItem( 1, "<empty string>" );
 
     catalog_len = new QComboBox( this );
+    catalog_len->setEditable( true );
     catalog_len->setGeometry( 370, 140, 150, 20 );
     l_catalog_len = new QLabel( "String Length:", this );
     l_catalog_len->setGeometry( 280, 140, 90, 20 );
@@ -1420,6 +1470,7 @@ dForeignKeys::dForeignKeys( OdbcTest *pOdbcTest, QString name )
     catalog_len->insertItem( 1, "0" );
 
     schema_len = new QComboBox( this );
+    schema_len->setEditable( true );
     schema_len->setGeometry( 370, 80, 150, 20 );
     l_schema_len = new QLabel( "String Length:", this );
     l_schema_len->setGeometry( 280, 80, 90, 20 );
@@ -1427,6 +1478,7 @@ dForeignKeys::dForeignKeys( OdbcTest *pOdbcTest, QString name )
     schema_len->insertItem( 1, "0" );
 
     table_len = new QComboBox( this );
+    table_len->setEditable( true );
     table_len->setGeometry( 370, 110, 150, 20 );
     l_table_len = new QLabel( "String Length:", this );
     l_table_len->setGeometry( 280, 110, 90, 20 );
@@ -1434,6 +1486,7 @@ dForeignKeys::dForeignKeys( OdbcTest *pOdbcTest, QString name )
     table_len->insertItem( 1, "0" );
 
     fk_catalog_len = new QComboBox( this );
+    fk_catalog_len->setEditable( true );
     fk_catalog_len->setGeometry( 370, 140, 150, 20 );
     fk_l_catalog_len = new QLabel( "String Length:", this );
     fk_l_catalog_len->setGeometry( 280, 140, 90, 20 );
@@ -1441,6 +1494,7 @@ dForeignKeys::dForeignKeys( OdbcTest *pOdbcTest, QString name )
     fk_catalog_len->insertItem( 1, "0" );
 
     fk_schema_len = new QComboBox( this );
+    fk_schema_len->setEditable( true );
     fk_schema_len->setGeometry( 370, 170, 150, 20 );
     fk_l_schema_len = new QLabel( "String Length:", this );
     fk_l_schema_len->setGeometry( 280, 170, 90, 20 );
@@ -1448,6 +1502,7 @@ dForeignKeys::dForeignKeys( OdbcTest *pOdbcTest, QString name )
     fk_schema_len->insertItem( 1, "0" );
 
     fk_table_len = new QComboBox( this );
+    fk_table_len->setEditable( true );
     fk_table_len->setGeometry( 370, 200, 150, 20 );
     fk_l_table_len = new QLabel( "String Length:", this );
     fk_l_table_len->setGeometry( 280, 200, 90, 20 );

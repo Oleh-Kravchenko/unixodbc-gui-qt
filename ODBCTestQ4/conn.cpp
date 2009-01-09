@@ -2465,6 +2465,16 @@ void dDriverConnect::Ok()
                  dc_options[ index ].attr, dc_options[ index ].version );
     pOdbcTest->out_win->append( txt );
 
+#ifdef WIN32
+    SQLRETURN ret = SQLDriverConnect( in_handle, 
+                                      (SQLHWND)(this->winId()),
+                                      conn_str_in,
+                                      in_string_len,
+                                      out_string,
+                                      con_str_out_max,
+                                      ptr_con_str_out,
+                                      dc_type );
+#else
     SQLRETURN ret = SQLDriverConnect( in_handle, 
                                       NULL,
                                       conn_str_in,
@@ -2473,7 +2483,7 @@ void dDriverConnect::Ok()
                                       con_str_out_max,
                                       ptr_con_str_out,
                                       dc_type );
-
+#endif
     pOdbcTest->out_win->append( "  Return:" );
     txt.sprintf( "    %s=%d", pOdbcTest->return_as_text( ret ), ret );
     pOdbcTest->out_win->append( txt );
@@ -3048,7 +3058,11 @@ void dFullConnect::Ok()
         }
     }
 
+#ifdef WIN32
+    ret = SQLDriverConnect( hdbc, (SQLHWND)(this->winId()), (SQLCHAR*)cstr, strlen( cstr ), NULL, 0, NULL, SQL_DRIVER_COMPLETE );
+#else
     ret = SQLDriverConnect( hdbc, (void*)1, (SQLCHAR*)cstr, strlen( cstr ), NULL, 0, NULL, SQL_DRIVER_COMPLETE );
+#endif
 
     pOdbcTest->dumpError( SQL_HANDLE_DBC, hdbc );
 
@@ -4107,7 +4121,7 @@ void dFreeConnect::Ok()
 
     if ( SQL_SUCCEEDED( ret ) && in_handle )
     {
-        pOdbcTest->listHandle.removeOne( dbc );
+        pOdbcTest->listHandle.removeAll( dbc );
         delete dbc;
     }
 

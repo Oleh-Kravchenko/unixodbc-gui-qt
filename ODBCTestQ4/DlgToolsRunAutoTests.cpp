@@ -230,6 +230,12 @@ DlgToolsRunAutoTests::~DlgToolsRunAutoTests()
  */
 void DlgToolsRunAutoTests::Ok()
 {
+    SQLHWND hWnd = NULL;
+
+#ifdef WIN32
+    hWnd = (SQLHWND)pOdbcTest->out_win;
+#else
+
     /* 
      * Init a ODBCINSTWND 
      * --- 
@@ -261,6 +267,8 @@ void DlgToolsRunAutoTests::Ok()
 
     strcpy( Wnd.szUI, "odbcinstQ4" );   // UI plugin to use (Qt4).
     Wnd.hWnd = pOdbcTest->out_win;      // Output window for szLogPrintf and szMessageBox.
+    hWnd = (SQLHWND)(&Wnd);
+#endif
 
     /* 
      * Init a SERVERINFO
@@ -282,7 +290,7 @@ void DlgToolsRunAutoTests::Ok()
     ServerInfo.henv                 = SQL_NULL_HANDLE;
     ServerInfo.hLoadedInst          = NULL;
     ServerInfo.hstmt                = SQL_NULL_HANDLE;
-    ServerInfo.hwnd                 = &Wnd;
+    ServerInfo.hwnd                 = hWnd;
     ServerInfo.rglMask              = NULL;
     *(ServerInfo.szBuff)            = '\0';
     *(ServerInfo.szKeywords)        = '\0';

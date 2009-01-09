@@ -265,7 +265,7 @@ const char *handle;
 
 	if ( SQL_SUCCEEDED( ret ))
 	{
-		pOdbcTest->listHandle.removeOne( hand );
+		pOdbcTest->listHandle.removeAll( hand );
         delete hand;
 	}
 }
@@ -1042,7 +1042,7 @@ void dFreeEnv::Ok()
 
     if ( SQL_SUCCEEDED( ret ) && in_handle )
     {
-		pOdbcTest->listHandle.removeOne( env );
+		pOdbcTest->listHandle.removeAll( env );
         delete env;
     }
 

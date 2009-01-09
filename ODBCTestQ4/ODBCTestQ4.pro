@@ -3,10 +3,17 @@ include(../config.pri)
 include(../defines.pri)
 include(../odbc.pri)
 
-TEMPLATE= app
-TARGET  = ODBCTestQ4
-VERSION = %V_MAJOUR%.%V_MINOR%.%V_RELEASE%
-DESTDIR	= ../bin
+win32 {
+        LIBS            += ..\lib\gtrtstQ4.lib
+        LIBS            += user32.lib
+}
+
+TEMPLATE        = app
+TARGET          = ODBCTestQ4
+VERSION         = 1.0.0
+DESTDIR	        = ../bin
+
+RESOURCES       = 
 
 HEADERS		= \
 		attr.h \

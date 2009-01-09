@@ -89,9 +89,15 @@ DlgToolsManageAutoTest::DlgToolsManageAutoTest( OdbcTest *pOdbcTest, QString nam
     //
     // Setup the path, initially to the current directory
     //
-
-    getcwd( curr_dir, sizeof( curr_dir ));
-    SetPath( curr_dir );
+    {
+        QSettings settings( "unixODBC-GUI-Qt", "OdbcTestQ4" );
+    
+        settings.beginGroup( "DlgToolsManageAutoTest" );
+        QString stringPath = settings.value( "From", QDir::currentPath() ).toString();
+        settings.endGroup();
+        
+        setPath( stringPath );
+    }
 
     connect( test_list,  SIGNAL(highlighted( const QString &)), SLOT(ListSelect(const QString &)) );
 
@@ -137,14 +143,9 @@ void DlgToolsManageAutoTest::Ok()
 {
 }
 
-void DlgToolsManageAutoTest::SetPath( QString &qs )
+void DlgToolsManageAutoTest::setPath( QString &stringPath )
 {
-    SetPath( qs.toAscii().constData());
-}
-
-void DlgToolsManageAutoTest::SetPath( const char *path )
-{
-    s_from->setText( path );
+    s_from->setText( stringPath );
 
     //
     // extract any libs from the path
@@ -152,7 +153,7 @@ void DlgToolsManageAutoTest::SetPath( const char *path )
 
     lib_list->clear();
 
-    QDir q_d( path );
+    QDir q_d( stringPath );
     if ( q_d.exists())
     {
         q_d.setFilter( QDir::Files | QDir::Hidden );
@@ -175,9 +176,9 @@ void DlgToolsManageAutoTest::Add()
     QString path = q_d.filePath ( lbi->text() );
     QLibrary l( path );
 
-    if ( !l.isLoaded() )
+    if ( !l.load() )
     {
-        QMessageBox::critical( pOdbcTest, "OdbcTest", l.errorString() );
+        QMessageBox::critical( pOdbcTest, "OdbcTest", l.errorString() + tr("\nWhile trying to load;\n") + path );
         return;
     }
     
@@ -246,17 +247,22 @@ void DlgToolsManageAutoTest::Add()
 
 void DlgToolsManageAutoTest::From()
 {
-    QFileDialog *dlg = new QFileDialog( this, "fred" );
+    QFileDialog FileDialog( this, "From..." );
 
-    dlg->setFileMode( QFileDialog::Directory );
+    FileDialog.setDirectory( s_from->text() );
+    FileDialog.setFileMode( QFileDialog::Directory );
 
-    if ( dlg->exec() == QDialog::Accepted )
+    if ( FileDialog.exec() == QDialog::Accepted )
     {
-        QString result = dlg->directory().absolutePath();
-        SetPath( result );
-    }
+        QString stringPath = FileDialog.directory().absolutePath();
 
-    delete dlg;
+        setPath( stringPath );
+
+        QSettings settings( "unixODBC-GUI-Qt", "OdbcTestQ4" );
+        settings.beginGroup( "DlgToolsManageAutoTest" );
+        settings.setValue( "From", stringPath );
+        settings.endGroup();
+    }
 }
 
 void DlgToolsManageAutoTest::ListSelect( const QString &name )

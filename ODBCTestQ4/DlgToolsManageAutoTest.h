@@ -45,10 +45,8 @@ protected:
     OdbcTest *      pOdbcTest;
     QLabel *        l_avail, *l_name, *l_lib, *l_so, *l_installed, *s_from, *s_name, *s_lib;
     QListWidget *   lib_list, *test_list;
-    char            curr_dir[ 256 ];
 
-    void SetPath( QString &str );
-    void SetPath( const char *str );
+    void setPath( QString &stringPath );
 
 protected slots:
     void Ok();

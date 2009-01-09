@@ -41,7 +41,7 @@ OdbcTest::OdbcTest( QWidget *parent )
      *  \note   Using QSettings to read/write ini files imposes some limitations. The main
      *          one is that slashs in directory names need to be escaped.
      */
-    pSettings = new QSettings( QDir::homePath() + "Gator.ini", QSettings::IniFormat, this );
+    pSettings = new QSettings( QDir::homePath() + "/Gator.ini", QSettings::IniFormat, this );
 
     createActions();
     createMenus();
@@ -519,7 +519,7 @@ void OdbcTest::createActions()
     pactionRowCount                         = new QAction( tr("SQLRowCount..."), this );    
     pactionSetPos                           = new QAction( tr("SQLSetPos..."), this );    
     pactionSetScrollOptions                 = new QAction( tr("SQLSetScrollOptions..."), this );    
-    pactionBindColAll                       = new QAction( tr("SQLBindColAll..."), this );    
+    pactionBindColAll                       = new QAction( tr("Bind Col All..."), this );    
     pactionDescribeColAll                   = new QAction( tr("Describe Col All..."), this );    
     pactionFetchAll                         = new QAction( tr("Fetch All..."), this );    
     pactionGetDataAll                       = new QAction( tr("Get Data All..."), this );    

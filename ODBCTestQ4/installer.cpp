@@ -30,6 +30,12 @@
 
 void OdbcTest::slotManageDataSources()
 {
+#ifdef WIN32
+    if ( !SQLManageDataSources( (SQLHWND)this->winId() ) )
+    {
+        QMessageBox::about( this, "ODBC Test", "SQLManageDataSources() returned FALSE." );
+    }
+#else
     ODBCINSTWND Wnd;
 
     strcpy( Wnd.szUI, "odbcinstQ4" );
@@ -39,6 +45,7 @@ void OdbcTest::slotManageDataSources()
     {
         QMessageBox::about( this, "ODBC Test", "SQLManageDataSources() returned FALSE." );
     }
+#endif
 }
 
 void OdbcTest::slotRemoveDefaultDataSource()
@@ -55,6 +62,12 @@ void OdbcTest::slotConfigDataSource()
 
 void OdbcTest::slotCreateDataSource()
 {
+#ifdef WIN32
+    if ( !SQLCreateDataSource( (SQLHWND)this->winId(), NULL ) )
+    {
+        QMessageBox::about( this, "ODBC Test", "SQLCreateDataSource() returned FALSE." );
+    }
+#else
     ODBCINSTWND Wnd;
 
     strcpy( Wnd.szUI, "odbcinstQ4" );
@@ -64,6 +77,7 @@ void OdbcTest::slotCreateDataSource()
     {
         QMessageBox::about( this, "ODBC Test", "SQLCreateDataSource() returned FALSE." );
     }
+#endif
 }
 
 void OdbcTest::slotValidDSN()
