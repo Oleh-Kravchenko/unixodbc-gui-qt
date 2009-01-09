@@ -56,3 +56,8 @@ SOURCES 	= \
 		results.cpp \
 		stmt.cpp
 
+# target.path = /usr/share/doc/packages/unixODBC-GUI-Qt/ODBCTestQ4
+# sources.files = $$SOURCES $$HEADERS $$RESOURCES ../doc/ODBCTestQ4 *.pro
+# sources.path = $$[QT_INSTALL_EXAMPLES]/help/simpletextviewer
+# INSTALLS += target sources
+

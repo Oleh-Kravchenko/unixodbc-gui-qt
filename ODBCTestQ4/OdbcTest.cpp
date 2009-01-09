@@ -382,9 +382,9 @@ void OdbcTest::slotHelpAbout()
     }
 
     // show index page
+    // "SetSource qthelp://unixODBC-GUI-Qt/doc/index.html"
     QTextStream str( process );
-    str << QLatin1String( "SetSource qthelp://unixODBC-GUI-Qt/doc/index.html" )
-    << QLatin1Char('\0') << endl;
+    str << QLatin1String( "SetSource qthelp://" ) << QLibraryInfo::location( QLibraryInfo::DocumentationPath ) << QLatin1String( "/../unixODBC-GUI-Qt/ODBCTestQ4/About.html" ) << QLatin1Char('\0') << endl;
 }
 
 void OdbcTest::resizeEvent( QResizeEvent * )
