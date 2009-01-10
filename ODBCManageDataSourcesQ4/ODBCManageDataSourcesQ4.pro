@@ -11,4 +11,9 @@ DESTDIR	= ../bin
 
 SOURCES = main.cpp
 
+#
+# INSTALLS
+#
+target.path = $$INSTALL_TARGET_BIN
+INSTALLS += target
 

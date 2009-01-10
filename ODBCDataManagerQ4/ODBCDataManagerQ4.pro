@@ -86,4 +86,9 @@ SOURCES 	= \
 	ODBCValueCell.cpp \
 	ODBCViewBrowser.cpp
 
+#
+# INSTALLS
+#
+target.path = $$INSTALL_TARGET_BIN
+INSTALLS += target
 

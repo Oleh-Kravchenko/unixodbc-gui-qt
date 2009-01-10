@@ -36,8 +36,9 @@ Download:
 	Get the source from svn at 
 	http://unixodbc-gui-qt.sourceforge.net
 
-Make & Install:
+Make & Install (using GNU auto-tools method):
 
+	0. set environment variables (see INSTALL)
 	1. $ make -f Makefile.svn
 	2. $ ./configure --help
 	3. $ ./configure AnyOptionsHere

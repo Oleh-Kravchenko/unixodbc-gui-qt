@@ -14,4 +14,9 @@ SOURCES = \
 	szLogPrintf.cpp \
 	szMessageBox.cpp
 
+#
+# INSTALLS
+#
+target.path = $$INSTALL_TARGET_LIB
+INSTALLS += target
 

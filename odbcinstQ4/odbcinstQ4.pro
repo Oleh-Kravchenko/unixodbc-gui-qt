@@ -100,4 +100,9 @@ SOURCES = CAbout.cpp \
 	CTracing.cpp \
 	SQLManageDataSources.cpp
 
+#
+# INSTALLS
+#
+target.path = $$INSTALL_TARGET_LIB
+INSTALLS += target
 
