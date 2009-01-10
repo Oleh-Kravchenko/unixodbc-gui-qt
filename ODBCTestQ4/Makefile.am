@@ -2,7 +2,10 @@ if GTRTST
 
 bin_PROGRAMS = ODBCTestQ4
 
-INCLUDES = $(QT_CXXFLAGS) -DSYSTEM_FILE_PATH=\"@sysconfdir@\" $(LTDLINCL)
+INCLUDES = $(QT_CXXFLAGS) \
+           $(INCLUDES_COMMON) \
+           -DSYSTEM_FILE_PATH=\"@sysconfdir@\" \
+	   $(LTDLINCL)
 
 ODBCTestQ4_LDADD = \
 	$(QT_LDFLAGS) \
