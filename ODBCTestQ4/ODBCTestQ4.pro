@@ -10,7 +10,7 @@ win32 {
 
 TEMPLATE        = app
 TARGET          = ODBCTestQ4
-VERSION         = 1.0.0
+VERSION 	= %V_MAJOUR%.%V_MINOR%.%V_RELEASE%
 DESTDIR	        = ../bin
 
 RESOURCES       = 

@@ -79,7 +79,7 @@ CAbout::CAbout( QWidget *pwidgetParent )
         QTextBrowser *  ptextbrowser    = new QTextBrowser( pwidget );
 
         playout->addWidget( ptextbrowser );
-        ptextbrowser->setHtml( QString( "<TABLE><TR><TD>unixODBC-GUI-Qt</TD><TD>%1</TD><TR></TABLE>" ).arg( VERSION ) );
+        ptextbrowser->setHtml( QString( "<TABLE><TR><TD>unixODBC-GUI-Qt</TD><TD>%1.%2.%3</TD><TR></TABLE>" ).arg( V_MAJOUR ).arg( V_MINOR ).arg( V_RELEASE ) );
         addTab( pwidget, tr( "Version" ) );
     }
 

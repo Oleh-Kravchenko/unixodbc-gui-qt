@@ -2,7 +2,6 @@
 # a qmake project file - an alternative to GNU auto tools
 #
 TEMPLATE	= lib
-VERSION		= 2.1.0
 TARGET          = ini 
 DESTDIR		= ../lib
 CONFIG		+= staticlib

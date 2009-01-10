@@ -1,5 +1,5 @@
 TEMPLATE        = lib
-VERSION         = 1.0.1
+VERSION 	= %V_MAJOUR%.%V_MINOR%.%V_RELEASE%
 TARGET          = odbcq4 
 DESTDIR         = ../../../lib
 include( ../../../common.pri )

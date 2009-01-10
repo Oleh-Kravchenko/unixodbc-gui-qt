@@ -5,7 +5,10 @@ include(../odbc.pri)
 
 TEMPLATE= lib
 TARGET  = odbcinstQ4
-VERSION = %V_MAJOUR%.%V_MINOR%.%V_RELEASE%
+
+# We do not want a version for a plugin file name (although gnu auto tools will use one but it at least sym links to a name without)...
+# VERSION = %V_MAJOUR%.%V_MINOR%.%V_RELEASE%
+
 DESTDIR	= ../lib
 CONFIG	+= plugin
 
