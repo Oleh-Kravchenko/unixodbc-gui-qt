@@ -1,5 +1,6 @@
 SUBDIRS = \
 	ini \
+	gtrtstQ4 \
 	odbcinstQ4 \
 	ODBCCreateDataSourceQ4 \
 	ODBCManageDataSourcesQ4 \

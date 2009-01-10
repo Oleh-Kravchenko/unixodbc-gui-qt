@@ -1,13 +1,6 @@
 This document is for those building using the GNU auto-tools. See
 README.qmake if you prefer to build using qmake.
 
-You need to set the following environment variables with
-values which reflect your environment;
-
-	export UNIXODBC_DIR=/usr
-	export UNIXODBC_LIBDIR=$UNIXODBC_DIR/lib64
-	export UNIXODBC_TEST_SRC=~/unixodbc-test/trunk
-
 Prerequisits
 ============
 

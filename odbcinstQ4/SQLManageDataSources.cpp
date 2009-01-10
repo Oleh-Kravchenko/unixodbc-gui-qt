@@ -8,7 +8,6 @@
  * \license Copyright unixODBC-GUI-Qt Project 2009, LGPL
  */
 #include <odbcinstext.h>
-#include <autotest.h>
 
 #include <QApplication>
 

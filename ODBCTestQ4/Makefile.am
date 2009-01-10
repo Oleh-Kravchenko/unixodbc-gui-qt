@@ -1,3 +1,5 @@
+if GTRTST
+
 bin_PROGRAMS = ODBCTestQ4
 
 INCLUDES = $(QT_CXXFLAGS) -DSYSTEM_FILE_PATH=\"@sysconfdir@\" $(LTDLINCL)
@@ -109,6 +111,8 @@ CLEANFILES = \
 	mOdbcTest.cpp \
 	mresults.cpp \
 	mstmt.cpp
+
+endif
 
 EXTRA_DIST = \
 	attr.h \

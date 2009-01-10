@@ -1,6 +1,9 @@
+dnl
 dnl Process this file with autoconf to produce a configure script.
-AC_INIT(unixODBC-GUI-Qt, 1.0.1pre)
-AM_INIT_AUTOMAKE(unixODBC-GUI-Qt, 1.0.1pre)
+dnl Note: More version settings at bottom of this file.
+dnl
+AC_INIT(unixODBC-GUI-Qt, 1.0.1)
+AM_INIT_AUTOMAKE(unixODBC-GUI-Qt, 1.0.1)
 
 dnl Checks for programs.
 AC_PROG_AWK
@@ -412,19 +415,25 @@ AC_CHECK_HEADERS(malloc.h unistd.h pwd.h crypt.h limits.h synch.h strings.h stri
 
 INCLUDES="$INCLUDES $USER_INCLUDES";
 
-dnl only build the mSQL code if the headers are in place
-AC_CHECK_HEADERS(msql.h,[msql=true],
-[
-   msql=false;
-   for ac_dir in $kde_extra_includes $msql_headers; 
-   do
-    AC_CHECK_HEADERS( $ac_dir/msql.h,
-    [
-        msql=true;
-        INCLUDES="$INCLUDES $USER_INCLUDES -I$ac_dir";
-    ])
-   done
-])
+dnl
+dnl BEGIN: check for autotest.h...
+dnl
+
+AC_MSG_NOTICE([checking for unixODBC-Test])
+
+AC_ARG_WITH([test_src], AC_HELP_STRING([--with-test-src=DIR],
+                           [where the unixODBC-Test sources are (abs path)]),
+                           [test_src="$withval"])
+
+dnl AC_SUBST(test_src)
+dnl autotest=false;
+
+AC_CHECK_HEADERS([$test_src/AutoTests/include/autotest.h],[autotest=true;INCLUDES="$INCLUDES $USER_INCLUDES -I$test_src/AutoTests/include";],[autotest=false])
+AM_CONDITIONAL(GTRTST, test "x$autotest" = "xtrue" )
+
+dnl
+dnl END: check for autotest.h
+dnl
 
 dnl AC_SUBST(all_includes)
 dnl AC_SUBST(all_libraries)
@@ -452,12 +461,16 @@ AC_FUNC_ALLOCA
 AC_FUNC_VPRINTF
 AC_CHECK_FUNCS( putenv socket strdup strstr setenv setlocale strchr )
 
-LIB_VERSION="1:0:0"
+LIB_VERSION="1:0:1"
 AC_SUBST(LIB_VERSION)
+
+CFLAGS="$CFLAGS -DV_MAJOUR=1 -DV_MINOR=0 -DV_RELEASE=1"
+CXXFLAGS="$CXXFLAGS -DV_MAJOUR=1 -DV_MINOR=0 -DV_RELEASE=1"
 
 AC_OUTPUT( Makefile \
     ini/Makefile \
     odbcinstQ4/Makefile \
+    gtrtstQ4/Makefile \
     ODBCCreateDataSourceQ4/Makefile \
     ODBCManageDataSourcesQ4/Makefile \
     ODBCTestQ4/Makefile \
