@@ -99,8 +99,8 @@ DlgToolsManageAutoTest::DlgToolsManageAutoTest( OdbcTest *pOdbcTest, QString nam
         setPath( stringPath );
     }
 
-    connect( test_list,  SIGNAL(highlighted( const QString &)), SLOT(ListSelect(const QString &)) );
-
+    connect( test_list,  SIGNAL(currentTextChanged(const QString &)), SLOT(ListSelect(const QString&)) );
+ 
     test_list->setCurrentItem( 0 );
 }
 
@@ -267,8 +267,7 @@ void DlgToolsManageAutoTest::From()
 
 void DlgToolsManageAutoTest::ListSelect( const QString &name )
 {
-
-    if ( pOdbcTest->pSettings->contains( name ) )
+    if ( pOdbcTest->pSettings->childGroups().contains( name ) )
     {
         s_name->setText( name );
         s_lib->setText( "" );
