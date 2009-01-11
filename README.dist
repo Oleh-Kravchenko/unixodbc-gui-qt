@@ -32,4 +32,9 @@ Binary + Source via RPM:
 	5. rpm -ba ..../unixODBC-GUI-Qt.spec 
 
 	NOTE: Use "rpm -bb" if you just want a binary dist.
+	NOTE: The spec file is simply a copy from unixODBC - it will
+              work until someone changes it to work for unixODBC-GUI-Qt.
+
+---------------------------------------------------------------
+Peter Harvey
 
