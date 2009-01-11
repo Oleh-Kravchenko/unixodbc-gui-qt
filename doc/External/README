@@ -1,0 +1,39 @@
++-------------------------------------------------------------+
+| unixODBC-GUI-Qt                                             |
++-------------------------------------------------------------+
+
+README
+doc::External
+---------------------------------------------------------------
+
+Description:
+
+	External documentation.
+	See About.txt.
+	
+Collection:
+	
+	This documentation is a collection of Qt Assistant
+	documentation projects.
+
+        The documentation consists of HTML files which are 
+	described by a project file (Project.qhp). The 
+	documentation is 'compiled' into a Qt Assistant
+	readable binary file (Project.qch).
+
+        The collection is described by CollectionQ4.qhcp. The 
+        entire collection is compiled with the following 
+        command;
+
+	$ qcollectiongenerator CollectionQ4.qhcp -o CollectionQ4.qhc
+
+        The documentation can be viewed with the following command;
+
+	$ assistant -collectionFile CollectionQ4.qhc
+
+	It is expected that the documentation will usually be 
+        viewed via the applications Help options.
+  
+---------------------------------------------------------------
+Peter Harvey
+
