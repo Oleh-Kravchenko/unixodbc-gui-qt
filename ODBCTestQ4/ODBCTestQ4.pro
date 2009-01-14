@@ -8,6 +8,10 @@ win32 {
         LIBS            += user32.lib
 }
 
+unix {
+        LIBS            += -L../lib -lgtrtstQ4
+}
+
 TEMPLATE        = app
 TARGET          = ODBCTestQ4
 VERSION 	= 1.0.1

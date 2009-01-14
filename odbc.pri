@@ -9,9 +9,7 @@
 # unixODBC-Test sources must be installed so we can access autotest.h - unixODBC-Test
 # does not have to be built yet. This is needed for, at least, ODBCTestQ4.
 #
-INCLUDEPATH	+= $(UNIXODBC_TEST_SRC)\AutoTests\include
-
-message( $$INCLUDEPATH )
+INCLUDEPATH	+= $(UNIXODBC_TEST_SRC)/AutoTests/include
 
 # #########################################################
 # WIN32
