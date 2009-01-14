@@ -57,9 +57,6 @@ win32 {
 # MAC/UNIX shared
 # #########################################################
 unix {
-	INSTALL_TARGET_BIN	= /usr/bin
-	INSTALL_TARGET_LIB	= /usr/lib64 
-
 	SUBDIRS	= \
 		ini \
 		odbcinstQ4 \

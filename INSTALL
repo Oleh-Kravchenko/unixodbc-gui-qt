@@ -9,8 +9,8 @@ following software packages:
 
     - C++ development environment
     - autoconf (and related) packages
-    - unixODBC-core
-    - unixODBC-dev
+    - unixODBC-core (most UNIX'isms)
+    - unixODBC-dev  (most UNIX'isms)
     - unixODBC-Test (sources only - to get autotest.h)
     - Qt 4
     - Qt 4 dev

@@ -10,10 +10,11 @@ win32 {
 
 TEMPLATE        = app
 TARGET          = ODBCTestQ4
-VERSION 	= %V_MAJOUR%.%V_MINOR%.%V_RELEASE%
+VERSION 	= 1.0.1
 DESTDIR	        = ../bin
 
-RESOURCES       = 
+# RC_FILE         = ODBCTestQ4.rc
+# RESOURCES       =
 
 HEADERS		= \
 		attr.h \
@@ -59,7 +60,8 @@ SOURCES 	= \
 #
 # INSTALLS
 #
+!win32 {
 target.path = $$INSTALL_TARGET_BIN
 INSTALLS += target
-
+}
 

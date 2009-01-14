@@ -17,6 +17,8 @@ License:
 	
 	All programs are GPL.
 
+        See; COPYING
+
 Parts:
 	unixODBC-GUI-Qt includes the following;
 	
@@ -24,8 +26,7 @@ Parts:
 	- ODBC Administrator (ODBCManageDataSourcesQ4)
 	- create Data Source Name wizard (ODBCCreateDataSourceQ4)
 	- Data Manager (ODBCDataManagerQ4)
-	- an interactive test program (ODBCTestQ4)
-	
+	- an interactive test program (ODBCTestQ4)	
 
 How To Start:
 

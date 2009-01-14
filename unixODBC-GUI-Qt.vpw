@@ -6,7 +6,6 @@
 		<Project File="ini/ini.vpj" />
 		<Project File="ODBCCreateDataSourceQ4/ODBCCreateDataSourceQ4.vpj" />
 		<Project File="ODBCDataManagerQ4/ODBCDataManagerQ4.vpj" />
-		<Project File="../../unixODBC/odbcinst/odbcinst.vpj" />
 		<Project File="odbcinstQ4/odbcinstQ4.vpj" />
 		<Project File="ODBCManageDataSourcesQ4/ODBCManageDataSourcesQ4.vpj" />
 		<Project File="ODBCTestQ4/ODBCTestQ4.vpj" />

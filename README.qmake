@@ -16,12 +16,12 @@ Description:
 	to figure them out. Unfortunately; many projects, this
 	included, do not have the resources to allocate a GNU
 	auto-tools specialist. This means that development
-	time has to be spent in figuring it out. This is particularly
-	bad for someone who just wants to configure the
-	build for his/her own purposes.
+	time has to be spent in figuring it out. This is 
+        particularly bad for someone who just wants to configure 
+        the build for his/her own purposes.
 
 	Also; at this time, the GNU auto-tools are not a simple
-	solution for OSX users.
+	solution for OSX, and MS users.
 
 Requirements:
 
@@ -35,4 +35,7 @@ Make & Install:
 	The qmake project files have .pro & .pri extensions. You
 	should read the root pro file - unixODBC-GUI-Qt.pro as it
 	has some details on building using qmake.
+
+---------------------------------------------------------------
+Peter Harvey
 

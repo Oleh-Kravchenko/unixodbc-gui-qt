@@ -8,7 +8,7 @@
 # \sa		*.pri *.pro 
 #
 
-DEFINES += V_MAJOUR=1 V_MINOR=0 V_RELEASE=1
+DEFINES = V_MAJOUR=1 V_MINOR=0 V_RELEASE=1
 
 # #########################################################
 # WIN32
