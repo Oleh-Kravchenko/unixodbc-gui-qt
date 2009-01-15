@@ -58,6 +58,7 @@
 			<F N="CDataSourceNames.cpp"/>
 			<F N="CDataSourceNamesFile.cpp"/>
 			<F N="CDataSourceNamesFileModel.cpp"/>
+			<F N="CDriverConnectPrompt.cpp"/>
 			<F N="CDriverList.cpp"/>
 			<F N="CDriverPrompt.cpp"/>
 			<F N="CDSNWizard.cpp"/>
@@ -82,6 +83,7 @@
 			<F N="CPropertiesModel.cpp"/>
 			<F N="CThreading.cpp"/>
 			<F N="CTracing.cpp"/>
+			<F N="ODBCDriverConnectPrompt.cpp"/>
 			<F N="SQLManageDataSources.cpp"/>
 		</Folder>
 		<Folder
@@ -93,6 +95,7 @@
 			<F N="CDataSourceNames.h"/>
 			<F N="CDataSourceNamesFile.h"/>
 			<F N="CDataSourceNamesFileModel.h"/>
+			<F N="CDriverConnectPrompt.h"/>
 			<F N="CDriverList.h"/>
 			<F N="CDriverPrompt.h"/>
 			<F N="CDSNWizard.h"/>

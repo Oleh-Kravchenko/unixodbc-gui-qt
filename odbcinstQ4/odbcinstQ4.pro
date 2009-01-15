@@ -19,9 +19,10 @@ HEADERS = \
 	CAbout.h \
 	CAdvanced.h \
 	CDataSourceNameList.h \
+	CDataSourceNames.h \
 	CDataSourceNamesFile.h \
 	CDataSourceNamesFileModel.h \
-	CDataSourceNames.h \
+	CDriverConnectPrompt.h \
 	CDriverList.h \
 	CDriverPrompt.h \
 	CDSNWizardProperties.h \
@@ -71,9 +72,10 @@ HEADERS = \
 SOURCES = CAbout.cpp \
 	CAdvanced.cpp \
 	CDataSourceNameList.cpp \
+	CDataSourceNames.cpp \
 	CDataSourceNamesFile.cpp \
 	CDataSourceNamesFileModel.cpp \
-	CDataSourceNames.cpp \
+	CDriverConnectPrompt.cpp \
 	CDriverList.cpp \
 	CDriverPrompt.cpp \
 	CDSNWizardProperties.cpp \
@@ -98,6 +100,7 @@ SOURCES = CAbout.cpp \
 	CMonitorProcesses.cpp \
 	CThreading.cpp \
 	CTracing.cpp \
+	ODBCDriverConnectPrompt.cpp \
 	SQLManageDataSources.cpp
 
 #

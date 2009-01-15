@@ -2465,25 +2465,28 @@ void dDriverConnect::Ok()
                  dc_options[ index ].attr, dc_options[ index ].version );
     pOdbcTest->out_win->append( txt );
 
+    SQLHWND hWnd = NULL;
+
 #ifdef WIN32
-    SQLRETURN ret = SQLDriverConnect( in_handle, 
-                                      (SQLHWND)(this->winId()),
-                                      conn_str_in,
-                                      in_string_len,
-                                      out_string,
-                                      con_str_out_max,
-                                      ptr_con_str_out,
-                                      dc_type );
+    hWnd = (SQLHWND)(this->winId());
 #else
+    ODBCINSTWND Wnd;
+
+    strcpy( Wnd.szUI, "odbcinstQ4" );
+    Wnd.hWnd = this;
+    hWnd = (SQLHWND)(&Wnd);
+#endif
+
     SQLRETURN ret = SQLDriverConnect( in_handle, 
-                                      NULL,
+                                      hWnd,
                                       conn_str_in,
                                       in_string_len,
                                       out_string,
                                       con_str_out_max,
                                       ptr_con_str_out,
                                       dc_type );
-#endif
+
+
     pOdbcTest->out_win->append( "  Return:" );
     txt.sprintf( "    %s=%d", pOdbcTest->return_as_text( ret ), ret );
     pOdbcTest->out_win->append( txt );

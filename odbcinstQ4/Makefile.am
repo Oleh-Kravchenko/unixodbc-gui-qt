@@ -23,9 +23,10 @@ CLEANFILES = \
 	mCAbout.cpp \
 	mCAdvanced.cpp \
 	mCDataSourceNameList.cpp \
+	mCDataSourceNames.cpp \
 	mCDataSourceNamesFile.cpp \
 	mCDataSourceNamesFileModel.cpp \
-	mCDataSourceNames.cpp \
+	mCDriverConnectPrompt.cpp \
 	mCDriverList.cpp \
 	mCDriverPrompt.cpp \
 	mCDSNWizardProperties.cpp \
@@ -52,9 +53,10 @@ libodbcinstQ4_la_SOURCES = \
 	CAbout.cpp \
 	CAdvanced.cpp \
 	CDataSourceNameList.cpp \
+	CDataSourceNames.cpp \
 	CDataSourceNamesFile.cpp \
 	CDataSourceNamesFileModel.cpp \
-	CDataSourceNames.cpp \
+	CDriverConnectPrompt.cpp \
 	CDriverList.cpp \
 	CDriverPrompt.cpp \
 	CDSNWizardProperties.cpp \
@@ -79,13 +81,15 @@ libodbcinstQ4_la_SOURCES = \
 	CMonitorProcesses.cpp \
 	CThreading.cpp \
 	CTracing.cpp \
+	ODBCDriverConnectPrompt.cpp \
 	SQLManageDataSources.cpp \
 	mCAbout.cpp \
 	mCAdvanced.cpp \
 	mCDataSourceNameList.cpp \
+	mCDataSourceNames.cpp \
 	mCDataSourceNamesFile.cpp \
 	mCDataSourceNamesFileModel.cpp \
-	mCDataSourceNames.cpp \
+	mCDriverConnectPrompt.cpp \
 	mCDriverList.cpp \
 	mCDriverPrompt.cpp \
 	mCDSNWizardProperties.cpp \
@@ -117,14 +121,17 @@ mCAdvanced.cpp: @srcdir@/CAdvanced.h
 mCDataSourceNameList.cpp: @srcdir@/CDataSourceNameList.h
 	@MOC@ @srcdir@/CDataSourceNameList.h -o mCDataSourceNameList.cpp
 
+mCDataSourceNames.cpp: @srcdir@/CDataSourceNames.h
+	@MOC@ @srcdir@/CDataSourceNames.h -o mCDataSourceNames.cpp
+
 mCDataSourceNamesFile.cpp: @srcdir@/CDataSourceNamesFile.h
 	@MOC@ @srcdir@/CDataSourceNamesFile.h -o mCDataSourceNamesFile.cpp
 
 mCDataSourceNamesFileModel.cpp: @srcdir@/CDataSourceNamesFileModel.h
 	@MOC@ @srcdir@/CDataSourceNamesFileModel.h -o mCDataSourceNamesFileModel.cpp
 
-mCDataSourceNames.cpp: @srcdir@/CDataSourceNames.h
-	@MOC@ @srcdir@/CDataSourceNames.h -o mCDataSourceNames.cpp
+mCDriverConnectPrompt.cpp: @srcdir@/CDriverConnectPrompt.h
+	@MOC@ @srcdir@/CDriverConnectPrompt.h -o mCDriverConnectPrompt.cpp
 
 mCDriverList.cpp: @srcdir@/CDriverList.h
 	@MOC@ @srcdir@/CDriverList.h -o mCDriverList.cpp
@@ -193,9 +200,10 @@ EXTRA_DIST = \
 	CAbout.h \
 	CAdvanced.h \
 	CDataSourceNameList.h \
+	CDataSourceNames.h \
 	CDataSourceNamesFile.h \
 	CDataSourceNamesFileModel.h \
-	CDataSourceNames.h \
+	CDriverConnectPrompt.h \
 	CDriverList.h \
 	CDriverPrompt.h \
 	CDSNWizardProperties.h \

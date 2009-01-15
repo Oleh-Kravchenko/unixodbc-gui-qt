@@ -10,6 +10,7 @@ INCLUDES = $(QT_CXXFLAGS) \
 ODBCTestQ4_LDADD = \
 	$(QT_LDFLAGS) \
 	$(QT_LIBS) \
+	../gtrtstQ4/libgtrtstQ4.la \
 	-lodbc -lodbcinst
 
 ODBCTestQ4_SOURCES = \
