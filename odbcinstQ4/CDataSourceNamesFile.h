@@ -43,6 +43,8 @@ public:
     CDataSourceNamesFile( QWidget* pwidgetParent = NULL );
     virtual ~CDataSourceNamesFile();
 
+    QString getDataSourceName();
+
     QString windowHelp() { return QString( tr( ODBC_HELP_DATASOURCES_FILE ) ); }
 
 public slots:

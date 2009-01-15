@@ -109,6 +109,16 @@ CDataSourceNamesFile::~CDataSourceNamesFile()
     delete pDataSourceNamesFileModel;
 }
 
+QString CDataSourceNamesFile::getDataSourceName()
+{
+    QModelIndexList listSelectedIndexes = pListView->selectionModel()->selectedIndexes();
+
+    if ( !listSelectedIndexes.count() )
+        return QString();
+
+    return pDataSourceNamesFileModel->fileInfo( listSelectedIndexes.at( 0 ) ).absolutePath();
+}
+
 void CDataSourceNamesFile::slotLoad()
 {
     pListView->setRootIndex( pDataSourceNamesFileModel->index( pFileSelector->getText() ) );

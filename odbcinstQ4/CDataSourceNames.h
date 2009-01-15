@@ -43,7 +43,9 @@ public:
     CDataSourceNames( QWidget* pwidgetParent = NULL, int nSource = ODBC_USER_DSN );
     virtual ~CDataSourceNames();
 
+    QString getDataSourceName();
     QString windowHelp() { if ( nSource == ODBC_USER_DSN ) return QString( tr( ODBC_HELP_DATASOURCES_USER ) ); return QString( tr( ODBC_HELP_DATASOURCES_SYSTEM ) ); }
+
 
 public slots:
     void slotLoad();

@@ -70,6 +70,11 @@ CDataSourceNames::~CDataSourceNames()
 {
 }
 
+QString CDataSourceNames::getDataSourceName()
+{
+    return pDataSourceNameList->getDataSourceName();
+}
+
 void CDataSourceNames::slotLoad()
 {
     pDataSourceNameList->slotLoad();

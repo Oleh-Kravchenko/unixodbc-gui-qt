@@ -41,6 +41,30 @@ CDataSourceNameList::~CDataSourceNameList()
 {
 }
 
+QString CDataSourceNameList::getDataSourceName()
+{
+    QList<QTableWidgetItem*> listSelectedItems = selectedItems();
+    if ( listSelectedItems.count() )
+    {
+        int nRow = row( listSelectedItems.at( 0 )  );
+        return item( nRow, 0 )->text();
+    }
+
+    return QString();
+}
+
+QString CDataSourceNameList::getDescription()
+{
+    QList<QTableWidgetItem*> listSelectedItems = selectedItems();
+    if ( listSelectedItems.count() )
+    {
+        int nRow = row( listSelectedItems.at( 0 )  );
+        return item( nRow, 1 )->text();
+    }
+
+    return QString();
+}
+
 void CDataSourceNameList::slotAdd()
 {
     // odbc.ini INFO
