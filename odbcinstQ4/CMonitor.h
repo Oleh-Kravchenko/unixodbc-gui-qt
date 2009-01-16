@@ -17,6 +17,15 @@
 class CMonitorHandleCounts;
 class CMonitorProcesses;
 
+/*! 
+ * \class   CMonitor
+ * \brief   Monitor widget for tabs/property pages.
+ * 
+ *          This widget shows stats such as how many handles are in use.
+ *
+ *          This widget is used by the CODBCConfig tab/property widgets.
+ *
+ */
 class CMonitor : public QTabWidget
 {
 	Q_OBJECT

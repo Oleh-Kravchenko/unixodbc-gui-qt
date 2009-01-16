@@ -3061,11 +3061,20 @@ void dFullConnect::Ok()
         }
     }
 
+
+    SQLHWND hWnd = NULL;
+
 #ifdef WIN32
-    ret = SQLDriverConnect( hdbc, (SQLHWND)(this->winId()), (SQLCHAR*)cstr, strlen( cstr ), NULL, 0, NULL, SQL_DRIVER_COMPLETE );
+    hWnd = (SQLHWND)(this->winId());
 #else
-    ret = SQLDriverConnect( hdbc, (void*)1, (SQLCHAR*)cstr, strlen( cstr ), NULL, 0, NULL, SQL_DRIVER_COMPLETE );
+    ODBCINSTWND Wnd;
+
+    strcpy( Wnd.szUI, "odbcinstQ4" );
+    Wnd.hWnd = this;
+    hWnd = (SQLHWND)(&Wnd);
 #endif
+
+    ret = SQLDriverConnect( hdbc, hWnd, (SQLCHAR*)cstr, strlen( cstr ), NULL, 0, NULL, SQL_DRIVER_COMPLETE );
 
     pOdbcTest->dumpError( SQL_HANDLE_DBC, hdbc );
 

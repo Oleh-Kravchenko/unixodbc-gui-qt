@@ -12,6 +12,16 @@
 
 #include "CODBCInst.h"
 
+/*!
+ * \class   CPage
+ *  
+ * \brief   A tab page. 
+ *  
+ *          This tab page contains the content widget above a
+ *          CHelp widget.
+ * 
+ * \author  pharvey (1/15/2009)
+ */
 class CPage : public QWidget
 {
 public:

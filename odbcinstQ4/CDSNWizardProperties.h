@@ -17,6 +17,14 @@
 class CPropertiesModel;
 class CPropertiesDelegate;
 
+/*! 
+ * \class   CDSNWizardProperties
+ * \brief   A page for create data source name wizard.
+ * 
+ *          This page allows the DSN properties/entries to be edited.
+ *
+ * \sa      CDSNWizard
+ */
 class CDSNWizardProperties : public QWizardPage
 {
      Q_OBJECT

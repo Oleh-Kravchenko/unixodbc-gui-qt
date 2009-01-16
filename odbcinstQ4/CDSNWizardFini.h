@@ -14,6 +14,15 @@
 
 #include <QWizardPage>
 
+/*! 
+ * \class   CDSNWizardFini
+ * \brief   Last page of create data source name wizard.
+ * 
+ *          This page states that all needed info has been collected - click
+ *          and your done.
+ *
+ * \sa      CDSNWizard
+ */
 class CDSNWizardFini : public QWizardPage
 {
      Q_OBJECT

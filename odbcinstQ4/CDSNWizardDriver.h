@@ -16,6 +16,14 @@
 
 class CDriverList;
 
+/*! 
+ * \class   CDSNWizardDriver
+ * \brief   A page for create data source name wizard.
+ * 
+ *          This page allows a driver to be selected.
+ *
+ * \sa      CDSNWizard
+ */
 class CDSNWizardDriver : public QWizardPage
 {
      Q_OBJECT
