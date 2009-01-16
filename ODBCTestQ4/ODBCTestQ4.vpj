@@ -105,6 +105,7 @@
 			Name="Other Files"
 			Filters="">
 			<F N="Makefile.am"/>
+			<F N="ODBCTestQ4-48.xpm"/>
 			<F N="ODBCTestQ4.pro"/>
 		</Folder>
 	</Files>

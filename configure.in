@@ -475,9 +475,5 @@ AC_OUTPUT( Makefile \
     ODBCCreateDataSourceQ4/Makefile \
     ODBCManageDataSourcesQ4/Makefile \
     ODBCTestQ4/Makefile \
-    Wrappers/Makefile \
-    Wrappers/CPP/Makefile \
-    Wrappers/CPP/Library/Makefile \
-    Wrappers/CPP/Application/Makefile \
     )
 

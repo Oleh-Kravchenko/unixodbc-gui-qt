@@ -116,7 +116,7 @@ QString CDataSourceNamesFile::getDataSourceName()
     if ( !listSelectedIndexes.count() )
         return QString();
 
-    return pDataSourceNamesFileModel->fileInfo( listSelectedIndexes.at( 0 ) ).absolutePath();
+    return pDataSourceNamesFileModel->fileInfo( listSelectedIndexes.at( 0 ) ).absoluteFilePath();
 }
 
 void CDataSourceNamesFile::slotLoad()

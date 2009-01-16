@@ -27,11 +27,13 @@
  **********************************************************************/
 
 #include "OdbcTest.h"
+#include "ODBCTestQ4-48.xpm"
 
 OdbcTest::OdbcTest( QWidget *parent )
 : QMainWindow( parent )
 {
     setWindowTitle( "ODBC Test" );
+    setWindowIcon( QPixmap( xpmODBCTestQ4_48 ) );
 
     /*! 
      *  Open the test configuration file once and allow all supporting code to use it. Let Qt
@@ -39,7 +41,8 @@ OdbcTest::OdbcTest( QWidget *parent )
      *  sync to disk at that time.
      *  
      *  \note   Using QSettings to read/write ini files imposes some limitations. The main
-     *          one is that slashs in directory names need to be escaped.
+     *          one is that slashs in directory names need to be escaped. There may also be
+     *          issues with the order in which things are read.
      */
     pSettings = new QSettings( QDir::homePath() + "/Gator.ini", QSettings::IniFormat, this );
 
@@ -54,7 +57,6 @@ OdbcTest::OdbcTest( QWidget *parent )
     in_win  = new QTextEdit( split );
     out_win = new QTextEdit( split );
     out_win->setReadOnly( TRUE );
-//    out_win->setMaxLines( 1000 );
 
     readApplicationState();
 }
