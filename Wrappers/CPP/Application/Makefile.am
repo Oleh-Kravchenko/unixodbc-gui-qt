@@ -1,15 +1,17 @@
+# 	$(LTDLINCL)
+#	$(LIBLTDL) $(LIBADD_DL) 
+
+
 bin_PROGRAMS = ODBCConsole
 
 INCLUDES = \
 	-I../include \
-	-DSYSTEM_FILE_PATH=\"@sysconfdir@\" \
-	$(LTDLINCL)
+	-DSYSTEM_FILE_PATH=\"@sysconfdir@\"
 
 ODBCConsole_LDADD = \
 	-lodbcinst \
 	-lodbc \
-	../Library/libodbcplus.la \
-	$(LIBLTDL) $(LIBADD_DL) 
+	../Library/libodbcplus.la
 
 ODBCConsole_DEPENDANCIES = \
 	../Library/libodbcplus.la

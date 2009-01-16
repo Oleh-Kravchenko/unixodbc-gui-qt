@@ -1,14 +1,19 @@
 libodbcinstQ4_la_LDFLAGS = \
 		-no-undefined \
-		-version-info 1:0:0 \
+		-version-info 1:0:1 \
 		-export-dynamic \
 		-export-symbols @srcdir@/odbcinstQ4.exp \
 		-module
 
 lib_LTLIBRARIES = libodbcinstQ4.la 
 
-INCLUDES = -I@top_srcdir@/ini $(QT_CXXFLAGS) \
-    -DTHEPREFIX=\"@prefix@\" -DSYSTEM_FILE_PATH=\"@sysconfdir@\" -DDEFLIB_PATH=\"@libdir@\" -DSHLIBEXT=\"@SHLIBEXT@\" $(LTDLINCL)
+INCLUDES = -I@top_srcdir@/ini \
+           $(QT_CXXFLAGS) \
+           -DTHEPREFIX=\"@prefix@\" \
+	   -DSYSTEM_FILE_PATH=\"@sysconfdir@\" \
+	   -DDEFLIB_PATH=\"@libdir@\" \
+	   -DSHLIBEXT=\"@SHLIBEXT@\" \
+	   $(LTDLINCL)
 
 libodbcinstQ4_la_LIBADD = \
 	$(QT_LDFLAGS) \

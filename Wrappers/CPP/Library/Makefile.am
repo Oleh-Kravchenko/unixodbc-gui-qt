@@ -1,6 +1,7 @@
-noinst_LTLIBRARIES = libodbcplus.la 
+libodbcplus_la_LDFLAGS = -no-undefined \
+                         -version-info 1:0:1 
 
-libodbcplus_la_LDFLAGS = -no-undefined 
+lib_LTLIBRARIES = libodbcplus.la 
 
 INCLUDES = \
 	-I../include \
@@ -9,6 +10,9 @@ INCLUDES = \
 	-DDEFLIB_PATH=\"@libdir@\" \
 	-DSHLIBEXT=\"@SHLIBEXT@\" \
 	$(LTDLINCL)
+
+libodbcinstQ4_la_LIBADD = \
+	-lodbc -lodbcinst
 
 libodbcplus_la_SOURCES = \
 	ODBCConnection.cpp \
