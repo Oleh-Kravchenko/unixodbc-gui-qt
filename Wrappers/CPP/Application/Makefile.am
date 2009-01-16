@@ -1,7 +1,3 @@
-# 	$(LTDLINCL)
-#	$(LIBLTDL) $(LIBADD_DL) 
-
-
 bin_PROGRAMS = ODBCConsole
 
 INCLUDES = \
