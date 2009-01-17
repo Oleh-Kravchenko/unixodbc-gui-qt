@@ -1,0 +1,11 @@
+Makefile.am
+ODGPropertiesDelegate.h
+OQGConnection.h
+OQGEnvironment.h
+OQGLogin.h
+OQGMessageOutput.h
+OQGPropertiesDialog.h
+OQGPropertiesModel.h
+OQGProperty.h
+OQGStatement.h
+OQGSystem.h

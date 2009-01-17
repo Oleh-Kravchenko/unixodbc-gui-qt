@@ -480,5 +480,9 @@ AC_OUTPUT( Makefile \
     Wrappers/QtCore4/Library/Makefile \
     Wrappers/QtCore4/Application/Makefile \
     Wrappers/QtCore4/include/Makefile \
+    Wrappers/QtGui4/Makefile \
+    Wrappers/QtGui4/Library/Makefile \
+    Wrappers/QtGui4/Application/Makefile \
+    Wrappers/QtGui4/include/Makefile \
     )
 
