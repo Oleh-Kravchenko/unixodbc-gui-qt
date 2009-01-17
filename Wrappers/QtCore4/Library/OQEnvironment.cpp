@@ -15,8 +15,8 @@ OQEnvironment::OQEnvironment( OQSystem *pSystem )
     setObjectName( "OQEnvironment" );
 
     // echo up the object hierarchy
-    connect( this, SIGNAL(signalMessage(ODBCMessage Message)), pSystem, SIGNAL(signalMessage(ODBCMessage Message)) );
-    connect( this, SIGNAL(signalDiagnostic(ODBCDiagnostic Diagnostic)), pSystem, SIGNAL(signalDiagnostic(ODBCDiagnostic Diagnostic)) );
+    connect( this, SIGNAL(signalMessage(ODBCMessage)), pSystem, SIGNAL(signalMessage(ODBCMessage)) );
+    connect( this, SIGNAL(signalDiagnostic(ODBCDiagnostic)), pSystem, SIGNAL(signalDiagnostic(ODBCDiagnostic)) );
 }
 
 OQEnvironment::~OQEnvironment()

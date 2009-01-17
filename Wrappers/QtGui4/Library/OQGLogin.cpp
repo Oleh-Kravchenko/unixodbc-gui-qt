@@ -84,7 +84,7 @@ OQGLogin::OQGLogin( QWidget *pwidgetParent, OQGEnvironment *penvironment )
 //        pmessageoutput->setMinimumHeight( 50 );
 //        setExtension( pmessageoutput );
 //        setOrientation( Qt::Vertical );
-        connect( penvironment, SIGNAL(signalMessage(ODBCMessage*)), pmessageoutput, SLOT(slotMessage(ODBCMessage*)) );
+        connect( penvironment, SIGNAL(signalMessage(ODBCMessage)), pmessageoutput, SLOT(slotMessage(ODBCMessage)) );
     //    connect( pbMessages, SIGNAL(toggled(bool)), this, SLOT(showExtension(bool)) );
     }
 

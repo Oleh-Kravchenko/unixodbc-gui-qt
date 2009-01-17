@@ -22,8 +22,8 @@ OQConnection::OQConnection( OQEnvironment *penvironment )
     bPromptPassword         = true;
 
     // echo up the object hierarchy
-    connect( this, SIGNAL(signalMessage(ODBCMessage Message)), penvironment, SIGNAL(signalMessage(ODBCMessage Message)) );
-    connect( this, SIGNAL(signalDiagnostic(ODBCDiagnostic Diagnostic)), penvironment, SIGNAL(signalDiagnostic(ODBCDiagnostic Diagnostic)) );
+    connect( this, SIGNAL(signalMessage(ODBCMessage)), penvironment, SIGNAL(signalMessage(ODBCMessage)) );
+    connect( this, SIGNAL(signalDiagnostic(ODBCDiagnostic)), penvironment, SIGNAL(signalDiagnostic(ODBCDiagnostic)) );
 }
 
 OQConnection::~OQConnection()

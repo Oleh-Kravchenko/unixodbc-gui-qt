@@ -16,8 +16,8 @@ OQStatement::OQStatement( OQConnection *pconnection )
     setObjectName( "OQStatement" );
 
     // echo up the object hierarchy
-    connect( this, SIGNAL(signalMessage(ODBCMessage Message)), pconnection, SIGNAL(signalMessage(ODBCMessage Message)) );
-    connect( this, SIGNAL(signalDiagnostic(ODBCDiagnostic Diagnostic)), pconnection, SIGNAL(signalDiagnostic(ODBCDiagnostic Diagnostic)) );
+    connect( this, SIGNAL(signalMessage(ODBCMessage)), pconnection, SIGNAL(signalMessage(ODBCMessage)) );
+    connect( this, SIGNAL(signalDiagnostic(ODBCDiagnostic)), pconnection, SIGNAL(signalDiagnostic(ODBCDiagnostic)) );
 }
 
 OQStatement::~OQStatement()
@@ -668,17 +668,20 @@ SQLRETURN OQStatement::slotExecute( const QString &stringSQL )
         return nReturn;
 
     nReturn = doExecute();
+printf( "[PAH][%s][%d][%s] (%d)\n", __FILE__, __LINE__, __FUNCTION__, nReturn );
 
     return nReturn;
 }
 
 void OQStatement::eventMessage( ODBCMessage Message )
 {
+printf( "[PAH][%s][%d][%s]\n", __FILE__, __LINE__, __FUNCTION__ );
     emit signalMessage( Message );
 }
 
 void OQStatement::eventDiagnostic()
 {
+printf( "[PAH][%s][%d][%s]\n", __FILE__, __LINE__, __FUNCTION__ );
     emit signalDiagnostic( ODBCDiagnostic( this ) );
 }
 
