@@ -1,3 +1,4 @@
 SUBDIRS = \
-	QtCore4
+	QtCore4 \
+	QtGui4
 

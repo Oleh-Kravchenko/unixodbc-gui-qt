@@ -5,10 +5,10 @@
  * \author  \sa AUTHORS file
  * \version 2
  * \date    2007
- * \license Copyright unixODBC Project 2003-2008, LGPL
+ * \license Copyright unixODBC-GUI-Qt Project 2003-2009, LGPL
  */
-#ifndef ODBCQGLOGIN_H
-#define ODBCQGLOGIN_H
+#ifndef OQGLOGIN_H
+#define OQGLOGIN_H
 
 //
 #include <sys/types.h>
@@ -23,16 +23,16 @@
 #endif
 
 //
-class ODBCQGEnvironment;
+class OQGEnvironment;
 class ODBCMessage;
-class ODBCQGMessageOutput;
+class OQGMessageOutput;
 
-class ODBCQGLogin: public QDialog
+class OQGLogin: public QDialog
 {
 	Q_OBJECT
 public:
-    ODBCQGLogin( QWidget *pwidgetParent, ODBCQGEnvironment *penvironment );
-    ~ODBCQGLogin();
+    OQGLogin( QWidget *pwidgetParent, OQGEnvironment *penvironment );
+    ~OQGLogin();
 
     // SETTERS
     virtual void setShowDriver( bool b );
@@ -51,7 +51,7 @@ public:
     QString getPassword() { return plineeditPassword->text(); }
 
 protected:
-    ODBCQGEnvironment*      penvironment;
+    OQGEnvironment*      penvironment;
     QLabel *                plabelDriver;
     QComboBox *             pcomboboxDriver;
     QLabel *                plabelDataSourceName;
@@ -60,7 +60,7 @@ protected:
 	QLineEdit *             plineeditUserID;
     QLabel *                plabelPassword;
 	QLineEdit *             plineeditPassword;
-    ODBCQGMessageOutput *   pmessageoutput;
+    OQGMessageOutput *   pmessageoutput;
 
     virtual void loadDrivers();
     virtual void loadDataSourceNames();

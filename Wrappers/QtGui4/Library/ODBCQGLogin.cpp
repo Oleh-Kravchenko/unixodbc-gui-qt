@@ -5,21 +5,21 @@
  * \author  \sa AUTHORS file
  * \version 2
  * \date    2007
- * \license Copyright unixODBC Project 2003-2008, LGPL
+ * \license Copyright unixODBC-GUI-Qt Project 2003-2009, LGPL
  */
-#include "../include/ODBCQGLogin.h"
+#include "../include/OQGLogin.h"
 
 #include <ODBCMessage.h>
 
-#include "../include/ODBCQGEnvironment.h"
-#include "../include/ODBCQGMessageOutput.h"
+#include "../include/OQGEnvironment.h"
+#include "../include/OQGMessageOutput.h"
 
 #include "ODBC64.xpm"
 
-ODBCQGLogin::ODBCQGLogin( QWidget *pwidgetParent, ODBCQGEnvironment *penvironment )
+OQGLogin::OQGLogin( QWidget *pwidgetParent, OQGEnvironment *penvironment )
     : QDialog( pwidgetParent )
 {
-    setObjectName( "ODBCQGLogin" );
+    setObjectName( "OQGLogin" );
     this->penvironment = penvironment;
 
     QVBoxLayout *playoutTop = new QVBoxLayout;
@@ -78,7 +78,7 @@ ODBCQGLogin::ODBCQGLogin( QWidget *pwidgetParent, ODBCQGEnvironment *penvironmen
 
     // messages
     {
-        pmessageoutput = new ODBCQGMessageOutput( this );
+        pmessageoutput = new OQGMessageOutput( this );
         playoutTop->addWidget( pmessageoutput );
 //        pmessageoutput->hide();
 //        pmessageoutput->setMinimumHeight( 50 );
@@ -104,12 +104,12 @@ ODBCQGLogin::ODBCQGLogin( QWidget *pwidgetParent, ODBCQGEnvironment *penvironmen
     loadDataSourceNames();
 }
 
-ODBCQGLogin::~ODBCQGLogin()
+OQGLogin::~OQGLogin()
 {
 }
 
 
-void ODBCQGLogin::setShowDriver( bool b )
+void OQGLogin::setShowDriver( bool b )
 {
     if ( b )
     {
@@ -123,7 +123,7 @@ void ODBCQGLogin::setShowDriver( bool b )
     }
 }
 
-void ODBCQGLogin::setShowDataSourceName( bool b )
+void OQGLogin::setShowDataSourceName( bool b )
 {
     if ( b )
     {
@@ -137,7 +137,7 @@ void ODBCQGLogin::setShowDataSourceName( bool b )
     }
 }
 
-void ODBCQGLogin::setShowUserID( bool b )
+void OQGLogin::setShowUserID( bool b )
 {
     if ( b )
     {
@@ -151,7 +151,7 @@ void ODBCQGLogin::setShowUserID( bool b )
     }
 }
 
-void ODBCQGLogin::setShowPassword( bool b )
+void OQGLogin::setShowPassword( bool b )
 {
     if ( b )
     {
@@ -165,7 +165,7 @@ void ODBCQGLogin::setShowPassword( bool b )
     }
 }
 
-void ODBCQGLogin::setDriver( const QString &string )
+void OQGLogin::setDriver( const QString &string )
 {
 /*
     QListBoxItem *plistboxitem = pcomboboxDriver->listBox()->findItem( string );
@@ -175,28 +175,28 @@ void ODBCQGLogin::setDriver( const QString &string )
     pcomboboxDriver->setEditText( string );
 }
 
-void ODBCQGLogin::setDataSourceName( const QString &string )
+void OQGLogin::setDataSourceName( const QString &string )
 {
     pcomboboxDataSourceName->setEditText( string );
 }
 
-void ODBCQGLogin::setUserID( const QString &string )
+void OQGLogin::setUserID( const QString &string )
 {
     plineeditUserID->setText( string );
 }
 
-void ODBCQGLogin::setPassword( const QString &string )
+void OQGLogin::setPassword( const QString &string )
 {
     plineeditPassword->setText( string );
 }
 
-void ODBCQGLogin::loadDrivers()
+void OQGLogin::loadDrivers()
 {
     pcomboboxDriver->insertItems( 0, penvironment->getDrivers() );
     pcomboboxDriver->insertItem( 0, "" );
 }
 
-void ODBCQGLogin::loadDataSourceNames()
+void OQGLogin::loadDataSourceNames()
 {
     pcomboboxDataSourceName->insertItems( 0, penvironment->getDataSources() );
     pcomboboxDataSourceName->insertItem( 0, "" );

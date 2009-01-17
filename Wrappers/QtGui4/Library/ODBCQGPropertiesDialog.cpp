@@ -9,13 +9,13 @@
  */
 #include <QtGui>
 
-#include "../include/ODBCQGPropertiesDialog.h"
-#include "../include/ODBCQGPropertiesModel.h"
-#include "../include/ODBCQGPropertiesDelegate.h"
+#include "../include/OQGPropertiesDialog.h"
+#include "../include/OQGPropertiesModel.h"
+#include "../include/OQGPropertiesDelegate.h"
 
 #include "ODBC64.xpm"
 
-ODBCQGPropertiesDialog::ODBCQGPropertiesDialog( QVector<ODBCQGProperty> vectorProperties, QWidget *pwidgetParent )
+OQGPropertiesDialog::OQGPropertiesDialog( QVector<OQGProperty> vectorProperties, QWidget *pwidgetParent )
 	: QDialog( pwidgetParent )
 {
     QVBoxLayout *           playout                 = new QVBoxLayout;
@@ -25,8 +25,8 @@ ODBCQGPropertiesDialog::ODBCQGPropertiesDialog( QVector<ODBCQGProperty> vectorPr
 
     pframe->setFrameStyle( QFrame::HLine );
 
-    ppropertiesmodel    = new ODBCQGPropertiesModel( vectorProperties );
-    ppropertiesdelegate = new ODBCQGPropertiesDelegate;
+    ppropertiesmodel    = new OQGPropertiesModel( vectorProperties );
+    ppropertiesdelegate = new OQGPropertiesDelegate;
     ptableview->setModel( ppropertiesmodel );
     ptableview->setItemDelegateForColumn ( 1, ppropertiesdelegate );
     ptableview->verticalHeader()->hide();
@@ -44,29 +44,29 @@ ODBCQGPropertiesDialog::ODBCQGPropertiesDialog( QVector<ODBCQGProperty> vectorPr
     loadState();
 }
 
-ODBCQGPropertiesDialog::~ODBCQGPropertiesDialog()
+OQGPropertiesDialog::~OQGPropertiesDialog()
 {
     saveState();
     delete ppropertiesdelegate;
     delete ppropertiesmodel;
 }
 
-void ODBCQGPropertiesDialog::loadState()
+void OQGPropertiesDialog::loadState()
 {
     QSettings settings;
 
-    int nW = settings.value( "ODBCQGPropertiesDialog/w", geometry().width() ).toInt();
-    int nH = settings.value( "ODBCQGPropertiesDialog/h", geometry().height() ).toInt();
+    int nW = settings.value( "OQGPropertiesDialog/w", geometry().width() ).toInt();
+    int nH = settings.value( "OQGPropertiesDialog/h", geometry().height() ).toInt();
 
     resize( nW, nH );
 }
 
-void ODBCQGPropertiesDialog::saveState()
+void OQGPropertiesDialog::saveState()
 {
     QSettings settings;
 
-    settings.setValue( "ODBCQGPropertiesDialog/w", width() );
-    settings.setValue( "ODBCQGPropertiesDialog/h", height() );
+    settings.setValue( "OQGPropertiesDialog/w", width() );
+    settings.setValue( "OQGPropertiesDialog/h", height() );
 }
 
 

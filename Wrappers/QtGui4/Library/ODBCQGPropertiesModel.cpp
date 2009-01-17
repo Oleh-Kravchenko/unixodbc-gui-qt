@@ -9,8 +9,8 @@
  */
 #include <QtGui>
 
-#include "../include/ODBCQGPropertiesModel.h"
-#include "../include/ODBCQGPropertiesDelegate.h"
+#include "../include/OQGPropertiesModel.h"
+#include "../include/OQGPropertiesDelegate.h"
 
 /*! 
  * \brief   Construct a properties model.
@@ -18,13 +18,13 @@
  * \param   pobjectParent
  * \param   vectorProperties
  */
-ODBCQGPropertiesModel::ODBCQGPropertiesModel( QVector<ODBCQGProperty> vectorProperties, QObject *pobjectParent )
+OQGPropertiesModel::OQGPropertiesModel( QVector<OQGProperty> vectorProperties, QObject *pobjectParent )
     : QAbstractTableModel( pobjectParent )
 {
     this->vectorProperties = vectorProperties;
 }
 
-ODBCQGPropertiesModel::~ODBCQGPropertiesModel()
+OQGPropertiesModel::~OQGPropertiesModel()
 {
 }
 
@@ -34,7 +34,7 @@ ODBCQGPropertiesModel::~ODBCQGPropertiesModel()
  *          
  * \return  int Output. The number of properties.
  */
-int ODBCQGPropertiesModel::rowCount( const QModelIndex & ) const
+int OQGPropertiesModel::rowCount( const QModelIndex & ) const
 {
     return vectorProperties.size();
 }
@@ -47,7 +47,7 @@ int ODBCQGPropertiesModel::rowCount( const QModelIndex & ) const
  * 
  * \return  int Output. Always 2.
  */
-int ODBCQGPropertiesModel::columnCount( const QModelIndex & ) const
+int OQGPropertiesModel::columnCount( const QModelIndex & ) const
 {
     return 2;
 }
@@ -56,7 +56,7 @@ int ODBCQGPropertiesModel::columnCount( const QModelIndex & ) const
  * \brief   Provide cell data to the view and any delegate we may have in play
  *          for the cell.
  *
- *          We expect that the 2nd column will have ODBCQGPropertiesDelegate installed on it. So for
+ *          We expect that the 2nd column will have OQGPropertiesDelegate installed on it. So for
  *          the 2nd column we may return the value text or HODBCINSTPROPERTY.
  *
  * \param   index
@@ -65,7 +65,7 @@ int ODBCQGPropertiesModel::columnCount( const QModelIndex & ) const
  * 
  * \return  QVariant
  */
-QVariant ODBCQGPropertiesModel::data( const QModelIndex &index, int nRole ) const
+QVariant OQGPropertiesModel::data( const QModelIndex &index, int nRole ) const
 {
     /* \todo are these sanity checks really needed? */
     if ( !index.isValid() )
@@ -73,7 +73,7 @@ QVariant ODBCQGPropertiesModel::data( const QModelIndex &index, int nRole ) cons
     if ( index.row() >= vectorProperties.size() )
          return QVariant();
 
-    ODBCQGProperty property = vectorProperties.at( index.row() );
+    OQGProperty property = vectorProperties.at( index.row() );
 
     /* which column ? */
     if ( index.column() == 0 )
@@ -97,7 +97,7 @@ QVariant ODBCQGPropertiesModel::data( const QModelIndex &index, int nRole ) cons
         {
             case Qt::DisplayRole:   /* called by QTableView to display the value text without editor                    */
                 return property.getValue();
-            case Qt::EditRole:      /* called by ODBCQGPropertiesDelegate:: createEditor & setEditorData to load cell editor */
+            case Qt::EditRole:      /* called by OQGPropertiesDelegate:: createEditor & setEditorData to load cell editor */
                 return QVariant::fromValue( property );
             case Qt::ToolTipRole:
             case Qt::StatusTipRole:
@@ -120,13 +120,13 @@ QVariant ODBCQGPropertiesModel::data( const QModelIndex &index, int nRole ) cons
  * \param   index           Input. Index into the cell.
  * \param   variantValue    Input. The only column we deal with here is the 2nd column (the value) and 
  *                          we expect to get that as a QString. This should come from 
- *                          \sa ODBCQGPropertiesDelegate::setModelData.
+ *                          \sa OQGPropertiesDelegate::setModelData.
  * \param   nRole           Input. Qt::ItemDataRole. This is provided to request setting a specific variant 
  *                          of the data associated with the cell.
  * 
  * \return bool
  */
-bool ODBCQGPropertiesModel::setData( const QModelIndex &index, const QVariant &variantValue, int nRole )
+bool OQGPropertiesModel::setData( const QModelIndex &index, const QVariant &variantValue, int nRole )
 {
     if ( !index.isValid() )
         return false;
@@ -136,7 +136,7 @@ bool ODBCQGPropertiesModel::setData( const QModelIndex &index, const QVariant &v
 
     if ( nRole == Qt::EditRole )
     {
-        ODBCQGProperty *pProperties = vectorProperties.data();
+        OQGProperty *pProperties = vectorProperties.data();
         pProperties[index.row()].setValue( variantValue.toString() );
         emit dataChanged( index, index );
         return true;
@@ -152,7 +152,7 @@ bool ODBCQGPropertiesModel::setData( const QModelIndex &index, const QVariant &v
  * 
  * \return  Qt::ItemFlags
  */
-Qt::ItemFlags ODBCQGPropertiesModel::flags( const QModelIndex &index ) const
+Qt::ItemFlags OQGPropertiesModel::flags( const QModelIndex &index ) const
 {
     if ( !index.isValid() )
         return Qt::ItemIsEnabled; /* for lack of a better choice :/ */
@@ -173,7 +173,7 @@ Qt::ItemFlags ODBCQGPropertiesModel::flags( const QModelIndex &index ) const
  * 
  * \return QVariant
  */
-QVariant ODBCQGPropertiesModel::headerData( int nSection, Qt::Orientation nOrientation, int nRole ) const
+QVariant OQGPropertiesModel::headerData( int nSection, Qt::Orientation nOrientation, int nRole ) const
 {
     if ( nRole != Qt::DisplayRole )
          return QVariant();

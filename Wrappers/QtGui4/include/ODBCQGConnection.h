@@ -5,36 +5,36 @@
  * \author  \sa AUTHORS file
  * \version 2
  * \date    2007
- * \license Copyright unixODBC Project 2003-2008, LGPL
+ * \license Copyright unixODBC-GUI-Qt Project 2003-2009, LGPL
  */
-#ifndef ODBCQGCONNECTION_H
-#define ODBCQGCONNECTION_H
+#ifndef OQGCONNECTION_H
+#define OQGCONNECTION_H
 
 #include <QtGui>
-#include <ODBCQConnection.h>
-#include "../include/ODBCQGEnvironment.h"
+#include <OQConnection.h>
+#include "../include/OQGEnvironment.h"
 
-class ODBCQGProperty;
+class OQGProperty;
 
 /*! 
- * \class   ODBCQGConnection
+ * \class   OQGConnection
  * \brief   ODBC Connection.
  *
- *          This extends \sa ODBCQConnection by adding QtGui based features.
+ *          This extends \sa OQConnection by adding QtGui based features.
  * 
  */
-class ODBCQGConnection : public ODBCQConnection
+class OQGConnection : public OQConnection
 {
     Q_OBJECT
 public:
-    ODBCQGConnection( ODBCQGEnvironment *penvironment );
+    OQGConnection( OQGEnvironment *penvironment );
 
     // SETTERS
 
     // GETTERS
 
     // DOERS
-    // we layer these on to provide ODBCQG based prompting
+    // we layer these on to provide OQG based prompting
     virtual bool doConnect( QWidget *pwidgetParent, const QString &stringServerName = QString::null, const QString &stringUserName = QString::null, const QString &stringAuthentication = QString::null );
     virtual bool doBrowseConnect( QWidget *pwidgetParent, const QString &stringConnect );
     virtual bool doBrowseConnect( QWidget *pwidgetParent );
@@ -42,8 +42,8 @@ public:
 protected:
 
     // Used by doBrowseConnect
-    virtual QString getString( QVector<ODBCQGProperty> vectorProperties );
-    virtual QVector<ODBCQGProperty> getProperties( const QString &string );
+    virtual QString getString( QVector<OQGProperty> vectorProperties );
+    virtual QVector<OQGProperty> getProperties( const QString &string );
 };
 
 #endif

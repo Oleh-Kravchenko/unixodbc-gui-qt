@@ -5,31 +5,31 @@
  * \author  \sa AUTHORS file
  * \version 2
  * \date    2007
- * \license Copyright unixODBC Project 2003-2008, LGPL
+ * \license Copyright unixODBC-GUI-Qt Project 2003-2009, LGPL
  */
-#ifndef ODBCQGSTATEMENT_h
-#define ODBCQGSTATEMENT_h
+#ifndef OQGSTATEMENT_h
+#define OQGSTATEMENT_h
 
 // libqt
 #include <QtGui>
 
-#include "../include/ODBCQGConnection.h"
-#include <ODBCQStatement.h>
+#include "../include/OQGConnection.h"
+#include <OQStatement.h>
 
 /*! 
- * \class   ODBCQGStatement
+ * \class   OQGStatement
  * \brief   An ODBC statement.
  * 
- *          This class extends ODBCQStatement by adding QtGui based features.
+ *          This class extends OQStatement by adding QtGui based features.
  *          A statement does not require any Qt beyond what QtCore offers so this class
- *          exists simply to complete the set of ODBCQG classes. This class does not, at
- *          this time, extend ODBCQStatement in any functional way - but this may change.
+ *          exists simply to complete the set of OQG classes. This class does not, at
+ *          this time, extend OQStatement in any functional way - but this may change.
  */
-class ODBCQGStatement : public ODBCQStatement
+class OQGStatement : public OQStatement
 {
     Q_OBJECT
 public:
-    ODBCQGStatement( ODBCQGConnection *pconnection );
+    OQGStatement( OQGConnection *pconnection );
 };
 
 #endif

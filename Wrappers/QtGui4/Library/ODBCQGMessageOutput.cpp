@@ -5,20 +5,20 @@
  * \author  \sa AUTHORS file
  * \version 2
  * \date    2007
- * \license Copyright unixODBC Project 2003-2008, LGPL
+ * \license Copyright unixODBC-GUI-Qt Project 2003-2009, LGPL
  */
-#include "ODBCQGMessageOutput.h"
+#include "OQGMessageOutput.h"
 
 #include <ODBCMessage.h>
 #include <ODBCDiagnostic.h>
 
-#include <ODBCQGSystem.h>
+#include <OQGSystem.h>
 
 #include "Information16.xpm"
 #include "Warning16.xpm"
 #include "Error16.xpm"
 
-ODBCQGMessageOutput::ODBCQGMessageOutput( QWidget *pwidgetParent )
+OQGMessageOutput::OQGMessageOutput( QWidget *pwidgetParent )
     : QTableWidget( 0, 4, pwidgetParent )
 {
     QStringList stringlistHeaderLabels;
@@ -32,11 +32,11 @@ ODBCQGMessageOutput::ODBCQGMessageOutput( QWidget *pwidgetParent )
     nWaitingMessages = 0;
 }
 
-ODBCQGMessageOutput::~ODBCQGMessageOutput()
+OQGMessageOutput::~OQGMessageOutput()
 {
 }
 
-void ODBCQGMessageOutput::setWaitingMessages( int n ) 
+void OQGMessageOutput::setWaitingMessages( int n ) 
 { 
     nWaitingMessages = n; 
     emit signalWaitingMessages( this );
@@ -48,7 +48,7 @@ void ODBCQGMessageOutput::setWaitingMessages( int n )
     
     Append the message to our list of messages.
 */
-void ODBCQGMessageOutput::slotMessage( ODBCMessage Message )
+void OQGMessageOutput::slotMessage( ODBCMessage Message )
 {
     int nRows = rowCount() + 1;
     int nRow  = nRows - 1;
@@ -71,19 +71,19 @@ void ODBCQGMessageOutput::slotMessage( ODBCMessage Message )
     }
 
     // column 2
-    setItem( nRow, 1, new QTableWidgetItem( ODBCQToQString( Message.getRequest() ) ) );
+    setItem( nRow, 1, new QTableWidgetItem( OQToQString( Message.getRequest() ) ) );
 
     // column 3
     setItem( nRow, 2, new QTableWidgetItem( QString::number( Message.getNumeric() ) ) );
 
     // column 4
-    setItem( nRow, 3, new QTableWidgetItem( ODBCQToQString( Message.getText() ) ) );
+    setItem( nRow, 3, new QTableWidgetItem( OQToQString( Message.getText() ) ) );
 
     nWaitingMessages++;
     emit signalWaitingMessages( this );
 }
 
-void ODBCQGMessageOutput::slotDiagnostic( ODBCDiagnostic Diagnostic )
+void OQGMessageOutput::slotDiagnostic( ODBCDiagnostic Diagnostic )
 {
     int nRows = rowCount() + 1;
     int nRow  = nRows - 1;

@@ -53,32 +53,10 @@
 			Name="Source Files"
 			Filters="*.c;*.C;*.cc;*.cpp;*.cp;*.cxx;*.prg;*.pas;*.dpr;*.asm;*.s;*.bas;*.java;*.cs;*.sc;*.e;*.cob;*.html;*.rc;*.tcl;*.py;*.pl">
 			<F N="Application/main.cpp"/>
-			<F N="Application/odbcqg.cpp"/>
-			<F N="Library/ODBCQGConnection.cpp"/>
-			<F N="Library/ODBCQGEnvironment.cpp"/>
-			<F N="Library/ODBCQGLogin.cpp"/>
-			<F N="Library/ODBCQGMessageOutput.cpp"/>
-			<F N="Library/ODBCQGPropertiesDelegate.cpp"/>
-			<F N="Library/ODBCQGPropertiesDialog.cpp"/>
-			<F N="Library/ODBCQGPropertiesModel.cpp"/>
-			<F N="Library/ODBCQGProperty.cpp"/>
-			<F N="Library/ODBCQGStatement.cpp"/>
-			<F N="Library/ODBCQGSystem.cpp"/>
 		</Folder>
 		<Folder
 			Name="Header Files"
 			Filters="*.h;*.H;*.hh;*.hpp;*.hxx;*.inc;*.sh;*.cpy;*.if">
-			<F N="Application/odbcqg.h"/>
-			<F N="include/ODBCQGConnection.h"/>
-			<F N="include/ODBCQGEnvironment.h"/>
-			<F N="include/ODBCQGLogin.h"/>
-			<F N="include/ODBCQGMessageOutput.h"/>
-			<F N="include/ODBCQGPropertiesDelegate.h"/>
-			<F N="include/ODBCQGPropertiesDialog.h"/>
-			<F N="include/ODBCQGPropertiesModel.h"/>
-			<F N="include/ODBCQGProperty.h"/>
-			<F N="include/ODBCQGStatement.h"/>
-			<F N="include/ODBCQGSystem.h"/>
 		</Folder>
 		<Folder
 			Name="Resource Files"

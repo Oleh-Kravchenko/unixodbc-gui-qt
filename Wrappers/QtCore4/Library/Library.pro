@@ -1,6 +1,6 @@
 TEMPLATE        = lib
 VERSION 	= %V_MAJOUR%.%V_MINOR%.%V_RELEASE%
-TARGET          = odbc_OQ 
+TARGET          = odbc_OQ4 
 DESTDIR         = ../../../lib
 include( ../../../common.pri )
 include( ../../../config.pri )

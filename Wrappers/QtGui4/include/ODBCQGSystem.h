@@ -5,27 +5,27 @@
  * \author  \sa AUTHORS file
  * \version 2
  * \date    2007
- * \license Copyright unixODBC Project 2003-2008, LGPL
+ * \license Copyright unixODBC-GUI-Qt Project 2003-2009, LGPL
  */
-#ifndef ODBCQGSYSTEM_H
-#define ODBCQGSYSTEM_H
+#ifndef OQGSYSTEM_H
+#define OQGSYSTEM_H
 
 #include <QtGui>
-#include <ODBCQSystem.h>
+#include <OQSystem.h>
 
 /*! 
- * \class   ODBCQGSystem
+ * \class   OQGSystem
  * \brief   An ODBC system. 
  *
- *          This extends \sa ODBCQSystem by adding some QtGui based support.
+ *          This extends \sa OQSystem by adding some QtGui based support.
  *          The additional support is very modest but that is all that seems to be needed here.
  */
-class ODBCQGSystem : public ODBCQSystem
+class OQGSystem : public OQSystem
 {
     Q_OBJECT
 public:
-    explicit ODBCQGSystem();
-    virtual ~ODBCQGSystem();
+    explicit OQGSystem();
+    virtual ~OQGSystem();
 
     // DO'rs
     virtual bool doManageDataSources( QWidget *pwidgetParent );    

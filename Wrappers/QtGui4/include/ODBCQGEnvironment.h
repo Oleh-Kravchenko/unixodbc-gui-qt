@@ -5,28 +5,28 @@
  * \author  \sa AUTHORS file
  * \version 2
  * \date    2007
- * \license Copyright unixODBC Project 2003-2008, LGPL
+ * \license Copyright unixODBC-GUI-Qt Project 2003-2009, LGPL
  */
-#ifndef ODBCQGENVIRONMENT_H
-#define ODBCQGENVIRONMENT_H
+#ifndef OQGENVIRONMENT_H
+#define OQGENVIRONMENT_H
 
 #include <QtGui>
-#include <ODBCQEnvironment.h>
+#include <OQEnvironment.h>
 
-#include "ODBCQGSystem.h"
+#include "OQGSystem.h"
 
 /*! 
- * \class   ODBCQGEnvironment
+ * \class   OQGEnvironment
  * \brief   An ODBC environment. 
  *
- *          This extends \sa ODBCQEnvironment by adding some QtGui based support.
+ *          This extends \sa OQEnvironment by adding some QtGui based support.
  *          The additional support is very modest but that is all that seems to be needed here.
  */
-class ODBCQGEnvironment : public ODBCQEnvironment
+class OQGEnvironment : public OQEnvironment
 {
     Q_OBJECT
 public:
-    ODBCQGEnvironment( ODBCQGSystem *pSystem );
+    OQGEnvironment( OQGSystem *pSystem );
 
 };
 

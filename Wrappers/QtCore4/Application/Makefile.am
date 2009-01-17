@@ -1,4 +1,4 @@
-bin_PROGRAMS = OQConsole
+bin_PROGRAMS = OQConsole4
 
 INCLUDES = \
 	-I@top_srcdir@/include \
@@ -7,19 +7,17 @@ INCLUDES = \
 	-DSYSTEM_FILE_PATH=\"@sysconfdir@\" \
 	-DDEFLIB_PATH=\"@libdir@\"
 
-#	$(LTDLINCL)
-
-OQConsole_LDADD =  \
+OQConsole4_LDADD =  \
 	$(QT_LDFLAGS) \
 	$(QT_LIBS) \
 	-lodbc -lodbcinst \
 	-lodbc_CPP \
 	../Library/libodbc_OQ4.la
 
-OQConsole_DEPENDANCIES = \
+OQConsole4_DEPENDANCIES = \
 	../Library/libodbc_OQ4.la
 
-OQConsole_SOURCES = \
+OQConsole4_SOURCES = \
 	main.cpp
 
 

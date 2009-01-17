@@ -9,32 +9,32 @@
  */
 #include <QtGui>
 
-#include "../include/ODBCQGProperty.h"
-#include "../include/ODBCQGPropertiesDelegate.h"
-#include "../include/ODBCQGPropertiesModel.h"
+#include "../include/OQGProperty.h"
+#include "../include/OQGPropertiesDelegate.h"
+#include "../include/OQGPropertiesModel.h"
 
-ODBCQGPropertiesDelegate::ODBCQGPropertiesDelegate( QObject *pobjectParent )
+OQGPropertiesDelegate::OQGPropertiesDelegate( QObject *pobjectParent )
     : QItemDelegate( pobjectParent )
 {
 }
 
-QWidget *ODBCQGPropertiesDelegate::createEditor( QWidget *pwidgetParent, const QStyleOptionViewItem &styleoptionviewitem, const QModelIndex &modelindex ) const
+QWidget *OQGPropertiesDelegate::createEditor( QWidget *pwidgetParent, const QStyleOptionViewItem &styleoptionviewitem, const QModelIndex &modelindex ) const
 {
     if ( modelindex.column() != 1 )
         return 0;
 
-    ODBCQGProperty property = modelindex.model()->data( modelindex, Qt::EditRole ).value<ODBCQGProperty>();
+    OQGProperty property = modelindex.model()->data( modelindex, Qt::EditRole ).value<OQGProperty>();
 
     switch ( property.getPromptType() )
     {
-        case ODBCQGProperty::PromptLabel:
+        case OQGProperty::PromptLabel:
             {
                 QLabel *pLabel = new QLabel( pwidgetParent );
                 return pLabel;
             }
             break;
 
-        case ODBCQGProperty::PromptCombo:
+        case OQGProperty::PromptCombo:
             {
                 QComboBox *pComboBox = new QComboBox( pwidgetParent );
                 QStringList listOptions = property.getOptions();
@@ -46,7 +46,7 @@ QWidget *ODBCQGPropertiesDelegate::createEditor( QWidget *pwidgetParent, const Q
             }
             break;
 
-        case ODBCQGProperty::PromptComboWrite:
+        case OQGProperty::PromptComboWrite:
             {
                 QComboBox *pComboBox = new QComboBox( pwidgetParent );
                 QStringList listOptions = property.getOptions();
@@ -70,23 +70,23 @@ QWidget *ODBCQGPropertiesDelegate::createEditor( QWidget *pwidgetParent, const Q
     return 0;
 }
 
-void ODBCQGPropertiesDelegate::setEditorData( QWidget *pwidgetEditor, const QModelIndex &modelindex ) const
+void OQGPropertiesDelegate::setEditorData( QWidget *pwidgetEditor, const QModelIndex &modelindex ) const
 {
-    ODBCQGProperty property = modelindex.model()->data( modelindex, Qt::EditRole ).value<ODBCQGProperty>();
+    OQGProperty property = modelindex.model()->data( modelindex, Qt::EditRole ).value<OQGProperty>();
 
     switch ( property.getPromptType() )
     {
-        case ODBCQGProperty::PromptLabel:
+        case OQGProperty::PromptLabel:
             break;
 
-        case ODBCQGProperty::PromptCombo:
+        case OQGProperty::PromptCombo:
             {
                 QComboBox *pComboBox = static_cast<QComboBox*>( pwidgetEditor );
                 pComboBox->setCurrentIndex( pComboBox->findText( property.getValue(), Qt::MatchExactly ) );
             }
             break;
 
-        case ODBCQGProperty::PromptComboWrite:
+        case OQGProperty::PromptComboWrite:
             {
                 QComboBox *pComboBox = static_cast<QComboBox*>( pwidgetEditor );
                 pComboBox->lineEdit()->setText( property.getValue() );
@@ -102,23 +102,23 @@ void ODBCQGPropertiesDelegate::setEditorData( QWidget *pwidgetEditor, const QMod
     }
 }
 
-void ODBCQGPropertiesDelegate::setModelData( QWidget *pwidgetEditor, QAbstractItemModel *abstractitemmodel, const QModelIndex &modelindex) const
+void OQGPropertiesDelegate::setModelData( QWidget *pwidgetEditor, QAbstractItemModel *abstractitemmodel, const QModelIndex &modelindex) const
 {
-    ODBCQGProperty property = abstractitemmodel->data( modelindex, Qt::EditRole ).value<ODBCQGProperty>();
+    OQGProperty property = abstractitemmodel->data( modelindex, Qt::EditRole ).value<OQGProperty>();
 
     switch ( property.getPromptType() )
     {
-        case ODBCQGProperty::PromptLabel:
+        case OQGProperty::PromptLabel:
             break;
 
-        case ODBCQGProperty::PromptCombo:
+        case OQGProperty::PromptCombo:
             {
                 QComboBox *pComboBox = static_cast<QComboBox*>( pwidgetEditor );
                 abstractitemmodel->setData( modelindex, pComboBox->currentText(), Qt::EditRole );
             }
             break;
 
-        case ODBCQGProperty::PromptComboWrite:
+        case OQGProperty::PromptComboWrite:
             {
                 QComboBox *pComboBox = static_cast<QComboBox*>( pwidgetEditor );
                 abstractitemmodel->setData( modelindex, pComboBox->currentText(), Qt::EditRole );
@@ -134,7 +134,7 @@ void ODBCQGPropertiesDelegate::setModelData( QWidget *pwidgetEditor, QAbstractIt
     }
 }
 
-void ODBCQGPropertiesDelegate::updateEditorGeometry( QWidget *pwidgetEditor, const QStyleOptionViewItem &styleoptionviewitem, const QModelIndex &modelindex ) const
+void OQGPropertiesDelegate::updateEditorGeometry( QWidget *pwidgetEditor, const QStyleOptionViewItem &styleoptionviewitem, const QModelIndex &modelindex ) const
 {
     pwidgetEditor->setGeometry( styleoptionviewitem.rect );
 }

@@ -5,10 +5,10 @@
  * \author  \sa AUTHORS file
  * \version 2
  * \date    2007
- * \license Copyright unixODBC Project 2003-2008, LGPL
+ * \license Copyright unixODBC-GUI-Qt Project 2003-2009, LGPL
  */
-#ifndef ODBCQG_H
-#define ODBCQG_H
+#ifndef OQG_H
+#define OQG_H
 
 
 // qt
@@ -18,10 +18,10 @@
 #include <ODBCMessage.h>
 
 // odbcqg
-#include <ODBCQGSystem.h>
-#include <ODBCQGEnvironment.h>
-#include <ODBCQGConnection.h>
-#include <ODBCQGStatement.h>
+#include <OQGSystem.h>
+#include <OQGEnvironment.h>
+#include <OQGConnection.h>
+#include <OQGStatement.h>
 
 class odbcqg : public QMainWindow
 { 
@@ -31,10 +31,10 @@ public:
 	~odbcqg();
 
 protected:
-    ODBCQGSystem *      pSystem;
-    ODBCQGEnvironment * pEnvironment;
-    ODBCQGConnection *  pConnection;
-    ODBCQGStatement *   pStatement;
+    OQGSystem *      pSystem;
+    OQGEnvironment * pEnvironment;
+    OQGConnection *  pConnection;
+    OQGStatement *   pStatement;
 
     QMenu * pmenuFile;
     QMenu * pmenuDataSource;
@@ -69,7 +69,7 @@ protected slots:
     void slotConnected();
     void slotDisconnected();
     void slotExecute();
-    void slotResults( ODBCQStatement *pStatement );
+    void slotResults( OQStatement *pStatement );
     void slotMessage( ODBCMessage Message );
 };
 

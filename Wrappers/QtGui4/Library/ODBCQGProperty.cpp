@@ -5,26 +5,26 @@
  * \author  \sa AUTHORS file
  * \version 2
  * \date    2007
- * \license Copyright unixODBC Project 2003-2008, LGPL
+ * \license Copyright unixODBC-GUI-Qt Project 2003-2009, LGPL
  */
-#include "../include/ODBCQGProperty.h"
+#include "../include/OQGProperty.h"
 
-ODBCQGProperty::ODBCQGProperty()
+OQGProperty::OQGProperty()
 {
     nPromptType = PromptLabel;
 }
 
-ODBCQGProperty::ODBCQGProperty( PromptType nPromptType, const QString &stringName )
+OQGProperty::OQGProperty( PromptType nPromptType, const QString &stringName )
 {
     this->nPromptType     = nPromptType;
     this->stringName      = stringName;
 }
 
-ODBCQGProperty::~ODBCQGProperty()
+OQGProperty::~OQGProperty()
 {
 }
 
-void ODBCQGProperty::setValue( const QString &stringValue ) 
+void OQGProperty::setValue( const QString &stringValue ) 
 { 
     this->stringValue = stringValue; 
 

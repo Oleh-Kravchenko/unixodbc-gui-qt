@@ -5,16 +5,16 @@
  * \author  \sa AUTHORS file
  * \version 2
  * \date    2007
- * \license Copyright unixODBC Project 2003-2008, LGPL
+ * \license Copyright unixODBC-GUI-Qt Project 2003-2009, LGPL
  */
-#include "../include/ODBCQGEnvironment.h"
-#include "../include/ODBCQGConnection.h"
-#include "../include/ODBCQGPropertiesDialog.h"
-#include "../include/ODBCQGProperty.h"
-#include "../include/ODBCQGLogin.h"
+#include "../include/OQGEnvironment.h"
+#include "../include/OQGConnection.h"
+#include "../include/OQGPropertiesDialog.h"
+#include "../include/OQGProperty.h"
+#include "../include/OQGLogin.h"
 
-ODBCQGConnection::ODBCQGConnection( ODBCQGEnvironment *pEnvironment )
-    : ODBCQConnection( pEnvironment )
+OQGConnection::OQGConnection( OQGEnvironment *pEnvironment )
+    : OQConnection( pEnvironment )
 {
     bPromptDriver           = true;
     bPromptDataSourceName   = true;
@@ -27,14 +27,14 @@ ODBCQGConnection::ODBCQGConnection( ODBCQGEnvironment *pEnvironment )
     
     Allows the use of QString instead of SQLCHAR*.
     
-    ODBCQG will provide a login dialog.
+    OQG will provide a login dialog.
 */
-bool ODBCQGConnection::doConnect( QWidget *pwidgetParent, const QString &stringDSN, const QString &stringUID, const QString &stringPWD )
+bool OQGConnection::doConnect( QWidget *pwidgetParent, const QString &stringDSN, const QString &stringUID, const QString &stringPWD )
 {
     bool bReturn = false;
 
     // With Prompting.
-    ODBCQGLogin *plogin = new ODBCQGLogin( pwidgetParent, (ODBCQGEnvironment*)getEnvironment() );
+    OQGLogin *plogin = new OQGLogin( pwidgetParent, (OQGEnvironment*)getEnvironment() );
     plogin->setWindowTitle( tr( "Connect..." ) );
     plogin->setShowDriver( false );
     bool bPromptSomething = bPromptDataSourceName || bPromptUserID || bPromptPassword;
@@ -51,7 +51,7 @@ bool ODBCQGConnection::doConnect( QWidget *pwidgetParent, const QString &stringD
     {
         if ( !bPromptSomething || (plogin->exec() == QDialog::Accepted) ) 
         {
-            SQLRETURN nReturn = ODBCQConnection::doConnect( plogin->getDataSourceName(), plogin->getUserID(), plogin->getPassword() );
+            SQLRETURN nReturn = OQConnection::doConnect( plogin->getDataSourceName(), plogin->getUserID(), plogin->getPassword() );
             if ( SQL_SUCCEEDED( nReturn ) )
             {
                 bReturn = true;
@@ -86,14 +86,14 @@ bool ODBCQGConnection::doConnect( QWidget *pwidgetParent, const QString &stringD
 
     Other connect options may be included.
     
-    Call doBrowseConnect( QWidget * ) if you want ODBCQG to prompt for the above 
+    Call doBrowseConnect( QWidget * ) if you want OQG to prompt for the above 
     connect options as well.
             
     stringConnect is used to start the browse connect process.
     
-    This method will use ODBCQG based prompting as required.
+    This method will use OQG based prompting as required.
 */
-bool ODBCQGConnection::doBrowseConnect( QWidget *pwidgetParent, const QString &stringConnect )
+bool OQGConnection::doBrowseConnect( QWidget *pwidgetParent, const QString &stringConnect )
 {
     bool        bReturn     = false;
     SQLRETURN   nReturn     = SQL_NEED_DATA;
@@ -102,7 +102,7 @@ bool ODBCQGConnection::doBrowseConnect( QWidget *pwidgetParent, const QString &s
 
     while ( nReturn == SQL_NEED_DATA )
     {
-        nReturn = ODBCQConnection::doBrowseConnect( stringIn, &stringOut );
+        nReturn = OQConnection::doBrowseConnect( stringIn, &stringOut );
         switch ( nReturn )
         {
             case SQL_SUCCESS:
@@ -111,7 +111,7 @@ bool ODBCQGConnection::doBrowseConnect( QWidget *pwidgetParent, const QString &s
                 break;
             case SQL_NEED_DATA:
                 {
-                    ODBCQGPropertiesDialog propertiesdialog( getProperties( stringOut ), pwidgetParent );
+                    OQGPropertiesDialog propertiesdialog( getProperties( stringOut ), pwidgetParent );
                     // prepare new stringIn
                     if ( propertiesdialog.exec() == QDialog::Accepted )
                     {
@@ -138,13 +138,13 @@ bool ODBCQGConnection::doBrowseConnect( QWidget *pwidgetParent, const QString &s
     This method will prompt for Driver/DSN/FileDSN before starting the regular 
     browse connect process.
 
-    This method will use ODBCQG based prompting.
+    This method will use OQG based prompting.
 */
-bool ODBCQGConnection::doBrowseConnect( QWidget *pwidgetParent )
+bool OQGConnection::doBrowseConnect( QWidget *pwidgetParent )
 {
     bool bReturn = false;
     
-    ODBCQGLogin *plogin = new ODBCQGLogin( pwidgetParent, (ODBCQGEnvironment*)getEnvironment() );
+    OQGLogin *plogin = new OQGLogin( pwidgetParent, (OQGEnvironment*)getEnvironment() );
     plogin->setWindowTitle( tr( "Browse Connect..." ) );
     while ( 1 )
     {
@@ -216,7 +216,7 @@ bool ODBCQGConnection::doBrowseConnect( QWidget *pwidgetParent )
     For information about how an application chooses a data source or driver, see 
     "Choosing a Data Source or Driver" in Chapter 6: Connecting to a Data Source or Driver.
 */
-QString ODBCQGConnection::getString( QVector<ODBCQGProperty> vectorProperties )
+QString OQGConnection::getString( QVector<OQGProperty> vectorProperties )
 {
     QString stringReturn;
     int     nPrompt           = 0;
@@ -224,7 +224,7 @@ QString ODBCQGConnection::getString( QVector<ODBCQGProperty> vectorProperties )
 
     for ( ; nPrompt < nPrompts; nPrompt++ )
     {
-        ODBCQGProperty property = vectorProperties.at( nPrompt );
+        OQGProperty property = vectorProperties.at( nPrompt );
         stringReturn    += property.getName() + "=";
         stringReturn    += property.getValue() + ";";
     }
@@ -281,9 +281,9 @@ QString ODBCQGConnection::getString( QVector<ODBCQGProperty> vectorProperties )
           connection handle so that the context can always be determined on each call.
 
 */
-QVector<ODBCQGProperty> ODBCQGConnection::getProperties( const QString &stringProperties )
+QVector<OQGProperty> OQGConnection::getProperties( const QString &stringProperties )
 {
-    QVector<ODBCQGProperty> vectorProperties;
+    QVector<OQGProperty> vectorProperties;
     
     QStringList stringlistProperties = stringProperties.split( ';' );
 
@@ -292,7 +292,7 @@ QVector<ODBCQGProperty> ODBCQGConnection::getProperties( const QString &stringPr
         QStringList stringlistProperty = (*it).split( ':' );
         if ( stringlistProperty.count() > 0 )
         {
-            ODBCQGProperty property( ODBCQGProperty::PromptLineEdit, stringlistProperty[0] );
+            OQGProperty property( OQGProperty::PromptLineEdit, stringlistProperty[0] );
             if ( stringlistProperty.count() > 1 )
                 property.setValue( stringlistProperty[1] );
             vectorProperties.append( property );

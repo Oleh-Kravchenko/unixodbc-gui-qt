@@ -5,10 +5,10 @@
  * \author  \sa AUTHORS file
  * \version 2
  * \date    2007
- * \license Copyright unixODBC Project 2003-2008, LGPL
+ * \license Copyright unixODBC-GUI-Qt Project 2003-2009, LGPL
  */
-#ifndef ODBCQGMESSAGEOUTPUT_h
-#define ODBCQGMESSAGEOUTPUT_h
+#ifndef OQGMESSAGEOUTPUT_h
+#define OQGMESSAGEOUTPUT_h
 
 // Qt
 #include <QtGui>
@@ -17,12 +17,12 @@
 #include <ODBCMessage.h>
 #include <ODBCDiagnostic.h>
 
-class ODBCQGMessageOutput: public QTableWidget
+class OQGMessageOutput: public QTableWidget
 {
 	Q_OBJECT
 public:
-    ODBCQGMessageOutput( QWidget *pwidgetParent );
-    ~ODBCQGMessageOutput();
+    OQGMessageOutput( QWidget *pwidgetParent );
+    ~OQGMessageOutput();
 
     // SETTERS
     virtual void setWaitingMessages( int n );
@@ -31,7 +31,7 @@ public:
     virtual int getWaitingMessages() { return nWaitingMessages; }
 
 signals:
-    void signalWaitingMessages( ODBCQGMessageOutput * );
+    void signalWaitingMessages( OQGMessageOutput * );
 
 public slots:
     virtual void slotMessage( ODBCMessage Message );

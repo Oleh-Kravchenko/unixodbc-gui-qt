@@ -1,6 +1,4 @@
-if QT4
-
-bin_PROGRAMS = odbcqg4
+bin_PROGRAMS = OQGConsole4
 
 INCLUDES = \
 	-I@top_srcdir@/include \
@@ -12,7 +10,7 @@ INCLUDES = \
 	-DDEFLIB_PATH=\"@libdir@\" \
 	$(LTDLINCL)
 
-odbcqg4_LDADD = \
+OQGConsole4_LDADD = \
 	$(QT_LDFLAGS) \
 	$(QT_LIBS) \
 	../../../odbcinst/libodbcinst.la \
@@ -21,14 +19,14 @@ odbcqg4_LDADD = \
 	../../QtCore4/Library/libodbc_OQ.la \
 	../Library/libodbcqg4.la
 
-odbcqg4_DEPENDANCIES = \
+OQGConsole4_DEPENDANCIES = \
 	../../../odbcinst/libodbcinst.la \
 	../../../DriverManager/libodbc.la \
 	../../CPP/Library/libodbc_CPP.la \
 	../../QtCore4/Library/libodbc_OQ.la \
 	../Library/libodbcqg4.la
 
-odbcqg4_SOURCES = \
+OQGConsole4_SOURCES = \
 	main.cpp \
 	odbcqg.cpp \
 	modbcqg.cpp
@@ -38,8 +36,6 @@ modbcqg.cpp: @srcdir@/odbcqg.h
 
 CLEANFILES = \
 	modbcqg.cpp
-
-endif
 
 EXTRA_DIST = \
 	odbcqg.h \

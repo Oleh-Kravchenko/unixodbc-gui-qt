@@ -5,15 +5,15 @@
  * \author  \sa AUTHORS file
  * \version 2
  * \date    2007
- * \license Copyright unixODBC Project 2003-2008, LGPL
+ * \license Copyright unixODBC-GUI-Qt Project 2003-2009, LGPL
  */
-#ifndef ODBCQGPROPERTY_h
-#define ODBCQGPROPERTY_h
+#ifndef OQGPROPERTY_h
+#define OQGPROPERTY_h
 
 //
 #include <QtGui>
 
-class ODBCQGProperty
+class OQGProperty
 {
 public:
 
@@ -26,9 +26,9 @@ public:
 		PromptCheck 
 	};
 
-    ODBCQGProperty();
-    ODBCQGProperty( PromptType nPromptType, const QString &stringName );
-    virtual ~ODBCQGProperty();
+    OQGProperty();
+    OQGProperty( PromptType nPromptType, const QString &stringName );
+    virtual ~OQGProperty();
 
     // SETTERS
     void setName( const QString &stringName ) { this->stringName = stringName; }

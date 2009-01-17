@@ -5,7 +5,7 @@
  * \author  \sa AUTHORS file
  * \version 2
  * \date    2007
- * \license Copyright unixODBC Project 2003-2008, LGPL
+ * \license Copyright unixODBC-GUI-Qt Project 2003-2009, LGPL
  */
 #include "odbcqg.h"
 
@@ -45,18 +45,18 @@ odbcqg::~odbcqg()
 
 void odbcqg::createHandles()
 {
-    pSystem         = new ODBCQGSystem();
+    pSystem         = new OQGSystem();
 //    connect( pSystem, SIGNAL(signalMessage(ODBCMessage)), this, SLOT(slotMessage(ODBCMessage)) );
 
-    pEnvironment    = new ODBCQGEnvironment( pSystem );
+    pEnvironment    = new OQGEnvironment( pSystem );
     connect( pEnvironment, SIGNAL(signalMessage(ODBCMessage)), this, SLOT(slotMessage(ODBCMessage)) );
 
-    pConnection     = new ODBCQGConnection( pEnvironment );
+    pConnection     = new OQGConnection( pEnvironment );
     connect( pConnection, SIGNAL(signalConnected()), this, SLOT(slotConnected()) );
     connect( pConnection, SIGNAL(signalDisconnected()), this, SLOT(slotDisconnected()) );
     
-    pStatement      = new ODBCQGStatement( pConnection );
-    connect( pStatement, SIGNAL(signalResults(ODBCQStatement*)), this, SLOT(slotResults(ODBCQStatement*)) );
+    pStatement      = new OQGStatement( pConnection );
+    connect( pStatement, SIGNAL(signalResults(OQStatement*)), this, SLOT(slotResults(OQStatement*)) );
 }
 
 void odbcqg::createActions()
@@ -150,14 +150,14 @@ void odbcqg::slotExecute()
     pStatement->slotExecute( ptexteditSQL->toPlainText() );
 }
 
-void odbcqg::slotResults( ODBCQStatement * ) 
+void odbcqg::slotResults( OQStatement * ) 
 {
     doResultGUIGrid();
 }
 
 void odbcqg::slotMessage( ODBCMessage Message ) 
 {
-    ptexteditMessages->append( ODBCQToQString( Message.getText() ) );
+    ptexteditMessages->append( OQToQString( Message.getText() ) );
 }
 
 void odbcqg::doResultGUIGrid()

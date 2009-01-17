@@ -7,32 +7,32 @@
  * \date    2007
  * \license Copyright unixODBC Project 2007-2008, LGPL
  */
-#ifndef ODBCQGPROPERTIESDIALOG_H
-#define ODBCQGPROPERTIESDIALOG_H
+#ifndef OQGPROPERTIESDIALOG_H
+#define OQGPROPERTIESDIALOG_H
 
 #include <QtGui>
 
-#include "ODBCQGProperty.h"
-#include "ODBCQGPropertiesModel.h"
+#include "OQGProperty.h"
+#include "OQGPropertiesModel.h"
 
-class ODBCQGPropertiesDelegate;
+class OQGPropertiesDelegate;
 
-class ODBCQGPropertiesDialog : public QDialog
+class OQGPropertiesDialog : public QDialog
 {
     Q_OBJECT
 public:
-    ODBCQGPropertiesDialog( QVector<ODBCQGProperty> vectorProperties, QWidget* pwidgetParent = NULL );
-    virtual ~ODBCQGPropertiesDialog();
+    OQGPropertiesDialog( QVector<OQGProperty> vectorProperties, QWidget* pwidgetParent = NULL );
+    virtual ~OQGPropertiesDialog();
 
-    QVector<ODBCQGProperty> getProperties() { return ppropertiesmodel->getProperties(); }
+    QVector<OQGProperty> getProperties() { return ppropertiesmodel->getProperties(); }
 
 protected:
     void loadState();
     void saveState();
 
 private:
-    ODBCQGPropertiesModel *      ppropertiesmodel;
-    ODBCQGPropertiesDelegate *   ppropertiesdelegate;
+    OQGPropertiesModel *      ppropertiesmodel;
+    OQGPropertiesDelegate *   ppropertiesdelegate;
 };
 
 #endif
