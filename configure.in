@@ -475,5 +475,9 @@ AC_OUTPUT( Makefile \
     ODBCCreateDataSourceQ4/Makefile \
     ODBCManageDataSourcesQ4/Makefile \
     ODBCTestQ4/Makefile \
+    Wrappers/Makefile \
+    Wrappers/QtCore4/Makefile \
+    Wrappers/QtCore4/Library/Makefile \
+    Wrappers/QtCore4/Application/Makefile \
     )
 
