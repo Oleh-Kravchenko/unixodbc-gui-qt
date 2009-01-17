@@ -1,70 +1,62 @@
-libodbcq4_la_LDFLAGS = \
+libodbc-OQ4_la_LDFLAGS = \
 	-version-info @LIB_VERSION@ \
 	-export-dynamic
 
-if QT4
-
-lib_LTLIBRARIES = libodbcq4.la 
+lib_LTLIBRARIES = libodbc-OQ4.la 
 
 INCLUDES = \
 	-I@top_srcdir@/include \
 	-I../include \
-	-I../../CPP/include \
 	$(QT_CXXFLAGS) \
 	-DTHEPREFIX=\"@prefix@\" \
 	-DSYSTEM_FILE_PATH=\"@sysconfdir@\" \
-	-DDEFLIB_PATH=\"@libdir@\" \
-	-DSHLIBEXT=\"@SHLIBEXT@\" \
-	$(LTDLINCL)
+	-DDEFLIB_PATH=\"@libdir@\"
 
-libodbcq4_la_LIBADD = \
+#	-DSHLIBEXT=\"@SHLIBEXT@\" \
+#	$(LTDLINCL)
+
+libodbc-OQ4_la_LIBADD = \
 	$(QT_LDFLAGS) \
 	$(QT_LIBS) \
-	../../../DriverManager/libodbc.la \
-	../../../odbcinst/libodbcinst.la  \
-	../../CPP/Library/libodbcplus.la 
+	-lodbc -lodbcinst \
+	-lodbc_CPP
 
-libodbcq4_la_DEPENDENCIES = \
-	../../../DriverManager/libodbc.la \
-	../../../odbcinst/libodbcinst.la \
-	../../CPP/Library/libodbcplus.la 
+libodbc-OQ4_la_DEPENDENCIES =
 
 CLEANFILES = \
-	mODBCQConnection.cpp \
-	mODBCQEnvironment.cpp \
-	mODBCQStatement.cpp \
-	mODBCQSystem.cpp
+	mOQConnection.cpp \
+	mOQEnvironment.cpp \
+	mOQStatement.cpp \
+	mOQSystem.cpp
 
-libodbcq4_la_SOURCES = \
-	ODBCQConnection.cpp \
-	ODBCQConsole.cpp \
-	ODBCQEnvironment.cpp \
-	ODBCQStatement.cpp \
-	ODBCQSystem.cpp \
-	mODBCQConnection.cpp \
-	mODBCQEnvironment.cpp \
-	mODBCQStatement.cpp \
-	mODBCQSystem.cpp
+libodbc-OQ4_la_SOURCES = \
+	OQConnection.cpp \
+	OQConsole.cpp \
+	OQEnvironment.cpp \
+	OQStatement.cpp \
+	OQSystem.cpp \
+	mOQConnection.cpp \
+	mOQEnvironment.cpp \
+	mOQStatement.cpp \
+	mOQSystem.cpp
 
-mODBCQConnection.cpp: @srcdir@/../include/ODBCQConnection.h
-	@MOC@ @srcdir@/../include/ODBCQConnection.h -o mODBCQConnection.cpp
+mOQConnection.cpp: @srcdir@/../include/OQConnection.h
+	@MOC@ @srcdir@/../include/OQConnection.h -o mOQConnection.cpp
 
-mODBCQEnvironment.cpp: @srcdir@/../include/ODBCQEnvironment.h
-	@MOC@ @srcdir@/../include/ODBCQEnvironment.h -o mODBCQEnvironment.cpp
+mOQEnvironment.cpp: @srcdir@/../include/OQEnvironment.h
+	@MOC@ @srcdir@/../include/OQEnvironment.h -o mOQEnvironment.cpp
 
-mODBCQStatement.cpp: @srcdir@/../include/ODBCQStatement.h
-	@MOC@ @srcdir@/../include/ODBCQStatement.h -o mODBCQStatement.cpp
+mOQStatement.cpp: @srcdir@/../include/OQStatement.h
+	@MOC@ @srcdir@/../include/OQStatement.h -o mOQStatement.cpp
 
-mODBCQSystem.cpp: @srcdir@/../include/ODBCQSystem.h
-	@MOC@ @srcdir@/../include/ODBCQSystem.h -o mODBCQSystem.cpp
-
-endif
+mOQSystem.cpp: @srcdir@/../include/OQSystem.h
+	@MOC@ @srcdir@/../include/OQSystem.h -o mOQSystem.cpp
 
 EXTRA_DIST = \
-	../include/ODBCQConnection.h \
-	../include/ODBCQConsole.h \
-	../include/ODBCQEnvironment.h \
-	../include/ODBCQStatement.h \
-	../include/ODBCQSystem.h
+	../include/OQConnection.h \
+	../include/OQConsole.h \
+	../include/OQEnvironment.h \
+	../include/OQStatement.h \
+	../include/OQSystem.h
 
 

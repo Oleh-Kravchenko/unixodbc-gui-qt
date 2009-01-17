@@ -14,7 +14,7 @@
 // qt
 #include <QtGui>
 
-// odbcplus
+// odbc_CPP
 #include <ODBCMessage.h>
 
 // odbcqg

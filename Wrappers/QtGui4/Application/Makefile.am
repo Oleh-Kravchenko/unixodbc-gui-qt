@@ -17,15 +17,15 @@ odbcqg4_LDADD = \
 	$(QT_LIBS) \
 	../../../odbcinst/libodbcinst.la \
 	../../../DriverManager/libodbc.la \
-	../../CPP/Library/libodbcplus.la \
-	../../QtCore4/Library/libodbcq4.la \
+	../../CPP/Library/libodbc_CPP.la \
+	../../QtCore4/Library/libodbc_OQ.la \
 	../Library/libodbcqg4.la
 
 odbcqg4_DEPENDANCIES = \
 	../../../odbcinst/libodbcinst.la \
 	../../../DriverManager/libodbc.la \
-	../../CPP/Library/libodbcplus.la \
-	../../QtCore4/Library/libodbcq4.la \
+	../../CPP/Library/libodbc_CPP.la \
+	../../QtCore4/Library/libodbc_OQ.la \
 	../Library/libodbcqg4.la
 
 odbcqg4_SOURCES = \

@@ -8,7 +8,7 @@ include( ../odbc.pri )
 
 INCLUDEPATH     += ../../Wrappers/CPP/include  ../../Wrappers/QtCore4/include
 
-LIBS += -L../../lib -lodbcplus -lodbcq4 -lodbcqg4
+LIBS += -L../../lib -lodbc_CPP -lodbc_OQ -lodbcqg4
 
 HEADERS		= \
 	DBrowser.h \

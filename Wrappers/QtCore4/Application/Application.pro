@@ -9,7 +9,7 @@ CONFIG          += console
 CONFIG          -= qt
 INCLUDEPATH     += ../include  ../../CPP/include
 
-LIBS += -L../../../lib -lodbcplus -lodbcq4
+LIBS += -L../../../lib -lodbc_CPP -lodbc_OQ
 
 HEADERS		=
 SOURCES 	= main.cpp

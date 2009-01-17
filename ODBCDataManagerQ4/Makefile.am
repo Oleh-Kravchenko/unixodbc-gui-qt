@@ -21,8 +21,8 @@ ODBCDataManagerQ4_LDADD =  \
 	../odbcinst/libodbcinst.la \
 	../extras/libodbcextraslc.la \
 	../DriverManager/libodbc.la \
-	../Wrappers/CPP/Library/libodbcplus.la \
-	../Wrappers/QtCore4/Library/libodbcq4.la \
+	../Wrappers/CPP/Library/libodbc_CPP.la \
+	../Wrappers/QtCore4/Library/libodbc_OQ.la \
 	../Wrappers/QtGui4/Library/libodbcqg4.la
 
 ODBCDataManagerQ4_DEPENDANCIES = \
@@ -31,8 +31,8 @@ ODBCDataManagerQ4_DEPENDANCIES = \
 	../odbcinst/libodbcinst.la \
 	../extras/libodbcextraslc.la \
 	../DriverManager/libodbc.la \
-	../Wrappers/CPP/Library/libodbcplus.la \
-	../Wrappers/QtCore4/Library/libodbcq4.la \
+	../Wrappers/CPP/Library/libodbc_CPP.la \
+	../Wrappers/QtCore4/Library/libodbc_OQ.la \
 	../Wrappers/QtGui4/Library/libodbcqg4.la
 
 CLEANFILES = \

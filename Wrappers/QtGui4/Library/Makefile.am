@@ -23,14 +23,14 @@ libodbcqg4_la_LIBADD = \
 	$(QT_LIBS) \
 	../../../DriverManager/libodbc.la \
 	../../../odbcinst/libodbcinst.la  \
-	../../CPP/Library/libodbcplus.la \
-	../../QtCore4/Library/libodbcq4.la 
+	../../CPP/Library/libodbc_CPP.la \
+	../../QtCore4/Library/libodbc_OQ.la 
 
 libodbcqg4_la_DEPENDENCIES = \
 	../../../DriverManager/libodbc.la \
 	../../../odbcinst/libodbcinst.la \
-	../../CPP/Library/libodbcplus.la \
-	../../QtCore4/Library/libodbcq4.la 
+	../../CPP/Library/libodbc_CPP.la \
+	../../QtCore4/Library/libodbc_OQ.la 
 
 CLEANFILES = \
 	mODBCQGConnection.cpp \

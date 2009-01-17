@@ -53,20 +53,10 @@
 			Name="Source Files"
 			Filters="*.c;*.C;*.cc;*.cpp;*.cp;*.cxx;*.prg;*.pas;*.dpr;*.asm;*.s;*.bas;*.java;*.cs;*.sc;*.e;*.cob;*.html;*.rc;*.tcl;*.py;*.pl">
 			<F N="Application/main.cpp"/>
-			<F N="Library/ODBCQConnection.cpp"/>
-			<F N="Library/ODBCQConsole.cpp"/>
-			<F N="Library/ODBCQEnvironment.cpp"/>
-			<F N="Library/ODBCQStatement.cpp"/>
-			<F N="Library/ODBCQSystem.cpp"/>
 		</Folder>
 		<Folder
 			Name="Header Files"
 			Filters="*.h;*.H;*.hh;*.hpp;*.hxx;*.inc;*.sh;*.cpy;*.if">
-			<F N="include/ODBCQConnection.h"/>
-			<F N="include/ODBCQConsole.h"/>
-			<F N="include/ODBCQEnvironment.h"/>
-			<F N="include/ODBCQStatement.h"/>
-			<F N="include/ODBCQSystem.h"/>
 		</Folder>
 		<Folder
 			Name="Resource Files"

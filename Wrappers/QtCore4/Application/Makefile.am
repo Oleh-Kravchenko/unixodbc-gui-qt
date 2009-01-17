@@ -1,34 +1,26 @@
-if QT4
-
-bin_PROGRAMS = ODBCQConsole
+bin_PROGRAMS = OQConsole
 
 INCLUDES = \
 	-I@top_srcdir@/include \
 	$(QT_CXXFLAGS) \
 	-I../include \
-	-I../../CPP/include \
 	-DSYSTEM_FILE_PATH=\"@sysconfdir@\" \
-	-DDEFLIB_PATH=\"@libdir@\" \
-	$(LTDLINCL)
+	-DDEFLIB_PATH=\"@libdir@\"
 
-ODBCQConsole_LDADD =  \
+#	$(LTDLINCL)
+
+OQConsole_LDADD =  \
 	$(QT_LDFLAGS) \
 	$(QT_LIBS) \
-	../../../odbcinst/libodbcinst.la \
-	../../../DriverManager/libodbc.la \
-	../../CPP/Library/libodbcplus.la \
-	../Library/libodbcq4.la
+	-lodbc -lodbcinst \
+	-lodbc_CPP \
+	../Library/libodbc_OQ.la
 
-ODBCQConsole_DEPENDANCIES = 
-	../../../odbcinst/libodbcinst.la \
-	../../../DriverManager/libodbc.la \
-	../../CPP/Library/libodbcplus.la \
-	../Library/libodbcq4.la
+OQConsole_DEPENDANCIES = \
+	../Library/libodbc_OQ.la
 
-ODBCQConsole_SOURCES = \
+OQConsole_SOURCES = \
 	main.cpp
-
-endif
 
 
 

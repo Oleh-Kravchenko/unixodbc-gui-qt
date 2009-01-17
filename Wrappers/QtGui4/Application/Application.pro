@@ -8,7 +8,7 @@ include( ../../../odbc.pri )
 
 INCLUDEPATH     += ../include  ../../CPP/include  ../../QtCore4/include
 
-LIBS += -L../../../lib -lodbcqg4  -lodbcq4 -lodbcplus 
+LIBS += -L../../../lib -lodbcqg4  -lodbc_OQ -lodbc_CPP 
 
 HEADERS		= \
                 odbcqg.h
