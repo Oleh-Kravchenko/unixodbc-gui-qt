@@ -1,8 +1,8 @@
-libodbc-OQ4_la_LDFLAGS = \
+libodbc_OQ4_la_LDFLAGS = \
 	-version-info @LIB_VERSION@ \
 	-export-dynamic
 
-lib_LTLIBRARIES = libodbc-OQ4.la 
+lib_LTLIBRARIES = libodbc_OQ4.la 
 
 INCLUDES = \
 	-I@top_srcdir@/include \
@@ -15,13 +15,13 @@ INCLUDES = \
 #	-DSHLIBEXT=\"@SHLIBEXT@\" \
 #	$(LTDLINCL)
 
-libodbc-OQ4_la_LIBADD = \
+libodbc_OQ4_la_LIBADD = \
 	$(QT_LDFLAGS) \
 	$(QT_LIBS) \
 	-lodbc -lodbcinst \
 	-lodbc_CPP
 
-libodbc-OQ4_la_DEPENDENCIES =
+libodbc_OQ4_la_DEPENDENCIES =
 
 CLEANFILES = \
 	mOQConnection.cpp \
@@ -29,7 +29,7 @@ CLEANFILES = \
 	mOQStatement.cpp \
 	mOQSystem.cpp
 
-libodbc-OQ4_la_SOURCES = \
+libodbc_OQ4_la_SOURCES = \
 	OQConnection.cpp \
 	OQConsole.cpp \
 	OQEnvironment.cpp \
@@ -52,11 +52,5 @@ mOQStatement.cpp: @srcdir@/../include/OQStatement.h
 mOQSystem.cpp: @srcdir@/../include/OQSystem.h
 	@MOC@ @srcdir@/../include/OQSystem.h -o mOQSystem.cpp
 
-EXTRA_DIST = \
-	../include/OQConnection.h \
-	../include/OQConsole.h \
-	../include/OQEnvironment.h \
-	../include/OQStatement.h \
-	../include/OQSystem.h
 
 

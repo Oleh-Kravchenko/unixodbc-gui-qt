@@ -7,8 +7,8 @@
  * \date    2007
  * \license Copyright unixODBC Project 2003-2008, LGPL
  */
-#ifndef ODBCQSTATEMENT_H
-#define ODBCQSTATEMENT_H
+#ifndef OQSTATEMENT_H
+#define OQSTATEMENT_H
 
 // libqt
 #include <QtCore>
@@ -17,12 +17,12 @@
 #include <ODBCStatement.h>
 #include <ODBCDiagnostic.h>
 
-class ODBCQConnection;
+class OQConnection;
 
-class ODBCQFilter : public QString
+class OQFilter : public QString
 {
 public:
-    ODBCQFilter( const QString &string )
+    OQFilter( const QString &string )
         : QString( string )
     {
     }
@@ -30,7 +30,7 @@ public:
 };
 
 /*! 
- * \class   ODBCQStatement
+ * \class   OQStatement
  * \brief   An ODBC statement.
  *
  *          This class extends ODBCStatement by providing a more Qt friendly interface. For
@@ -42,12 +42,12 @@ public:
  *          \li use of Qt threads 
  * 
  */
-class ODBCQStatement : public QObject, public ODBCStatement
+class OQStatement : public QObject, public ODBCStatement
 {
     Q_OBJECT
 public:
-    ODBCQStatement( ODBCQConnection *pconnection );
-    virtual ~ODBCQStatement();
+    OQStatement( OQConnection *pconnection );
+    virtual ~OQStatement();
 
     // SETTERS
 
@@ -81,17 +81,17 @@ public:
     virtual SQLRETURN doProcedureColumns( const QString &stringCatalogName, const QString &stringSchemaName = QString::null, const QString &stringProcName = QString::null, const QString &stringColumnName = QString::null );
 
     // to support a filter string
-    virtual SQLRETURN doTables( const ODBCQFilter &stringFilter, const QString &stringTableType = QString::null );
-    virtual SQLRETURN doColumns( const ODBCQFilter &stringFilter );
-    virtual SQLRETURN doStatistics( const ODBCQFilter &stringFilter, SQLUSMALLINT nUnique = SQL_INDEX_ALL, SQLUSMALLINT nReserved = SQL_QUICK );
-    virtual SQLRETURN doSpecialColumns( const ODBCQFilter &stringFilter, SQLSMALLINT nIdentifierType = SQL_BEST_ROWID, SQLSMALLINT nScope = SQL_SCOPE_CURROW, SQLSMALLINT nNullable = SQL_NULLABLE );
-    virtual SQLRETURN doPrimaryKeys( const ODBCQFilter &stringFilter );
-    virtual SQLRETURN doForeignKeys( const ODBCQFilter &stringFilter );
-    virtual SQLRETURN doProcedures( const ODBCQFilter &stringFilter );
-    virtual SQLRETURN doProcedureColumns( const ODBCQFilter &stringFilter );
+    virtual SQLRETURN doTables( const OQFilter &stringFilter, const QString &stringTableType = QString::null );
+    virtual SQLRETURN doColumns( const OQFilter &stringFilter );
+    virtual SQLRETURN doStatistics( const OQFilter &stringFilter, SQLUSMALLINT nUnique = SQL_INDEX_ALL, SQLUSMALLINT nReserved = SQL_QUICK );
+    virtual SQLRETURN doSpecialColumns( const OQFilter &stringFilter, SQLSMALLINT nIdentifierType = SQL_BEST_ROWID, SQLSMALLINT nScope = SQL_SCOPE_CURROW, SQLSMALLINT nNullable = SQL_NULLABLE );
+    virtual SQLRETURN doPrimaryKeys( const OQFilter &stringFilter );
+    virtual SQLRETURN doForeignKeys( const OQFilter &stringFilter );
+    virtual SQLRETURN doProcedures( const OQFilter &stringFilter );
+    virtual SQLRETURN doProcedureColumns( const OQFilter &stringFilter );
 
     //
-    static void getParsedFilter( const ODBCQFilter &stringFilter, QString *pstringCatalog, QString *pstringSchema, QString *pstringObject );
+    static void getParsedFilter( const OQFilter &stringFilter, QString *pstringCatalog, QString *pstringSchema, QString *pstringObject );
 
     // DOERS
     virtual bool doWaiting();
@@ -100,7 +100,7 @@ signals:
     void signalMessage( ODBCMessage Message );
     void signalDiagnostic( ODBCDiagnostic Diagnostic );
     void signalElapsedSeconds( double nElapsedSeconds );
-    void signalResults( ODBCQStatement *pstatement );
+    void signalResults( OQStatement *pstatement );
 
 public slots:
     SQLRETURN slotExecute( const QString &stringSQL );

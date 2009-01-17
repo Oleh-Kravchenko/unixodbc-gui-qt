@@ -53,10 +53,20 @@
 			Name="Source Files"
 			Filters="*.c;*.C;*.cc;*.cpp;*.cp;*.cxx;*.prg;*.pas;*.dpr;*.asm;*.s;*.bas;*.java;*.cs;*.sc;*.e;*.cob;*.html;*.rc;*.tcl;*.py;*.pl">
 			<F N="Application/main.cpp"/>
+			<F N="Library/OQConnection.cpp"/>
+			<F N="Library/OQConsole.cpp"/>
+			<F N="Library/OQEnvironment.cpp"/>
+			<F N="Library/OQStatement.cpp"/>
+			<F N="Library/OQSystem.cpp"/>
 		</Folder>
 		<Folder
 			Name="Header Files"
 			Filters="*.h;*.H;*.hh;*.hpp;*.hxx;*.inc;*.sh;*.cpy;*.if">
+			<F N="include/OQConnection.h"/>
+			<F N="include/OQConsole.h"/>
+			<F N="include/OQEnvironment.h"/>
+			<F N="include/OQStatement.h"/>
+			<F N="include/OQSystem.h"/>
 		</Folder>
 		<Folder
 			Name="Resource Files"
@@ -71,6 +81,7 @@
 			<F N="Library/Library.pro"/>
 			<F N="Makefile.am"/>
 			<F N="Application/Makefile.am"/>
+			<F N="include/Makefile.am"/>
 			<F N="Library/Makefile.am"/>
 			<F N="QtCore4.pro"/>
 		</Folder>

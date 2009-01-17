@@ -14,10 +14,10 @@ OQConsole_LDADD =  \
 	$(QT_LIBS) \
 	-lodbc -lodbcinst \
 	-lodbc_CPP \
-	../Library/libodbc_OQ.la
+	../Library/libodbc_OQ4.la
 
 OQConsole_DEPENDANCIES = \
-	../Library/libodbc_OQ.la
+	../Library/libodbc_OQ4.la
 
 OQConsole_SOURCES = \
 	main.cpp

@@ -7,8 +7,8 @@
  * \date    2007
  * \license Copyright unixODBC Project 2003-2008, LGPL
  */
-#ifndef ODBCQENVIRONMENT_H
-#define ODBCQENVIRONMENT_H
+#ifndef OQENVIRONMENT_H
+#define OQENVIRONMENT_H
 
 // libqt
 #include <QtCore>
@@ -18,10 +18,10 @@
 #include <ODBCDiagnostic.h>
 
 //
-#include "ODBCQSystem.h"
+#include "OQSystem.h"
 
 /*! 
- * \class   ODBCQEnvironment
+ * \class   OQEnvironment
  * \brief   An ODBC environment.
  *
  *          This class extends ODBCEnvironment by providing a more Qt friendly interface. For
@@ -32,12 +32,12 @@
  *          \li inherits QObject to assist in parent/child relationships using rtti and using signals/slots
  * 
  */
-class ODBCQEnvironment : public QObject, public ODBCEnvironment
+class OQEnvironment : public QObject, public ODBCEnvironment
 {
     Q_OBJECT
 public:
-    ODBCQEnvironment( ODBCQSystem *pSystem );
-    virtual ~ODBCQEnvironment();
+    OQEnvironment( OQSystem *pSystem );
+    virtual ~OQEnvironment();
 
     virtual QStringList getDrivers( SQLRETURN *pnReturn = NULL );
     virtual QStringList getDataSources( bool bUser = true, bool bSystem = true, SQLRETURN *pnReturn = NULL );

@@ -1,5 +1,5 @@
 TEMPLATE         = app 
-TARGET           = ODBCQConsole
+TARGET           = OQConsole
 DESTDIR          = ../../../bin
 include( ../../../common.pri )
 include( ../../../config.pri )

@@ -7,8 +7,8 @@
  * \date    2007
  * \license Copyright unixODBC Project 2003-2008, LGPL
  */
-#ifndef ODBCQSYSTEM_H
-#define ODBCQSYSTEM_H
+#ifndef OQSYSTEM_H
+#define OQSYSTEM_H
 
 // libqt
 #include <QtCore>
@@ -18,28 +18,28 @@
 #include <ODBCDiagnostic.h>
 
 /*! 
- *  \def    ODBCQToQString
+ *  \def    OQToQString
  *  \brief  This macro is used wherever we need to create a QString from a SQLTCHAR.
  *  
  *          The string data is copied.
  */
 /*! 
- *  \def    ODBCQFromQString
+ *  \def    OQFromQString
  *  \brief  This macro is used wherever we need to get a reference to a QString's data.
  *  
  *          The string data is not copied so the reference is only valid as long as the
  *          QString is not modified. The string data must not be altered.
  */
 #ifdef UNICODE
-    #define ODBCQToQString( a ) QString::fromWCharArray( (SQLWCHAR*)a )
-    #define ODBCQFromQString( a ) (SQLWCHAR*)a.unicode()
+    #define OQToQString( a ) QString::fromWCharArray( (SQLWCHAR*)a )
+    #define OQFromQString( a ) (SQLWCHAR*)a.unicode()
 #else
-    #define ODBCQToQString( a ) QString::fromLocal8Bit( (const char*)a )
-    #define ODBCQFromQString( a )(SQLCHAR*)a.toLatin1().constData()
+    #define OQToQString( a ) QString::fromLocal8Bit( (const char*)a )
+    #define OQFromQString( a )(SQLCHAR*)a.toLatin1().constData()
 #endif
 
 /*! 
- * \class   ODBCQSystem
+ * \class   OQSystem
  * \brief   An ODBC system.
  *
  *          This class extends ODBCSystem by providing a more Qt friendly interface. For
@@ -50,12 +50,12 @@
  *          \li inherits QObject to assist in parent/child relationships using rtti and using signals/slots
  * 
  */
-class ODBCQSystem : public QObject, public ODBCSystem
+class OQSystem : public QObject, public ODBCSystem
 {
     Q_OBJECT
 public:
-    explicit ODBCQSystem();
-    virtual ~ODBCQSystem();
+    explicit OQSystem();
+    virtual ~OQSystem();
 
     virtual SQLRETURN setDriverAttribute( const QString &stringDriver, const QString &stringKey, const QString &stringValue );
 

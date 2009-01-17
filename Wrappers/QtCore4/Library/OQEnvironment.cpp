@@ -7,23 +7,23 @@
  * \date    2007
  * \license Copyright unixODBC Project 2003-2008, LGPL
  */
-#include "ODBCQEnvironment.h"
+#include "OQEnvironment.h"
 
-ODBCQEnvironment::ODBCQEnvironment( ODBCQSystem *pSystem )
+OQEnvironment::OQEnvironment( OQSystem *pSystem )
     : QObject( pSystem ), ODBCEnvironment()
 {
-    setObjectName( "ODBCQEnvironment" );
+    setObjectName( "OQEnvironment" );
 
     // echo up the object hierarchy
     connect( this, SIGNAL(signalMessage(ODBCMessage Message)), pSystem, SIGNAL(signalMessage(ODBCMessage Message)) );
     connect( this, SIGNAL(signalDiagnostic(ODBCDiagnostic Diagnostic)), pSystem, SIGNAL(signalDiagnostic(ODBCDiagnostic Diagnostic)) );
 }
 
-ODBCQEnvironment::~ODBCQEnvironment()
+OQEnvironment::~OQEnvironment()
 {
 }
 
-QStringList ODBCQEnvironment::getDrivers( SQLRETURN *pnReturn )
+QStringList OQEnvironment::getDrivers( SQLRETURN *pnReturn )
 {
     QStringList     stringlistDrivers;
     SQLRETURN       nReturn;
@@ -35,7 +35,7 @@ QStringList ODBCQEnvironment::getDrivers( SQLRETURN *pnReturn )
     nReturn = ODBCEnvironment::doDrivers( SQL_FETCH_FIRST, szDRV, sizeof(szDRV) - 1, &nLength1, szAttribute, sizeof(szAttribute) - 1, &nLength2 );
     while ( SQL_SUCCEEDED( nReturn ) )
     {
-        stringlistDrivers.append( ODBCQToQString( szDRV ) );
+        stringlistDrivers.append( OQToQString( szDRV ) );
         nReturn = ODBCEnvironment::doDrivers( SQL_FETCH_NEXT, szDRV, sizeof(szDRV) - 1, &nLength1, szAttribute, sizeof(szAttribute) - 1, &nLength2 );
     }
 
@@ -48,7 +48,7 @@ QStringList ODBCQEnvironment::getDrivers( SQLRETURN *pnReturn )
 /*!
     Qt friendly way to get a list of DSN's. 
 */
-QStringList ODBCQEnvironment::getDataSources( bool bUser, bool bSystem, SQLRETURN *pnReturn )
+QStringList OQEnvironment::getDataSources( bool bUser, bool bSystem, SQLRETURN *pnReturn )
 {
     QStringList     stringlistDataSources;
     SQLRETURN       nReturn;
@@ -70,7 +70,7 @@ QStringList ODBCQEnvironment::getDataSources( bool bUser, bool bSystem, SQLRETUR
         nReturn = ODBCEnvironment::doDataSources( nDirection, szDSN, sizeof(szDSN) - 1, &nLength1, szDescription, sizeof(szDescription) - 1, &nLength2 );
         while ( SQL_SUCCEEDED( nReturn ) )
         {
-            stringlistDataSources += ODBCQToQString(szDSN);
+            stringlistDataSources += OQToQString(szDSN);
             nReturn = ODBCEnvironment::doDataSources( SQL_FETCH_NEXT, szDSN, sizeof(szDSN) - 1, &nLength1, szDescription, sizeof(szDescription) - 1, &nLength2 );
         }
     }
@@ -83,12 +83,12 @@ QStringList ODBCQEnvironment::getDataSources( bool bUser, bool bSystem, SQLRETUR
     return stringlistDataSources;
 }
 
-void ODBCQEnvironment::eventMessage( ODBCMessage Message )
+void OQEnvironment::eventMessage( ODBCMessage Message )
 {
     emit signalMessage( Message );
 }
 
-void ODBCQEnvironment::eventDiagnostic()
+void OQEnvironment::eventDiagnostic()
 {
     emit signalDiagnostic( ODBCDiagnostic( this ) );
 }

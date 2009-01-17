@@ -7,14 +7,14 @@
  * \date    2007
  * \license Copyright unixODBC Project 2003-2008, LGPL
  */
-#include "ODBCQEnvironment.h"
-#include "ODBCQConnection.h"
-#include "ODBCQStatement.h"
+#include "OQEnvironment.h"
+#include "OQConnection.h"
+#include "OQStatement.h"
 
-ODBCQConnection::ODBCQConnection( ODBCQEnvironment *penvironment )
+OQConnection::OQConnection( OQEnvironment *penvironment )
     : QObject( 0 ), ODBCConnection( penvironment )
 {
-    setObjectName( "ODBCQConnection" );
+    setObjectName( "OQConnection" );
 
     bPromptDriver           = true;
     bPromptDataSourceName   = true;
@@ -26,7 +26,7 @@ ODBCQConnection::ODBCQConnection( ODBCQEnvironment *penvironment )
     connect( this, SIGNAL(signalDiagnostic(ODBCDiagnostic Diagnostic)), penvironment, SIGNAL(signalDiagnostic(ODBCDiagnostic Diagnostic)) );
 }
 
-ODBCQConnection::~ODBCQConnection()
+OQConnection::~OQConnection()
 {
 }
 
@@ -34,11 +34,11 @@ ODBCQConnection::~ODBCQConnection()
     getExecute
     
     Creates a result set (or NULL if there was an error).
-    See ODBCQStatement::getTables.
+    See OQStatement::getTables.
 */
-ODBCQStatement *ODBCQConnection::getExecute( const QString &stringSQL )
+OQStatement *OQConnection::getExecute( const QString &stringSQL )
 {
-    ODBCQStatement *    pStatement = 0;
+    OQStatement *    pStatement = 0;
     SQLRETURN           nReturn;
 
     if ( !isConnected() )
@@ -47,7 +47,7 @@ ODBCQStatement *ODBCQConnection::getExecute( const QString &stringSQL )
         return 0;
     }
 
-    pStatement = new ODBCQStatement( this );
+    pStatement = new OQStatement( this );
     nReturn = pStatement->slotExecute( stringSQL );
     if ( !SQL_SUCCEEDED( nReturn ) )
     {
@@ -62,11 +62,11 @@ ODBCQStatement *ODBCQConnection::getExecute( const QString &stringSQL )
     getCatalogs
         
     Creates a result set (or NULL if there was an error).
-    See ODBCQStatement::getTables.
+    See OQStatement::getTables.
 */
-ODBCQStatement *ODBCQConnection::getCatalogs()
+OQStatement *OQConnection::getCatalogs()
 {
-    ODBCQStatement *    pStatement = 0;
+    OQStatement *    pStatement = 0;
     SQLRETURN           nReturn;
 
     if ( !isConnected() )
@@ -75,7 +75,7 @@ ODBCQStatement *ODBCQConnection::getCatalogs()
         return 0;
     }
 
-    pStatement = new ODBCQStatement( this );
+    pStatement = new OQStatement( this );
     nReturn = pStatement->doTables( SQL_ALL_CATALOGS, QString::null, QString::null );
     if ( !SQL_SUCCEEDED( nReturn ) )
     {
@@ -90,11 +90,11 @@ ODBCQStatement *ODBCQConnection::getCatalogs()
     getSchemas
         
     Creates a result set (or NULL if there was an error).
-    See ODBCQStatement::getTables.
+    See OQStatement::getTables.
 */
-ODBCQStatement *ODBCQConnection::getSchemas( const QString &stringCatalog )
+OQStatement *OQConnection::getSchemas( const QString &stringCatalog )
 {
-    ODBCQStatement *   pStatement = 0;
+    OQStatement *   pStatement = 0;
     SQLRETURN           nReturn;
 
     if ( !isConnected() )
@@ -103,7 +103,7 @@ ODBCQStatement *ODBCQConnection::getSchemas( const QString &stringCatalog )
         return 0;
     }
 
-    pStatement = new ODBCQStatement( this );
+    pStatement = new OQStatement( this );
     nReturn = pStatement->doTables( stringCatalog, SQL_ALL_SCHEMAS, QString::null );
     if ( !SQL_SUCCEEDED( nReturn ) )
     {
@@ -118,11 +118,11 @@ ODBCQStatement *ODBCQConnection::getSchemas( const QString &stringCatalog )
     getTables
         
     Creates a result set (or NULL if there was an error).
-    See ODBCQStatement::getTables.
+    See OQStatement::getTables.
 */
-ODBCQStatement *ODBCQConnection::getTables( const QString &stringSchema, const QString &stringCatalog, const QString &stringType )
+OQStatement *OQConnection::getTables( const QString &stringSchema, const QString &stringCatalog, const QString &stringType )
 {
-    ODBCQStatement *   pStatement = 0;
+    OQStatement *   pStatement = 0;
     SQLRETURN           nReturn;
 
     if ( !isConnected() )
@@ -131,7 +131,7 @@ ODBCQStatement *ODBCQConnection::getTables( const QString &stringSchema, const Q
         return 0;
     }
 
-    pStatement = new ODBCQStatement( this );
+    pStatement = new OQStatement( this );
     nReturn = pStatement->doTables( stringCatalog, stringSchema, SQL_ALL_SCHEMAS, stringType );
     if ( !SQL_SUCCEEDED( nReturn ) )
     {
@@ -146,11 +146,11 @@ ODBCQStatement *ODBCQConnection::getTables( const QString &stringSchema, const Q
     getViews
         
     Creates a result set (or NULL if there was an error).
-    See ODBCQStatement::getTables.
+    See OQStatement::getTables.
 */
-ODBCQStatement *ODBCQConnection::getViews( const QString &stringSchema, const QString &stringCatalog, const QString &stringType )
+OQStatement *OQConnection::getViews( const QString &stringSchema, const QString &stringCatalog, const QString &stringType )
 {
-    ODBCQStatement *   pStatement = 0;
+    OQStatement *   pStatement = 0;
     SQLRETURN           nReturn;
 
     if ( !isConnected() )
@@ -159,7 +159,7 @@ ODBCQStatement *ODBCQConnection::getViews( const QString &stringSchema, const QS
         return 0;
     }
 
-    pStatement = new ODBCQStatement( this );
+    pStatement = new OQStatement( this );
     nReturn = pStatement->doTables( stringCatalog, stringSchema, SQL_ALL_SCHEMAS, stringType );
     if ( !SQL_SUCCEEDED( nReturn ) )
     {
@@ -174,11 +174,11 @@ ODBCQStatement *ODBCQConnection::getViews( const QString &stringSchema, const QS
     getColumns
         
     Creates a result set (or NULL if there was an error).
-    See ODBCQStatement::getColumns.
+    See OQStatement::getColumns.
 */
-ODBCQStatement *ODBCQConnection::getColumns( const QString &stringTable, const QString &stringSchema, const QString &stringCatalog, const QString &stringType )
+OQStatement *OQConnection::getColumns( const QString &stringTable, const QString &stringSchema, const QString &stringCatalog, const QString &stringType )
 {
-    ODBCQStatement *   pStatement = 0;
+    OQStatement *   pStatement = 0;
     SQLRETURN           nReturn;
 
     if ( !isConnected() )
@@ -187,7 +187,7 @@ ODBCQStatement *ODBCQConnection::getColumns( const QString &stringTable, const Q
         return 0;
     }
 
-    pStatement = new ODBCQStatement( this );
+    pStatement = new OQStatement( this );
     nReturn = pStatement->doColumns( stringCatalog, stringSchema, stringTable, stringType );
     if ( !SQL_SUCCEEDED( nReturn ) )
     {
@@ -202,11 +202,11 @@ ODBCQStatement *ODBCQConnection::getColumns( const QString &stringTable, const Q
     getIndexs
         
     Creates a result set (or NULL if there was an error).
-    See ODBCQStatement::getStatistics.
+    See OQStatement::getStatistics.
 */
-ODBCQStatement *ODBCQConnection::getIndexs( const QString &stringTable, const QString &stringSchema, const QString &stringCatalog )
+OQStatement *OQConnection::getIndexs( const QString &stringTable, const QString &stringSchema, const QString &stringCatalog )
 {
-    ODBCQStatement *   pStatement = 0;
+    OQStatement *   pStatement = 0;
     SQLRETURN           nReturn;
 
     if ( !isConnected() )
@@ -215,7 +215,7 @@ ODBCQStatement *ODBCQConnection::getIndexs( const QString &stringTable, const QS
         return 0;
     }
 
-    pStatement = new ODBCQStatement( this );
+    pStatement = new OQStatement( this );
     nReturn = pStatement->doStatistics( stringCatalog, stringSchema, stringTable );
     if ( !SQL_SUCCEEDED( nReturn ) )
     {
@@ -230,11 +230,11 @@ ODBCQStatement *ODBCQConnection::getIndexs( const QString &stringTable, const QS
     getPrimaryKey
         
     Creates a result set (or NULL if there was an error).
-    See ODBCQStatement::getPrimaryKey.
+    See OQStatement::getPrimaryKey.
 */
-ODBCQStatement *ODBCQConnection::getPrimaryKeys( const QString &stringTable, const QString &stringSchema, const QString &stringCatalog )
+OQStatement *OQConnection::getPrimaryKeys( const QString &stringTable, const QString &stringSchema, const QString &stringCatalog )
 {
-    ODBCQStatement *   pStatement = 0;
+    OQStatement *   pStatement = 0;
     SQLRETURN           nReturn;
 
     if ( !isConnected() )
@@ -243,7 +243,7 @@ ODBCQStatement *ODBCQConnection::getPrimaryKeys( const QString &stringTable, con
         return 0;
     }
 
-    pStatement = new ODBCQStatement( this );
+    pStatement = new OQStatement( this );
     nReturn = pStatement->doPrimaryKeys( stringCatalog, stringSchema, stringTable );
     if ( !SQL_SUCCEEDED( nReturn ) )
     {
@@ -258,11 +258,11 @@ ODBCQStatement *ODBCQConnection::getPrimaryKeys( const QString &stringTable, con
     getForeignKeys
         
     Creates a result set (or NULL if there was an error).
-    See ODBCQStatement::getForeignKeys.
+    See OQStatement::getForeignKeys.
 */
-ODBCQStatement *ODBCQConnection::getForeignKeys( const QString &stringTable, const QString &stringSchema, const QString &stringCatalog )
+OQStatement *OQConnection::getForeignKeys( const QString &stringTable, const QString &stringSchema, const QString &stringCatalog )
 {
-    ODBCQStatement *   pStatement = 0;
+    OQStatement *   pStatement = 0;
     SQLRETURN           nReturn;
 
     if ( !isConnected() )
@@ -271,7 +271,7 @@ ODBCQStatement *ODBCQConnection::getForeignKeys( const QString &stringTable, con
         return 0;
     }
 
-    pStatement = new ODBCQStatement( this );
+    pStatement = new OQStatement( this );
     nReturn = pStatement->doForeignKeys( stringCatalog, stringSchema, stringTable );
     if ( !SQL_SUCCEEDED( nReturn ) )
     {
@@ -286,11 +286,11 @@ ODBCQStatement *ODBCQConnection::getForeignKeys( const QString &stringTable, con
     getSpecialColumns
         
     Creates a result set (or NULL if there was an error).
-    See ODBCQStatement::getSpecialColumns.
+    See OQStatement::getSpecialColumns.
 */
-ODBCQStatement *ODBCQConnection::getSpecialColumns( const QString &stringTable, const QString &stringSchema, const QString &stringCatalog )
+OQStatement *OQConnection::getSpecialColumns( const QString &stringTable, const QString &stringSchema, const QString &stringCatalog )
 {
-    ODBCQStatement *   pStatement = 0;
+    OQStatement *   pStatement = 0;
     SQLRETURN           nReturn;
 
     if ( !isConnected() )
@@ -299,7 +299,7 @@ ODBCQStatement *ODBCQConnection::getSpecialColumns( const QString &stringTable, 
         return 0;
     }
 
-    pStatement = new ODBCQStatement( this );
+    pStatement = new OQStatement( this );
     nReturn = pStatement->doSpecialColumns( SQL_BEST_ROWID, stringCatalog, stringSchema, stringTable );
     if ( !SQL_SUCCEEDED( nReturn ) )
     {
@@ -314,11 +314,11 @@ ODBCQStatement *ODBCQConnection::getSpecialColumns( const QString &stringTable, 
     getProcedures
         
     Creates a result set (or NULL if there was an error).
-    See ODBCQStatement::getProcedures.
+    See OQStatement::getProcedures.
 */
-ODBCQStatement *ODBCQConnection::getProcedures( const QString &stringSchema, const QString &stringCatalog )
+OQStatement *OQConnection::getProcedures( const QString &stringSchema, const QString &stringCatalog )
 {
-    ODBCQStatement *   pStatement = 0;
+    OQStatement *   pStatement = 0;
     SQLRETURN           nReturn;
 
     if ( !isConnected() )
@@ -327,7 +327,7 @@ ODBCQStatement *ODBCQConnection::getProcedures( const QString &stringSchema, con
         return 0;
     }
 
-    pStatement = new ODBCQStatement( this );
+    pStatement = new OQStatement( this );
     nReturn = pStatement->doProcedures( stringCatalog, stringSchema );
     if ( !SQL_SUCCEEDED( nReturn ) )
     {
@@ -342,11 +342,11 @@ ODBCQStatement *ODBCQConnection::getProcedures( const QString &stringSchema, con
     getProcedureColumns
         
     Creates a result set (or NULL if there was an error).
-    See ODBCQStatement::getProcedureColumns.
+    See OQStatement::getProcedureColumns.
 */
-ODBCQStatement *ODBCQConnection::getProcedureColumns( const QString &stringProcedure, const QString &stringSchema, const QString &stringCatalog )
+OQStatement *OQConnection::getProcedureColumns( const QString &stringProcedure, const QString &stringSchema, const QString &stringCatalog )
 {
-    ODBCQStatement *   pStatement = 0;
+    OQStatement *   pStatement = 0;
     SQLRETURN           nReturn;
 
     if ( !isConnected() )
@@ -355,7 +355,7 @@ ODBCQStatement *ODBCQConnection::getProcedureColumns( const QString &stringProce
         return 0;
     }
 
-    pStatement = new ODBCQStatement( this );
+    pStatement = new OQStatement( this );
     nReturn = pStatement->doProcedureColumns( stringCatalog, stringSchema, stringProcedure );
     if ( !SQL_SUCCEEDED( nReturn ) )
     {
@@ -372,9 +372,9 @@ ODBCQStatement *ODBCQConnection::getProcedureColumns( const QString &stringProce
     Creates a result set (or NULL if there was an error).
     See ODBCStatement::getypeInfo.
 */
-ODBCQStatement *ODBCQConnection::getDataTypes()
+OQStatement *OQConnection::getDataTypes()
 {
-    ODBCQStatement *   pStatement = 0;
+    OQStatement *   pStatement = 0;
     SQLRETURN           nReturn;
 
     if ( !isConnected() )
@@ -383,7 +383,7 @@ ODBCQStatement *ODBCQConnection::getDataTypes()
         return 0;
     }
 
-    pStatement = new ODBCQStatement( this );
+    pStatement = new OQStatement( this );
     nReturn = pStatement->doTypeInfo();
     if ( !SQL_SUCCEEDED( nReturn ) )
     {
@@ -400,15 +400,15 @@ ODBCQStatement *ODBCQConnection::getDataTypes()
     This replaces ODBCConnection::doConnect but does the same thing. This
     method also emits signalConnected() if things worked out.
 */
-SQLRETURN ODBCQConnection::doConnect( ODBCCHAR *pszServerName, SQLSMALLINT nLength1, ODBCCHAR *pszUserName, SQLSMALLINT nLength2, ODBCCHAR *pszAuthentication, SQLSMALLINT nLength3 )
+SQLRETURN OQConnection::doConnect( ODBCCHAR *pszServerName, SQLSMALLINT nLength1, ODBCCHAR *pszUserName, SQLSMALLINT nLength2, ODBCCHAR *pszAuthentication, SQLSMALLINT nLength3 )
 {
     SQLRETURN nReturn = ODBCConnection::doConnect( pszServerName, nLength1, pszUserName, nLength2, pszAuthentication, nLength3 );
 
     if ( isConnected() )
     {
-        stringDSN = ODBCQToQString( pszServerName );
-        stringUID = ODBCQToQString( pszUserName );
-        stringPWD = ODBCQToQString( pszAuthentication );
+        stringDSN = OQToQString( pszServerName );
+        stringUID = OQToQString( pszUserName );
+        stringPWD = OQToQString( pszAuthentication );
         emit signalConnected();
     }
 
@@ -421,13 +421,13 @@ SQLRETURN ODBCQConnection::doConnect( ODBCCHAR *pszServerName, SQLSMALLINT nLeng
     This replaces ODBCConnection::doBrowseConnect but does the same thing. This
     method also emits signalConnected() if things worked out.
 */
-SQLRETURN ODBCQConnection::doBrowseConnect( ODBCCHAR *szInConnectionString, SQLSMALLINT nStringLength1, ODBCCHAR *szOutConnectionString, SQLSMALLINT nBufferLength, SQLSMALLINT *pnStringLength2Ptr )
+SQLRETURN OQConnection::doBrowseConnect( ODBCCHAR *szInConnectionString, SQLSMALLINT nStringLength1, ODBCCHAR *szOutConnectionString, SQLSMALLINT nBufferLength, SQLSMALLINT *pnStringLength2Ptr )
 {
     SQLRETURN nReturn = ODBCConnection::doBrowseConnect( szInConnectionString, nStringLength1, szOutConnectionString, nBufferLength, pnStringLength2Ptr );
 
     if ( isConnected() )
     {
-        stringConnectString = ODBCQToQString( szOutConnectionString );
+        stringConnectString = OQToQString( szOutConnectionString );
         emit signalConnected();
     }
 
@@ -440,7 +440,7 @@ SQLRETURN ODBCQConnection::doBrowseConnect( ODBCCHAR *szInConnectionString, SQLS
     This replaces ODBCConnection::doDriverConnect but does the same thing. This
     method also emits signalConnected() if things worked out.
 */
-SQLRETURN ODBCQConnection::doDriverConnect( SQLHWND hWnd, ODBCCHAR *pszIn, SQLSMALLINT nLengthIn, ODBCCHAR *pszOut, SQLSMALLINT nLengthOut, SQLSMALLINT *pnLengthOut, SQLUSMALLINT nPrompt )
+SQLRETURN OQConnection::doDriverConnect( SQLHWND hWnd, ODBCCHAR *pszIn, SQLSMALLINT nLengthIn, ODBCCHAR *pszOut, SQLSMALLINT nLengthOut, SQLSMALLINT *pnLengthOut, SQLUSMALLINT nPrompt )
 {
     SQLRETURN nReturn = ODBCConnection::doDriverConnect( hWnd, pszIn, nLengthIn, pszOut, nLengthOut, pnLengthOut, nPrompt );
 
@@ -456,7 +456,7 @@ SQLRETURN ODBCQConnection::doDriverConnect( SQLHWND hWnd, ODBCCHAR *pszIn, SQLSM
     This replaces ODBCCOnnection::doDisconnect but does the same thing. This
     method also emits signalDisconnected() if things worked out.
 */
-SQLRETURN ODBCQConnection::doDisconnect()
+SQLRETURN OQConnection::doDisconnect()
 {
     SQLRETURN nReturn = ODBCConnection::doDisconnect();
 
@@ -478,18 +478,18 @@ SQLRETURN ODBCQConnection::doDisconnect()
     Allows the use of QString instead of ODBCCHAR* but otherwise does
     same thing.
 */
-SQLRETURN ODBCQConnection::doConnect( const QString &stringDSN, const QString &stringUID, const QString &stringPWD )
+SQLRETURN OQConnection::doConnect( const QString &stringDSN, const QString &stringUID, const QString &stringPWD )
 {
     ODBCCHAR *pszDSN = (ODBCCHAR*)TEXT("");
     ODBCCHAR *pszUID = (ODBCCHAR*)TEXT("");
     ODBCCHAR *pszPWD = (ODBCCHAR*)TEXT("");
 
     if ( !stringDSN.isEmpty() )
-        pszDSN = ODBCQFromQString(stringDSN);
+        pszDSN = OQFromQString(stringDSN);
     if ( !stringUID.isEmpty() )
-        pszUID = ODBCQFromQString(stringUID);
+        pszUID = OQFromQString(stringUID);
     if ( !stringPWD.isEmpty() )
-        pszPWD = ODBCQFromQString(stringPWD);
+        pszPWD = OQFromQString(stringPWD);
 
     return doConnect( pszDSN, SQL_NTS, pszUID, SQL_NTS, pszPWD, SQL_NTS );
 }
@@ -500,7 +500,7 @@ SQLRETURN ODBCQConnection::doConnect( const QString &stringDSN, const QString &s
     Allows the use of QString instead of ODBCCHAR* but otherwise does
     same thing.
 */
-SQLRETURN ODBCQConnection::doBrowseConnect( const QString &stringIn, QString *pstringOut )
+SQLRETURN OQConnection::doBrowseConnect( const QString &stringIn, QString *pstringOut )
 {
     ODBCCHAR *      pszIn       = (ODBCCHAR*)TEXT("");
     ODBCCHAR        szOut[4096];
@@ -511,14 +511,14 @@ SQLRETURN ODBCQConnection::doBrowseConnect( const QString &stringIn, QString *ps
 
     if ( !stringIn.isEmpty() )
     {
-        pszIn       = ODBCQFromQString(stringIn);
+        pszIn       = OQFromQString(stringIn);
         nLengthIn   = stringIn.length();
     }
 
     SQLRETURN nReturn = doBrowseConnect( pszIn, nLengthIn, szOut, sizeof(szOut), &nLengthOut ); 
     if ( nReturn == SQL_NEED_DATA )
     {
-        *pstringOut = ODBCQToQString(szOut);
+        *pstringOut = OQToQString(szOut);
     }
 
     return nReturn;
@@ -530,18 +530,18 @@ SQLRETURN ODBCQConnection::doBrowseConnect( const QString &stringIn, QString *ps
     Allows the use of QString instead of ODBCCHAR* but otherwise does
     same thing.
     
-    NOTE: We do not have ODBCQ++ based prompting for Driver Connect because 
+    NOTE: We do not have OQ++ based prompting for Driver Connect because 
           the whole reason for using it is to have the Driver do the 
           prompting. The exception to this is that the Driver Manager will
           prompt for DSN, DRV, or FILEDSN if the stringIn is empty. In anycase;
-          ODBCQ++ probably should NOT do any prompting.
+          OQ++ probably should NOT do any prompting.
           
           The down side of this is that applications calling a Driver Connect
           method are unlikley to be portable without the application taking
           further measures. This is because the Driver Manager and the Driver
           may not support any kind of prompting - often the case on UNIX.
 */
-SQLRETURN ODBCQConnection::doDriverConnect( SQLHWND hWnd, const QString &stringIn, QString *pstringOut, SQLUSMALLINT nPrompt )
+SQLRETURN OQConnection::doDriverConnect( SQLHWND hWnd, const QString &stringIn, QString *pstringOut, SQLUSMALLINT nPrompt )
 {
     ODBCCHAR *      pszIn       = (ODBCCHAR*)TEXT("");
     ODBCCHAR        szOut[4096];
@@ -550,25 +550,25 @@ SQLRETURN ODBCQConnection::doDriverConnect( SQLHWND hWnd, const QString &stringI
 
     if ( !stringIn.isEmpty() )
     {
-        pszIn       = ODBCQFromQString(stringIn);
+        pszIn       = OQFromQString(stringIn);
         nLengthIn   = stringIn.length();
     }
 
     SQLRETURN nReturn = doDriverConnect( hWnd, pszIn, nLengthIn, szOut, sizeof(szOut), &nLengthOut, nPrompt ); 
     if ( nReturn == SQL_NEED_DATA )
     {
-        *pstringOut = ODBCQToQString(szOut);
+        *pstringOut = OQToQString(szOut);
     }
 
     return nReturn;
 }
 
-void ODBCQConnection::eventMessage( ODBCMessage Message )
+void OQConnection::eventMessage( ODBCMessage Message )
 {
     emit signalMessage( Message );
 }
 
-void ODBCQConnection::eventDiagnostic()
+void OQConnection::eventDiagnostic()
 {
     emit signalDiagnostic( ODBCDiagnostic( this ) );
 }

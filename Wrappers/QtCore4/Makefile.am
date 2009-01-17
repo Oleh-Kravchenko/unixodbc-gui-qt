@@ -1,4 +1,5 @@
 SUBDIRS = \
 	Library \
-	Application 
+	Application \
+	include
 

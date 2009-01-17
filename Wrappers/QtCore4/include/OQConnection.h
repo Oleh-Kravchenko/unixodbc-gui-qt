@@ -7,8 +7,8 @@
  * \date    2007
  * \license Copyright unixODBC Project 2003-2008, LGPL
  */
-#ifndef ODBCQCONNECTION_H
-#define ODBCQCONNECTION_H
+#ifndef OQCONNECTION_H
+#define OQCONNECTION_H
 
 // libqt
 #include <QtCore>
@@ -17,12 +17,12 @@
 #include <ODBCConnection.h>
 
 //
-#include "ODBCQEnvironment.h"
+#include "OQEnvironment.h"
 
-class ODBCQStatement;
+class OQStatement;
 
 /*! 
- * \class   ODBCQConnection
+ * \class   OQConnection
  * \brief   An ODBC connection.
  *
  *          This class extends ODBCConnection by providing a more Qt friendly interface. For
@@ -34,12 +34,12 @@ class ODBCQStatement;
  *
  *          This class does not provide any User Interface code - see QtGui4 layer for those bits.
  */
-class ODBCQConnection : public QObject, public ODBCConnection
+class OQConnection : public QObject, public ODBCConnection
 {
     Q_OBJECT
 public:
-    ODBCQConnection( ODBCQEnvironment *penvironment );
-    virtual ~ODBCQConnection();
+    OQConnection( OQEnvironment *penvironment );
+    virtual ~OQConnection();
 
     // SETTERS
     virtual void setPromptDriver( bool bPrompt ) { bPromptDriver = bPrompt; }
@@ -48,19 +48,19 @@ public:
     virtual void setPromptPassword( bool bPrompt ) { bPromptPassword = bPrompt; }
 
     // GETTERS
-    virtual ODBCQStatement *getExecute( const QString &stringSQL );
-    virtual ODBCQStatement *getCatalogs();
-    virtual ODBCQStatement *getSchemas( const QString &stringCatalog = QString::null );
-    virtual ODBCQStatement *getTables( const QString &stringSchema = QString::null, const QString &stringCatalog = QString::null, const QString &stringType = "TABLE" );
-    virtual ODBCQStatement *getViews( const QString &stringSchema = QString::null, const QString &stringCatalog = QString::null, const QString &stringType = "VIEW" );
-    virtual ODBCQStatement *getColumns( const QString &stringTable = QString::null, const QString &stringSchema = QString::null, const QString &stringCatalog = QString::null, const QString &stringType = "TABLE" );
-    virtual ODBCQStatement *getIndexs( const QString &stringTable = QString::null, const QString &stringSchema = QString::null, const QString &stringCatalog = QString::null );
-    virtual ODBCQStatement *getPrimaryKeys( const QString &stringTable = QString::null, const QString &stringSchema = QString::null, const QString &stringCatalog = QString::null );
-    virtual ODBCQStatement *getForeignKeys( const QString &stringTable = QString::null, const QString &stringSchema = QString::null, const QString &stringCatalog = QString::null );
-    virtual ODBCQStatement *getSpecialColumns( const QString &stringTable = QString::null, const QString &stringSchema = QString::null, const QString &stringCatalog = QString::null );
-    virtual ODBCQStatement *getProcedures( const QString &stringSchema = QString::null, const QString &stringCatalog = QString::null );
-    virtual ODBCQStatement *getProcedureColumns( const QString &stringProcedure = QString::null, const QString &stringSchema = QString::null, const QString &stringCatalog = QString::null );
-    virtual ODBCQStatement *getDataTypes();
+    virtual OQStatement *getExecute( const QString &stringSQL );
+    virtual OQStatement *getCatalogs();
+    virtual OQStatement *getSchemas( const QString &stringCatalog = QString::null );
+    virtual OQStatement *getTables( const QString &stringSchema = QString::null, const QString &stringCatalog = QString::null, const QString &stringType = "TABLE" );
+    virtual OQStatement *getViews( const QString &stringSchema = QString::null, const QString &stringCatalog = QString::null, const QString &stringType = "VIEW" );
+    virtual OQStatement *getColumns( const QString &stringTable = QString::null, const QString &stringSchema = QString::null, const QString &stringCatalog = QString::null, const QString &stringType = "TABLE" );
+    virtual OQStatement *getIndexs( const QString &stringTable = QString::null, const QString &stringSchema = QString::null, const QString &stringCatalog = QString::null );
+    virtual OQStatement *getPrimaryKeys( const QString &stringTable = QString::null, const QString &stringSchema = QString::null, const QString &stringCatalog = QString::null );
+    virtual OQStatement *getForeignKeys( const QString &stringTable = QString::null, const QString &stringSchema = QString::null, const QString &stringCatalog = QString::null );
+    virtual OQStatement *getSpecialColumns( const QString &stringTable = QString::null, const QString &stringSchema = QString::null, const QString &stringCatalog = QString::null );
+    virtual OQStatement *getProcedures( const QString &stringSchema = QString::null, const QString &stringCatalog = QString::null );
+    virtual OQStatement *getProcedureColumns( const QString &stringProcedure = QString::null, const QString &stringSchema = QString::null, const QString &stringCatalog = QString::null );
+    virtual OQStatement *getDataTypes();
 
     virtual bool        getPromptDriver() { return bPromptDriver; }
     virtual bool        getPromptDataSourceName() { return bPromptDataSourceName; }

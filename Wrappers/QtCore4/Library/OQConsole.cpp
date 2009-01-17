@@ -1,12 +1,11 @@
-#include "ODBCQConsole.h"
+#include "OQConsole.h"
 
-
-ODBCQConsole::ODBCQConsole()
+OQConsole::OQConsole()
     : ODBCConsole()
 {
 }
 
-ODBCQConsole::~ODBCQConsole()
+OQConsole::~OQConsole()
 {
 }
 

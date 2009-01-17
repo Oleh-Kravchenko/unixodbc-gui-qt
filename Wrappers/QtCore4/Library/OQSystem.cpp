@@ -7,20 +7,20 @@
  * \date    2007
  * \license Copyright unixODBC Project 2003-2008, LGPL
  */
-#include "ODBCQSystem.h"
+#include "OQSystem.h"
 #include <odbcinst.h>
 
-ODBCQSystem::ODBCQSystem()
+OQSystem::OQSystem()
     : QObject(), ODBCSystem()
 {
-    setObjectName( "ODBCQSystem" );
+    setObjectName( "OQSystem" );
 }
 
-ODBCQSystem::~ODBCQSystem()
+OQSystem::~OQSystem()
 {
 }
 
-SQLRETURN ODBCQSystem::setDriverAttribute( const QString &stringDriver, const QString &stringKey, const QString &stringValue )
+SQLRETURN OQSystem::setDriverAttribute( const QString &stringDriver, const QString &stringKey, const QString &stringValue )
 {
     if ( stringValue.isNull() )
     {
@@ -30,20 +30,20 @@ SQLRETURN ODBCQSystem::setDriverAttribute( const QString &stringDriver, const QS
     // update/add key/value...
     QString stringFile( "ODBCINST.INI" );
 
-    if ( SQLWritePrivateProfileString( (ODBCCPTR)ODBCQFromQString(stringDriver), (ODBCCPTR)ODBCQFromQString(stringKey), (ODBCCPTR)ODBCQFromQString(stringValue), (ODBCCPTR)ODBCQFromQString(stringFile) ) )
+    if ( SQLWritePrivateProfileString( (ODBCCPTR)OQFromQString(stringDriver), (ODBCCPTR)OQFromQString(stringKey), (ODBCCPTR)OQFromQString(stringValue), (ODBCCPTR)OQFromQString(stringFile) ) )
         return SQL_SUCCESS;
 
     return SQL_ERROR;
 }
 
-QMap<QString,QString> ODBCQSystem::getDriverAttributes( const QString &stringName, SQLRETURN *pnReturn )
+QMap<QString,QString> OQSystem::getDriverAttributes( const QString &stringName, SQLRETURN *pnReturn )
 {
     QMap<QString,QString> mapAttributes;
     SQLTCHAR    szResults[4000];
     SQLTCHAR    szValue[500];
     SQLTCHAR *  pszKey;
 
-    if ( SQLGetPrivateProfileString( (ODBCCPTR)ODBCQFromQString(stringName), NULL, NULL, (ODBCCPTR)szResults, sizeof( szResults ) - 1, (ODBCCPTR)TEXT("ODBCINST.INI") ) < 1 )
+    if ( SQLGetPrivateProfileString( (ODBCCPTR)OQFromQString(stringName), NULL, NULL, (ODBCCPTR)szResults, sizeof( szResults ) - 1, (ODBCCPTR)TEXT("ODBCINST.INI") ) < 1 )
     {
         if ( pnReturn ) *pnReturn = SQL_ERROR;
         return mapAttributes;
@@ -51,12 +51,12 @@ QMap<QString,QString> ODBCQSystem::getDriverAttributes( const QString &stringNam
     pszKey = szResults;
     while ( *pszKey )
     {
-        if ( SQLGetPrivateProfileString( (ODBCCPTR)ODBCQFromQString(stringName), (ODBCCPTR)pszKey, (ODBCCPTR)TEXT(""), (ODBCCPTR)szValue, sizeof( szValue ) - 1, (ODBCCPTR)TEXT("ODBCINST.INI") ) < 1 )
+        if ( SQLGetPrivateProfileString( (ODBCCPTR)OQFromQString(stringName), (ODBCCPTR)pszKey, (ODBCCPTR)TEXT(""), (ODBCCPTR)szValue, sizeof( szValue ) - 1, (ODBCCPTR)TEXT("ODBCINST.INI") ) < 1 )
         {
             if ( pnReturn ) *pnReturn = SQL_ERROR;
             return mapAttributes;
         }
-        mapAttributes[ ODBCQToQString(pszKey) ] = ODBCQToQString( szValue );
+        mapAttributes[ OQToQString(pszKey) ] = OQToQString( szValue );
         pszKey += ODBCStrLen( pszKey ) + 1;
     }
     if ( pnReturn ) *pnReturn = SQL_SUCCESS;
@@ -75,7 +75,7 @@ QMap<QString,QString> ODBCQSystem::getDriverAttributes( const QString &stringNam
  *          work.
  */
 #ifdef WIN32
-BOOL ODBCQSystem::doManageDataSources( HWND hWnd )
+BOOL OQSystem::doManageDataSources( HWND hWnd )
 {
 /* PAH - SQLManageDataSources() is a much better solution on MS Windows than this...
     QProcess  * pprocess = new QProcess( this );
@@ -111,7 +111,7 @@ BOOL ODBCQSystem::doManageDataSources( HWND hWnd )
 }
 #else
 #ifdef Q_WS_MACX
-BOOL ODBCQSystem::doManageDataSources( HWND )
+BOOL OQSystem::doManageDataSources( HWND )
 {
     QProcess  * pprocess = new QProcess( this );
 
@@ -127,7 +127,7 @@ BOOL ODBCQSystem::doManageDataSources( HWND )
     return false;
 }
 #else
-BOOL ODBCQSystem::doManageDataSources( HWND )
+BOOL OQSystem::doManageDataSources( HWND )
 {
     /*
      * Method 1 
@@ -172,7 +172,7 @@ BOOL ODBCQSystem::doManageDataSources( HWND )
  * 
  * \author  pharvey (8/31/2008)
  */
-void ODBCQSystem::eventError()
+void OQSystem::eventError()
 {
     // max is supposed to be 8 but lets allow for up to 100
     for ( WORD nIndex = 1; nIndex < 100; nIndex++ )

@@ -7,20 +7,20 @@
  * \date    2007
  * \license Copyright unixODBC Project 2003-2008, LGPL
  */
-#include "ODBCQConnection.h"
-#include "ODBCQStatement.h"
+#include "OQConnection.h"
+#include "OQStatement.h"
 
-ODBCQStatement::ODBCQStatement( ODBCQConnection *pconnection )
+OQStatement::OQStatement( OQConnection *pconnection )
     : QObject( 0 ), ODBCStatement( pconnection )
 {
-    setObjectName( "ODBCQStatement" );
+    setObjectName( "OQStatement" );
 
     // echo up the object hierarchy
     connect( this, SIGNAL(signalMessage(ODBCMessage Message)), pconnection, SIGNAL(signalMessage(ODBCMessage Message)) );
     connect( this, SIGNAL(signalDiagnostic(ODBCDiagnostic Diagnostic)), pconnection, SIGNAL(signalDiagnostic(ODBCDiagnostic Diagnostic)) );
 }
 
-ODBCQStatement::~ODBCQStatement()
+OQStatement::~OQStatement()
 {
 }
 
@@ -29,7 +29,7 @@ ODBCQStatement::~ODBCQStatement()
     
     Replaces ODBCStatement version so as to emit signals.
 */
-SQLRETURN ODBCQStatement::doExecute()
+SQLRETURN OQStatement::doExecute()
 {
     SQLRETURN nReturn = ODBCStatement::doExecute();
     if ( SQL_SUCCEEDED( nReturn ) && isCursor() )
@@ -46,7 +46,7 @@ SQLRETURN ODBCQStatement::doExecute()
     
     Replaces ODBCStatement version so as to emit signals.
 */
-SQLRETURN ODBCQStatement::doExecDirect( ODBCCHAR *pszStatement, SQLINTEGER nLength )
+SQLRETURN OQStatement::doExecDirect( ODBCCHAR *pszStatement, SQLINTEGER nLength )
 {
     SQLRETURN nReturn = ODBCStatement::doExecDirect( pszStatement, nLength );
     if ( SQL_SUCCEEDED( nReturn ) )
@@ -63,7 +63,7 @@ SQLRETURN ODBCQStatement::doExecDirect( ODBCCHAR *pszStatement, SQLINTEGER nLeng
     
     Replaces ODBCStatement version so as to emit signals.
 */
-SQLRETURN ODBCQStatement::doCatalogs( ODBCCHAR *pszCatalogName, SQLSMALLINT nLength1 )
+SQLRETURN OQStatement::doCatalogs( ODBCCHAR *pszCatalogName, SQLSMALLINT nLength1 )
 {
     SQLRETURN nReturn = ODBCStatement::doTables( pszCatalogName, nLength1, (ODBCCHAR*)"", SQL_NTS, (ODBCCHAR*)"", SQL_NTS, (ODBCCHAR*)"", SQL_NTS );
     if ( SQL_SUCCEEDED( nReturn ) )
@@ -80,7 +80,7 @@ SQLRETURN ODBCQStatement::doCatalogs( ODBCCHAR *pszCatalogName, SQLSMALLINT nLen
     
     Replaces ODBCStatement version so as to emit signals.
 */
-SQLRETURN ODBCQStatement::doSchemas( ODBCCHAR *pszCatalogName, SQLSMALLINT nLength1, ODBCCHAR *pszSchemaName, SQLSMALLINT nLength2 )
+SQLRETURN OQStatement::doSchemas( ODBCCHAR *pszCatalogName, SQLSMALLINT nLength1, ODBCCHAR *pszSchemaName, SQLSMALLINT nLength2 )
 {
     SQLRETURN nReturn = ODBCStatement::doTables( pszCatalogName, nLength1, pszSchemaName, nLength2, (ODBCCHAR*)"", SQL_NTS, (ODBCCHAR*)"", SQL_NTS );
     if ( SQL_SUCCEEDED( nReturn ) )
@@ -97,7 +97,7 @@ SQLRETURN ODBCQStatement::doSchemas( ODBCCHAR *pszCatalogName, SQLSMALLINT nLeng
     
     Replaces ODBCStatement version so as to emit signals.
 */
-SQLRETURN ODBCQStatement::doTables( ODBCCHAR *pszCatalogName, SQLSMALLINT nLength1, ODBCCHAR *pszSchemaName, SQLSMALLINT nLength2, ODBCCHAR *pszTableName, SQLSMALLINT nLength3, ODBCCHAR *pszTableType, SQLSMALLINT nLength4 )
+SQLRETURN OQStatement::doTables( ODBCCHAR *pszCatalogName, SQLSMALLINT nLength1, ODBCCHAR *pszSchemaName, SQLSMALLINT nLength2, ODBCCHAR *pszTableName, SQLSMALLINT nLength3, ODBCCHAR *pszTableType, SQLSMALLINT nLength4 )
 {
     SQLRETURN nReturn = ODBCStatement::doTables( pszCatalogName, nLength1, pszSchemaName, nLength2, pszTableName, nLength3, pszTableType, nLength4 );
     if ( SQL_SUCCEEDED( nReturn ) )
@@ -114,7 +114,7 @@ SQLRETURN ODBCQStatement::doTables( ODBCCHAR *pszCatalogName, SQLSMALLINT nLengt
     
     Replaces ODBCStatement version so as to emit signals.
 */
-SQLRETURN ODBCQStatement::doColumns( ODBCCHAR *pszCatalogName, SQLSMALLINT nLength1, ODBCCHAR *pszSchemaName, SQLSMALLINT nLength2, ODBCCHAR *pszTableName, SQLSMALLINT nLength3, ODBCCHAR *pszColumnName, SQLSMALLINT nLength4 )
+SQLRETURN OQStatement::doColumns( ODBCCHAR *pszCatalogName, SQLSMALLINT nLength1, ODBCCHAR *pszSchemaName, SQLSMALLINT nLength2, ODBCCHAR *pszTableName, SQLSMALLINT nLength3, ODBCCHAR *pszColumnName, SQLSMALLINT nLength4 )
 {
     SQLRETURN nReturn = ODBCStatement::doColumns( pszCatalogName, nLength1, pszSchemaName, nLength2, pszTableName, nLength3, pszColumnName, nLength4 );
     if ( SQL_SUCCEEDED( nReturn ) )
@@ -131,7 +131,7 @@ SQLRETURN ODBCQStatement::doColumns( ODBCCHAR *pszCatalogName, SQLSMALLINT nLeng
     
     Replaces ODBCStatement version so as to emit signals.
 */
-SQLRETURN ODBCQStatement::doStatistics( ODBCCHAR *pszCatalogName, SQLSMALLINT nLength1, ODBCCHAR *pszSchemaName, SQLSMALLINT nLength2, ODBCCHAR *pszTableName, SQLSMALLINT nLength3, SQLUSMALLINT nUnique, SQLUSMALLINT nReserved )
+SQLRETURN OQStatement::doStatistics( ODBCCHAR *pszCatalogName, SQLSMALLINT nLength1, ODBCCHAR *pszSchemaName, SQLSMALLINT nLength2, ODBCCHAR *pszTableName, SQLSMALLINT nLength3, SQLUSMALLINT nUnique, SQLUSMALLINT nReserved )
 {
     SQLRETURN nReturn = ODBCStatement::doStatistics( pszCatalogName, nLength1, pszSchemaName, nLength2, pszTableName, nLength3, nUnique, nReserved );
     if ( SQL_SUCCEEDED( nReturn ) )
@@ -148,7 +148,7 @@ SQLRETURN ODBCQStatement::doStatistics( ODBCCHAR *pszCatalogName, SQLSMALLINT nL
     
     Replaces ODBCStatement version so as to emit signals.
 */
-SQLRETURN ODBCQStatement::doSpecialColumns( SQLSMALLINT nIdentifierType, ODBCCHAR *pszCatalogName, SQLSMALLINT nLength1, ODBCCHAR *pszSchemaName, SQLSMALLINT nLength2, ODBCCHAR *pszTableName, SQLSMALLINT nLength3, SQLSMALLINT nScope, SQLSMALLINT nNullable )
+SQLRETURN OQStatement::doSpecialColumns( SQLSMALLINT nIdentifierType, ODBCCHAR *pszCatalogName, SQLSMALLINT nLength1, ODBCCHAR *pszSchemaName, SQLSMALLINT nLength2, ODBCCHAR *pszTableName, SQLSMALLINT nLength3, SQLSMALLINT nScope, SQLSMALLINT nNullable )
 {
     SQLRETURN nReturn = ODBCStatement::doSpecialColumns( nIdentifierType, pszCatalogName, nLength1, pszSchemaName, nLength2, pszTableName, nLength3, nScope, nNullable );
     if ( SQL_SUCCEEDED( nReturn ) )
@@ -165,7 +165,7 @@ SQLRETURN ODBCQStatement::doSpecialColumns( SQLSMALLINT nIdentifierType, ODBCCHA
     
     Replaces ODBCStatement version so as to emit signals.
 */
-SQLRETURN ODBCQStatement::doPrimaryKeys( ODBCCHAR *pszCatalogName, SQLSMALLINT nLength1, ODBCCHAR *pszSchemaName, SQLSMALLINT nLength2, ODBCCHAR *pszTableName, SQLSMALLINT nLength3 )
+SQLRETURN OQStatement::doPrimaryKeys( ODBCCHAR *pszCatalogName, SQLSMALLINT nLength1, ODBCCHAR *pszSchemaName, SQLSMALLINT nLength2, ODBCCHAR *pszTableName, SQLSMALLINT nLength3 )
 {
     SQLRETURN nReturn = ODBCStatement::doPrimaryKeys( pszCatalogName, nLength1, pszSchemaName, nLength2, pszTableName, nLength3 );
     if ( SQL_SUCCEEDED( nReturn ) )
@@ -182,7 +182,7 @@ SQLRETURN ODBCQStatement::doPrimaryKeys( ODBCCHAR *pszCatalogName, SQLSMALLINT n
     
     Replaces ODBCStatement version so as to emit signals.
 */
-SQLRETURN ODBCQStatement::doForeignKeys( ODBCCHAR *pszPKCatalogName, SQLSMALLINT nLength1, ODBCCHAR *pszPKSchemaName, SQLSMALLINT nLength2, ODBCCHAR *pszPKTableName, SQLSMALLINT nLength3, ODBCCHAR *pszFKCatalogName, SQLSMALLINT nLength4, ODBCCHAR *pszFKSchemaName, SQLSMALLINT nLength5, ODBCCHAR *pszFKTableName, SQLSMALLINT nLength6 )
+SQLRETURN OQStatement::doForeignKeys( ODBCCHAR *pszPKCatalogName, SQLSMALLINT nLength1, ODBCCHAR *pszPKSchemaName, SQLSMALLINT nLength2, ODBCCHAR *pszPKTableName, SQLSMALLINT nLength3, ODBCCHAR *pszFKCatalogName, SQLSMALLINT nLength4, ODBCCHAR *pszFKSchemaName, SQLSMALLINT nLength5, ODBCCHAR *pszFKTableName, SQLSMALLINT nLength6 )
 {
     SQLRETURN nReturn = ODBCStatement::doForeignKeys( pszPKCatalogName, nLength1, pszPKSchemaName, nLength2, pszPKTableName, nLength3, pszFKCatalogName, nLength4, pszFKSchemaName, nLength5, pszFKTableName, nLength6 );
     if ( SQL_SUCCEEDED( nReturn ) )
@@ -199,7 +199,7 @@ SQLRETURN ODBCQStatement::doForeignKeys( ODBCCHAR *pszPKCatalogName, SQLSMALLINT
     
     Replaces ODBCStatement version so as to emit signals.
 */
-SQLRETURN ODBCQStatement::doProcedures( ODBCCHAR *pszCatalogName, SQLSMALLINT nLength1, ODBCCHAR *pszSchemaName, SQLSMALLINT nLength2, ODBCCHAR *pszProcName, SQLSMALLINT nLength3 )
+SQLRETURN OQStatement::doProcedures( ODBCCHAR *pszCatalogName, SQLSMALLINT nLength1, ODBCCHAR *pszSchemaName, SQLSMALLINT nLength2, ODBCCHAR *pszProcName, SQLSMALLINT nLength3 )
 {
     SQLRETURN nReturn = ODBCStatement::doProcedures( pszCatalogName, nLength1, pszSchemaName, nLength2, pszProcName, nLength3 );
     if ( SQL_SUCCEEDED( nReturn ) )
@@ -216,7 +216,7 @@ SQLRETURN ODBCQStatement::doProcedures( ODBCCHAR *pszCatalogName, SQLSMALLINT nL
     
     Replaces ODBCStatement version so as to emit signals.
 */
-SQLRETURN ODBCQStatement::doProcedureColumns( ODBCCHAR *pszCatalogName, SQLSMALLINT nLength1, ODBCCHAR *pszSchemaName, SQLSMALLINT nLength2, ODBCCHAR *pszProcName, SQLSMALLINT nLength3, ODBCCHAR *pszColumnName, SQLSMALLINT nLength4 )
+SQLRETURN OQStatement::doProcedureColumns( ODBCCHAR *pszCatalogName, SQLSMALLINT nLength1, ODBCCHAR *pszSchemaName, SQLSMALLINT nLength2, ODBCCHAR *pszProcName, SQLSMALLINT nLength3, ODBCCHAR *pszColumnName, SQLSMALLINT nLength4 )
 {
     SQLRETURN nReturn = ODBCStatement::doProcedureColumns( pszCatalogName, nLength1, pszSchemaName, nLength2, pszProcName, nLength3, pszColumnName, nLength4 );
     if ( SQL_SUCCEEDED( nReturn ) )
@@ -233,7 +233,7 @@ SQLRETURN ODBCQStatement::doProcedureColumns( ODBCCHAR *pszCatalogName, SQLSMALL
     
     Replaces ODBCStatement version so as to emit signals.
 */
-SQLRETURN ODBCQStatement::doTypeInfo( SQLSMALLINT nDataType )
+SQLRETURN OQStatement::doTypeInfo( SQLSMALLINT nDataType )
 {
     SQLRETURN nReturn = ODBCStatement::doTypeInfo( nDataType );
     if ( SQL_SUCCEEDED( nReturn ) )
@@ -251,9 +251,9 @@ SQLRETURN ODBCQStatement::doTypeInfo( SQLSMALLINT nDataType )
     Allows the use of QString instead of ODBCCHAR* but otherwise simply
     calls the ODBCStatement equivalent.
 */
-SQLRETURN ODBCQStatement::doExecDirect( const QString &stringStatement )
+SQLRETURN OQStatement::doExecDirect( const QString &stringStatement )
 {
-    ODBCCHAR *pszStatement  = ODBCQFromQString(stringStatement);
+    ODBCCHAR *pszStatement  = OQFromQString(stringStatement);
     int nStatement          = pszStatement ? SQL_NTS : 0;
 
     return doExecDirect( pszStatement, nStatement );
@@ -265,9 +265,9 @@ SQLRETURN ODBCQStatement::doExecDirect( const QString &stringStatement )
     Allows the use of QString instead of ODBCCHAR* but otherwise simply
     calls the ODBCStatement equivalent.
 */
-SQLRETURN ODBCQStatement::doCatalogs( const QString &stringCatalog )
+SQLRETURN OQStatement::doCatalogs( const QString &stringCatalog )
 {
-    ODBCCHAR *  pszCatalog = ODBCQFromQString(stringCatalog);
+    ODBCCHAR *  pszCatalog = OQFromQString(stringCatalog);
     int         nCatalog   = pszCatalog ? SQL_NTS : 0;
 
     return doCatalogs( pszCatalog, nCatalog );
@@ -279,10 +279,10 @@ SQLRETURN ODBCQStatement::doCatalogs( const QString &stringCatalog )
     Allows the use of QString instead of ODBCCHAR* but otherwise simply
     calls the ODBCStatement equivalent.
 */
-SQLRETURN ODBCQStatement::doSchemas( const QString &stringCatalog, const QString &stringSchema )
+SQLRETURN OQStatement::doSchemas( const QString &stringCatalog, const QString &stringSchema )
 {
-    ODBCCHAR *  pszCatalog = ODBCQFromQString(stringCatalog);
-    ODBCCHAR *  pszSchema  = ODBCQFromQString(stringSchema);
+    ODBCCHAR *  pszCatalog = OQFromQString(stringCatalog);
+    ODBCCHAR *  pszSchema  = OQFromQString(stringSchema);
     int         nCatalog   = pszCatalog ? SQL_NTS : 0;
     int         nSchema    = pszSchema ? SQL_NTS : 0; 
 
@@ -295,12 +295,12 @@ SQLRETURN ODBCQStatement::doSchemas( const QString &stringCatalog, const QString
     Allows the use of QString instead of ODBCCHAR* but otherwise simply
     calls the ODBCStatement equivalent.
 */
-SQLRETURN ODBCQStatement::doTables( const QString &stringCatalog, const QString &stringSchema, const QString &stringTable, const QString &stringType )
+SQLRETURN OQStatement::doTables( const QString &stringCatalog, const QString &stringSchema, const QString &stringTable, const QString &stringType )
 {
-    ODBCCHAR *pszCatalog = ODBCQFromQString(stringCatalog);
-    ODBCCHAR *pszSchema  = ODBCQFromQString(stringSchema);
-    ODBCCHAR *pszTable   = ODBCQFromQString(stringTable);
-    ODBCCHAR *pszType    = ODBCQFromQString(stringType);
+    ODBCCHAR *pszCatalog = OQFromQString(stringCatalog);
+    ODBCCHAR *pszSchema  = OQFromQString(stringSchema);
+    ODBCCHAR *pszTable   = OQFromQString(stringTable);
+    ODBCCHAR *pszType    = OQFromQString(stringType);
     int nCatalog        = pszCatalog ? SQL_NTS : 0;
     int nSchema         = pszSchema ? SQL_NTS : 0; 
     int nTable          = pszTable ? SQL_NTS : 0;
@@ -315,12 +315,12 @@ SQLRETURN ODBCQStatement::doTables( const QString &stringCatalog, const QString 
     Allows the use of QString instead of ODBCCHAR* but otherwise simply
     calls the ODBCStatement equivalent.
 */
-SQLRETURN ODBCQStatement::doColumns( const QString &stringCatalog, const QString &stringSchema, const QString &stringTable, const QString &stringColumn )
+SQLRETURN OQStatement::doColumns( const QString &stringCatalog, const QString &stringSchema, const QString &stringTable, const QString &stringColumn )
 {
-    ODBCCHAR *pszCatalog = ODBCQFromQString(stringCatalog);
-    ODBCCHAR *pszSchema  = ODBCQFromQString(stringSchema);
-    ODBCCHAR *pszTable   = ODBCQFromQString(stringTable);
-    ODBCCHAR *pszColumn  = ODBCQFromQString(stringColumn);
+    ODBCCHAR *pszCatalog = OQFromQString(stringCatalog);
+    ODBCCHAR *pszSchema  = OQFromQString(stringSchema);
+    ODBCCHAR *pszTable   = OQFromQString(stringTable);
+    ODBCCHAR *pszColumn  = OQFromQString(stringColumn);
     int nCatalog        = pszCatalog ? SQL_NTS : 0;
     int nSchema         = pszSchema ? SQL_NTS : 0; 
     int nTable          = pszTable ? SQL_NTS : 0;
@@ -335,11 +335,11 @@ SQLRETURN ODBCQStatement::doColumns( const QString &stringCatalog, const QString
     Allows the use of QString instead of ODBCCHAR* but otherwise simply
     calls the ODBCStatement equivalent.
 */
-SQLRETURN ODBCQStatement::doStatistics( const QString &stringCatalog, const QString &stringSchema, const QString &stringTable, SQLUSMALLINT nUnique, SQLUSMALLINT nReserved )
+SQLRETURN OQStatement::doStatistics( const QString &stringCatalog, const QString &stringSchema, const QString &stringTable, SQLUSMALLINT nUnique, SQLUSMALLINT nReserved )
 {
-    ODBCCHAR *pszCatalog = ODBCQFromQString(stringCatalog);
-    ODBCCHAR *pszSchema  = ODBCQFromQString(stringSchema);
-    ODBCCHAR *pszTable   = ODBCQFromQString(stringTable);
+    ODBCCHAR *pszCatalog = OQFromQString(stringCatalog);
+    ODBCCHAR *pszSchema  = OQFromQString(stringSchema);
+    ODBCCHAR *pszTable   = OQFromQString(stringTable);
     int nCatalog        = pszCatalog ? SQL_NTS : 0;
     int nSchema         = pszSchema ? SQL_NTS : 0; 
     int nTable          = pszTable ? SQL_NTS : 0;
@@ -353,11 +353,11 @@ SQLRETURN ODBCQStatement::doStatistics( const QString &stringCatalog, const QStr
     Allows the use of QString instead of ODBCCHAR* but otherwise simply
     calls the ODBCStatement equivalent.
 */
-SQLRETURN ODBCQStatement::doSpecialColumns( SQLSMALLINT nIdentifierType, const QString &stringCatalog, const QString &stringSchema, const QString &stringTable, SQLSMALLINT nScope, SQLSMALLINT nNullable )
+SQLRETURN OQStatement::doSpecialColumns( SQLSMALLINT nIdentifierType, const QString &stringCatalog, const QString &stringSchema, const QString &stringTable, SQLSMALLINT nScope, SQLSMALLINT nNullable )
 {
-    ODBCCHAR *pszCatalog = ODBCQFromQString(stringCatalog);
-    ODBCCHAR *pszSchema  = ODBCQFromQString(stringSchema);
-    ODBCCHAR *pszTable   = ODBCQFromQString(stringTable);
+    ODBCCHAR *pszCatalog = OQFromQString(stringCatalog);
+    ODBCCHAR *pszSchema  = OQFromQString(stringSchema);
+    ODBCCHAR *pszTable   = OQFromQString(stringTable);
     int nCatalog        = pszCatalog ? SQL_NTS : 0;
     int nSchema         = pszSchema ? SQL_NTS : 0; 
     int nTable          = pszTable ? SQL_NTS : 0;
@@ -371,11 +371,11 @@ SQLRETURN ODBCQStatement::doSpecialColumns( SQLSMALLINT nIdentifierType, const Q
     Allows the use of QString instead of ODBCCHAR* but otherwise simply
     calls the ODBCStatement equivalent.
 */
-SQLRETURN ODBCQStatement::doPrimaryKeys( const QString &stringCatalog, const QString &stringSchema, const QString &stringTable )
+SQLRETURN OQStatement::doPrimaryKeys( const QString &stringCatalog, const QString &stringSchema, const QString &stringTable )
 {
-    ODBCCHAR *pszCatalog = ODBCQFromQString(stringCatalog);
-    ODBCCHAR *pszSchema  = ODBCQFromQString(stringSchema);
-    ODBCCHAR *pszTable   = ODBCQFromQString(stringTable);
+    ODBCCHAR *pszCatalog = OQFromQString(stringCatalog);
+    ODBCCHAR *pszSchema  = OQFromQString(stringSchema);
+    ODBCCHAR *pszTable   = OQFromQString(stringTable);
     int nCatalog        = pszCatalog ? SQL_NTS : 0;
     int nSchema         = pszSchema ? SQL_NTS : 0; 
     int nTable          = pszTable ? SQL_NTS : 0;
@@ -390,15 +390,15 @@ SQLRETURN ODBCQStatement::doPrimaryKeys( const QString &stringCatalog, const QSt
     Allows the use of QString instead of ODBCCHAR* but otherwise simply
     calls the ODBCStatement equivalent.
 */
-SQLRETURN ODBCQStatement::doForeignKeys( const QString &stringPKCatalogName, const QString &stringPKSchemaName, const QString &stringPKTableName, const QString &stringFKCatalogName, const QString &stringFKSchemaName, const QString &stringFKTableName )
+SQLRETURN OQStatement::doForeignKeys( const QString &stringPKCatalogName, const QString &stringPKSchemaName, const QString &stringPKTableName, const QString &stringFKCatalogName, const QString &stringFKSchemaName, const QString &stringFKTableName )
 {
-    ODBCCHAR *pszPKCatalogName = ODBCQFromQString(stringPKCatalogName);
-    ODBCCHAR *pszPKSchemaName  = ODBCQFromQString(stringPKSchemaName);
-    ODBCCHAR *pszPKTableName   = ODBCQFromQString(stringPKTableName);
+    ODBCCHAR *pszPKCatalogName = OQFromQString(stringPKCatalogName);
+    ODBCCHAR *pszPKSchemaName  = OQFromQString(stringPKSchemaName);
+    ODBCCHAR *pszPKTableName   = OQFromQString(stringPKTableName);
 
-    ODBCCHAR *pszFKCatalogName = ODBCQFromQString(stringFKCatalogName);
-    ODBCCHAR *pszFKSchemaName  = ODBCQFromQString(stringFKSchemaName);
-    ODBCCHAR *pszFKTableName   = ODBCQFromQString(stringFKTableName);
+    ODBCCHAR *pszFKCatalogName = OQFromQString(stringFKCatalogName);
+    ODBCCHAR *pszFKSchemaName  = OQFromQString(stringFKSchemaName);
+    ODBCCHAR *pszFKTableName   = OQFromQString(stringFKTableName);
 
     int nPKCatalogName = pszPKCatalogName ? SQL_NTS : 0;
     int nPKSchemaName  = pszPKSchemaName ? SQL_NTS : 0;
@@ -417,11 +417,11 @@ SQLRETURN ODBCQStatement::doForeignKeys( const QString &stringPKCatalogName, con
     Allows the use of QString instead of ODBCCHAR* but otherwise simply
     calls the ODBCStatement equivalent.
 */
-SQLRETURN ODBCQStatement::doProcedures( const QString &stringCatalog, const QString &stringSchema, const QString &stringProc )
+SQLRETURN OQStatement::doProcedures( const QString &stringCatalog, const QString &stringSchema, const QString &stringProc )
 {
-    ODBCCHAR *pszCatalog = ODBCQFromQString(stringCatalog);
-    ODBCCHAR *pszSchema  = ODBCQFromQString(stringSchema);
-    ODBCCHAR *pszProc    = ODBCQFromQString(stringProc);
+    ODBCCHAR *pszCatalog = OQFromQString(stringCatalog);
+    ODBCCHAR *pszSchema  = OQFromQString(stringSchema);
+    ODBCCHAR *pszProc    = OQFromQString(stringProc);
     int nCatalog        = pszCatalog ? SQL_NTS : 0;
     int nSchema         = pszSchema ? SQL_NTS : 0; 
     int nProc           = pszProc ? SQL_NTS : 0;
@@ -435,12 +435,12 @@ SQLRETURN ODBCQStatement::doProcedures( const QString &stringCatalog, const QStr
     Allows the use of QString instead of ODBCCHAR* but otherwise simply
     calls the ODBCStatement equivalent.
 */
-SQLRETURN ODBCQStatement::doProcedureColumns( const QString &stringCatalog, const QString &stringSchema, const QString &stringProcedure, const QString &stringColumn )
+SQLRETURN OQStatement::doProcedureColumns( const QString &stringCatalog, const QString &stringSchema, const QString &stringProcedure, const QString &stringColumn )
 {
-    ODBCCHAR *pszCatalog     = ODBCQFromQString(stringCatalog);
-    ODBCCHAR *pszSchema      = ODBCQFromQString(stringSchema);
-    ODBCCHAR *pszProcedure   = ODBCQFromQString(stringProcedure);
-    ODBCCHAR *pszColumn      = ODBCQFromQString(stringColumn);
+    ODBCCHAR *pszCatalog     = OQFromQString(stringCatalog);
+    ODBCCHAR *pszSchema      = OQFromQString(stringSchema);
+    ODBCCHAR *pszProcedure   = OQFromQString(stringProcedure);
+    ODBCCHAR *pszColumn      = OQFromQString(stringColumn);
     int nCatalog            = pszCatalog ? SQL_NTS : 0;
     int nSchema             = pszSchema ? SQL_NTS : 0; 
     int nProcedure          = pszProcedure ? SQL_NTS : 0;
@@ -458,7 +458,7 @@ SQLRETURN ODBCQStatement::doProcedureColumns( const QString &stringCatalog, cons
     
     The filter is expanded and the query is executed.
 */
-SQLRETURN ODBCQStatement::doTables( const ODBCQFilter &stringFilter, const QString &stringTableType )
+SQLRETURN OQStatement::doTables( const OQFilter &stringFilter, const QString &stringTableType )
 {
     QString stringCatalog;
     QString stringSchema;
@@ -478,7 +478,7 @@ SQLRETURN ODBCQStatement::doTables( const ODBCQFilter &stringFilter, const QStri
     
     The filter is expanded and the query is executed.
 */
-SQLRETURN ODBCQStatement::doColumns( const ODBCQFilter &stringFilter )
+SQLRETURN OQStatement::doColumns( const OQFilter &stringFilter )
 {
     QString stringCatalog;
     QString stringSchema;
@@ -498,7 +498,7 @@ SQLRETURN ODBCQStatement::doColumns( const ODBCQFilter &stringFilter )
     
     The filter is expanded and the query is executed.
 */
-SQLRETURN ODBCQStatement::doStatistics( const ODBCQFilter &stringFilter, SQLUSMALLINT nUnique, SQLUSMALLINT nReserved )
+SQLRETURN OQStatement::doStatistics( const OQFilter &stringFilter, SQLUSMALLINT nUnique, SQLUSMALLINT nReserved )
 {
     QString stringCatalog;
     QString stringSchema;
@@ -518,7 +518,7 @@ SQLRETURN ODBCQStatement::doStatistics( const ODBCQFilter &stringFilter, SQLUSMA
     
     The filter is expanded and the query is executed.
 */
-SQLRETURN ODBCQStatement::doSpecialColumns( const ODBCQFilter &stringFilter, SQLSMALLINT nIdentifierType, SQLSMALLINT nScope, SQLSMALLINT nNullable )
+SQLRETURN OQStatement::doSpecialColumns( const OQFilter &stringFilter, SQLSMALLINT nIdentifierType, SQLSMALLINT nScope, SQLSMALLINT nNullable )
 {
     QString stringCatalog;
     QString stringSchema;
@@ -538,7 +538,7 @@ SQLRETURN ODBCQStatement::doSpecialColumns( const ODBCQFilter &stringFilter, SQL
     
     The filter is expanded and the query is executed.
 */
-SQLRETURN ODBCQStatement::doPrimaryKeys( const ODBCQFilter &stringFilter )
+SQLRETURN OQStatement::doPrimaryKeys( const OQFilter &stringFilter )
 {
     QString stringCatalog;
     QString stringSchema;
@@ -558,7 +558,7 @@ SQLRETURN ODBCQStatement::doPrimaryKeys( const ODBCQFilter &stringFilter )
     
     The filter is expanded and the query is executed.
 */
-SQLRETURN ODBCQStatement::doForeignKeys( const ODBCQFilter &stringFilter )
+SQLRETURN OQStatement::doForeignKeys( const OQFilter &stringFilter )
 {
     QString stringCatalog;
     QString stringSchema;
@@ -578,7 +578,7 @@ SQLRETURN ODBCQStatement::doForeignKeys( const ODBCQFilter &stringFilter )
     
     The filter is expanded and the query is executed.
 */
-SQLRETURN ODBCQStatement::doProcedures( const ODBCQFilter &stringFilter )
+SQLRETURN OQStatement::doProcedures( const OQFilter &stringFilter )
 {
     QString stringCatalog;
     QString stringSchema;
@@ -598,7 +598,7 @@ SQLRETURN ODBCQStatement::doProcedures( const ODBCQFilter &stringFilter )
     
     The filter is expanded and the query is executed.
 */
-SQLRETURN ODBCQStatement::doProcedureColumns( const ODBCQFilter &stringFilter )
+SQLRETURN OQStatement::doProcedureColumns( const OQFilter &stringFilter )
 {
     QString stringCatalog;
     QString stringSchema;
@@ -616,7 +616,7 @@ SQLRETURN ODBCQStatement::doProcedureColumns( const ODBCQFilter &stringFilter )
     
     [[[CATALOG.]SCHEMA.]OBJECT]
 */
-void ODBCQStatement::getParsedFilter(  const ODBCQFilter &stringFilter, QString *pstringCatalog, QString *pstringSchema, QString *pstringObject )
+void OQStatement::getParsedFilter(  const OQFilter &stringFilter, QString *pstringCatalog, QString *pstringSchema, QString *pstringObject )
 {
     *pstringCatalog = QString::null;
     *pstringSchema  = QString::null;
@@ -642,7 +642,7 @@ void ODBCQStatement::getParsedFilter(  const ODBCQFilter &stringFilter, QString 
     that the application gets some time to do things like; repaint the screen or update
     a progress dialog.
 */
-bool ODBCQStatement::doWaiting()
+bool OQStatement::doWaiting()
 {
 //    qApp->processEvents();
 
@@ -656,13 +656,13 @@ bool ODBCQStatement::doWaiting()
     
     Executes the given statement.
 */
-SQLRETURN ODBCQStatement::slotExecute( const QString &stringSQL )
+SQLRETURN OQStatement::slotExecute( const QString &stringSQL )
 {
     SQLRETURN nReturn;
      
     // Use doPrepare or call doExecDirect ???? There would seem to be diff parse logic in some drivers (i.e. DB2) re. multi-statements and comments
 
-    nReturn = doPrepare( ODBCQFromQString(stringSQL), SQL_NTS );
+    nReturn = doPrepare( OQFromQString(stringSQL), SQL_NTS );
 
     if ( !SQL_SUCCEEDED( nReturn ) )
         return nReturn;
@@ -672,12 +672,12 @@ SQLRETURN ODBCQStatement::slotExecute( const QString &stringSQL )
     return nReturn;
 }
 
-void ODBCQStatement::eventMessage( ODBCMessage Message )
+void OQStatement::eventMessage( ODBCMessage Message )
 {
     emit signalMessage( Message );
 }
 
-void ODBCQStatement::eventDiagnostic()
+void OQStatement::eventDiagnostic()
 {
     emit signalDiagnostic( ODBCDiagnostic( this ) );
 }

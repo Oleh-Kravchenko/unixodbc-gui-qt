@@ -1,13 +1,13 @@
-#ifndef ODBCQCONSOLE_H
-#define ODBCQCONSOLE_H
+#ifndef OQCONSOLE_H
+#define OQCONSOLE_H
 
 #include <ODBCConsole.h>
 
-class ODBCQConsole : public ODBCConsole
+class OQConsole : public ODBCConsole
 {
 public:
-    explicit ODBCQConsole();
-    virtual ~ODBCQConsole();
+    explicit OQConsole();
+    virtual ~OQConsole();
 
 };
 
