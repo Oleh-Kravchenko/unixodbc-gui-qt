@@ -1,106 +1,89 @@
-libodbcqg4_la_LDFLAGS = \
+libodbc_OQG4_la_LDFLAGS = \
 	-version-info @LIB_VERSION@ \
 	-export-dynamic
 
-if QT4
-
-lib_LTLIBRARIES = libodbcqg4.la 
+lib_LTLIBRARIES = libodbc_OQG4.la 
 
 INCLUDES = \
 	-I@top_srcdir@/include \
 	-I../include \
-	-I../../CPP/include \
 	-I../../QtCore4/include \
 	$(QT_CXXFLAGS) \
 	-DTHEPREFIX=\"@prefix@\" \
 	-DSYSTEM_FILE_PATH=\"@sysconfdir@\" \
 	-DDEFLIB_PATH=\"@libdir@\" \
-	-DSHLIBEXT=\"@SHLIBEXT@\" \
-	$(LTDLINCL)
+	-DSHLIBEXT=\"@SHLIBEXT@\"
 
-libodbcqg4_la_LIBADD = \
+#	$(LTDLINCL)
+
+libodbc_OQG4_la_LIBADD = \
 	$(QT_LDFLAGS) \
 	$(QT_LIBS) \
-	../../../DriverManager/libodbc.la \
-	../../../odbcinst/libodbcinst.la  \
-	../../CPP/Library/libodbc_CPP.la \
-	../../QtCore4/Library/libodbc_OQ.la 
+	-lodbc -lodbcinst \
+	-lodbc_CPP \
+	../../QtCore4/Library/libodbc_OQ4.la 
 
-libodbcqg4_la_DEPENDENCIES = \
-	../../../DriverManager/libodbc.la \
-	../../../odbcinst/libodbcinst.la \
-	../../CPP/Library/libodbc_CPP.la \
-	../../QtCore4/Library/libodbc_OQ.la 
+libodbc_OQG4_la_DEPENDENCIES = \
+	../../QtCore4/Library/libodbc_OQ4.la 
 
 CLEANFILES = \
-	mODBCQGConnection.cpp \
-	mODBCQGEnvironment.cpp \
-	mODBCQGLogin.cpp \
-	mODBCQGMessageOutput.cpp \
-	mODBCQGPropertiesDelegate.cpp \
-	mODBCQGPropertiesDialog.cpp \
-	mODBCQGStatement.cpp \
-	mODBCQGSystem.cpp
+	mOQGConnection.cpp \
+	mOQGEnvironment.cpp \
+	mOQGLogin.cpp \
+	mOQGMessageOutput.cpp \
+	mOQGPropertiesDelegate.cpp \
+	mOQGPropertiesDialog.cpp \
+	mOQGStatement.cpp \
+	mOQGSystem.cpp
 
-libodbcqg4_la_SOURCES = \
-	ODBCQGConnection.cpp \
-	ODBCQGEnvironment.cpp \
-	ODBCQGLogin.cpp \
-	ODBCQGMessageOutput.cpp \
-	ODBCQGProperty.cpp \
-	ODBCQGPropertiesDelegate.cpp \
-	ODBCQGPropertiesDialog.cpp \
-	ODBCQGPropertiesModel.cpp \
-	ODBCQGStatement.cpp \
-	ODBCQGSystem.cpp \
-	mODBCQGConnection.cpp \
-	mODBCQGEnvironment.cpp \
-	mODBCQGLogin.cpp \
-	mODBCQGMessageOutput.cpp \
-	mODBCQGPropertiesDelegate.cpp \
-	mODBCQGPropertiesDialog.cpp \
-	mODBCQGStatement.cpp \
-	mODBCQGSystem.cpp
+libodbc_OQG4_la_SOURCES = \
+	OQGConnection.cpp \
+	OQGEnvironment.cpp \
+	OQGLogin.cpp \
+	OQGMessageOutput.cpp \
+	OQGProperty.cpp \
+	OQGPropertiesDelegate.cpp \
+	OQGPropertiesDialog.cpp \
+	OQGPropertiesModel.cpp \
+	OQGStatement.cpp \
+	OQGSystem.cpp \
+	mOQGConnection.cpp \
+	mOQGEnvironment.cpp \
+	mOQGLogin.cpp \
+	mOQGMessageOutput.cpp \
+	mOQGPropertiesDelegate.cpp \
+	mOQGPropertiesDialog.cpp \
+	mOQGStatement.cpp \
+	mOQGSystem.cpp
 
-mODBCQGConnection.cpp: @srcdir@/../include/ODBCQGConnection.h
-	@MOC@ @srcdir@/../include/ODBCQGConnection.h -o mODBCQGConnection.cpp
+mOQGConnection.cpp: @srcdir@/../include/OQGConnection.h
+	@MOC@ @srcdir@/../include/OQGConnection.h -o mOQGConnection.cpp
 
-mODBCQGEnvironment.cpp: @srcdir@/../include/ODBCQGEnvironment.h
-	@MOC@ @srcdir@/../include/ODBCQGEnvironment.h -o mODBCQGEnvironment.cpp
+mOQGEnvironment.cpp: @srcdir@/../include/OQGEnvironment.h
+	@MOC@ @srcdir@/../include/OQGEnvironment.h -o mOQGEnvironment.cpp
 
-mODBCQGLogin.cpp: @srcdir@/../include/ODBCQGLogin.h
-	@MOC@ @srcdir@/../include/ODBCQGLogin.h -o mODBCQGLogin.cpp
+mOQGLogin.cpp: @srcdir@/../include/OQGLogin.h
+	@MOC@ @srcdir@/../include/OQGLogin.h -o mOQGLogin.cpp
 
-mODBCQGMessageOutput.cpp: @srcdir@/../include/ODBCQGMessageOutput.h
-	@MOC@ @srcdir@/../include/ODBCQGMessageOutput.h -o mODBCQGMessageOutput.cpp
+mOQGMessageOutput.cpp: @srcdir@/../include/OQGMessageOutput.h
+	@MOC@ @srcdir@/../include/OQGMessageOutput.h -o mOQGMessageOutput.cpp
 
-mODBCQGPropertiesDelegate.cpp: @srcdir@/../include/ODBCQGPropertiesDelegate.h
-	@MOC@ @srcdir@/../include/ODBCQGPropertiesDelegate.h -o mODBCQGPropertiesDelegate.cpp
+mOQGPropertiesDelegate.cpp: @srcdir@/../include/OQGPropertiesDelegate.h
+	@MOC@ @srcdir@/../include/OQGPropertiesDelegate.h -o mOQGPropertiesDelegate.cpp
 
-mODBCQGPropertiesDialog.cpp: @srcdir@/../include/ODBCQGPropertiesDialog.h
-	@MOC@ @srcdir@/../include/ODBCQGPropertiesDialog.h -o mODBCQGPropertiesDialog.cpp
+mOQGPropertiesDialog.cpp: @srcdir@/../include/OQGPropertiesDialog.h
+	@MOC@ @srcdir@/../include/OQGPropertiesDialog.h -o mOQGPropertiesDialog.cpp
 
-mODBCQGStatement.cpp: @srcdir@/../include/ODBCQGStatement.h
-	@MOC@ @srcdir@/../include/ODBCQGStatement.h -o mODBCQGStatement.cpp
+mOQGStatement.cpp: @srcdir@/../include/OQGStatement.h
+	@MOC@ @srcdir@/../include/OQGStatement.h -o mOQGStatement.cpp
 
-mODBCQGSystem.cpp: @srcdir@/../include/ODBCQGSystem.h
-	@MOC@ @srcdir@/../include/ODBCQGSystem.h -o mODBCQGSystem.cpp
+mOQGSystem.cpp: @srcdir@/../include/OQGSystem.h
+	@MOC@ @srcdir@/../include/OQGSystem.h -o mOQGSystem.cpp
 
 EXTRA_DIST = \
-	../include/ODBCQGConnection.h \
-	../include/ODBCQGEnvironment.h \
-	../include/ODBCQGLogin.h \
-	../include/ODBCQGMessageOutput.h \
-	../include/ODBCQGProperty.h \
-	../include/ODBCQGPropertiesDelegate.h \
-	../include/ODBCQGPropertiesDialog.h \
-	../include/ODBCQGPropertiesModel.h \
-	../include/ODBCQGStatement.h \
 	Error16.xpm \
 	Information16.xpm \
 	Warning16.xpm \
 	ODBC64.xpm
-
-endif
 
 

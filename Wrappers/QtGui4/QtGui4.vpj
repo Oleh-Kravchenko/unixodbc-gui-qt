@@ -53,10 +53,32 @@
 			Name="Source Files"
 			Filters="*.c;*.C;*.cc;*.cpp;*.cp;*.cxx;*.prg;*.pas;*.dpr;*.asm;*.s;*.bas;*.java;*.cs;*.sc;*.e;*.cob;*.html;*.rc;*.tcl;*.py;*.pl">
 			<F N="Application/main.cpp"/>
+			<F N="Library/OQGConnection.cpp"/>
+			<F N="Application/OQGConsole.cpp"/>
+			<F N="Library/OQGEnvironment.cpp"/>
+			<F N="Library/OQGLogin.cpp"/>
+			<F N="Library/OQGMessageOutput.cpp"/>
+			<F N="Library/OQGPropertiesDelegate.cpp"/>
+			<F N="Library/OQGPropertiesDialog.cpp"/>
+			<F N="Library/OQGPropertiesModel.cpp"/>
+			<F N="Library/OQGProperty.cpp"/>
+			<F N="Library/OQGStatement.cpp"/>
+			<F N="Library/OQGSystem.cpp"/>
 		</Folder>
 		<Folder
 			Name="Header Files"
 			Filters="*.h;*.H;*.hh;*.hpp;*.hxx;*.inc;*.sh;*.cpy;*.if">
+			<F N="include/ODGPropertiesDelegate.h"/>
+			<F N="include/OQGConnection.h"/>
+			<F N="Application/OQGConsole.h"/>
+			<F N="include/OQGEnvironment.h"/>
+			<F N="include/OQGLogin.h"/>
+			<F N="include/OQGMessageOutput.h"/>
+			<F N="include/OQGPropertiesDialog.h"/>
+			<F N="include/OQGPropertiesModel.h"/>
+			<F N="include/OQGProperty.h"/>
+			<F N="include/OQGStatement.h"/>
+			<F N="include/OQGSystem.h"/>
 		</Folder>
 		<Folder
 			Name="Resource Files"
@@ -76,8 +98,10 @@
 			<F N="Library/Library.pro"/>
 			<F N="Makefile.am"/>
 			<F N="Application/Makefile.am"/>
+			<F N="include/Makefile.am"/>
 			<F N="Library/Makefile.am"/>
 			<F N="Application/ODBC64.xpm"/>
+			<F N="Library/ODBC64.xpm"/>
 			<F N="QtGui4.pro"/>
 			<F N="Application/Stop16.xpm"/>
 			<F N="Library/Warning16.xpm"/>
