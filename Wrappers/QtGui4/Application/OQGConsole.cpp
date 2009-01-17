@@ -7,7 +7,7 @@
  * \date    2007
  * \license Copyright unixODBC-GUI-Qt Project 2003-2009, LGPL
  */
-#include "odbcqg.h"
+#include "OQGConsole.h"
 
 #include "Execute16.xpm"
 #include "Connected16.xpm"
@@ -15,11 +15,11 @@
 #include "ODBC64.xpm"
 
 
-odbcqg::odbcqg()
+OQGConsole::OQGConsole()
     : QMainWindow( 0 /*, WDestructiveClose */ )
 {
     // init our gui elements...
-    setWindowTitle( "odbcqg" );
+    setWindowTitle( "OQGConsole" );
     setWindowIcon( QIcon( xpmODBC64 ) );
     createHandles();
     createActions();
@@ -34,7 +34,7 @@ odbcqg::odbcqg()
 
 }
 
-odbcqg::~odbcqg()
+OQGConsole::~OQGConsole()
 {
     // we could just delete pSystem and let QObject destructor cleanup but lets do it explicitly
     if ( pStatement ) delete pStatement;
@@ -43,7 +43,7 @@ odbcqg::~odbcqg()
     if ( pSystem  ) delete pSystem;
 }
 
-void odbcqg::createHandles()
+void OQGConsole::createHandles()
 {
     pSystem         = new OQGSystem();
 //    connect( pSystem, SIGNAL(signalMessage(ODBCMessage)), this, SLOT(slotMessage(ODBCMessage)) );
@@ -59,7 +59,7 @@ void odbcqg::createHandles()
     connect( pStatement, SIGNAL(signalResults(OQStatement*)), this, SLOT(slotResults(OQStatement*)) );
 }
 
-void odbcqg::createActions()
+void OQGConsole::createActions()
 {
     pactionExecute = new QAction( QIcon( xpmExecute16 ), "&Execute", this );
     pactionExecute->setShortcut( tr( "Ctrl+E" ) );
@@ -80,7 +80,7 @@ void odbcqg::createActions()
     connect( pactionAbout, SIGNAL(triggered()), this, SLOT(slotAbout()) );
 }
 
-void odbcqg::createMenus()
+void OQGConsole::createMenus()
 {
     pmenuFile = menuBar()->addMenu( tr( "&File" ) );
     pmenuFile->addAction( pactionExecute );
@@ -95,7 +95,7 @@ void odbcqg::createMenus()
     pmenuHelp->addAction( pactionAbout );
 }
 
-void odbcqg::createToolBars()
+void OQGConsole::createToolBars()
 {
     ptoolbarFile = addToolBar(tr("File"));
     ptoolbarFile->addAction( pactionExecute );
@@ -104,12 +104,12 @@ void odbcqg::createToolBars()
     ptoolbarDataSource->addAction( pactionConnect );
 }
 
-void odbcqg::createStatusBar()
+void OQGConsole::createStatusBar()
 {
     statusBar()->showMessage( tr( "Ready" ) );
 }
 
-void odbcqg::createClientArea()
+void OQGConsole::createClientArea()
 {
     pSplitter           = new QSplitter( Qt::Vertical, this );          
     ptexteditSQL        = new QTextEdit( pSplitter );
@@ -120,7 +120,7 @@ void odbcqg::createClientArea()
     resize( 450, 600 );
 }
 
-void odbcqg::slotConnectToggle()
+void OQGConsole::slotConnectToggle()
 {
     if ( pConnection->isConnected() )
         pConnection->doDisconnect();
@@ -128,17 +128,17 @@ void odbcqg::slotConnectToggle()
         pConnection->doConnect( this );
 }
 
-void odbcqg::slotConnected()
+void OQGConsole::slotConnected()
 {
     pactionConnect->setIcon( QIcon( xpmConnected16 ) );
 }
 
-void odbcqg::slotDisconnected()
+void OQGConsole::slotDisconnected()
 {
     pactionConnect->setIcon( QIcon( xpmDisconnected16 ) );
 }
 
-void odbcqg::slotExecute() 
+void OQGConsole::slotExecute() 
 {
     // remove table items...
     ptablewidgetResults->clear();
@@ -150,17 +150,17 @@ void odbcqg::slotExecute()
     pStatement->slotExecute( ptexteditSQL->toPlainText() );
 }
 
-void odbcqg::slotResults( OQStatement * ) 
+void OQGConsole::slotResults( OQStatement * ) 
 {
     doResultGUIGrid();
 }
 
-void odbcqg::slotMessage( ODBCMessage Message ) 
+void OQGConsole::slotMessage( ODBCMessage Message ) 
 {
     ptexteditMessages->append( OQToQString( Message.getText() ) );
 }
 
-void odbcqg::doResultGUIGrid()
+void OQGConsole::doResultGUIGrid()
 {
     SWORD       nCols;
 
@@ -181,7 +181,7 @@ void odbcqg::doResultGUIGrid()
         doResultGUIGridBody( nCols );
 }
 
-void odbcqg::doResultGUIGridHeader( SWORD nColumns )
+void OQGConsole::doResultGUIGridHeader( SWORD nColumns )
 {
 	int			nCol;
 	SQLCHAR		szColumnName[101]	= "";	
@@ -196,7 +196,7 @@ void odbcqg::doResultGUIGridHeader( SWORD nColumns )
     ptablewidgetResults->setHorizontalHeaderLabels( stringlistHeaderLabels );
 }
 
-void odbcqg::doResultGUIGridBody( SWORD nColumns )
+void OQGConsole::doResultGUIGridBody( SWORD nColumns )
 {
     SQLRETURN      	nReturn             = 0;
     SQLINTEGER      nRow                = 0;

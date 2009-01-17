@@ -7,28 +7,26 @@
  * \date    2007
  * \license Copyright unixODBC-GUI-Qt Project 2003-2009, LGPL
  */
-#ifndef OQG_H
-#define OQG_H
-
+#pragma once
 
 // qt
 #include <QtGui>
 
-// odbc_CPP
+// CPP
 #include <ODBCMessage.h>
 
-// odbcqg
+// OQG
 #include <OQGSystem.h>
 #include <OQGEnvironment.h>
 #include <OQGConnection.h>
 #include <OQGStatement.h>
 
-class odbcqg : public QMainWindow
+class OQGConsole : public QMainWindow
 { 
     Q_OBJECT
 public:
-	explicit odbcqg();
-	~odbcqg();
+	explicit OQGConsole();
+	~OQGConsole();
 
 protected:
     OQGSystem *      pSystem;
@@ -73,5 +71,4 @@ protected slots:
     void slotMessage( ODBCMessage Message );
 };
 
-#endif
 
