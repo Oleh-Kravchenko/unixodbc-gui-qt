@@ -11,5 +11,6 @@
 		<Project File="Wrappers/QtCore4/QtCore4.vpj" />
 		<Project File="Wrappers/QtGui4/QtGui4.vpj" />
 		<Project File="unixODBC-GUI-Qt.vpj" />
+		<Project File="Wrappers/Wrappers.vpj" />
 	</Projects>
 </Workspace>

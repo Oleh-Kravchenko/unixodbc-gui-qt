@@ -14,7 +14,7 @@
 # export UNIXODBC_DIR=/usr
 # export UNIXODBC_LIBDIR=$UNIXODBC_DIR/lib64
 #
-# Install unixODBC-Test (do not build it yet) and set the
+# Get unixODBC-Test (do not build it yet) and set the
 # following environment variable to tell us where it is;
 #
 # export UNIXODBC_TEST_SRC=~/unixodbc-test/trunk
@@ -28,10 +28,15 @@
 # MS'ism
 # ------
 #
-# Install unixODBC-Test (do not build it yet) and set the
+# Get unixODBC-Test (do not build it yet) and set the
 # following environment variable to tell us where it is;
 #
 # SET UNIXODBC_TEST_SRC=C:/unixodbc-test/trunk
+#
+# Get & Build unixODBC-CPP and set the following environment 
+# variable to tell us where it is;
+#
+# SET UNIXODBC_CPP=C:/unixODBC-CPP/ODBC++
 #
 # Build This
 # 
@@ -50,7 +55,8 @@ win32 {
 
 	SUBDIRS	= \
 		gtrtstQ4 \
-		ODBCTestQ4
+		ODBCTestQ4 \
+                Wrappers
 }
 
 # #########################################################
@@ -63,7 +69,8 @@ unix {
 		gtrtstQ4 \
 		ODBCCreateDataSourceQ4 \
 		ODBCManageDataSourcesQ4 \
-		ODBCTestQ4
+		ODBCTestQ4 \
+                Wrappers
 }
 
 # #########################################################

@@ -33,7 +33,7 @@ Requirements:
 Make & Install:
 
 	The qmake project files have .pro & .pri extensions. You
-	should read the root pro file - unixODBC-GUI-Qt.pro as it
+	should read the root pro file (unixODBC-GUI-Qt.pro) as it
 	has some details on building using qmake.
 
 ---------------------------------------------------------------

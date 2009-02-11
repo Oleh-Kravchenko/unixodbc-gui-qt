@@ -6,10 +6,16 @@
 #
 
 #
-# unixODBC-Test sources must be installed so we can access autotest.h - unixODBC-Test
+# unixODBC-Test sources must be available so we can access autotest.h. unixODBC-Test
 # does not have to be built yet. This is needed for, at least, ODBCTestQ4.
 #
 INCLUDEPATH	+= $(UNIXODBC_TEST_SRC)/AutoTests/include
+
+#
+# unixODBC-CPP must be built (for the Wrappers). Here we bring them into our build.
+#
+INCLUDEPATH	+= $(UNIXODBC_CPP)/include 
+LIBS		+= -L$(UNIXODBC_CPP)/lib
 
 # #########################################################
 # WIN32
