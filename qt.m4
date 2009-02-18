@@ -31,8 +31,8 @@ AC_DEFUN([FUN_CHECK_QT],
   AC_REQUIRE([AC_PATH_XTRA])
 
   # some 'precious' variables for configure --help
-  AC_ARG_VAR(QTMIN, minimum version of Qt to search for  e.g. export QTMIN=020400)
-  AC_ARG_VAR(QTMAX, maximum version of Qt to search for  e.g. export QTMAX=030305)
+  AC_ARG_VAR(QTMIN, minimum version of Qt to search for  e.g. export QTMIN=040000)
+  AC_ARG_VAR(QTMAX, maximum version of Qt to search for  e.g. export QTMAX=050000)
   AC_ARG_VAR(MOC, QT meta object compiler command)
   AC_ARG_VAR(UIC, Qt UI compiler command)
 
@@ -149,7 +149,7 @@ AC_DEFUN([FUN_QT_HEADERS],
     qt_prev_version=$qt_min_version
     for n in $qt_found_dirs ; do
 
-AC_MSG_NOTICE([Checking dir $n])
+    AC_MSG_NOTICE([Checking dir $n])
       FUN_QT_VERSION($n)	
 
       if expr $qt_current_version '>=' $qt_prev_version > /dev/null ; then
@@ -166,7 +166,7 @@ AC_MSG_NOTICE([Checking dir $n])
 
   if test "x$qt_includes" = "x" ; then
     AC_MSG_RESULT([no])
-    AC_MSG_ERROR([cannot find correct Qt headers!, consider adding --enable-gui=no to configure arguments])
+    AC_MSG_ERROR([cannot find correct Qt headers!])
   else
     # Ensure we have a version...
     if test "x$qt_found_version" = "x" ; then
@@ -175,7 +175,7 @@ AC_MSG_NOTICE([Checking dir $n])
     fi
     if test "x$qt_found_version" = "x" ; then
       AC_MSG_RESULT([no])
-      AC_MSG_ERROR([cannot find version of Qt!, consider adding --enable-gui=no to configure arguments])
+      AC_MSG_ERROR([cannot find version of Qt!])
     fi
 
     AC_MSG_RESULT([$qt_includes])
@@ -190,20 +190,13 @@ AC_MSG_NOTICE([Checking dir $n])
 
     dnl TODO need to strip out white space
     QTVERSION=$qt_found_version;
-	AC_MSG_CHECKING([include layout])
-  	if test "x$qt_v4_include" = "xy" ; then
-    	AC_MSG_RESULT([v4 layout])
-    	AC_DEFINE(QT_V4LAYOUT)
-# Lets get rid of qt3support in favour of pure qt4 - PAH
-#    	AC_DEFINE(QT3_SUPPORT)
-#		MOCDEFS="-DQT3_SUPPORT"
-#		AC_SUBST(MOCDEFS)
-		have_qt4="yes"
-	else
-		MOCDEFS=""
-		AC_SUBST(MOCDEFS)
-    	AC_MSG_RESULT([standard layout])
-	fi
+    AC_MSG_CHECKING([include])
+    if test "x$qt_v4_include" = "xy" ; then
+      have_qt4="yes"
+    else
+      MOCDEFS=""
+      AC_SUBST(MOCDEFS)
+    fi
   fi
 ])#FUN_QT_HEADERS
 
@@ -216,12 +209,12 @@ AC_DEFUN([FUN_QT_VERSION],
   dnl the 2x versions need the extra sed 
   if test -r "$1/qglobal.h"; then
     qt_current_version=`grep -w '#define QT_VERSION' "$1"/qglobal.h | grep -v '#define QT_VERSION_STR' |
-      sed s/'#define QT_VERSION 0x'// | sed s/'#define QT_VERSION'//`
+    sed s/'#define QT_VERSION 0x'// | sed s/'#define QT_VERSION'//`
   else
     if test -r "$1/Qt/qglobal.h"; then
 # if test "x$qt_current_version" = "x" ; then
       qt_current_version=`grep -w '#define QT_VERSION' "$1"/Qt/qglobal.h | grep -v '#define QT_VERSION_STR' |
-        sed s/'#define QT_VERSION 0x'// | sed s/'#define QT_VERSION'//`
+      sed s/'#define QT_VERSION 0x'// | sed s/'#define QT_VERSION'//`
     fi
   fi
 ])#FUN_QT_VERSION
@@ -236,68 +229,16 @@ AC_DEFUN([FUN_QT_LIBRARIES],
 
   AC_MSG_CHECKING([for Qt libraries])
 
-  # Ensure we have the lib dir...
-  if test "x$qt_libraries" = "x" ; then
-    # see if it is relative to the includes
-    qt_tree="$qt_includes"
-
-	#
-	# the cygwin dirhame only strips up to the first /
-	#
-
-	case $host_os in
-	  cygwin*) empty_dir="x/" ;;
-	  *) empty_dir="x" ;;
-	esac
-
-    while test "x$qt_tree" != $empty_dir ; do
-      # first go around will fail...
-      if expr "$QTVERSION" '>=' "040000" > /dev/null ; then
-        if ls $qt_tree/lib/libQt* > /dev/null 2> /dev/null ; then
-          qt_libraries=$qt_tree/lib
-          break
-        else
-          # lop off tail of path
-          dnl not as portable as it should be...
-          qt_tree="`dirname $qt_tree`"
-	fi
-      else
-        if ls $qt_tree/lib/libqt* > /dev/null 2> /dev/null ; then
-          qt_libraries=$qt_tree/lib
-          break
-        else
-          # lop off tail of path
-          dnl not as portable as it should be...
-          qt_tree="`dirname $qt_tree`"
-	fi
-      fi
-    done
-  fi  
-
-  # Use QTVERSION and gotthread to set libs we need...
-  if expr "$QTVERSION" '>=' "040000" > /dev/null ; then
-    qt_libs="-lQtGui -lQtCore -lQtAssistantClient -lQtNetwork"
-  else
-    if test "x$gotthread" = "xyes" ; then
-      try="ls -1 $qt_libraries/libqt-mt*"
-      if test=`eval $try 2> /dev/null`; then
-        qt_libs="-lqt-mt"
-      else
-        qt_libs="-lqt"
-      fi
-    else
-      qt_libs="-lqt"
-    fi
-  fi
+  qt_libs="-lQtGui -lQtCore -lQtAssistantClient -lQtNetwork"
 
   # Return...
   if test "x$qt_libraries" = "x" ; then
-    AC_MSG_RESULT([no])
-    AC_MSG_ERROR([cannot find Qt libraries!, consider adding --enable-gui=no to configure arguments])
+    AC_MSG_RESULT([no (try specifying with --with-qt-libraries or try a different value)])
+    AC_MSG_ERROR([cannot find Qt libraries!])
   else
-    AC_MSG_RESULT([$qt_libraries])
-	AC_CHECK_FILE([$qt_includes/QtGui/QWizard], [have_qtwizard=yes], [have_qtwizard=no])
-	AC_CHECK_FILE([$qt_includes/QtGui/QMdiArea], [have_qtmdiarea=yes], [have_qtmdiarea=no])
+    AC_MSG_RESULT([yes ($qt_libraries)])
+    AC_CHECK_FILE([$qt_includes/QtGui/QWizard], [have_qtwizard=yes], [have_qtwizard=no])
+    AC_CHECK_FILE([$qt_includes/QtGui/QMdiArea], [have_qtmdiarea=yes], [have_qtmdiarea=no])
   fi
 ])#FUN_QT_LIBRARIES
 
@@ -330,7 +271,7 @@ AC_DEFUN([FUN_QT_PROGRAMS],
 
   if test "x$qt_programs" = "x" ; then
     AC_MSG_RESULT([no])
-    AC_MSG_ERROR([cannot find Qt utilities!, consider adding --enable-gui=no to configure arguments])
+    AC_MSG_ERROR([cannot find Qt utilities!])
   else
     AC_MSG_RESULT([$qt_programs])
     # find the right moc
@@ -356,7 +297,7 @@ AC_DEFUN([FUN_QT_PROGRAMS],
       fi
       if test "x$MOC" = "x" ; then
         AC_MSG_RESULT([no])
-        AC_MSG_ERROR([cannot find Qt meta object compiler!, consider adding --enable-gui=no to configure arguments])
+        AC_MSG_ERROR([cannot find Qt meta object compiler!])
       fi
     fi
 
@@ -442,8 +383,6 @@ AC_MSG_NOTICE([X_LIBS=$X_LIBS])
     AC_MSG_RESULT([yes])
   else
     AC_MSG_RESULT([no])
-# We do not want to force everything to stop because we do not have 
-# qt - let caller decide what to do.
-#    AC_MSG_ERROR([cannot compile a Qt program!])
+    AC_MSG_ERROR([cannot compile a Qt program!])
   fi
 ])#FUN_QT_COMPILE
