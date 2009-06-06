@@ -57,7 +57,7 @@ CAbout::CAbout( QWidget *pwidgetParent )
         QTextBrowser *  ptextbrowser    = new QTextBrowser( pwidget );
 
         playout->addWidget( ptextbrowser );
-        ptextbrowser->setHtml( "<P><B>Peter Harvey</B> (current project lead). Many others have contributed.</P><P>Please see the <B>AUTHORS</B> file in the source distribution for more information.</P>" );
+        ptextbrowser->setHtml( "<P><B>Peter Harvey</B> (current project lead). Many others have contributed to unixODBC-GUI-Qt.</P><P>Please see the <B>AUTHORS</B> file in the source distribution for more information.</P>" );
         addTab( pwidget, tr( "People" ) );
     }
 
@@ -68,7 +68,7 @@ CAbout::CAbout( QWidget *pwidgetParent )
         QTextBrowser *  ptextbrowser    = new QTextBrowser( pwidget );
 
         playout->addWidget( ptextbrowser );
-        ptextbrowser->setHtml( "<P>unixODBC is Open Source and licensed under GPL and LGPL. Those developing commercial software can safely build upon unixODBC without having to worry about additional licensing and cost issues.</P><P>The unixODBC source includes a copy of the relevant license information in the <B>COPYING</B> file.</P>" );
+        ptextbrowser->setHtml( "<P>unixODBC-GUI-Qt is Open Source and licensed under GPL and LGPL. Those developing commercial software can safely build upon unixODBC-GUI-Qt without having to worry about additional licensing and cost issues.</P><P>The source includes a copy of the relevant license information in the <B>COPYING</B> file.</P>" );
         addTab( pwidget, tr( "License" ) );
     }
 

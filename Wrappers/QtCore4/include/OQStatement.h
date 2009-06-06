@@ -68,6 +68,7 @@ public:
     virtual SQLRETURN doTypeInfo( SQLSMALLINT nDataType = SQL_ALL_TYPES );
 
     // to support QString
+    virtual SQLRETURN doDataString( SQLUSMALLINT nColumnNumber, QString *pstring );
     virtual SQLRETURN doExecDirect( const QString &stringStatement );
     virtual SQLRETURN doCatalogs( const QString &stringCatalogName );
     virtual SQLRETURN doSchemas( const QString &stringCatalogName, const QString &stringSchemaName = QString::null );
@@ -97,10 +98,10 @@ public:
     virtual bool doWaiting();
 
 signals:
-    void signalMessage( ODBCMessage Message );
-    void signalDiagnostic( ODBCDiagnostic Diagnostic );
-    void signalElapsedSeconds( double nElapsedSeconds );
-    void signalResults( OQStatement *pstatement );
+    virtual void signalMessage( ODBCMessage Message );
+    virtual void signalDiagnostic( ODBCDiagnostic Diagnostic );
+    virtual void signalElapsedSeconds( double nElapsedSeconds );
+    virtual void signalResults( OQStatement *pstatement );
 
 public slots:
     SQLRETURN slotExecute( const QString &stringSQL );

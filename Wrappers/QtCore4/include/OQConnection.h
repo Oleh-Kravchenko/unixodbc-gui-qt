@@ -83,10 +83,10 @@ public:
     virtual SQLRETURN doDriverConnect( SQLHWND hWnd, const QString &stringIn, QString *pstringOut, SQLUSMALLINT nPrompt );
 
 signals:
-    void signalMessage( ODBCMessage Message );
-    void signalDiagnostic( ODBCDiagnostic Diagnostic );
-    void signalConnected();
-    void signalDisconnected();
+    virtual void signalMessage( ODBCMessage Message );
+    virtual void signalDiagnostic( ODBCDiagnostic Diagnostic );
+    virtual void signalConnected();
+    virtual void signalDisconnected();
 
 protected:
     // Used by doConnect() and doBrowseConnect()

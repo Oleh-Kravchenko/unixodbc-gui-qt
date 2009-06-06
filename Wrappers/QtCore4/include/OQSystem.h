@@ -64,9 +64,9 @@ public:
     virtual BOOL doManageDataSources( HWND hWnd );    
 
 signals:
-    void signalMessage( ODBCMessage Message );
-    void signalDiagnostic( ODBCDiagnostic Diagnostic );
-    void signalInstallerError( ODBCSystemError SystemError );
+    virtual void signalMessage( ODBCMessage Message );
+    virtual void signalDiagnostic( ODBCDiagnostic Diagnostic );
+    virtual void signalInstallerError( ODBCSystemError SystemError );
 
 protected:
     void eventError();

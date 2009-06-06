@@ -43,8 +43,8 @@ public:
     virtual QStringList getDataSources( bool bUser = true, bool bSystem = true, SQLRETURN *pnReturn = NULL );
 
 signals:
-    void signalMessage( ODBCMessage Message );
-    void signalDiagnostic( ODBCDiagnostic Diagnostic );
+    virtual void signalMessage( ODBCMessage Message );
+    virtual void signalDiagnostic( ODBCDiagnostic Diagnostic );
 
 protected:
     virtual void eventMessage( ODBCMessage Message );

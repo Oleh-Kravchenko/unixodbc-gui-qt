@@ -11,9 +11,9 @@ INCLUDES = \
 	$(QT_CXXFLAGS) \
 	-DTHEPREFIX=\"@prefix@\" \
 	-DSYSTEM_FILE_PATH=\"@sysconfdir@\" \
-	-DDEFLIB_PATH=\"@libdir@\" \
-	-DSHLIBEXT=\"@SHLIBEXT@\"
+	-DDEFLIB_PATH=\"@libdir@\"
 
+#	-DSHLIBEXT=\"@SHLIBEXT@\"
 #	$(LTDLINCL)
 
 libodbc_OQG4_la_LIBADD = \

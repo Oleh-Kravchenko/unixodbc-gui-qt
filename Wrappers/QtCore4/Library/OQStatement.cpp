@@ -41,6 +41,24 @@ SQLRETURN OQStatement::doExecute()
     return nReturn;
 }
 
+SQLRETURN OQStatement::doDataString( SQLUSMALLINT nColumnNumber, QString *pstring )
+{
+    ODBCVariant variant( ODBCVariant::Char );
+    SQLRETURN   nReturn = ODBCStatement::doData( nColumnNumber, &variant, true );
+    if ( SQL_SUCCEEDED( nReturn ) )
+    {
+        emit signalElapsedSeconds( nElapsedSeconds );
+        emit signalResults( this );
+    }
+
+    if ( variant.isNull() )
+        *pstring = QString::null;
+    else
+        *pstring = (char*)(variant.getBuffer());
+
+    return nReturn;
+}
+
 /*!
     getExecDirect
     
@@ -668,20 +686,17 @@ SQLRETURN OQStatement::slotExecute( const QString &stringSQL )
         return nReturn;
 
     nReturn = doExecute();
-printf( "[PAH][%s][%d][%s] (%d)\n", __FILE__, __LINE__, __FUNCTION__, nReturn );
 
     return nReturn;
 }
 
 void OQStatement::eventMessage( ODBCMessage Message )
 {
-printf( "[PAH][%s][%d][%s]\n", __FILE__, __LINE__, __FUNCTION__ );
     emit signalMessage( Message );
 }
 
 void OQStatement::eventDiagnostic()
 {
-printf( "[PAH][%s][%d][%s]\n", __FILE__, __LINE__, __FUNCTION__ );
     emit signalDiagnostic( ODBCDiagnostic( this ) );
 }
 
