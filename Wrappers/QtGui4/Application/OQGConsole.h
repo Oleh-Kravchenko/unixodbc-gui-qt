@@ -12,9 +12,6 @@
 // qt
 #include <QtGui>
 
-// CPP
-#include <ODBCMessage.h>
-
 // OQG
 #include <OQGSystem.h>
 #include <OQGEnvironment.h>
@@ -68,7 +65,8 @@ protected slots:
     void slotDisconnected();
     void slotExecute();
     void slotResults( OQStatement *pStatement );
-    void slotMessage( ODBCMessage Message );
+    void slotMessage( OQMessage Message );
+    void slotAbout();
 };
 
 

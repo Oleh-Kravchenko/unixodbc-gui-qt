@@ -9,7 +9,7 @@
  */
 #include "../include/OQGLogin.h"
 
-#include <ODBCMessage.h>
+#include <OQMessage.h>
 
 #include "../include/OQGEnvironment.h"
 #include "../include/OQGMessageOutput.h"
@@ -84,7 +84,9 @@ OQGLogin::OQGLogin( QWidget *pwidgetParent, OQGEnvironment *penvironment )
 //        pmessageoutput->setMinimumHeight( 50 );
 //        setExtension( pmessageoutput );
 //        setOrientation( Qt::Vertical );
-        connect( penvironment, SIGNAL(signalMessage(ODBCMessage)), pmessageoutput, SLOT(slotMessage(ODBCMessage)) );
+
+        // connect( penvironment, SIGNAL(signalMessage(OQMessage)), pmessageoutput, SLOT(slotMessage(OQMessage)) );
+
     //    connect( pbMessages, SIGNAL(toggled(bool)), this, SLOT(showExtension(bool)) );
     }
 
@@ -99,9 +101,12 @@ OQGLogin::OQGLogin( QWidget *pwidgetParent, OQGEnvironment *penvironment )
 	plineeditUserID->setFocus();
 #endif
 
+printf( "[PAH][%s][%d]\n", __FILE__, __LINE__ );
     // do these last so we catch any errors with slotMessage
     loadDrivers();
+printf( "[PAH][%s][%d]\n", __FILE__, __LINE__ );
     loadDataSourceNames();
+printf( "[PAH][%s][%d]\n", __FILE__, __LINE__ );
 }
 
 OQGLogin::~OQGLogin()
@@ -192,8 +197,11 @@ void OQGLogin::setPassword( const QString &string )
 
 void OQGLogin::loadDrivers()
 {
+printf( "[PAH][%s][%d]\n", __FILE__, __LINE__ );
     pcomboboxDriver->insertItems( 0, penvironment->getDrivers() );
+printf( "[PAH][%s][%d]\n", __FILE__, __LINE__ );
     pcomboboxDriver->insertItem( 0, "" );
+printf( "[PAH][%s][%d]\n", __FILE__, __LINE__ );
 }
 
 void OQGLogin::loadDataSourceNames()

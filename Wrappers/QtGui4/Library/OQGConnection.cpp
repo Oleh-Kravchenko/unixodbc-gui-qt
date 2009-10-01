@@ -32,26 +32,31 @@ OQGConnection::OQGConnection( OQGEnvironment *pEnvironment )
 bool OQGConnection::doConnect( QWidget *pwidgetParent, const QString &stringDSN, const QString &stringUID, const QString &stringPWD )
 {
     bool bReturn = false;
+    OQGEnvironment  *pEnvironment = (OQGEnvironment*)getEnvironment();
+printf( "[PAH][%s][%d] %p\n", __FILE__, __LINE__, pEnvironment );
 
     // With Prompting.
-    OQGLogin *plogin = new OQGLogin( pwidgetParent, (OQGEnvironment*)getEnvironment() );
+    OQGLogin *plogin = new OQGLogin( pwidgetParent, pEnvironment );
     plogin->setWindowTitle( tr( "Connect..." ) );
     plogin->setShowDriver( false );
+
+printf( "[PAH][%s][%d]\n", __FILE__, __LINE__ );
     bool bPromptSomething = bPromptDataSourceName || bPromptUserID || bPromptPassword;
-    if ( !bPromptDataSourceName ) plogin->setShowDataSourceName( false );
-    if ( !bPromptUserID ) plogin->setShowUserID( false );
-    if ( !bPromptPassword ) plogin->setShowPassword( false );
-    if ( !stringDSN.isNull() )
-        plogin->setDataSourceName( stringDSN );
-    if ( !stringUID.isNull() )
-        plogin->setUserID( stringUID );
-    if ( ! stringPWD.isNull() )
-        plogin->setPassword( stringPWD );
+    plogin->setShowDataSourceName( bPromptDataSourceName );
+    plogin->setShowUserID( bPromptUserID );
+    plogin->setShowPassword( bPromptPassword );
+    plogin->setDataSourceName( stringDSN );
+    plogin->setUserID( stringUID );
+    plogin->setPassword( stringPWD );
+
     while ( 1 )
     {
+printf( "[PAH][%s][%d]\n", __FILE__, __LINE__ );
         if ( !bPromptSomething || (plogin->exec() == QDialog::Accepted) ) 
         {
+printf( "[PAH][%s][%d]\n", __FILE__, __LINE__ );
             SQLRETURN nReturn = OQConnection::doConnect( plogin->getDataSourceName(), plogin->getUserID(), plogin->getPassword() );
+printf( "[PAH][%s][%d]\n", __FILE__, __LINE__ );
             if ( SQL_SUCCEEDED( nReturn ) )
             {
                 bReturn = true;

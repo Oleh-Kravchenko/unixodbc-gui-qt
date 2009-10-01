@@ -1,19 +1,19 @@
 TEMPLATE         = app 
-TARGET           = odbcqg4
+TARGET           = OQGConsole4
 DESTDIR          = ../../../bin
 include( ../../../common.pri )
 include( ../../../config.pri )
 include( ../../../defines.pri )
 include( ../../../odbc.pri )
 
-INCLUDEPATH     += ../include  ../../CPP/include  ../../QtCore4/include
+INCLUDEPATH     += ../include  ../../QtCore4/include
 
-LIBS += -L../../../lib -lodbcqg4  -lodbc_OQ -lodbc_CPP 
+LIBS += -L../../../lib -lOQG4  -lOQ
 
 HEADERS		= \
-                odbcqg.h
+                OQGConsole4.h
 SOURCES 	= \
                 main.cpp \
-                odbcqg.cpp
+                OQGConsole4.cpp
 
 

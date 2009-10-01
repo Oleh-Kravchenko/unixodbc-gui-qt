@@ -68,7 +68,6 @@
 		<Folder
 			Name="Header Files"
 			Filters="*.h;*.H;*.hh;*.hpp;*.hxx;*.inc;*.sh;*.cpy;*.if">
-			<F N="include/ODGPropertiesDelegate.h"/>
 			<F N="include/OQGConnection.h"/>
 			<F N="Application/OQGConsole.h"/>
 			<F N="include/OQGEnvironment.h"/>

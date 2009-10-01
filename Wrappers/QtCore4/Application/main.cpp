@@ -10,20 +10,13 @@
 #include "OQConsole.h"
 
 #ifdef WIN32
-int _tmain( int argc, ODBCCHAR *argv[] )
+int _tmain( int argc, SQLTCHAR *argv[] )
 {
-    OQConsole Console;
-
-    if ( !Console.doParseArgs( argc, argv ) )
-        return 1;
-
-    if ( !Console.isConnected() )
-        return 1;
-
-    if ( !Console.doProcess() )
-        return 1;
-
-    Console.doDisconnect();
+    QCoreApplication    theApplication( argc, argv ); 
+    QTextStream         streamIn( stdin ); 
+    QTextStream         streamOutData( stdout );
+    QTextStream         streamOutErrors( stderr ); 
+    OQConsole           theConsole( theApplication.arguments(), &streamIn, &streamOutData, &streamOutErrors );
 
     return 0;
 }
@@ -32,18 +25,11 @@ int _tmain( int argc, ODBCCHAR *argv[] )
 #else
 int main( int argc, char *argv[] )
 {
-    OQConsole Console;
-
-    if ( !Console.doParseArgs( argc, (ODBCCHAR**)argv ) )
-        return 1;
-
-    if ( !Console.isConnected() )
-        return 1;
-
-    if ( !Console.doProcess() )
-        return 1;
-
-    Console.doDisconnect();
+    QCoreApplication    theApplication( argc, argv ); 
+    QTextStream         streamIn( stdin ); 
+    QTextStream         streamOutData( stdout );
+    QTextStream         streamOutErrors( stderr ); 
+    OQConsole           theConsole( theApplication.arguments(), &streamIn, &streamOutData, &streamOutErrors );
 
     return 0;
 }

@@ -29,8 +29,8 @@ OQGConsole::OQGConsole()
     createClientArea();
 
     // message passing is all connected now so lets make some ODBC calls...
-    pEnvironment->doAlloc();
-    pConnection->doAlloc();
+//    pEnvironment->doAlloc();
+//    pConnection->doAlloc();
 
 }
 
@@ -46,10 +46,10 @@ OQGConsole::~OQGConsole()
 void OQGConsole::createHandles()
 {
     pSystem         = new OQGSystem();
-//    connect( pSystem, SIGNAL(signalMessage(ODBCMessage)), this, SLOT(slotMessage(ODBCMessage)) );
+//    connect( pSystem, SIGNAL(signalMessage(OQMessage)), this, SLOT(slotMessage(OQMessage)) );
 
     pEnvironment    = new OQGEnvironment( pSystem );
-    connect( pEnvironment, SIGNAL(signalMessage(ODBCMessage)), this, SLOT(slotMessage(ODBCMessage)) );
+    connect( pEnvironment, SIGNAL(signalMessage(OQMessage)), this, SLOT(slotMessage(OQMessage)) );
 
     pConnection     = new OQGConnection( pEnvironment );
     connect( pConnection, SIGNAL(signalConnected()), this, SLOT(slotConnected()) );
@@ -147,7 +147,7 @@ void OQGConsole::slotExecute()
     ptablewidgetResults->setRowCount( 0 );
 
     //
-    pStatement->slotExecute( ptexteditSQL->toPlainText() );
+    pStatement->doExecDirect( ptexteditSQL->toPlainText() );
 }
 
 void OQGConsole::slotResults( OQStatement * ) 
@@ -155,9 +155,9 @@ void OQGConsole::slotResults( OQStatement * )
     doResultGUIGrid();
 }
 
-void OQGConsole::slotMessage( ODBCMessage Message ) 
+void OQGConsole::slotMessage( OQMessage Message ) 
 {
-    ptexteditMessages->append( OQToQString( Message.getText() ) );
+    ptexteditMessages->append( Message.getText() );
 }
 
 void OQGConsole::doResultGUIGrid()
@@ -201,9 +201,7 @@ void OQGConsole::doResultGUIGridBody( SWORD nColumns )
     SQLRETURN      	nReturn             = 0;
     SQLINTEGER      nRow                = 0;
     SQLUSMALLINT    nCol            	= 0;
-	SQLLEN          nIndicator;
-	char			szColumn[300];
-
+    
     // for each result record...
     while( SQL_SUCCEEDED( (nReturn = pStatement->doFetch()) ) )
     {
@@ -215,25 +213,31 @@ void OQGConsole::doResultGUIGridBody( SWORD nColumns )
         // PROCESS ALL COLUMNS
         for( nCol = 0; nCol < nColumns; nCol++ )
         {
-            nReturn = pStatement->doData( nCol+1, SQL_C_CHAR, (SQLPOINTER)szColumn, sizeof(szColumn)-1, &nIndicator );
-            if ( nReturn == SQL_ERROR )
-                break;
+            QVariant v = pStatement->getData( nCol );
+            QTableWidgetItem *ptablewidgetitem;
 
-            if ( SQL_SUCCEEDED( nReturn ) && nIndicator != SQL_NULL_DATA )
+            if ( v.isNull() )
             {
-                QTableWidgetItem *ptablewidgetitem = new QTableWidgetItem( szColumn );
-                ptablewidgetitem->setFlags( Qt::ItemIsSelectable );
-                ptablewidgetResults->setItem( nRow - 1, nCol, ptablewidgetitem );
+                ptablewidgetitem = new QTableWidgetItem( "" );
             }
             else
             {
-                QTableWidgetItem *ptablewidgetitem = new QTableWidgetItem( "" );
-                ptablewidgetitem->setFlags( Qt::ItemIsSelectable );
-                ptablewidgetResults->setItem( nRow - 1, nCol, ptablewidgetitem );
+                ptablewidgetitem = new QTableWidgetItem( v.toString() );
             }
+            ptablewidgetitem->setFlags( Qt::ItemIsSelectable );
+            ptablewidgetResults->setItem( nRow - 1, nCol, ptablewidgetitem );
         }
 
     } // while rows
 }
+
+void OQGConsole::slotAbout()
+{
+    QMessageBox MessageBox;
+
+    MessageBox.setText( "OQGConsole" );
+    MessageBox.exec();
+}
+
 
 

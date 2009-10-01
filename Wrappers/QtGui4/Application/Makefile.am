@@ -14,13 +14,12 @@ OQGConsole4_LDADD = \
 	$(QT_LDFLAGS) \
 	$(QT_LIBS) \
 	-lodbc -lodbcinst \
-	-lodbc_CPP \
-	../../QtCore4/Library/libodbc_OQ4.la \
-	../Library/libodbc_OQG4.la
+	../../QtCore4/Library/libOQ4.la \
+	../Library/libOQG4.la
 
 OQGConsole4_DEPENDANCIES = \
-	../../QtCore4/Library/libodbc_OQ4.la \
-	../Library/libodbc_OQG4.la
+	../../QtCore4/Library/libOQ4.la \
+	../Library/libOQG4.la
 
 OQGConsole4_SOURCES = \
 	main.cpp \

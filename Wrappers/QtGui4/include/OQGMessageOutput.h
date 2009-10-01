@@ -14,8 +14,8 @@
 #include <QtGui>
 
 //
-#include <ODBCMessage.h>
-#include <ODBCDiagnostic.h>
+#include <OQMessage.h>
+#include <OQDiagnostic.h>
 
 class OQGMessageOutput: public QTableWidget
 {
@@ -34,8 +34,8 @@ signals:
     void signalWaitingMessages( OQGMessageOutput * );
 
 public slots:
-    virtual void slotMessage( ODBCMessage Message );
-    virtual void slotDiagnostic( ODBCDiagnostic Diagnostic );
+    virtual void slotMessage( OQMessage Message );
+    virtual void slotDiagnostic( OQDiagnostic Diagnostic );
 
 protected:
     int nWaitingMessages;

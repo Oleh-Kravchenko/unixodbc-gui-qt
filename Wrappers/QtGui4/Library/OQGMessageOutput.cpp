@@ -9,8 +9,8 @@
  */
 #include "OQGMessageOutput.h"
 
-#include <ODBCMessage.h>
-#include <ODBCDiagnostic.h>
+#include <OQMessage.h>
+#include <OQDiagnostic.h>
 
 #include <OQGSystem.h>
 
@@ -48,7 +48,7 @@ void OQGMessageOutput::setWaitingMessages( int n )
     
     Append the message to our list of messages.
 */
-void OQGMessageOutput::slotMessage( ODBCMessage Message )
+void OQGMessageOutput::slotMessage( OQMessage Message )
 {
     int nRows = rowCount() + 1;
     int nRow  = nRows - 1;
@@ -59,31 +59,31 @@ void OQGMessageOutput::slotMessage( ODBCMessage Message )
     // column 1
     switch ( Message.getType() )
     {
-        case ODBCMessage::Info:
+        case OQMessage::Info:
             setItem( nRow, 0, new QTableWidgetItem( QIcon( xpmInformation16 ), "" ) );
             break;
-        case ODBCMessage::Error:
+        case OQMessage::Error:
             setItem( nRow, 0, new QTableWidgetItem( QIcon( xpmError16 ), "" ) );
             break;
-        case ODBCMessage::Warning:
+        case OQMessage::Warning:
             setItem( nRow, 0, new QTableWidgetItem( QIcon( xpmWarning16 ), "" ) );
             break;
     }
 
     // column 2
-    setItem( nRow, 1, new QTableWidgetItem( OQToQString( Message.getRequest() ) ) );
+    setItem( nRow, 1, new QTableWidgetItem( Message.getRequest() ) );
 
     // column 3
     setItem( nRow, 2, new QTableWidgetItem( QString::number( Message.getNumeric() ) ) );
 
     // column 4
-    setItem( nRow, 3, new QTableWidgetItem( OQToQString( Message.getText() ) ) );
+    setItem( nRow, 3, new QTableWidgetItem( Message.getText() ) );
 
     nWaitingMessages++;
     emit signalWaitingMessages( this );
 }
 
-void OQGMessageOutput::slotDiagnostic( ODBCDiagnostic Diagnostic )
+void OQGMessageOutput::slotDiagnostic( OQDiagnostic Diagnostic )
 {
     int nRows = rowCount() + 1;
     int nRow  = nRows - 1;

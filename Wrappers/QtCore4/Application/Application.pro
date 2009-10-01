@@ -7,9 +7,9 @@ include( ../../../defines.pri )
 include( ../../../odbc.pri )
 CONFIG          += console
 CONFIG          -= qt
-INCLUDEPATH     += ../include  ../../CPP/include
+INCLUDEPATH     += ../include
 
-LIBS += -L../../../lib -lodbc_CPP -lodbc_OQ4
+LIBS += -L../../../lib -lOQ4
 
 HEADERS		=
 SOURCES 	= main.cpp

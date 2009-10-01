@@ -24,7 +24,7 @@
 
 //
 class OQGEnvironment;
-class ODBCMessage;
+class OQMessage;
 class OQGMessageOutput;
 
 class OQGLogin: public QDialog

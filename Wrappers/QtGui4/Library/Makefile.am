@@ -1,8 +1,8 @@
-libodbc_OQG4_la_LDFLAGS = \
+libOQG4_la_LDFLAGS = \
 	-version-info @LIB_VERSION@ \
 	-export-dynamic
 
-lib_LTLIBRARIES = libodbc_OQG4.la 
+lib_LTLIBRARIES = libOQG4.la 
 
 INCLUDES = \
 	-I@top_srcdir@/include \
@@ -16,15 +16,14 @@ INCLUDES = \
 #	-DSHLIBEXT=\"@SHLIBEXT@\"
 #	$(LTDLINCL)
 
-libodbc_OQG4_la_LIBADD = \
+libOQG4_la_LIBADD = \
 	$(QT_LDFLAGS) \
 	$(QT_LIBS) \
 	-lodbc -lodbcinst \
-	-lodbc_CPP \
-	../../QtCore4/Library/libodbc_OQ4.la 
+	../../QtCore4/Library/libOQ4.la 
 
-libodbc_OQG4_la_DEPENDENCIES = \
-	../../QtCore4/Library/libodbc_OQ4.la 
+libOQG4_la_DEPENDENCIES = \
+	../../QtCore4/Library/libOQ4.la 
 
 CLEANFILES = \
 	mOQGConnection.cpp \
@@ -36,7 +35,7 @@ CLEANFILES = \
 	mOQGStatement.cpp \
 	mOQGSystem.cpp
 
-libodbc_OQG4_la_SOURCES = \
+libOQG4_la_SOURCES = \
 	OQGConnection.cpp \
 	OQGEnvironment.cpp \
 	OQGLogin.cpp \
