@@ -122,12 +122,8 @@ const char *szHelpDisconnect =
 "\n\n";
 
 
-OQConsole::OQConsole( const QStringList &stringlistArguments, QTextStream *pstreamInCommands, QTextStream *pstreamOutData, QTextStream *pstreamOutErrors )
+OQConsole::OQConsole( const QStringList &stringlistArguments )
 {
-    this->pstreamInCommands     = pstreamInCommands;
-    this->pstreamOutData        = pstreamOutData;
-    this->pstreamOutErrors      = pstreamOutErrors;
-
     nInteraction            = InteractionUndefined; // try to figure it out based upon call order
     nResultFormat           = Boxed;
     bWideCharData           = false;
@@ -435,10 +431,6 @@ bool OQConsole::doProcessCommand( const QString &stringCommand )
 */
 bool OQConsole::doExecuteSQL( const QString &stringSQL )
 {
-    QString     stringSepLine;
-    SQLSMALLINT nCols   = -1;
-    SQLLEN      nRows   = 0;
-
     if ( !SQL_SUCCEEDED( pStatement->doPrepare( stringSQL ) ) )
     {
 //        pStatement->doFree();
@@ -453,13 +445,325 @@ bool OQConsole::doExecuteSQL( const QString &stringSQL )
         return false;
     }
 
+    doProcessResultSet();
+
+    return true;
+}
+
+/*!
+    doExecuteShow
+    
+    Process "show" commands.
+*/
+bool OQConsole::doExecuteShow( const QString &stringShow )
+{
+    QTextStream streamOut( stdout );
+    QTextStream streamErr( stderr );
+
+    if ( !stringShow.isEmpty() )
+    {
+        streamOut << szShow;
+        return true;
+    }
+
+    // config
+    if ( stringShow.left( 6 ) == "config" )
+    {
+        return doExecuteShowConfig();
+    }
+    // driver details
+    else if ( stringShow.left( 7 ) == "driver " )
+    {
+        return doExecuteShowDriver( stringShow.mid( 8 ) );
+    }
+    // driver list
+    else if ( stringShow.left( 6 ) == "driver" )
+    {
+        return doExecuteShowDrivers();
+    }
+    // show dsn
+    else if ( stringShow.left( 4 ) ==  "dsn " )
+    {
+        return doExecuteShowDataSourceName( stringShow.mid( 5 ) );
+    }
+    else if ( stringShow.left( 3 ) ==  "dsn" )
+    {
+        return doExecuteShowDataSourceNames();
+    }
+    // show catalog
+    else if ( stringShow.left( 7 ) == "catalog" )
+    {
+        SQLRETURN nReturn;
+
+        if ( stringShow.at( 7 ) == ' ' )
+            nReturn = pStatement->doTables( stringShow.mid( 8 ) );
+        else
+            nReturn = pStatement->doTables( SQL_ALL_CATALOGS );
+
+        if ( !SQL_SUCCEEDED( nReturn ) )
+        {
+            streamErr << "[OQConsole]ERROR: Failed to get catalogs\n";
+            return false;
+        }
+    }
+    // show schema
+    else if ( stringShow.left( 6 ) == "schema" )
+    {
+        SQLRETURN nReturn;
+
+        if ( stringShow.at( 6 ) == ' ' )
+            nReturn = pStatement->doTables( QString::null, stringShow.mid( 7 ) );
+        else
+            nReturn = pStatement->doTables( QString::null, SQL_ALL_SCHEMAS );
+
+        if ( !SQL_SUCCEEDED( nReturn ) )
+        {
+            streamErr << "[OQConsole]ERROR: Failed to get schemas\n";
+            return false;
+        }
+    }
+    // show table
+    else if ( stringShow.left( 5 ) == "table" )
+    {
+        SQLRETURN nReturn;
+
+        if ( stringShow.at( 5 ) == ' ' )
+        {
+            nReturn = pStatement->doColumns( QString::null, QString::null, stringShow.mid( 6 ), QString::null );
+        }
+        else
+        {
+            nReturn = pStatement->doTables( QString::null, QString::null, QString::null, "TABLE" );
+        }
+
+        if ( !SQL_SUCCEEDED( nReturn ) )
+        {
+            streamErr << "[OQConsole]ERROR: Failed to get tables\n";
+            return false;
+        }
+    }
+    // show column
+    else if ( stringShow.left( 6 ) == "column" )
+    {
+        /*! 
+         * \note    1. MS Access needs Catalog = NULL. Catalog = "" does not work.
+         *  
+         */
+        if ( !SQL_SUCCEEDED( pStatement->doColumns( QString::null, QString::null, stringShow.mid( 7 ), "%" ) ) )
+        {
+            streamErr << "[OQConsole]ERROR: While requesting column listing\n";
+            return false;
+        }
+    }
+    // show types
+    else if ( stringShow.left( 5 ) == "types" )
+    {
+        if ( !SQL_SUCCEEDED( pStatement->doTypeInfo() ) )
+        {
+            streamErr << "[OQConsole]ERROR: Failed to get type info\n";
+            return false;
+        }
+    }
+
+    doProcessResultSet();
+
+    return true;
+}
+
+bool OQConsole::doExecuteShowConfig()
+{
+    QTextStream  streamOut( stdout );
+    OQAttributes Attributes = pSystem->getAttributes();
+
+    // get col widths
+    int nKeyMaxChars    = 5;
+    int nValueMaxChars  = 7;
+    {
+        QMapIterator<QString, QString> i( Attributes.mapAttributes );
+        while ( i.hasNext() ) 
+        {
+            i.next();
+            nKeyMaxChars    = max( i.key().length(), nKeyMaxChars );
+            nValueMaxChars  = max( i.value().length(), nValueMaxChars );
+        }
+    }
+
+    // header
+    streamOut << qSetPadChar( '-' ) << qSetFieldWidth( 1 ) << "+" << qSetFieldWidth( nKeyMaxChars ) << ""    << qSetFieldWidth( 1 ) << "+" << qSetFieldWidth( nValueMaxChars ) << ""      << qSetFieldWidth( 1 ) << "+" << endl;
+    streamOut << qSetPadChar( ' ' ) << qSetFieldWidth( 1 ) << "|" << qSetFieldWidth( nKeyMaxChars ) << "Key" << qSetFieldWidth( 1 ) << "|" << qSetFieldWidth( nValueMaxChars ) << "Value" << qSetFieldWidth( 1 ) << "|" << endl;
+    streamOut << qSetPadChar( '-' ) << qSetFieldWidth( 1 ) << "+" << qSetFieldWidth( nKeyMaxChars ) << ""    << qSetFieldWidth( 1 ) << "+" << qSetFieldWidth( nValueMaxChars ) << ""      << qSetFieldWidth( 1 ) << "+" << endl;
+
+    // body
+    {
+        QMapIterator<QString, QString> i( Attributes.mapAttributes );
+        while ( i.hasNext() ) 
+        {
+            i.next();
+            streamOut << qSetPadChar( ' ' ) << qSetFieldWidth( 1 ) << "|" << qSetFieldWidth( nKeyMaxChars ) << i.key() << qSetFieldWidth( 1 ) << "|" << qSetFieldWidth( nValueMaxChars ) << i.value() << qSetFieldWidth( 1 ) << "|" << endl;
+        }
+    }
+
+    // footer
+    streamOut << qSetPadChar( '-' ) << qSetFieldWidth( 1 ) << "+" << qSetFieldWidth( nKeyMaxChars ) << "" << qSetFieldWidth( 1 ) << "+" << qSetFieldWidth( nValueMaxChars ) << "" << qSetFieldWidth( 1 ) << "+" << endl;
+
+    return true;
+}
+
+bool OQConsole::doExecuteShowDriver( const QString &stringDriver )
+{
+    QTextStream streamOut( stdout );
+    OQDriver    Driver = pSystem->getDriver( stringDriver );
+
+    // get col widths
+    int nKeyMaxChars    = 5;
+    int nValueMaxChars  = 7;
+    {
+        QMapIterator<QString, QString> i( Driver.mapAttributes );
+        while ( i.hasNext() ) 
+        {
+            i.next();
+            nKeyMaxChars    = max( i.key().length(), nKeyMaxChars );
+            nValueMaxChars  = max( i.value().length(), nValueMaxChars );
+        }
+    }
+
+    // header
+    streamOut << qSetPadChar( '-' ) << qSetFieldWidth( 1 ) << "+" << qSetFieldWidth( nKeyMaxChars ) << ""    << qSetFieldWidth( 1 ) << "+" << qSetFieldWidth( nValueMaxChars ) << ""      << qSetFieldWidth( 1 ) << "+" << endl;
+    streamOut << qSetPadChar( ' ' ) << qSetFieldWidth( 1 ) << "|" << qSetFieldWidth( nKeyMaxChars ) << "Key" << qSetFieldWidth( 1 ) << "|" << qSetFieldWidth( nValueMaxChars ) << "Value" << qSetFieldWidth( 1 ) << "|" << endl;
+    streamOut << qSetPadChar( '-' ) << qSetFieldWidth( 1 ) << "+" << qSetFieldWidth( nKeyMaxChars ) << ""    << qSetFieldWidth( 1 ) << "+" << qSetFieldWidth( nValueMaxChars ) << ""      << qSetFieldWidth( 1 ) << "+" << endl;
+
+    // body
+    {
+        QMapIterator<QString, QString> i( Driver.mapAttributes );
+        while ( i.hasNext() ) 
+        {
+            i.next();
+            streamOut << qSetPadChar( ' ' ) << qSetFieldWidth( 1 ) << "|" << qSetFieldWidth( nKeyMaxChars ) << i.key() << qSetFieldWidth( 1 ) << "|" << qSetFieldWidth( nValueMaxChars ) << i.value() << qSetFieldWidth( 1 ) << "|" << endl;
+        }
+    }
+
+    // footer
+    streamOut << qSetPadChar( '-' ) << qSetFieldWidth( 1 ) << "+" << qSetFieldWidth( nKeyMaxChars ) << "" << qSetFieldWidth( 1 ) << "+" << qSetFieldWidth( nValueMaxChars ) << "" << qSetFieldWidth( 1 ) << "+" << endl;
+
+    return true;
+}
+
+bool OQConsole::doExecuteShowDrivers()
+{
+    QTextStream         streamOut( stdout );
+    QVector<OQDriver>   vectorDrivers = pSystem->getDrivers();
+
+    // get col widths
+    int nNameMaxChars        = 6;
+    int nDescriptionMaxChars = 13;
+    for ( int n = 0; n < vectorDrivers.count(); n++ )
+    {
+        nNameMaxChars        = max( vectorDrivers[n].stringName.length(), nNameMaxChars );
+        nDescriptionMaxChars = max( vectorDrivers[n].mapAttributes["DESCRIPTION"].length(), nDescriptionMaxChars );
+    }
+
+    // header
+    streamOut << qSetPadChar( '-' ) << qSetFieldWidth( 1 ) << "+" << qSetFieldWidth( nNameMaxChars ) << ""     << qSetFieldWidth( 1 ) << "+" << qSetFieldWidth( nDescriptionMaxChars ) << ""            << qSetFieldWidth( 1 ) << "+" << endl;
+    streamOut << qSetPadChar( ' ' ) << qSetFieldWidth( 1 ) << "|" << qSetFieldWidth( nNameMaxChars ) << "Name" << qSetFieldWidth( 1 ) << "|" << qSetFieldWidth( nDescriptionMaxChars ) << "Description" << qSetFieldWidth( 1 ) << "|" << endl;
+    streamOut << qSetPadChar( '-' ) << qSetFieldWidth( 1 ) << "+" << qSetFieldWidth( nNameMaxChars ) << ""     << qSetFieldWidth( 1 ) << "+" << qSetFieldWidth( nDescriptionMaxChars ) << ""            << qSetFieldWidth( 1 ) << "+" << endl;
+
+    // body
+    for ( int n = 0; n < vectorDrivers.count(); n++ )
+    {
+        streamOut << qSetPadChar( ' ' ) << qSetFieldWidth( 1 ) << "|" << qSetFieldWidth( nNameMaxChars ) << vectorDrivers[n].stringName << qSetFieldWidth( 1 ) << "|" << qSetFieldWidth( nDescriptionMaxChars ) << vectorDrivers[n].mapAttributes["DESCRIPTION"] << qSetFieldWidth( 1 ) << "|" << endl;
+    }
+
+    // footer
+    streamOut << qSetPadChar( '-' ) << qSetFieldWidth( 1 ) << "+" << qSetFieldWidth( nNameMaxChars ) << "" << qSetFieldWidth( 1 ) << "+" << qSetFieldWidth( nDescriptionMaxChars ) << "" << qSetFieldWidth( 1 ) << "+" << endl;
+
+    return true;
+}
+
+bool OQConsole::doExecuteShowDataSourceName( const QString &stringDataSourceName )
+{
+    QTextStream      streamOut( stdout );
+    OQDataSourceName DataSourceName = pSystem->getDataSource( stringDataSourceName );
+
+    // get col widths
+    int nKeyMaxChars    = 5;
+    int nValueMaxChars  = 7;
+    {
+        QMapIterator<QString, QString> i( DataSourceName.mapAttributes );
+        while ( i.hasNext() ) 
+        {
+            i.next();
+            nKeyMaxChars    = max( i.key().length(), nKeyMaxChars );
+            nValueMaxChars  = max( i.value().length(), nValueMaxChars );
+        }
+    }
+
+    // header
+    streamOut << qSetPadChar( '-' ) << qSetFieldWidth( 1 ) << "+" << qSetFieldWidth( nKeyMaxChars ) << ""    << qSetFieldWidth( 1 ) << "+" << qSetFieldWidth( nValueMaxChars ) << ""      << qSetFieldWidth( 1 ) << "+" << endl;
+    streamOut << qSetPadChar( ' ' ) << qSetFieldWidth( 1 ) << "|" << qSetFieldWidth( nKeyMaxChars ) << "Key" << qSetFieldWidth( 1 ) << "|" << qSetFieldWidth( nValueMaxChars ) << "Value" << qSetFieldWidth( 1 ) << "|" << endl;
+    streamOut << qSetPadChar( '-' ) << qSetFieldWidth( 1 ) << "+" << qSetFieldWidth( nKeyMaxChars ) << ""    << qSetFieldWidth( 1 ) << "+" << qSetFieldWidth( nValueMaxChars ) << ""      << qSetFieldWidth( 1 ) << "+" << endl;
+
+    // body
+    {
+        QMapIterator<QString, QString> i( DataSourceName.mapAttributes );
+        while ( i.hasNext() ) 
+        {
+            i.next();
+            streamOut << qSetPadChar( ' ' ) << qSetFieldWidth( 1 ) << "|" << qSetFieldWidth( nKeyMaxChars ) << i.key() << qSetFieldWidth( 1 ) << "|" << qSetFieldWidth( nValueMaxChars ) << i.value() << qSetFieldWidth( 1 ) << "|" << endl;
+        }
+    }
+
+    // footer
+    streamOut << qSetPadChar( '-' ) << qSetFieldWidth( 1 ) << "+" << qSetFieldWidth( nKeyMaxChars ) << "" << qSetFieldWidth( 1 ) << "+" << qSetFieldWidth( nValueMaxChars ) << "" << qSetFieldWidth( 1 ) << "+" << endl;
+
+    return true;
+}
+
+bool OQConsole::doExecuteShowDataSourceNames()
+{
+    QTextStream               streamOut( stdout );
+    QVector<OQDataSourceName> vectorDataSourceNames = pSystem->getDataSources();
+
+    // get col widths
+    int nNameMaxChars        = 6;
+    int nDescriptionMaxChars = 13;
+    for ( int n = 0; n < vectorDataSourceNames.count(); n++ )
+    {
+        nNameMaxChars        = max( vectorDataSourceNames[n].stringName.length(), nNameMaxChars );
+        nDescriptionMaxChars = max( vectorDataSourceNames[n].mapAttributes["DESCRIPTION"].length(), nDescriptionMaxChars );
+    }
+
+    // header
+    streamOut << qSetPadChar( '-' ) << qSetFieldWidth( 1 ) << "+" << qSetFieldWidth( nNameMaxChars ) << ""     << qSetFieldWidth( 1 ) << "+" << qSetFieldWidth( nDescriptionMaxChars ) << ""            << qSetFieldWidth( 1 ) << "+" << endl;
+    streamOut << qSetPadChar( ' ' ) << qSetFieldWidth( 1 ) << "|" << qSetFieldWidth( nNameMaxChars ) << "Name" << qSetFieldWidth( 1 ) << "|" << qSetFieldWidth( nDescriptionMaxChars ) << "Description" << qSetFieldWidth( 1 ) << "|" << endl;
+    streamOut << qSetPadChar( '-' ) << qSetFieldWidth( 1 ) << "+" << qSetFieldWidth( nNameMaxChars ) << ""     << qSetFieldWidth( 1 ) << "+" << qSetFieldWidth( nDescriptionMaxChars ) << ""            << qSetFieldWidth( 1 ) << "+" << endl;
+
+    // body
+    for ( int n = 0; n < vectorDataSourceNames.count(); n++ )
+    {
+        streamOut << qSetPadChar( ' ' ) << qSetFieldWidth( 1 ) << "|" << qSetFieldWidth( nNameMaxChars ) << vectorDataSourceNames[n].stringName << qSetFieldWidth( 1 ) << "|" << qSetFieldWidth( nDescriptionMaxChars ) << vectorDataSourceNames[n].mapAttributes["DESCRIPTION"] << qSetFieldWidth( 1 ) << "|" << endl;
+    }
+
+    // footer
+    streamOut << qSetPadChar( '-' ) << qSetFieldWidth( 1 ) << "+" << qSetFieldWidth( nNameMaxChars ) << "" << qSetFieldWidth( 1 ) << "+" << qSetFieldWidth( nDescriptionMaxChars ) << "" << qSetFieldWidth( 1 ) << "+" << endl;
+
+    return true;
+}
+
+void OQConsole::doProcessResultSet()
+{
+    QTextStream streamErr( stderr );
+
+    QString     stringSepLine;
+    SQLSMALLINT nCols   = -1;
+    SQLLEN      nRows   = 0;
+
     /*
      * check to see if it has generated a result set
      */
     if ( !SQL_SUCCEEDED( pStatement->doNumResultCols( &nCols ) ) )
     {
 //        pStatement->doFree();
-        *pstreamOutErrors << "[OQConsole]ERROR: While requesting number of columns\n";
+        streamErr << "[OQConsole]ERROR: While requesting number of columns\n";
         return false;
     }
 
@@ -522,343 +826,6 @@ bool OQConsole::doExecuteSQL( const QString &stringSQL )
 
     // fini
     pStatement->doCloseCursor();
-
-    return true;
-}
-
-/*!
-    doExecuteShow
-    
-    Process "show" commands.
-*/
-bool OQConsole::doExecuteShow( const QString &stringShow )
-{
-    if ( !stringShow.isEmpty() )
-    {
-        *pstreamOutData << szShow;
-        return true;
-    }
-
-    // show config
-    ODBCSystem OdbcSystem;
-    if ( stringShow.left( 6 ) == "config" )
-    {
-        vector<ODBCKeyValue> vectorProperties = OdbcSystem.getProperties();
-        vector<ODBCKeyValue>::iterator i;
-        const char *pszSep0   = "----------------------";
-        const char *pszSep1   = "------------------------------------------------------------------------------------------------------";
-        const char *pszTitle0 = "Key";
-        const char *pszTitle1 = "Value";
-        SQLUINTEGER nWidth0 = ( nUserWidth > 0 ? min( nUserWidth, strlen( pszSep0 ) ) : strlen( pszSep0 ) );
-        SQLUINTEGER nWidth1 = ( nUserWidth > 0 ? min( nUserWidth, strlen( pszSep1 ) ) : strlen( pszSep1 ) );
-
-        printf( "+-%-*.*s-+-%-*.*s-+\n", nWidth0, nWidth0, pszSep0, nWidth1, nWidth1, pszSep1 );
-        printf( "| %-*.*s | %-*.*s |\n", nWidth0, nWidth0, pszTitle0, nWidth1, nWidth1, pszTitle1 );
-        printf( "+-%-*.*s-+-%-*.*s-+\n", nWidth0, nWidth0, pszSep0, nWidth1, nWidth1, pszSep1 );
-
-        for ( i = vectorProperties.begin(); i != vectorProperties.end(); i++ )
-        {
-            ODBCPrintF( (ODBCCPTR)TEXT("| %-*.*s | %-*.*s |\n"), nWidth0, nWidth0, (*i).szKey, nWidth1, nWidth1, (*i).szValue );
-        }
-
-        printf( "+-%-*.*s-+-%-*.*s-+\n", nWidth0, nWidth0, pszSep0, nWidth1, nWidth1, pszSep1 );
-
-        return true;
-    }
-    // driver details?
-    else if ( stringShow.left( 7 ) == "driver " )
-    {
-        QMap<QString,QString> mapAttributes = pSystem->getDriverAttributes( stringShow.mid( 8 ) );
-
-        const char *pszTitle0 = "Key";
-        const char *pszTitle1 = "Value";
-        SQLUINTEGER nWidth0 = ( nUserWidth > 0 ? min( nUserWidth, 22 ) : 22 );
-        SQLUINTEGER nWidth1 = ( nUserWidth > 0 ? min( nUserWidth, 77 ) : 77 );
-
-        *pstreamOutData << stringShow.mid( 7 );
-        
-        // header    
-        *pstreamOutData <<  '+' << qSetFieldWidth( nWidth0 ) <<  qSetPadChar( '-' ) <<  '-' << qSetFieldWidth( 1 ) <<  '+' << qSetFieldWidth( nWidth1 ) <<  '-' << qSetFieldWidth( 1 ) <<  '+';
-        *pstreamOutData <<  '|' << qSetFieldWidth( nWidth0 ) <<  qSetPadChar( ' ' ) <<  pszTitle0 << qSetFieldWidth( 1 ) <<  '+' << qSetFieldWidth( nWidth1 ) << '|' <<  pszTitle1 << qSetFieldWidth( 1 ) <<  '+';
-        *pstreamOutData <<  '+' << qSetFieldWidth( nWidth0 ) <<  qSetPadChar( '-' ) <<  '-' << qSetFieldWidth( 1 ) <<  '+' << qSetFieldWidth( nWidth1 ) <<  '-' << qSetFieldWidth( 1 ) <<  '+';
-        // data
-        QMap<QString, QString>::const_iterator i = mapAttributes.constBegin();
-        while ( i != map.constEnd() ) 
-        {
-            ODBCPrintF( (ODBCCPTR)TEXT("| %-*.*s | %-*.*s |\n"), nWidth0, nWidth0, i.key(), nWidth1, nWidth1, i.value() );
-            ++i;
-        }
-        // footer
-        *pstreamOutData <<  '+' << qSetFieldWidth( nWidth0 ) <<  qSetPadChar( '-' ) <<  '-' << qSetFieldWidth( 1 ) <<  '+' << qSetFieldWidth( nWidth1 ) <<  '-' << qSetFieldWidth( 1 ) <<  '+';
-        return true;
-    }
-    // show driver
-    else if ( stringShow.left( 6 ) == "driver" )
-    {
-        // list drivers...
-
-        /*
-         * METHOD 1
-         */
-        vector<ODBCDriver> vectorDrivers = OdbcSystem.getDrivers();
-        vector<ODBCDriver>::iterator i;
-        const char *pszSep0   = "----------------------------------------------";
-        const char *pszSep1   = "----------------------------------------------";
-        const char *pszTitle0 = "Driver";
-        const char *pszTitle1 = "Description";
-        SQLUINTEGER nWidth0 = ( nUserWidth > 0 ? min( nUserWidth, strlen( pszSep0 ) ) : strlen( pszSep0 ) );
-        SQLUINTEGER nWidth1 = ( nUserWidth > 0 ? min( nUserWidth, strlen( pszSep1 ) ) : strlen( pszSep1 ) );
-
-        printf( "+-%-*.*s-+-%-*.*s-+\n", nWidth0, nWidth0, pszSep0, nWidth1, nWidth1, pszSep1 );
-        printf( "| %-*.*s | %-*.*s |\n", nWidth0, nWidth0, pszTitle0, nWidth1, nWidth1, pszTitle1 );
-        printf( "+-%-*.*s-+-%-*.*s-+\n", nWidth0, nWidth0, pszSep0, nWidth1, nWidth1, pszSep1 );
-
-        for ( i = vectorDrivers.begin(); i != vectorDrivers.end(); i++ )
-        {
-            const QString &stringDescription = OdbcSystem.getValue( (*i).vectorProperties, (SQLTCHAR*)TEXT("description") );
-            if ( pszDescription )
-                ODBCPrintF( (ODBCCPTR)TEXT("| %-*.*s | %-*.*s |\n"), nWidth0, nWidth0, (*i).szName, nWidth1, nWidth1, pszDescription );
-            else
-                ODBCPrintF( (ODBCCPTR)TEXT("| %-*.*s | %-*.*s |\n"), nWidth0, nWidth0, (*i).szName, nWidth1, nWidth1, TEXT("") );
-        }
-
-        printf( "+-%-*.*s-+-%-*.*s-+\n", nWidth0, nWidth0, pszSep0, nWidth1, nWidth1, pszSep1 );
-
-        return true;
-    }
-    // show dsn
-    else if ( ODBCStrNCmp( pszShow, TEXT("dsn"), 3 ) == 0 )
-    {
-        // dsn details?
-        if ( ODBCStrNCmp( pszShow, TEXT("dsn "), 4 ) == 0 )
-        {
-            ODBCDataSourceName DataSourceName = OdbcSystem.getDataSourceName( (SQLTCHAR*)&pszShow[4] );
-            vector<ODBCKeyValue>::iterator i;
-            const char *pszSep0   = "----------------------";
-            const char *pszSep1   = "------------------------------------------------------------------------------------------------------";
-            const char *pszTitle0 = "Key";
-            const char *pszTitle1 = "Value";
-            SQLUINTEGER nWidth0 = ( nUserWidth > 0 ? min( nUserWidth, strlen( pszSep0 ) ) : strlen( pszSep0 ) );
-            SQLUINTEGER nWidth1 = ( nUserWidth > 0 ? min( nUserWidth, strlen( pszSep1 ) ) : strlen( pszSep1 ) );
-
-            ODBCPrintF( (ODBCCPTR)TEXT("%s\n"), (SQLTCHAR*)&pszShow[4] );
-            printf( "+-%-*.*s-+-%-*.*s-+\n", nWidth0, nWidth0, pszSep0, nWidth1, nWidth1, pszSep1 );
-            printf( "| %-*.*s | %-*.*s |\n", nWidth0, nWidth0, pszTitle0, nWidth1, nWidth1, pszTitle1 );
-            printf( "+-%-*.*s-+-%-*.*s-+\n", nWidth0, nWidth0, pszSep0, nWidth1, nWidth1, pszSep1 );
-
-            for ( i = DataSourceName.vectorProperties.begin(); i != DataSourceName.vectorProperties.end(); i++ )
-            {
-                ODBCPrintF( (ODBCCPTR)TEXT("| %-*.*s | %-*.*s |\n"), nWidth0, nWidth0, (*i).szKey, nWidth1, nWidth1, (*i).szValue );
-            }
-
-            printf( "+-%-*.*s-+-%-*.*s-+\n", nWidth0, nWidth0, pszSep0, nWidth1, nWidth1, pszSep1 );
-            return true;
-        }
-        else
-        {
-            // list dsn's...
-            /*
-             * METHOD 1
-             */
-            vector<ODBCDataSourceName> vectorDataSourceNames = OdbcSystem.getDataSourceNames();
-            vector<ODBCDataSourceName>::iterator i;
-            const char *pszSep0   = "----------------------";
-            const char *pszSep1   = "------------------------------------------------------------------------------------------------------";
-            const char *pszTitle0 = "DataSourceName";
-            const char *pszTitle1 = "Description";
-            SQLUINTEGER nWidth0 = ( nUserWidth > 0 ? min( nUserWidth, strlen( pszSep0 ) ) : strlen( pszSep0 ) );
-            SQLUINTEGER nWidth1 = ( nUserWidth > 0 ? min( nUserWidth, strlen( pszSep1 ) ) : strlen( pszSep1 ) );
-
-            printf( "+-%-*.*s-+-%-*.*s-+\n", nWidth0, nWidth0, pszSep0, nWidth1, nWidth1, pszSep1 );
-            printf( "| %-*.*s | %-*.*s |\n", nWidth0, nWidth0, pszTitle0, nWidth1, nWidth1, pszTitle1 );
-            printf( "+-%-*.*s-+-%-*.*s-+\n", nWidth0, nWidth0, pszSep0, nWidth1, nWidth1, pszSep1 );
-
-            for ( i = vectorDataSourceNames.begin(); i != vectorDataSourceNames.end(); i++ )
-            {
-                const QString &stringDescription = OdbcSystem.getValue( (*i).vectorProperties, (SQLTCHAR*)TEXT("description") );
-                if ( pszDescription )
-                    ODBCPrintF( (ODBCCPTR)TEXT("| %-*.*s | %-*.*s |\n"), nWidth0, nWidth0, (*i).szName, nWidth1, nWidth1, pszDescription );
-                else
-                    ODBCPrintF( (ODBCCPTR)TEXT("| %-*.*s | %-*.*s |\n"), nWidth0, nWidth0, (*i).szName, nWidth1, nWidth1, TEXT("") );
-            }
-
-            printf( "+-%-*.*s-+-%-*.*s-+\n", nWidth0, nWidth0, pszSep0, nWidth1, nWidth1, pszSep1 );
-
-            /*
-             * METHOD 2
-             */
-            /* 
-            SQLRETURN   nReturn;
-            SQLTCHAR    szDSN[21];
-            SQLSMALLINT nNameLength1;
-            SQLTCHAR    szDescription[101];
-            SQLSMALLINT nNameLength2;
-            char *pszSep0   = "----------------------";
-            char *pszSep1   = "------------------------------------------------------------------------------------------------------";
-            char *pszTitle0 = "Data Source Name";
-            char *pszTitle1 = "Description";
-            SQLUINTEGER nWidth0 = ( nUserWidth > 0 ? min( nUserWidth, strlen( pszSep0 ) ) : strlen( pszSep0 ) );
-            SQLUINTEGER nWidth1 = ( nUserWidth > 0 ? min( nUserWidth, strlen( pszSep1 ) ) : strlen( pszSep1 ) );
-
-            printf( "+-%-*.*s-+-%-*.*s-+\n", nWidth0, nWidth0, pszSep0, nWidth1, nWidth1, pszSep1 );
-            printf( "| %-*.*s | %-*.*s |\n", nWidth0, nWidth0, pszTitle0, nWidth1, nWidth1, pszTitle1 );
-            printf( "+-%-*.*s-+-%-*.*s-+\n", nWidth0, nWidth0, pszSep0, nWidth1, nWidth1, pszSep1 );
-            nReturn = pEnvironment->doDataSources( SQL_FETCH_FIRST, szDSN, sizeof(szDSN) - 1, &nNameLength1, szDescription, sizeof(szDescription) - 1, &nNameLength2 );
-            while ( SQL_SUCCEEDED( nReturn ) )
-            {
-                ODBCPrintF( TEXT("| %-*.*s | %-*.*s |\n"), nWidth0, nWidth0, szDSN, nWidth1, nWidth1, szDescription );
-                nReturn = pEnvironment->doDataSources( SQL_FETCH_NEXT, szDSN, sizeof(szDSN) - 1, &nNameLength1, szDescription, sizeof(szDescription) - 1, &nNameLength2 );
-            }
-            printf( "+-%-*.*s-+-%-*.*s-+\n", nWidth0, nWidth0, pszSep0, nWidth1, nWidth1, pszSep1 );
-            if ( nReturn != SQL_NO_DATA )
-            {
-                if ( bVerbose ) doDisplayErrors( pEnvironment->getMessages() );
-                fprintf( stderr, "[OQConsole]ERROR: While getting data source listing\n" );
-                return false;
-            }
-            */ 
-            return true; 
-        }
-    }
-    // show catalog
-    else if ( ODBCStrNCmp( pszShow, TEXT("catalog"), 7 ) == 0 )
-    {
-        SQLRETURN nReturn;
-
-        if ( pszShow[7] == ' ' )
-            nReturn = pStatement->doTables( (SQLTCHAR*)&pszShow[8] );
-        else
-            nReturn = pStatement->doTables( (SQLTCHAR*)TEXT(SQL_ALL_CATALOGS) );
-
-        if ( !SQL_SUCCEEDED( nReturn ) )
-        {
-            *pstreamOutErrors << "[OQConsole]ERROR: Failed to get catalogs\n";
-            return false;
-        }
-    }
-    // show schema
-    else if ( ODBCStrNCmp( pszShow, TEXT("schema"), 6 ) == 0 )
-    {
-        SQLRETURN nReturn;
-
-        if ( pszShow[6] == ' ' )
-            nReturn = pStatement->doTables( NULL, 0, (SQLTCHAR*)&pszShow[7], SQL_NTS );
-        else
-            nReturn = pStatement->doTables( NULL, 0, (SQLTCHAR*)TEXT(SQL_ALL_SCHEMAS), SQL_NTS );
-
-        if ( !SQL_SUCCEEDED( nReturn ) )
-        {
-            *pstreamOutErrors << "[OQConsole]ERROR: Failed to get schemas\n";
-            return false;
-        }
-    }
-    // show table
-    else if ( ODBCStrNCmp( pszShow, TEXT("table"), 5 ) == 0 )
-    {
-        SQLRETURN nReturn;
-
-        if ( pszShow[5] == ' ' )
-        {
-            nReturn = pStatement->doColumns( NULL, 0, NULL, 0, (SQLTCHAR*)&pszShow[6], SQL_NTS, NULL, 0 );
-        }
-        else
-        {
-            nReturn = pStatement->doTables( NULL, 0, NULL, 0, NULL, 0, (SQLTCHAR*)TEXT("TABLE"), SQL_NTS );
-        }
-
-        if ( !SQL_SUCCEEDED( nReturn ) )
-        {
-            *pstreamOutErrors << "[OQConsole]ERROR: Failed to get tables\n";
-            return false;
-        }
-    }
-    // show column
-    else if ( ODBCStrNCmp( pszShow, TEXT("column"), 6 ) == 0 )
-    {
-        pszShow = &(pszShow[7]);
-        /*! 
-         * \note    1. MS Access needs Catalog = NULL. Catalog = "" does not work.
-         *  
-         */
-        if ( !SQL_SUCCEEDED( pStatement->doColumns( NULL, SQL_NTS, NULL, SQL_NTS, (SQLTCHAR*)pszShow, SQL_NTS, TEXT("%"), SQL_NTS ) ) )
-        {
-            *pstreamOutErrors << "[OQConsole]ERROR: While requesting column listing\n";
-            return false;
-        }
-    }
-    // show types
-    else if ( ODBCStrNCmp( pszShow, TEXT("types"), 5 ) == 0 )
-    {
-        if ( !SQL_SUCCEEDED( pStatement->doTypeInfo() ) )
-        {
-            *pstreamOutErrors << "[OQConsole]ERROR: Failed to get type info\n";
-            return false;
-        }
-    }
-
-    /****************************
-     * WRITE HEADER
-     ***************************/
-    SQLTCHAR szSepLine[MAX_LINE_OUT_CHARS + 1];
-    SQLLEN   nRows            = 0;
-
-    *szSepLine = '\0';
-
-    switch ( nResultFormat )
-    {
-        case Boxed:
-            doWriteHeaderNormal( szSepLine );
-            break;
-        case Delimited:
-            doWriteHeaderDelimited();
-            break;
-        case Html:
-            doWriteHeaderHTMLTable();
-            break;
-        case Insert:
-            break;
-    }
-
-    /****************************
-     * WRITE BODY
-     ***************************/
-    switch ( nResultFormat )
-    {
-        case Boxed:
-            nRows = doWriteBodyNormal();
-            break;
-        case Delimited:
-            doWriteBodyDelimited();
-            break;
-        case Html:
-            nRows = doWriteBodyHTMLTable();
-            break;
-        case Insert:
-            doWriteBodyInsertTable();
-            break;
-    }
-
-    /****************************
-     * WRITE FOOTER
-     ***************************/
-    switch ( nResultFormat )
-    {
-        case Boxed:
-            doWriteFooterNormal( szSepLine, nRows );
-            break;
-        case Delimited:
-            break;
-        case Html:
-            doWriteFooterHTMLTable( nRows );
-            break;
-        case Insert:
-            break;
-    }
-
-    // fini
-    pStatement->doCloseCursor();
-
-    return true;
 }
 
 /****************************
@@ -1107,6 +1074,10 @@ void OQConsole::doWriteBodyDelimited()
  ***************************/
 QString OQConsole::doWriteHeaderNormal()
 {
+    if ( !pStatement )
+    {
+    }
+
     SQLUSMALLINT    nCol                            = 0;
     SQLSMALLINT     nColumns                        = 0;
     SQLTCHAR        szColumn[MAX_DATA_WIDTH+20];
@@ -1145,6 +1116,8 @@ QString OQConsole::doWriteHeaderNormal()
     ODBCPrintF( (ODBCCPTR)szSepLine );
     ODBCPrintF( (ODBCCPTR)szHdrLine );
     ODBCPrintF( (ODBCCPTR)szSepLine );
+
+    return stringSepLine;
 }
 
 SQLLEN OQConsole::doWriteBodyNormal()
@@ -1197,7 +1170,7 @@ SQLLEN OQConsole::doWriteBodyNormal()
     return nRows;
 }
 
-void OQConsole::doWriteFooterNormal( SQLTCHAR *szSepLine, SQLLEN nRows )
+void OQConsole::doWriteFooterNormal( const QString &stringSepLine, SQLLEN nRows )
 {
     SQLLEN nRowsAffected = -1;
 
@@ -1273,17 +1246,19 @@ SQLUINTEGER OQConsole::getColumnWidth( OQStatement *pStatement, SQLUINTEGER nUse
 
 void OQConsole::slotMessage( OQMessage Message )
 {
-    pstreamOutErrors < Message.getText();
+    QTextStream streamErr( stderr );
+    streamErr << Message.getText();
 }
 
 void OQConsole::slotDiagnostic( OQDiagnostic Diagnostic )
 {
+    QTextStream streamErr( stderr );
     SQLINTEGER nRecords = Diagnostic.getNumber();
 
     for ( SQLINTEGER nRecord = 1; nRecord <= nRecords; nRecord++ )
     {
-        ODBCDiagnosticRecord Record = Diagnostic.getRecord( nRecord );
-        pstreamOutErrors < Record.getMessageText();
+        OQDiagnosticRecord Record = Diagnostic.getRecord( nRecord );
+        streamErr << Record.getMessageText();
     }
 }
 

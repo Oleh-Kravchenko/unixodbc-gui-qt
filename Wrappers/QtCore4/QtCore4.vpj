@@ -55,12 +55,9 @@
 			<F N="Application/main.cpp"/>
 			<F N="Library/OQConnection.cpp"/>
 			<F N="Library/OQConsole.cpp"/>
-			<F N="Library/OQDataSource.cpp"/>
 			<F N="Library/OQDiagnostic.cpp"/>
-			<F N="Library/OQDriver.cpp"/>
 			<F N="Library/OQEnvironment.cpp"/>
 			<F N="Library/OQHandle.cpp"/>
-			<F N="Library/OQIni.cpp"/>
 			<F N="Library/OQMessage.cpp"/>
 			<F N="Library/OQStatement.cpp"/>
 			<F N="Library/OQSystem.cpp"/>
@@ -68,16 +65,12 @@
 		<Folder
 			Name="Header Files"
 			Filters="*.h;*.H;*.hh;*.hpp;*.hxx;*.inc;*.sh;*.cpy;*.if">
+			<F N="include/OQ.h"/>
 			<F N="include/OQConnection.h"/>
 			<F N="include/OQConsole.h"/>
-			<F N="include/OQDataSource.h"/>
 			<F N="include/OQDiagnostic.h"/>
-			<F N="include/OQDriver.h"/>
 			<F N="include/OQEnvironment.h"/>
 			<F N="include/OQHandle.h"/>
-			<F N="include/OQIni.h"/>
-			<F N="include/OQIniSection.h"/>
-			<F N="include/OQIniSectionEntry.h"/>
 			<F N="include/OQMessage.h"/>
 			<F N="include/OQStatement.h"/>
 			<F N="include/OQSystem.h"/>

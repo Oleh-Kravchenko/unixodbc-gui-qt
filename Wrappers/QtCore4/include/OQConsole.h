@@ -63,11 +63,11 @@ int main( int argc, char *argv[] )
  *
  * \author  pharvey (8/22/2008)
  */
-class OQConsole 
+class OQConsole : public QObject
 {
     Q_OBJECT
 public:
-    explicit OQConsole( const QStringList &stringlistArguments, QTextStream *pstreamInCommands, QTextStream *pstreamOutData, QTextStream *pstreamOutErrors );
+    explicit OQConsole( const QStringList &stringlistArguments );
     virtual ~OQConsole();
 
     virtual bool exec();
@@ -95,7 +95,7 @@ protected:
     bool            bWideCharData;
     bool            bAsynch;
     bool            bVerbose;
-    SQLUINTEGER     nUserWidth;
+    int             nUserWidth;
     QChar           cDelimiter;
     bool            bColumnNames;
     QString         stringInsertTable;
@@ -103,10 +103,10 @@ protected:
     QString         stringQuoteToUse;
     QChar           cStatementTerminator;
 
-    // I/O
-    QTextStream *   pstreamInCommands;
-    QTextStream *   pstreamOutData;
-    QTextStream *   pstreamOutErrors;
+    // I/O - do not set the streams - just where they point to
+//    QTextStream *   pstreamInCommands;
+//    QTextStream *   pstreamOutData;
+//    QTextStream *   pstreamOutErrors;
 
     // handles
     OQSystem *          pSystem;
@@ -126,8 +126,14 @@ protected:
     virtual bool doProcessInteractive();
     virtual bool doExecuteSQL( const QString &stringCommand );
     virtual bool doExecuteShow( const QString &stringShow = QString::null );
+    virtual bool doExecuteShowConfig();
+    virtual bool doExecuteShowDriver( const QString &stringDriver );
+    virtual bool doExecuteShowDrivers();
+    virtual bool doExecuteShowDataSourceName( const QString &stringDataSourceName );
+    virtual bool doExecuteShowDataSourceNames();
 
     // produce output
+    virtual void    doProcessResultSet();
     // boxed with ascii art
     virtual QString doWriteHeaderNormal();
     virtual SQLLEN  doWriteBodyNormal();

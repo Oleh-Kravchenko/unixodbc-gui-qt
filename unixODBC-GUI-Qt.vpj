@@ -22,7 +22,7 @@
 				CaptureOutputWith="ProcessBuffer"
 				SaveOption="SaveWorkspaceFiles"
 				RunFromDir="%rw">
-				<Exec/>
+				<Exec CmdLine="make"/>
 			</Target>
 			<Target
 				Name="Rebuild"

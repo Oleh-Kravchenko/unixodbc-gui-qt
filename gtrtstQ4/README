@@ -1,0 +1,26 @@
++-------------------------------------------------------------+
+| gtrtstQ4                                                    |
++-------------------------------------------------------------+
+
+README
+---------------------------------------------------------------
+
+Description:
+
+	This tiny library implements szLogPrintf and szMessageBox
+	which are functions used by auto tests. In this case we 
+	implement them using Qt. Auto tests will use this when
+	they are going to be run by ODBCTestQ4.
+	
+unixODBC:
+	
+	This call is declared in unixODBC-Test::autotest.h
+	
+MS:
+	
+	This is a Qt version of what Microsoft has. So on MS
+	platforms you can choose to build/use auto tests with
+	the MS stuff or the, cross-platform, Qt stuff.
+	
+---------------------------------------------------------------
+Peter Harvey 

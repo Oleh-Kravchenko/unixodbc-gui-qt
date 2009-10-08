@@ -12,7 +12,7 @@
 #include "OQStatement.h"
 
 OQConnection::OQConnection( OQEnvironment *penvironment )
-    : OQHandle( Dbc, penvironment )
+    : OQHandle( TypeDbc, penvironment )
 {
     setObjectName( "OQConnection" );
 
