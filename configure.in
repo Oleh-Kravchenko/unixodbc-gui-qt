@@ -474,15 +474,6 @@ AC_OUTPUT( Makefile \
     gtrtstQ4/Makefile \
     ODBCCreateDataSourceQ4/Makefile \
     ODBCManageDataSourcesQ4/Makefile \
-    ODBCTestQ4/Makefile \
-    Wrappers/Makefile \
-    Wrappers/QtCore4/Makefile \
-    Wrappers/QtCore4/Library/Makefile \
-    Wrappers/QtCore4/Application/Makefile \
-    Wrappers/QtCore4/include/Makefile \
-    Wrappers/QtGui4/Makefile \
-    Wrappers/QtGui4/Library/Makefile \
-    Wrappers/QtGui4/Application/Makefile \
-    Wrappers/QtGui4/include/Makefile \
+    ODBCTestQ4/Makefile
     )
 

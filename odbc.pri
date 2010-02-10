@@ -11,12 +11,6 @@
 #
 INCLUDEPATH	+= $(UNIXODBC_TEST_SRC)/AutoTests/include
 
-#
-# unixODBC-CPP must be built (for the Wrappers). Here we bring them into our build.
-#
-INCLUDEPATH	+= $(UNIXODBC_CPP)/include 
-LIBS		+= -L$(UNIXODBC_CPP)/lib
-
 # #########################################################
 # WIN32
 # #########################################################

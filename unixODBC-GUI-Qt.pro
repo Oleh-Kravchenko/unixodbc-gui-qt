@@ -33,11 +33,6 @@
 #
 # SET UNIXODBC_TEST_SRC=C:/unixodbc-test/trunk
 #
-# Get & Build unixODBC-CPP and set the following environment 
-# variable to tell us where it is;
-#
-# SET UNIXODBC_CPP=C:/unixODBC-CPP/ODBC++
-#
 # Build This
 # 
 # > qmake
@@ -55,8 +50,7 @@ win32 {
 
 	SUBDIRS	= \
 		gtrtstQ4 \
-		ODBCTestQ4 \
-                Wrappers
+		ODBCTestQ4
 }
 
 # #########################################################
@@ -69,8 +63,7 @@ unix {
 		gtrtstQ4 \
 		ODBCCreateDataSourceQ4 \
 		ODBCManageDataSourcesQ4 \
-		ODBCTestQ4 \
-                Wrappers
+		ODBCTestQ4
 }
 
 # #########################################################

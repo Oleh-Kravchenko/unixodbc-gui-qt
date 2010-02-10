@@ -5,7 +5,7 @@
  * \author  \sa AUTHORS file
  * \version 2
  * \date    2007
- * \license Copyright unixODBC-GUI-Qt Project 2009, LGPL
+ * \license Copyright unixODBC-GUI-Qt Project 2009-2010, LGPL
  */
 #ifndef CDATASOURCENAMESFILEMODEL_H
 #define CDATASOURCENAMESFILEMODEL_H

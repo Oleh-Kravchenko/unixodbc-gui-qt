@@ -1,3 +1,6 @@
+WARNING: This has not been ported (from unixODBC core) yet.
+
+
 %define name     unixODBC
 %define ver      2.2.14
 %define prefix   /usr

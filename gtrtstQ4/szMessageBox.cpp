@@ -5,7 +5,7 @@
  * \author  \sa AUTHORS file
  * \version 1
  * \date    2009
- * \license Copyright unixODBC-GUI-Qt Project 2009, LGPL
+ * \license Copyright unixODBC-GUI-Qt Project 2009-2010, LGPL
  */
 #include <autotest.h>
 
