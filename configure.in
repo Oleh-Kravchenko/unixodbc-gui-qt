@@ -402,11 +402,15 @@ AC_SUBST(LIBSOCKET)
 AC_CHECK_LIB(nsl, gethostbyname, [LIBNSL="-lnsl"]) dnl for Solaris
 AC_SUBST(LIBNSL)
 
-dnl use the new QT detection macros
+dnl
+dnl BEGIN: check for qt (using qt.m4)...
+dnl
 
-have_qt="no"
-have_qt4="no"
 FUN_CHECK_QT
+
+dnl
+dnl END: check for qt
+dnl
 
 dnl Checks for header files.
 AC_HEADER_STDC

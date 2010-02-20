@@ -47,8 +47,8 @@ static BOOL QT4ManageDataSources( HWND hWnd )
         pWidget = qApp->desktop();
 
     // show dialog...
-	CODBCConfig odbcconfig( pWidget );
-	if ( odbcconfig.exec() == QDialog::Accepted )
+    CODBCConfig odbcconfig( pWidget );
+    if ( odbcconfig.exec() == QDialog::Accepted )
         return true;
 
     return false;

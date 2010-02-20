@@ -36,7 +36,7 @@
 #define ODBC_HELP_DRIVER_UNKNOWN "No help for this driver specific property. Please check with the vendor of the driver... perhaps their web site"
 
 CDriverList::CDriverList( QWidget* pwidgetParent )
-    : QTableWidget( pwidgetParent )
+: QTableWidget( pwidgetParent )
 {
     setToolTip( tr( "list of registered drivers" ) );
     setWhatsThis( tr( "This is a list of registered drivers. Registered drivers are drivers which the Driver Manager knows about. A well behaved driver installer will automatically register a driver - but not all driver installers do this last step. If you know your driver is installed but is not registered here then it can be registered manually providing you know the file names." ) );
@@ -361,7 +361,7 @@ void CDriverList::slotAdd()
     {
         // get our ini file
         char szINI[FILENAME_MAX+1];
-		char b1[ 256 ], b2[ 256 ];
+        char b1[ 256 ], b2[ 256 ];
 
         sprintf( szINI, "%s/%s", odbcinst_system_file_path( b1 ), odbcinst_system_file_name( b1 ) );
 
@@ -397,11 +397,11 @@ void CDriverList::slotEdit()
     HODBCINSTPROPERTY   hFirstProperty  = NULL;
     HODBCINSTPROPERTY   hCurProperty    = NULL;
     HODBCINSTPROPERTY   hLastProperty;
-    HINI	            hIni;
+    HINI            hIni;
     char                szINI[FILENAME_MAX+1];
-	char b1[ 256 ], b2[ 256 ];
+    char b1[ 256 ], b2[ 256 ];
 
-	sprintf( szINI, "%s/%s", odbcinst_system_file_path( b1 ), odbcinst_system_file_name( b1 ) );
+    sprintf( szINI, "%s/%s", odbcinst_system_file_path( b1 ), odbcinst_system_file_name( b1 ) );
 
     QList<QTableWidgetItem*> listSelectedItems = selectedItems();
     if ( listSelectedItems.count() )
@@ -750,9 +750,9 @@ void CDriverList::slotDelete()
     HINI        hIni;
     char        szINI[FILENAME_MAX+1];
     QString     stringName;
-	char b1[ 256 ], b2[ 256 ];
+    char b1[ 256 ], b2[ 256 ];
 
-	sprintf( szINI, "%s/%s", odbcinst_system_file_path( b1 ), odbcinst_system_file_name( b1 ) );
+    sprintf( szINI, "%s/%s", odbcinst_system_file_path( b1 ), odbcinst_system_file_name( b1 ) );
 
     // GET SELECT DATA SOURCE NAME
     QList<QTableWidgetItem*> listSelectedItems = selectedItems();
@@ -776,7 +776,7 @@ void CDriverList::slotDelete()
 
 void CDriverList::slotLoad()
 {
-    HINI	hIni;
+    HINI    hIni;
     char    szINI[FILENAME_MAX+1];
     char    szDriverName[INI_MAX_OBJECT_NAME+1];
     char    szPropertyName[INI_MAX_PROPERTY_NAME+1];
@@ -786,11 +786,11 @@ void CDriverList::slotLoad()
     char    szSetup[INI_MAX_PROPERTY_VALUE+1];
     char    szSetup64[INI_MAX_PROPERTY_VALUE+1];
     int     nRow = 0;
-	char b1[ 256 ], b2[ 256 ];
+    char b1[ 256 ], b2[ 256 ];
 
     setRowCount( 0 );
 
-	sprintf( szINI, "%s/%s", odbcinst_system_file_path( b1 ), odbcinst_system_file_name( b1 ) );
+    sprintf( szINI, "%s/%s", odbcinst_system_file_path( b1 ), odbcinst_system_file_name( b1 ) );
 
     if ( iniOpen( &hIni, szINI, (char*)"#;", '[', ']', '=', TRUE ) != INI_ERROR )
     {
