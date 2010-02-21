@@ -432,7 +432,7 @@ AC_ARG_WITH([test_src], AC_HELP_STRING([--with-test-src=DIR],
 dnl AC_SUBST(test_src)
 dnl autotest=false;
 
-AC_CHECK_HEADERS([$test_src/AutoTests/include/autotest.h],[autotest=true;INCLUDES_COMMON="$INCLUDES_COMMON -I$test_src/AutoTests/include";],[autotest=false])
+AC_CHECK_FILE([$test_src/AutoTests/include/autotest.h],[autotest=true;INCLUDES_COMMON="$INCLUDES_COMMON -I$test_src/AutoTests/include";],[autotest=false])
 AM_CONDITIONAL(GTRTST, test "x$autotest" = "xtrue" )
 
 dnl

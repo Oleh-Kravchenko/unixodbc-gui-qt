@@ -1,0 +1,27 @@
++-------------------------------------------------------------+
+| ODBCTestQ4                                                  |
++-------------------------------------------------------------+
+
+README
+---------------------------------------------------------------
+
+Description:
+
+	This is a program which allows menu driven execution of 
+	ODBC calls. This program also allows 'auto tests' to be
+	executed. 
+
+	This program has been created to provide similar 
+	functionality as the MS odbctst32.exe program.
+
+Authors:
+
+	This program was created by Nick Gorham and then heavily
+	modified by Peter Harvey during a pure Qt4 port. Some
+	features may not be ported at this time.
+	
+---------------------------------------------------------------
+Peter Harvey 
+
+
+
