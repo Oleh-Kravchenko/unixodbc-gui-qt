@@ -55,6 +55,7 @@
 		<Folder
 			Name="Header Files"
 			Filters="*.h;*.H;*.hh;*.hpp;*.hxx;*.inc;*.sh;*.cpy;*.if">
+			<F N="Clean.sh"/>
 			<F N="ltmain.sh"/>
 		</Folder>
 		<Folder

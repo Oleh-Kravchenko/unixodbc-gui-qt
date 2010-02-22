@@ -1,64 +1,35 @@
-WARNING: This has not been ported (from unixODBC core) yet.
-
-
-%define name     unixODBC
-%define ver      2.2.14
+%define name     unixODBC-GUI-Qt
+%define ver      2.2.15
+%define rel      1
 %define prefix   /usr
-%define sysconfdir	/etc
 
-Summary: ODBC driver manager and drivers for PostgreSQL, MySQL, etc.
+Summary: Several GUI (Qt) programs and plugins for unixODBC.
 Name: %{name}
 Version: %ver
-Release: 1
+Release: %rel
 License: LGPL and GPL
 Group: Applications/Databases
 Source: %{name}-%{ver}.tar.gz
 BuildRoot: /var/tmp/%{name}-%{ver}-root
-URL: http://www.unixodbc.org/
+URL: http://sourceforge.net/projects/unixodbc-gui-qt/
+Vendor: unixODBC-GUI-Qt Project
+Packager: Peter Harvey
 Docdir: %{prefix}/doc
 Prefix: %prefix
 
 %description
-unixODBC aims to provide a complete ODBC solution for the Linux platform.
+unixODBC-GUI-Qt provides several GUI (Qt) programs and plugins.
 All programs are GPL.
-All libs are LGPL (except nn which is GPL?).
-
-%package devel
-Summary: Includes and static libraries for ODBC development
-Group: Development/Libraries
-Requires: %{name} = %{ver}
-
-%description devel
-unixODBC aims to provide a complete ODBC solution for the Linux platform.
-All programs are GPL.
-All libs are LGPL (except nn which is GPL?).
-This package contains the include files and static libraries
-for development.
-
-%package gui-qt
-Summary: ODBC configurator, Data Source browser and ODBC test tool based on Qt
-Group: Applications/Databases
-Requires: %{name} = %{ver}
-
-%description gui-qt
-unixODBC aims to provide a complete ODBC solution for the Linux platform.
-All programs are GPL.
-All libs are LGPL (except nn which is GPL?).
-This package contains two Qt based GUI programs for unixODBC:
-ODBCConfig and DataManager
+All libs are LGPL.
 
 %prep
 %setup
 
-%ifarch alpha
-  ARCH_FLAGS="--host=alpha-redhat-linux"
-%endif
-
 export -n LANG LINGUAS LC_ALL 
 if [ ! -f configure ]; then
-  CFLAGS="$RPM_OPT_FLAGS" ./autogen.sh $ARCH_FLAGS --prefix=%{prefix} --sysconfdir=%{sysconfdir} 
+  CFLAGS="$RPM_OPT_FLAGS" ./autogen.sh $ARCH_FLAGS --prefix=%{prefix}
 else
-  CFLAGS="$RPM_OPT_FLAGS" ./configure $ARCH_FLAGS --prefix=%{prefix} --sysconfdir=%{sysconfdir} 
+  CFLAGS="$RPM_OPT_FLAGS" ./configure $ARCH_FLAGS --prefix=%{prefix}
 fi
 
 %build
@@ -74,18 +45,12 @@ fi
 %install
 [ -n "$RPM_BUILD_ROOT" -a "$RPM_BUILD_ROOT" != / ] && rm -rf $RPM_BUILD_ROOT
 
-make prefix=$RPM_BUILD_ROOT%{prefix} sysconfdir=$RPM_BUILD_ROOT%{sysconfdir} install-strip
+make prefix=$RPM_BUILD_ROOT%{prefix} install-strip
 
 %clean
 [ -n "$RPM_BUILD_ROOT" -a "$RPM_BUILD_ROOT" != / ] && rm -rf $RPM_BUILD_ROOT
 
 %pre
-if [ -f %{sysconfdir}/odbc.ini ]; then
-	mv -f %{sysconfdir}/odbc.ini %{sysconfdir}/odbc.ini.rpmsave
-fi
-if [ -f %{sysconfdir}/odbcinst.ini ]; then
-	mv -f %{sysconfdir}/odbcinst.ini %{sysconfdir}/odbcinst.ini.rpmsave
-fi
 
 %post -p /sbin/ldconfig
 %postun -p /sbin/ldconfig
@@ -93,49 +58,12 @@ fi
 %files
 %defattr(-, root, root)
 
-%doc AUTHORS COPYING ChangeLog NEWS README README.GTK doc
+%doc AUTHORS COPYING ChangeLog NEWS README README.dist README.qmake README.svn doc
 
-%{sysconfdir}/odbc.ini
-%{sysconfdir}/odbcinst.ini
-%{prefix}/bin/dltest
-%{prefix}/bin/isql
-%{prefix}/bin/iusql
-%{prefix}/bin/odbcinst
-%{prefix}/bin/odbc_config
-%{prefix}/lib/libesoobS.so*
-%{prefix}/lib/libsapdbS.so*
-%{prefix}/lib/libnn.so*
-%{prefix}/lib/libodbc.so*
-%{prefix}/lib/libodbccr.so*
-%{prefix}/lib/libodbcdrvcfg1S.so*
-%{prefix}/lib/libodbcdrvcfg2S.so*
-%{prefix}/lib/libodbcinst.so*
-%{prefix}/lib/libodbcminiS.so*
-%{prefix}/lib/libodbcmyS.so*
-%{prefix}/lib/libodbcnnS.so*
-%{prefix}/lib/libodbcpsql.so*
-%{prefix}/lib/libodbcpsqlS.so*
-%{prefix}/lib/libodbctxt.so*
-%{prefix}/lib/libodbctxtS.so*
-%{prefix}/lib/liboplodbcS.so*
-%{prefix}/lib/liboraodbcS.so*
-%{prefix}/lib/libtdsS.so*
-%{prefix}/lib/libtemplate.so*
-%{prefix}/lib/libboundparam.so*
-%{prefix}/lib/libgtrtst.so*
-%{prefix}/lib/libmimerS.so*
+%{prefix}/bin/ODBCCreateDataSourceQ4
+%{prefix}/bin/ODBCManageDataSourcesQ4
+%{prefix}/bin/ODBCTestQ4
+%{_libdir}/libgtrtstQ4.so*
+%{_libdir}/libodbcinstQ4.so*
 
-%files devel
-%defattr(-, root, root)
 
-%{prefix}/include/*
-%{prefix}/lib/*.la
-
-%files gui-qt
-%defattr(-, root, root)
-
-%{prefix}/bin/DataManager
-%{prefix}/bin/DataManagerII
-%{prefix}/bin/ODBCConfig
-%{prefix}/bin/odbctest
-%{prefix}/lib/libodbcinstQ.so*

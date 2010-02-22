@@ -18,25 +18,25 @@ Source via svn:
       
 	see the README.svn
 	
-Source via 'tar-ball':
+Source 'tar-ball':
 
-	1. pull down the source from svn
-	2. make -f Makefile.svn
-	3. mv unixODBC-GUI-Qt unixODBC-GUI-Qt-<version>
-	4. tar -c unixODBC-GUI-Qt-<version> > unixODBC-GUI-Qt-<version>.tar
-	5. gzip unixODBC-GUI-Qt-<version>.tar
+	1. download source from sourceforge via svn
+	2. cd <sources>
+	3. make -f Makefile.svn
+	4. make dist
+	5. cd ../
+	6. mv <sources> unixODBC-GUI-Qt-<version>
+	7. tar -c unixODBC-GUI-Qt-<version> > unixODBC-GUI-Qt-<version>.tar
+	8. gzip unixODBC-GUI-Qt-<version>.tar
 	
 Binary + Source via RPM:
 
-	1. pull down the source from svn
-	2. make -f Makefile.svn
-	3. make dist
-	4. copy the unixODBC-GUI-Qt-<version> into /usr/src/..../SOURCES
-	5. rpm -ba ..../unixODBC-GUI-Qt.spec 
+	1. cd /usr/src/..../SOURCES
+	2. get (or create) source tar-ball
+	3. tar zxvf unixODBC-GUI-Qt-<version>.tar.gz
+	4. rpm -ba unixODBC-GUI-Qt-<version>/unixODBC-GUI-Qt.spec 
 
 	NOTE: Use "rpm -bb" if you just want a binary dist.
-	NOTE: The spec file is simply a copy from unixODBC - it 
-              will NOT work until someone ports.
 
 Windows
 -------

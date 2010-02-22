@@ -9,7 +9,7 @@ svn
 Description:
 
 	Read this if you want to know how to build from
-	source code checked-out from svn. 
+	source code checked-out from sourceforge via svn. 
 
 Warning:
 
@@ -28,38 +28,30 @@ Requirements:
 	    - m4 v1.4 (v1.4o will not work)
         - unixODBC-core
         - unixODBC-dev
+	- unixODBC-Test sources (if you want GUI test bits)
         - Qt 4
         - Qt 4 dev
 
 Download:
 	
-	Get the source from svn at 
+	Get the source via svn at 
 	http://unixodbc-gui-qt.sourceforge.net
 
 Make & Install (using GNU auto-tools method):
 
-	0. set environment variables (see INSTALL)
 	1. $ make -f Makefile.svn
 	2. $ ./configure --help
-	3. $ ./configure AnyOptionsHere
+	3. $ ./configure <options>
 	4. $ make
-	5. # make install
+	5. $ sudo make install
 
 	Steps 2-5 are the same steps used to install from a 
 	regular source distribution.
 
-	You can re-configure by simply running through steps
-	2-5 again. However; configure will try to use cached
-	information from any previous attempts. So it you
-	should "rm *cache" before doing steps 2-5 again.
-
-	configure will create a config.log when done. This 
-	should be the first place to look if configure seems
+	The configure script will create a config.log when done. 
+	This should be the first place to look if configure seems
 	to have a problem.
 			
-	NOTE: You probably want to be 'root' when you do a
-	'make install'.
-
 Contributing:
 
 	Source code from svn is used by two different types of 

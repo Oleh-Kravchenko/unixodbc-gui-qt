@@ -1,5 +1,5 @@
-dd.mm.yyyy
-1,0,00
+21.02.2010
+2.2.15-1
 
 	* Made the unixODBC Qt bits build in thier own project.
 
