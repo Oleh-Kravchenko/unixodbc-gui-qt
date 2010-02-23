@@ -1,11 +1,11 @@
+lib_LTLIBRARIES = libodbcinstQ4.la 
+
 libodbcinstQ4_la_LDFLAGS = \
 		-no-undefined \
-		-version-info 1:0:1 \
+		-version-info 2:1:1 \
 		-export-dynamic \
 		-export-symbols @srcdir@/odbcinstQ4.exp \
 		-module
-
-lib_LTLIBRARIES = libodbcinstQ4.la 
 
 INCLUDES = -I@top_srcdir@/ini \
            $(QT_CXXFLAGS) \

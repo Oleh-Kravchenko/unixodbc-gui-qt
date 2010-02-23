@@ -1,5 +1,3 @@
-if GTRTST
-
 bin_PROGRAMS = ODBCTestQ4
 
 INCLUDES = $(QT_CXXFLAGS) \
@@ -115,8 +113,6 @@ CLEANFILES = \
 	mOdbcTest.cpp \
 	mresults.cpp \
 	mstmt.cpp
-
-endif
 
 EXTRA_DIST = \
 	attr.h \

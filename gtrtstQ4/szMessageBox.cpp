@@ -15,7 +15,7 @@
  * \brief   szMessageBox.
  *
  *          This is a Qt specific implementation of szMessageBox. This call
- *          is declared in unixODBC-Test::autotest.h.
+ *          is declared in unixODBC::autotest.h.
  * 
  *          AutoTest libraries link to this when they want to be run from
  *          ODBCTestQ4.

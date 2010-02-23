@@ -14,11 +14,11 @@ Description:
 	
 unixODBC:
 	
-	This call is declared in unixODBC-Test::autotest.h
+	This call is declared in unixODBC::autotest.h
 	
 MS:
 	
-	This is a Qt version of what Microsoft has. So on MS
+	This is a Qt version of what MS has. So on MS
 	platforms you can choose to build/use auto tests with
 	the MS stuff or the, cross-platform, Qt stuff.
 	

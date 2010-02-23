@@ -67,6 +67,7 @@
 		<Folder
 			Name="Other Files"
 			Filters="">
+			<F N="gtrtstQ4.exp"/>
 			<F N="gtrtstQ4.pro"/>
 			<F N="Makefile.am"/>
 			<F N="README"/>

@@ -11,7 +11,6 @@ following software packages:
     - autoconf      (and related) packages
     - unixODBC-Core (most UNIX'isms)
     - unixODBC-Dev  (most UNIX'isms)
-    - unixODBC-Test (sources only - to get autotest.h)
     - Qt 4
     - Qt 4 dev
 

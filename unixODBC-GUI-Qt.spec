@@ -23,29 +23,15 @@ All programs are GPL.
 All libs are LGPL.
 
 %prep
-%setup
-
-export -n LANG LINGUAS LC_ALL 
-if [ ! -f configure ]; then
-  CFLAGS="$RPM_OPT_FLAGS" ./autogen.sh $ARCH_FLAGS --prefix=%{prefix}
-else
-  CFLAGS="$RPM_OPT_FLAGS" ./configure $ARCH_FLAGS --prefix=%{prefix}
-fi
+%setup -q
 
 %build
-export -n LANG LINGUAS LC_ALL 
-
-if [ "$SMP" != "" ]; then
-  (make "MAKE=make -k -j $SMP"; exit 0)
-  make
-else
-  make
-fi
+./configure CXXFLAGS=-O3 --prefix=$RPM_BUILD_ROOT/usr --libdir=$RPM_BUILD_ROOT%{_libdir}
+make
 
 %install
 [ -n "$RPM_BUILD_ROOT" -a "$RPM_BUILD_ROOT" != / ] && rm -rf $RPM_BUILD_ROOT
-
-make prefix=$RPM_BUILD_ROOT%{prefix} install-strip
+make install
 
 %clean
 [ -n "$RPM_BUILD_ROOT" -a "$RPM_BUILD_ROOT" != / ] && rm -rf $RPM_BUILD_ROOT
@@ -64,6 +50,10 @@ make prefix=$RPM_BUILD_ROOT%{prefix} install-strip
 %{prefix}/bin/ODBCManageDataSourcesQ4
 %{prefix}/bin/ODBCTestQ4
 %{_libdir}/libgtrtstQ4.so*
+%{_libdir}/libgtrtstQ4.a
+%{_libdir}/libgtrtstQ4.la
 %{_libdir}/libodbcinstQ4.so*
+%{_libdir}/libodbcinstQ4.a
+%{_libdir}/libodbcinstQ4.la
 
 

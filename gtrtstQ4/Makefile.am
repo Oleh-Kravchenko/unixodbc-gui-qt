@@ -1,8 +1,11 @@
-if GTRTST
-
 lib_LTLIBRARIES = libgtrtstQ4.la
 
-libgtrtstQ4_la_LDFLAGS = -no-undefined 
+libgtrtstQ4_la_LDFLAGS = \
+		-no-undefined \
+		-version-info 2:1:1 \
+		-export-dynamic \
+		-export-symbols @srcdir@/gtrtstQ4.exp \
+		-module
 
 INCLUDES = -I@top_srcdir@/ini \
            $(INCLUDES_COMMON) \
@@ -16,8 +19,6 @@ INCLUDES = -I@top_srcdir@/ini \
 libgtrtstQ4_la_SOURCES = \
 	szLogPrintf.cpp \
 	szMessageBox.cpp
-
-endif
 
 EXTRA_DIST = \
 	README

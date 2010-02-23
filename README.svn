@@ -28,7 +28,6 @@ Requirements:
 	    - m4 v1.4 (v1.4o will not work)
         - unixODBC-core
         - unixODBC-dev
-	- unixODBC-Test sources (if you want GUI test bits)
         - Qt 4
         - Qt 4 dev
 
