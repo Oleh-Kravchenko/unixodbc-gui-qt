@@ -1,5 +1,5 @@
 %define name     unixODBC-GUI-Qt
-%define ver      2.2.15
+%define ver      2.3.0
 %define rel      1
 %define prefix   /usr
 

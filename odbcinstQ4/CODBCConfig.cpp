@@ -120,7 +120,7 @@ void CODBCConfig::slotAccept()
 {
     /* \todo This can only be implemented after any widget which does something in saveData() tracks changes
              in its data such that an actual save is only done if data changes. */
-    printf( "[PAH][%s][%d]\n", __FILE__, __LINE__ );
+printf( "[PAH][%s][%d] not ready for this call yet\n", __FILE__, __LINE__ );
     if ( saveData() )
 //        done( QDialog::Accepted );
         accept();

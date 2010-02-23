@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <QHelpCollectionProject version="1.0">
     <assistant>
-        <title>unixODBC GUI Qt Project</title>
+        <title>unixODBC GUI Qt</title>
         <applicationIcon>images/handbook.png</applicationIcon>
         <cacheDirectory>unixODBC-GUI-Qt</cacheDirectory>
         <aboutMenuText>

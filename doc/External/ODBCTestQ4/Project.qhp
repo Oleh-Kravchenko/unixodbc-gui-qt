@@ -4,12 +4,12 @@
     <virtualFolder>doc</virtualFolder>
     <filterSection>
         <toc>
-            <section title="ODBC Administrator" ref="index.html">
+            <section title="ODBC Test" ref="index.html">
             </section>
         </toc>
         <files>
             <file>index.html</file>
             <file>images/Screen01.png</file>
-            </files>
-        </filterSection>
-    </QtHelpProject>
+        </files>
+    </filterSection>
+</QtHelpProject>

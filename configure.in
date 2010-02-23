@@ -1,7 +1,7 @@
 dnl
 dnl Process this file with autoconf to produce a configure script.
 dnl
-AC_INIT(unixODBC-GUI-Qt, 2.2.15)
+AC_INIT(unixODBC-GUI-Qt, 2.3.0)
 AM_INIT_AUTOMAKE
 
 dnl Checks for programs.

@@ -2,6 +2,7 @@
 <Workspace Version="10.0" VendorName="SlickEdit">
 	<Projects>
 		<Project File="../../ODBC++/CPP.vpj" />
+		<Project File="doc/doc.vpj" />
 		<Project File="gtrtstQ4/gtrtstQ4.vpj" />
 		<Project File="ini/ini.vpj" />
 		<Project File="ODBCCreateDataSourceQ4/ODBCCreateDataSourceQ4.vpj" />
