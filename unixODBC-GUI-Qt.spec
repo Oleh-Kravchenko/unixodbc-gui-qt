@@ -19,6 +19,13 @@ Prefix: %prefix
 
 %description
 unixODBC-GUI-Qt provides several GUI (Qt) programs and plugins.
+
+  * administrator (program)
+  * create data source wizard (program) 
+  * test (program)
+  * installer (plugin)
+  * auto test (plugin)
+
 All programs are GPL.
 All libs are LGPL.
 
@@ -38,8 +45,17 @@ make install
 
 %pre
 
-%post -p /sbin/ldconfig
-%postun -p /sbin/ldconfig
+%post -p 
+cd $RPM_DOC_DIR/unixODBC-GUI-Qt/doc/External/
+qcollectiongenerator CollectionQ4.qhcp -o CollectionQ4.qhc
+/sbin/ldconfig
+
+%preun
+cd $RPM_DOC_DIR/unixODBC-GUI-Qt/doc/External/
+assistant -collectionFile CollectionQ4.qhcp -unregister Project.qch
+
+%postun -p 
+/sbin/ldconfig
 
 %files
 %defattr(-, root, root)

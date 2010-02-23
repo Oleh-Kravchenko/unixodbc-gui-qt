@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <QtHelpProject version="1.0">
-    <namespace>unixODBC-GUI-Qt.ODBCManageDataSourcesQ4</namespace>
+    <namespace>unixODBC.ODBCManageDataSourcesQ4</namespace>
     <virtualFolder>doc</virtualFolder>
     <filterSection>
         <toc>
-            <section title="ODBC Administrator" ref="index.html">
-            </section>
+	    <section title="Administrator" ref="index.html">
+	    </section>
         </toc>
         <files>
             <file>index.html</file>

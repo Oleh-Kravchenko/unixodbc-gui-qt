@@ -1,9 +1,8 @@
-This is the external documentation. The target audience is any person
-who wants to use this software but does not really care about the 
-code which makes up the unixODBC-GUI-Qt project.
+This is the online help for ODBC as
+found in the unixODBC-GUI-Qt project.
 
-This documentation is provided by means of the Qt Assistant application
-and this is usually invoked by requesting Help from the GUI.
+http://sourceforge.net/projects/unixodbc-gui-qt
+http://www.unixodbc.org
 
 Enjoy
 Peter Harvey

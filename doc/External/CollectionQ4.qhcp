@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <QHelpCollectionProject version="1.0">
     <assistant>
-        <title>unixODBC GUI Qt</title>
+        <title>Open Database Connectivity (ODBC)</title>
         <applicationIcon>images/handbook.png</applicationIcon>
-        <cacheDirectory>unixODBC-GUI-Qt</cacheDirectory>
+        <cacheDirectory>unixODBC/unixODBC-GUI-Qt</cacheDirectory>
         <aboutMenuText>
             <text>About unixODBC GUI Qt</text>
         </aboutMenuText>
@@ -18,17 +18,12 @@
     <docFiles>
         <generate>
             <file>
-                <input>ODBCManageDataSourcesQ4/Project.qhp</input>
-                <output>ODBCManageDataSourcesQ4/Project.qch</output>
-            </file>
-            <file>
-                <input>ODBCTestQ4/Project.qhp</input>
-                <output>ODBCTestQ4/Project.qch</output>
+                <input>Project.qhp</input>
+                <output>Project.qch</output>
             </file>
         </generate>
         <register>
-            <file>ODBCManageDataSourcesQ4/Project.qch</file>
-            <file>ODBCTestQ4/Project.qch</file>
+            <file>Project.qch</file>
         </register>
     </docFiles>
 </QHelpCollectionProject>

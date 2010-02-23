@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <QtHelpProject version="1.0">
-    <namespace>unixODBC-GUI-Qt.ODBCManageDataSourcesQ4</namespace>
+    <namespace>unixODBC.ODBCCreateDataSourceQ4</namespace>
     <virtualFolder>doc</virtualFolder>
     <filterSection>
         <toc>
-            <section title="ODBC Administrator" ref="index.html">
-            </section>
+		<section title="Create Data Source Wizard" ref="index.html">
+		</section>
         </toc>
+        <keywords>
+            <keyword name="Wizard" ref="./index.html"/>
+            <keyword name="Create" ref="./index.html"/>
+            <keyword name="Data Source Name" ref="./index.html"/>
+            <keyword name="DSN" ref="./index.html"/>
+        </keywords>
         <files>
             <file>index.html</file>
             <file>images/Screen01.png</file>

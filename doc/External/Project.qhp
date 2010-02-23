@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QtHelpProject version="1.0">
+    <namespace>org.unixodbc.doc</namespace>
+    <virtualFolder>doc</virtualFolder>
+    <filterSection>
+        <toc>
+		<section title="ODBC">
+			<section title="Administrator" ref="ODBCManageDataSourcesQ4/index.html">
+			</section>
+			<section title="Create Data Source Wizard" ref="ODBCCreateDataSourceQ4/index.html">
+			</section>
+			<section title="Test" ref="ODBCTestQ4/index.html">
+			</section>
+		</section>
+        </toc>
+        <keywords>
+            <keyword name="Wizard" ref="./ODBCCreateDataSourceQ4/index.html"/>
+            <keyword name="Create" ref="./ODBCCreateDataSourceQ4/index.html"/>
+            <keyword name="Data Source Name" ref="./ODBCCreateDataSourceQ4/index.html"/>
+            <keyword name="DSN" ref="./ODBCCreateDataSourceQ4/index.html"/>
+            <keyword name="Test" ref="./ODBCTestQ4/index.html"/>
+            <keyword name="Auto Test" ref="./ODBCTestQ4/index.html"/>
+        </keywords>
+        <files>
+            <file>ODBCManageDataSourcesQ4/index.html</file>
+            <file>ODBCManageDataSourcesQ4/images/Screen01.png</file>
+            <file>ODBCCreateDataSourceQ4/index.html</file>
+            <file>ODBCCreateDataSourceQ4/images/Screen01.png</file>
+            <file>ODBCTestQ4/index.html</file>
+            <file>ODBCTestQ4/images/Screen01.png</file>
+        </files>
+    </filterSection>
+</QtHelpProject>
