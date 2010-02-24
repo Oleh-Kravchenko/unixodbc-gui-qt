@@ -112,7 +112,7 @@ void CODBCConfig::slotHelp()
 
     // show index page
     QTextStream str( process );
-    str << QLatin1String( "SetSource qthelp://unixODBC/doc/index.html" )
+    str << QLatin1String( "SetSource qthelp://org.unixODBC.doc/doc/ODBCManageDataSourcesQ4/index.html" )
     << QLatin1Char('\0') << endl;
 }
 

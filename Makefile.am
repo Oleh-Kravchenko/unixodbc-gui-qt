@@ -1,3 +1,5 @@
+ACLOCAL_AMFLAGS=-I m4
+
 SUBDIRS = \
 	ini \
 	gtrtstQ4 \
@@ -29,5 +31,4 @@ EXTRA_DIST = \
 	unixODBC-GUI-Qt.pro \
 	unixODBC-GUI-Qt.spec
 	 
-
 

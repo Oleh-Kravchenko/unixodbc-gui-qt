@@ -33,6 +33,10 @@ All libs are LGPL.
 %setup -q
 
 %build
+make -f Makefile.svn
+cd doc/External/
+qcollectiongenerator CollectionQ4.qhcp -o CollectionQ4.qhc
+cd ../../
 ./configure CXXFLAGS=-O3 --prefix=$RPM_BUILD_ROOT/usr --libdir=$RPM_BUILD_ROOT%{_libdir}
 make
 
@@ -45,22 +49,21 @@ make install
 
 %pre
 
-%post -p 
-cd $RPM_DOC_DIR/unixODBC-GUI-Qt/doc/External/
-qcollectiongenerator CollectionQ4.qhcp -o CollectionQ4.qhc
+%post
+cd %{_docdir}/unixODBC-GUI-Qt/doc/External/
+assistant -collectionFile CollectionQ4.qhc -register Project.qch
 /sbin/ldconfig
 
 %preun
-cd $RPM_DOC_DIR/unixODBC-GUI-Qt/doc/External/
-assistant -collectionFile CollectionQ4.qhcp -unregister Project.qch
+cd %{_docdir}/unixODBC-GUI-Qt/doc/External/
+assistant -collectionFile CollectionQ4.qhc -unregister Project.qch
 
-%postun -p 
-/sbin/ldconfig
+%postun -p /sbin/ldconfig
 
 %files
 %defattr(-, root, root)
 
-%doc AUTHORS COPYING ChangeLog NEWS README README.dist README.qmake README.svn doc
+%doc AUTHORS COPYING ChangeLog NEWS doc
 
 %{prefix}/bin/ODBCCreateDataSourceQ4
 %{prefix}/bin/ODBCManageDataSourcesQ4

@@ -19,11 +19,10 @@ Create source 'tar-ball':
 	1. download source from sourceforge via svn
 	2. mv <sources> unixODBC-GUI-Qt-<version>
 	3. cd <sources>
-	4. make -f Makefile.svn
-	5. sh Clean.sh
-	6. cd ../
-	7. tar -c unixODBC-GUI-Qt-<version> > unixODBC-GUI-Qt-<version>.tar
-	8. gzip unixODBC-GUI-Qt-<version>.tar
+	4. sh Clean.sh
+	5. cd ../
+	6. tar -c unixODBC-GUI-Qt-<version> > unixODBC-GUI-Qt-<version>.tar
+	7. gzip unixODBC-GUI-Qt-<version>.tar
 	
 	NOTE: If you have run the configure script then you should do the
 	following...
