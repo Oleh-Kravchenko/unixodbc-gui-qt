@@ -84,6 +84,7 @@
 			<F N="odbc.pri"/>
 			<F N="qt.m4"/>
 			<F N="README"/>
+			<F N="README.build"/>
 			<F N="README.dist"/>
 			<F N="README.qmake"/>
 			<F N="README.svn"/>

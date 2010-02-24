@@ -1,6 +1,9 @@
 dnl
 dnl Process this file with autoconf to produce a configure script.
 dnl
+dnl NOTE: Ths needs a bit of cleanup as some things are not needed
+dnl       simply inherited from unixODBC.
+dnl
 AC_INIT(unixODBC-GUI-Qt, 2.3.0)
 AM_INIT_AUTOMAKE
 

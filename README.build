@@ -1,0 +1,68 @@
++-------------------------------------------------------------+
+| unixODBC-GUI-Qt                                             |
++-------------------------------------------------------------+
+
+BUILD
+---------------------------------------------------------------
+
+The sources are usually built using GNU auto-tools but can be
+built using qmake. The qmake method may be of particular 
+interest to those on MS platforms. Those interested in the 
+qmake method should read README.qmake - the following is for
+those interested in the GNU auto-tools method.
+
+Requirements
+------------
+
+These are notable requirements for building the source;
+
+    - C++ development environment
+    - GNU auto-tools such as autoconf
+    - unixODBC-Core v2.3
+    - unixODBC-Dev  v2.3
+    - Qt v4
+    - Qt dev v4
+    - Qt doc v4
+
+NOTE: 	iODBC may not work because it lacks (at the this time) 
+	support for the UI plugin mechanism.
+	
+Build
+-----
+	
+$ cd unixODBC-GUI-Qt-<version>
+$ make -f Makefile.svn
+$ ./configure [options]
+$ make
+$ sudo make install
+	
+NOTE:	Experienced developers will recognize that we always
+	start by creating the 'configure' script (with the 
+	'make -f Makefile.svn') step. This may be reduced to 
+	svn only situations in the future.
+
+Documentation
+-------------
+	
+The documentation is not automatically built or	installed during 
+the build process. The following can be done to do this (using 
+SuSE as example);
+
+$ sudo mkdir /usr/src/doc/unixODBC-GUI-Qt
+$ sudo cp -r doc /usr/src/doc/unixODBC-GUI-Qt
+$ cd /usr/src/doc/unixODBC-GUI-Qt/doc/External
+$ sudo qcollectiongenerator CollectionQ4.qhcp -o CollectionQ4.qhc
+$ assistant -collectionFile CollectionQ4.qhc -register Project.qch
+
+The documentation can be viewed by;
+
+$ assistant -collectionFile \
+            /usr/src/doc/unixODBC-GUI-Qt/doc/External \
+	    CollectionQ4.qhc
+
+NOTE:	The documentation may be automatically built/installed
+	in the future. 
+
+---------------------------------------------------------------
+Peter Harvey
+

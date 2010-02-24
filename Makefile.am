@@ -25,9 +25,10 @@ EXTRA_DIST = \
 	odbc.pri \
 	qt.m4 \
 	README \
-	README.svn \
+	README.build \
 	README.dist \
 	README.qmake \
+	README.svn \
 	unixODBC-GUI-Qt.pro \
 	unixODBC-GUI-Qt.spec
 	 

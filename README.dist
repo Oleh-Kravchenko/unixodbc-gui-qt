@@ -2,45 +2,44 @@
 | unixODBC-GUI-Qt                                             |
 +-------------------------------------------------------------+
 
-README
-distribution
+dist (distribution)
 ---------------------------------------------------------------
 
-Description:
-
-	This readme is for those interested in *making* a 
-	unixODBC-GUI-Qt	distribution of some sort.
+This readme is for those interested in *making* a 
+unixODBC-GUI-Qt	distribution of some sort.
 	
 Linux
 -----
 	
 Create source 'tar-ball':
 
-	1. download source from sourceforge via svn
-	2. mv <sources> unixODBC-GUI-Qt-<version>
-	3. cd <sources>
-	4. sh Clean.sh
-	5. cd ../
-	6. tar -c unixODBC-GUI-Qt-<version> > unixODBC-GUI-Qt-<version>.tar
-	7. gzip unixODBC-GUI-Qt-<version>.tar
+1. get sources - presumably from sourceforge
+2. $ mv <sources> unixODBC-GUI-Qt-<version>
+3. $ cd <sources>
+4. $ sh Clean.sh
+5. $ cd ../
+6. $ tar -c unixODBC-GUI-Qt-<version> > unixODBC-GUI-Qt-<version>.tar
+7. $ gzip unixODBC-GUI-Qt-<version>.tar
 	
-	NOTE: If you have run the configure script then you should do the
+NOTE:	If you have run the configure script then you should do the
 	following...
-	
-	make distclean
+
+	$ make distclean
 
 	...and then follow steps 4 onward.
+
+WARNING:Step 4 can be dangerous if executed from outside of
+	the unixODBC-GUI-Qt source directory.
 		
 Create binary & source RPM:
 
-	1. put source tar-ball in <packages>/SOURCES
-	2. cd <packages>/SOURCES
-	3. tar zxvf unixODBC-GUI-Qt-<version>.tar.gz
-	4. cd unixODBC-GUI-Qt-<version>
-	5. rpmbuild -ba unixODBC-GUI-Qt.spec 
+1. $ mv unixODBC-GUI-Qt-<version>.tar.gz <packages>/SOURCES
+2. $ cd <packages>/SOURCES
+3. $ tar zxvf unixODBC-GUI-Qt-<version>.tar.gz
+4. $ rpmbuild -ba unixODBC-GUI-Qt-<version>/unixODBC-GUI-Qt.spec
 
-	NOTE: 	On openSuSE <packages> = /usr/src/packages
-		On RedHat   <packages> = /usr/src/redhat
+NOTE: 	On openSuSE <packages> = /usr/src/packages
+	On RedHat   <packages> = /usr/src/redhat
 
 Windows
 -------

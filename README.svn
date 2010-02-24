@@ -2,74 +2,51 @@
 | unixODBC-GUI-Qt                                             |
 +-------------------------------------------------------------+
 
-README
 svn
 ---------------------------------------------------------------
 
-Description:
+Few people will want to use this method to get unixODBC-GUI-Qt.
+This method is primarily for unixODBC-GUI-Qt developers and 
+those wanting the very latest changes.
 
-	Read this if you want to know how to build from
-	source code checked-out from sourceforge via svn. 
-
-Warning:
-
-	When you use source code from svn you get the latest source code;
-	however it may not be as stable (or even be buildable). So you
-	may want to get a regular source distribution instead. Read on 
-	if you are still interested in building from svn source.
-
-Requirements:
-
-        - C++ development environment
-        - autoconf (and related) packages
-	    - automake v1.5
-	    - libtool v1.4.2
-	    - autoconf v2.13
-	    - m4 v1.4 (v1.4o will not work)
-        - unixODBC-core
-        - unixODBC-dev
-        - Qt 4
-        - Qt 4 dev
-
-Download:
+Repository
+----------
 	
-	Get the source via svn at 
+The source code can be downloaded using the svn tool from;	
+
 	http://unixodbc-gui-qt.sourceforge.net
 
-Make & Install (using GNU auto-tools method):
+WARNING:	This is the 'bleeding edge' code and as such 
+		the trunk may not build and will have some bugs 
+		in it.
 
-	1. $ make -f Makefile.svn
-	2. $ ./configure --help
-	3. $ ./configure <options>
-	4. $ make
-	5. $ sudo make install
+Build
+-----
 
-	Steps 2-5 are the same steps used to install from a 
-	regular source distribution.
+See README.build
 
-	The configure script will create a config.log when done. 
-	This should be the first place to look if configure seems
-	to have a problem.
-			
-Contributing:
+Contributing
+------------
 
-	Source code from svn is used by two different types of 
-	Users.
+Source code from svn is used by two different types of 
+Users.
+
+1. Those that want the 'bleeding edge' code; either to
+get the newest bug fixs/features or to test. This
+group of users will typically have read-only access to
+the svn code. Anyone can download the source code from
+svn and use it. No special permission is required. See
+LICENSE file.
+
+2. Those who are actively improving things by making
+code and document changes. This group of users will have
+read/write access to the svn source code.
+
+If you want to contribute you can request 'write'
+permissions using the Source Forge web interface. This
+usually means sending an email request to one of the 
+project admins.
 	
-	1. Those that want the 'bleeding edge' code; either to
-	get the newest bug fixs/features or to test. This
-	group of users will typically have read-only access to
-	the svn code. Anyone can download the source code from
-	svn and use it. No special permission is required. See
-	LICENSE file.
-	
-	2. Those who are actively improving things by making
-	code and document changes. This group of users will have
-	read/write access to the svn source code.
-	
-	If you want to contribute you can request 'write'
-	permissions using the Source Forge web interface. This
-	usually means sending an email request to one of the 
-	project admins.
-	
+---------------------------------------------------------------
+Peter Harvey
 
