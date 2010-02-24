@@ -22,8 +22,5 @@
                 <output>Project.qch</output>
             </file>
         </generate>
-        <register>
-            <file>Project.qch</file>
-        </register>
     </docFiles>
 </QHelpCollectionProject>
