@@ -42,6 +42,9 @@ public:
 
 signals:
     void signalChanged();
+
+public slots:
+    void slotDoubleClick( QTableWidgetItem *pItem );
 };
 
 #endif

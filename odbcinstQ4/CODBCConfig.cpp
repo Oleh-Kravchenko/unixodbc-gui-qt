@@ -19,7 +19,7 @@
 #include "ODBCManageDataSources64.xpm"
 
 CODBCConfig::CODBCConfig( QWidget* pwidgetParent, Qt::WindowFlags nFlags )
-: QDialog( pwidgetParent, nFlags )
+    : QDialog( pwidgetParent, nFlags )
 {
     QVBoxLayout *playout00 = new QVBoxLayout;
 

@@ -370,15 +370,15 @@ void CDataSourceNameList::slotLoad()
             setRowCount( nElement + 1 );
 
             ptablewidgetitem = new QTableWidgetItem( szSectionName );
-            ptablewidgetitem->setFlags( Qt::ItemIsSelectable );
+//            ptablewidgetitem->setFlags( Qt::ItemIsSelectable );
             setItem( nElement, 0, ptablewidgetitem );
 
             ptablewidgetitem = new QTableWidgetItem( szDescription );
-            ptablewidgetitem->setFlags( Qt::ItemIsSelectable );
+//            ptablewidgetitem->setFlags( Qt::ItemIsSelectable );
             setItem( nElement, 1, ptablewidgetitem );
 
             ptablewidgetitem = new QTableWidgetItem( szDriver );
-            ptablewidgetitem->setFlags( Qt::ItemIsSelectable );
+//            ptablewidgetitem->setFlags( Qt::ItemIsSelectable );
             setItem( nElement, 2, ptablewidgetitem );
 		}
 		SQLSetConfigMode( ODBC_BOTH_DSN );

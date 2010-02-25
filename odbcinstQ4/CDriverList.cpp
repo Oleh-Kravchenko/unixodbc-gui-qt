@@ -850,19 +850,19 @@ void CDriverList::slotLoad()
             setRowCount( nRow + 1 );
 
             ptablewidgetitem = new QTableWidgetItem( szDriverName );
-            ptablewidgetitem->setFlags( Qt::ItemIsSelectable );
+//            ptablewidgetitem->setFlags( Qt::ItemIsSelectable );
             setItem( nRow, 0, ptablewidgetitem );
 
             ptablewidgetitem = new QTableWidgetItem( szDescription );
-            ptablewidgetitem->setFlags( Qt::ItemIsSelectable );
+//            ptablewidgetitem->setFlags( Qt::ItemIsSelectable );
             setItem( nRow, 1, ptablewidgetitem );
 
             ptablewidgetitem = new QTableWidgetItem( szDriver );
-            ptablewidgetitem->setFlags( Qt::ItemIsSelectable );
+//            ptablewidgetitem->setFlags( Qt::ItemIsSelectable );
             setItem( nRow, 2, ptablewidgetitem );
 
             ptablewidgetitem = new QTableWidgetItem( szSetup );
-            ptablewidgetitem->setFlags( Qt::ItemIsSelectable );
+//            ptablewidgetitem->setFlags( Qt::ItemIsSelectable );
             setItem( nRow, 3, ptablewidgetitem );
 
             nRow++;
@@ -876,6 +876,7 @@ void CDriverList::slotLoad()
 
 void CDriverList::slotDoubleClick( QTableWidgetItem * )
 {
+printf( "[PAH][%s][%d]\n", __FILE__, __LINE__ );
     slotEdit();
 }
 

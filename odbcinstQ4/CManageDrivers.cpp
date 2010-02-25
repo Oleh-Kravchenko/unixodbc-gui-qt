@@ -32,7 +32,7 @@ CManageDrivers::CManageDrivers( QWidget* pwidgetParent )
 
     QHBoxLayout *playout                = new QHBoxLayout;
     QVBoxLayout *playoutButtons         = new QVBoxLayout;
-    CDriverList *pDriverList            = new CDriverList;
+    CDriverList *pDriverList            = new CDriverList( this );
 
     playoutButtons->addWidget( ppushbuttonAdd );
     playoutButtons->addWidget( ppushbuttonConfigure );
@@ -57,4 +57,8 @@ CManageDrivers::~CManageDrivers()
 {
 }
 
+void CManageDrivers::slotDoubleClick( QTableWidgetItem * )
+{
+printf( "[PAH][%s][%d]\n", __FILE__, __LINE__ );
+}
 
