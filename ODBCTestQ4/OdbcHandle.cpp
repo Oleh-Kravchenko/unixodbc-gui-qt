@@ -28,6 +28,36 @@
 
 #include "OdbcHandle.h"
 
+attr_value pEnvHandleTypes[] = 
+{
+	{ "SQL_HANDLE_ENV",     SQL_HANDLE_ENV,     NULL,   0 },
+	{ "SQL_HANDLE_DBC",     SQL_HANDLE_DBC,     NULL,   0 },
+    { NULL,                 0,                  NULL,   0 }
+};
+
+attr_value pEnvCompletionTypes[] = 
+{
+	{ "SQL_COMMIT",         SQL_COMMIT,         NULL,   0 },
+	{ "SQL_ROLLBACK",       SQL_ROLLBACK,       NULL,   0 },
+    { NULL,                 0,                  NULL,   0 }
+};
+
+attr_value pEnvDataSourcesDirections[] = 
+{
+	{ "SQL_FETCH_NEXT",         SQL_FETCH_NEXT,         NULL,   0 },
+	{ "SQL_FETCH_FIRST",        SQL_FETCH_FIRST,        NULL,   0 },
+	{ "SQL_FETCH_FIRST_USER",   SQL_FETCH_FIRST_USER,   NULL,   0 },
+	{ "SQL_FETCH_FIRST_SYSTEM", SQL_FETCH_FIRST_SYSTEM, NULL,   0 },
+    { NULL,                     0,                      NULL,   0 }
+};
+
+attr_value pEnvDriversDirections[] = 
+{
+	{ "SQL_FETCH_NEXT",     SQL_FETCH_NEXT,     NULL,   0 },
+	{ "SQL_FETCH_FIRST",    SQL_FETCH_FIRST,    NULL,   0 },
+    { NULL,                 0,                  NULL,   0 }
+};
+
 OdbcHandle::OdbcHandle( int t, SQLHANDLE h, QString desc, SQLHANDLE stmt ) 
 { 
 	type = t; 

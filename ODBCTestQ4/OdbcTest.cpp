@@ -29,6 +29,15 @@
 #include "OdbcTest.h"
 #include "ODBCTestQ4-48.xpm"
 
+#include "DlgEnvAllocHandle.h"
+#include "DlgEnvDataSources.h"
+#include "DlgEnvDrivers.h"
+#include "DlgEnvEndTran.h"
+#include "DlgEnvFreeHandle.h"
+#include "DlgEnvAllocEnv.h"
+#include "DlgEnvFreeEnv.h"
+#include "DlgEnvTransact.h"
+
 OdbcTest::OdbcTest( QWidget *parent )
 : QMainWindow( parent )
 {
@@ -921,4 +930,87 @@ void OdbcTest::writeApplicationState()
     settings.endGroup();
 }
 
+void OdbcTest::slotAllocHandle()
+{
+	DlgEnvAllocHandle *dlg = new DlgEnvAllocHandle( this, "SQLAllocHandle" );
+
+	dlg->exec();
+
+	delete dlg;
+}
+
+void OdbcTest::slotDataSources()
+{
+	DlgEnvDataSources *dlg = new DlgEnvDataSources( this, "SQLDataSources" );
+
+	dlg->exec();
+
+	delete dlg;
+}
+
+void OdbcTest::slotDrivers()
+{
+	DlgEnvDrivers *dlg = new DlgEnvDrivers( this, "SQLDrivers" );
+
+	dlg->exec();
+
+	delete dlg;
+}
+
+void OdbcTest::slotEndTran()
+{
+	DlgEnvEndTran *dlg = new DlgEnvEndTran( this, "SQLEndTran" );
+
+	dlg->exec();
+
+	delete dlg;
+}
+
+void OdbcTest::slotFreeHandle()
+{
+	DlgEnvFreeHandle *dlg = new DlgEnvFreeHandle( this, "SQLFreeHandle" );
+
+	dlg->exec();
+
+	delete dlg;
+}
+
+void OdbcTest::slotAllocEnv()
+{
+	DlgEnvAllocEnv *dlg = new DlgEnvAllocEnv( this, "SQLAllocEnv" );
+
+	dlg->exec();
+
+	delete dlg;
+}
+
+void OdbcTest::slotFreeEnv()
+{
+	DlgEnvFreeEnv *dlg = new DlgEnvFreeEnv( this, "SQLFreeEnv" );
+
+	dlg->exec();
+
+	delete dlg;
+}
+
+void OdbcTest::slotTransact()
+{
+	DlgEnvTransact *dlg = new DlgEnvTransact( this, "SQLTransact" );
+
+	dlg->exec();
+
+	delete dlg;
+}
+
+void OdbcTest::slotDataSourcesAll()
+{
+    QMessageBox::about( this, "ODBC Test",
+			"Not yet implemented" );
+}
+
+void OdbcTest::slotDriversAll()
+{
+    QMessageBox::about( this, "ODBC Test",
+			"Not yet implemented" );
+}
 

@@ -1263,3 +1263,4 @@ void OdbcTest::slotDriversAll()
     QMessageBox::about( this, "ODBC Test",
 			"Not yet implemented" );
 }
+

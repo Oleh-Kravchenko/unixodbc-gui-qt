@@ -89,12 +89,16 @@ typedef struct attr_options
 	int		        is_pointer;
 } attr_options;
 
+extern attr_value pEnvHandleTypes[]; 
+extern attr_value pEnvCompletionTypes[];
+extern attr_value pEnvDataSourcesDirections[];
+extern attr_value pEnvDriversDirections[];
 
 /*!
  * \brief   ODBC handle. 
  *  
  *          Our, not so, general purpose handle. This is a general purpose handle in that
- *          it supports all of the ODBC handle types. Its no so general purpose in the
+ *          it supports all of the ODBC handle types. Its not so general purpose in the
  *          fact that we toss in some other stuff simply for convenience.
  * 
  */

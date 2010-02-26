@@ -18,13 +18,20 @@ ODBCTestQ4_SOURCES = \
 	desc.cpp \
 	diag.cpp \
 	DlgDbcConnect.cpp \
+	DlgEnvAllocEnv.cpp \
+	DlgEnvAllocHandle.cpp \
+	DlgEnvDataSources.cpp \
+	DlgEnvDrivers.cpp \
+	DlgEnvEndTran.cpp \
+	DlgEnvFreeEnv.cpp \
+	DlgEnvFreeHandle.cpp \
+	DlgEnvTransact.cpp \
 	DlgToolsManageAutoTest.cpp \
 	DlgToolsManageTest.cpp \
 	DlgToolsManageTestGroup.cpp \
 	DlgToolsNewGroup.cpp \
 	DlgToolsNewSource.cpp \
 	DlgToolsRunAutoTests.cpp \
-	env.cpp \
 	installer.cpp \
 	main.cpp \
 	OdbcHandle.cpp \
@@ -43,7 +50,14 @@ ODBCTestQ4_SOURCES = \
 	mDlgToolsNewGroup.cpp \
 	mDlgToolsNewSource.cpp \
 	mDlgToolsRunAutoTests.cpp \
-	menv.cpp \
+	mDlgEnvAllocEnv.cpp \
+	mDlgEnvAllocHandle.cpp \
+	mDlgEnvDataSources.cpp \
+	mDlgEnvDrivers.cpp \
+	mDlgEnvEndTran.cpp \
+	mDlgEnvFreeEnv.cpp \
+	mDlgEnvFreeHandle.cpp \
+	mDlgEnvTransact.cpp \
 	mOdbcTest.cpp \
 	mresults.cpp \
 	mstmt.cpp
@@ -63,8 +77,29 @@ mdesc.cpp: @srcdir@/desc.h
 mdiag.cpp: @srcdir@/diag.h
 	@MOC@ @srcdir@/diag.h -o mdiag.cpp
 
-menv.cpp: @srcdir@/env.h
-	@MOC@ @srcdir@/env.h -o menv.cpp
+mDlgEnvAllocEnv.cpp: @srcdir@/DlgEnvAllocEnv.h
+	@MOC@ @srcdir@/DlgEnvAllocEnv.h -o mDlgEnvAllocEnv.cpp
+
+mDlgEnvAllocHandle.cpp: @srcdir@/DlgEnvAllocHandle.h
+	@MOC@ @srcdir@/DlgEnvAllocHandle.h -o mDlgEnvAllocHandle.cpp
+
+mDlgEnvDataSources.cpp: @srcdir@/DlgEnvDataSources.h
+	@MOC@ @srcdir@/DlgEnvDataSources.h -o mDlgEnvDataSources.cpp
+
+mDlgEnvDrivers.cpp: @srcdir@/DlgEnvDrivers.h
+	@MOC@ @srcdir@/DlgEnvDrivers.h -o mDlgEnvDrivers.cpp
+
+mDlgEnvEndTran.cpp: @srcdir@/DlgEnvEndTran.h
+	@MOC@ @srcdir@/DlgEnvEndTran.h -o mDlgEnvEndTran.cpp
+
+mDlgEnvFreeEnv.cpp: @srcdir@/DlgEnvFreeEnv.h
+	@MOC@ @srcdir@/DlgEnvFreeEnv.h -o mDlgEnvFreeEnv.cpp
+
+mDlgEnvFreeHandle.cpp: @srcdir@/DlgEnvFreeHandle.h
+	@MOC@ @srcdir@/DlgEnvFreeHandle.h -o mDlgEnvFreeHandle.cpp
+
+mDlgEnvTransact.cpp: @srcdir@/DlgEnvTransact.h
+	@MOC@ @srcdir@/DlgEnvTransact.h -o mDlgEnvTransact.cpp
 
 mcatalog.cpp: @srcdir@/catalog.h
 	@MOC@ @srcdir@/catalog.h -o mcatalog.cpp
@@ -103,13 +138,20 @@ CLEANFILES = \
 	mdesc.cpp \
 	mdiag.cpp \
 	mDlgDbcConnect.cpp \
+	mDlgEnvAllocEnv.cpp \
+	mDlgEnvAllocHandle.cpp \
+	mDlgEnvDataSources.cpp \
+	mDlgEnvDrivers.cpp \
+	mDlgEnvEndTran.cpp \
+	mDlgEnvFreeEnv.cpp \
+	mDlgEnvFreeHandle.cpp \
+	mDlgEnvTransact.cpp \
 	mDlgToolsManageAutoTest.cpp \
 	mDlgToolsManageTest.cpp \
 	mDlgToolsManageTestGroup.cpp \
 	mDlgToolsNewGroup.cpp \
 	mDlgToolsNewSource.cpp \
 	mDlgToolsRunAutoTests.cpp \
-	menv.cpp \
 	mOdbcTest.cpp \
 	mresults.cpp \
 	mstmt.cpp
@@ -121,13 +163,20 @@ EXTRA_DIST = \
 	desc.h \
 	diag.h \
 	DlgDbcConnect.h \
+	DlgEnvAllocEnv.h \
+	DlgEnvAllocHandle.h \
+	DlgEnvDataSources.h \
+	DlgEnvDrivers.h \
+	DlgEnvEndTran.h \
+	DlgEnvFreeEnv.h \
+	DlgEnvFreeHandle.h \
+	DlgEnvTransact.h \
 	DlgToolsManageAutoTest.h \
 	DlgToolsManageTest.h \
 	DlgToolsManageTestGroup.h \
 	DlgToolsNewGroup.h \
 	DlgToolsNewSource.h \
 	DlgToolsRunAutoTests.h \
-	env.h \
 	OdbcHandle.h \
 	OdbcTest.h \
 	results.h \

@@ -1,3 +1,5 @@
+**** NEEDS TO BE UPDATED (see Makefile.am) ***
+
 include(../common.pri)
 include(../config.pri)
 include(../defines.pri)

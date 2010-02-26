@@ -876,7 +876,6 @@ void CDriverList::slotLoad()
 
 void CDriverList::slotDoubleClick( QTableWidgetItem * )
 {
-printf( "[PAH][%s][%d]\n", __FILE__, __LINE__ );
     slotEdit();
 }
 
