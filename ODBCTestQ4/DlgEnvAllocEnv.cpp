@@ -31,79 +31,70 @@
 
 void DlgEnvAllocEnv::handle_clkd()
 {
-	if ( handle_valid->isChecked() )
-	    handle_valid->setText( "phenv: SQL_NULL_POINTER" );
-	else
-	    handle_valid->setText( "phenv: VALID" );
+    if ( handle_valid->isChecked() )
+        handle_valid->setText( "phenv: SQL_NULL_POINTER" );
+    else
+        handle_valid->setText( "phenv: VALID" );
 }
 
-void DlgEnvAllocEnv::Ok()
+void DlgEnvAllocEnv::slotDone()
 {
     SQLHENV henv, *henv_ptr;
 
-	pOdbcTest->out_win->append( "SQLAllocEnv():" );
-	pOdbcTest->out_win->append( "  In:" );
+    pOdbcTest->out_win->append( "SQLAllocEnv():" );
+    pOdbcTest->out_win->append( "  In:" );
 
-    if ( handle_valid->isChecked())
-    {
+    if ( handle_valid->isChecked()) {
         henv_ptr = NULL;
-		txt.sprintf( "    phenv: SQL_NULL_HANDLE" );
-    }
-    else
-    {
+        txt.sprintf( "    phenv: SQL_NULL_HANDLE" );
+    } else {
         henv_ptr = &henv;
-		txt.sprintf( "    phenv: %p", henv_ptr );
+        txt.sprintf( "    phenv: %p", henv_ptr );
     }
-	pOdbcTest->out_win->append( txt );
+    pOdbcTest->out_win->append( txt );
 
     SQLRETURN ret = SQLAllocEnv( henv_ptr );
 
-	pOdbcTest->out_win->append( "  Return:" );
-	txt.sprintf( "    %s=%d", pOdbcTest->return_as_text( ret ), ret );
-	pOdbcTest->out_win->append( txt );
+    pOdbcTest->out_win->append( "  Return:" );
+    txt.sprintf( "    %s=%d", pOdbcTest->return_as_text( ret ), ret );
+    pOdbcTest->out_win->append( txt );
 
-    if ( SQL_SUCCEEDED( ret ) && henv_ptr )
-    {
-		txt.sprintf( "    *phenv: %p", henv );
-	    pOdbcTest->out_win->append( txt );
+    if ( SQL_SUCCEEDED( ret ) && henv_ptr ) {
+        txt.sprintf( "    *phenv: %p", henv );
+        pOdbcTest->out_win->append( txt );
 
-		pOdbcTest->listHandle.append( new OdbcHandle( SQL_HANDLE_ENV, henv ) );
+        pOdbcTest->listHandle.append( new OdbcHandle( SQL_HANDLE_ENV, henv ) );
     }
 
-	pOdbcTest->out_win->append( "" );
+    pOdbcTest->out_win->append( "" );
+
+    accept();
 }
 
 DlgEnvAllocEnv::DlgEnvAllocEnv( OdbcTest *pOdbcTest, QString name )
-        : QDialog( pOdbcTest )
+: QDialog( pOdbcTest )
 {
-	setWindowTitle( name );
+    setWindowTitle( name );
 
-	this->pOdbcTest = pOdbcTest;
+    this->pOdbcTest = pOdbcTest;
 
-    ok = new QPushButton( "OK", this );
-    ok->setGeometry( 90,10, 70,25 );
+    QVBoxLayout *playoutTop = new QVBoxLayout( this );
 
-    cancel = new QPushButton( "Cancel", this );
-    cancel->setGeometry( 170,10, 70,25 );
+    handle_valid = new QCheckBox( "phenv: VALID", this );
+    playoutTop->addWidget( handle_valid );
 
-    help = new QPushButton( "Help", this );
-    help->setGeometry( 250,10, 70,25 );
+    pDialogButtonBox = new QDialogButtonBox( QDialogButtonBox::Ok | QDialogButtonBox::Cancel | QDialogButtonBox::Help, Qt::Horizontal, this );
+    playoutTop->addWidget( pDialogButtonBox );
 
-	handle_valid = new QCheckBox( "phenv: VALID", this );
-	handle_valid->setGeometry( 10, 50, 300, 15 );
-
-    connect( cancel, SIGNAL(clicked()), SLOT(reject()) );
-    connect( ok, SIGNAL(clicked()), SLOT(Ok()) );
-    connect( ok, SIGNAL(clicked()), SLOT(accept()) );
-	connect( handle_valid, SIGNAL( clicked()), this, SLOT( handle_clkd()));
+    connect( handle_valid, SIGNAL( clicked()), this, SLOT( handle_clkd()));
+    connect( pDialogButtonBox, SIGNAL(accepted()), this, SLOT(slotDone()) );
+    connect( pDialogButtonBox, SIGNAL(rejected()), this, SLOT(reject()) );
+    //	connect( pDialogButtonBox, SIGNAL(helpRequested()), this, SLOT(slotHelp()) );
 }
 
 DlgEnvAllocEnv::~DlgEnvAllocEnv()
 {
-	delete ok;
-	delete cancel;
-	delete help;
-	delete handle_valid;
+    delete handle_valid;
 }
 
 

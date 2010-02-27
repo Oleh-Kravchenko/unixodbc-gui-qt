@@ -41,7 +41,7 @@ class DlgEnvAllocHandle : public QDialog
         ~DlgEnvAllocHandle();
 
 	protected:
-		QPushButton *ok, *cancel, *help;
+		QDialogButtonBox *pDialogButtonBox;
 		QComboBox *handles, *types;
 		QCheckBox *valid;
 		QLabel *l_handle, *l_types;
@@ -52,7 +52,7 @@ class DlgEnvAllocHandle : public QDialog
 
 	protected slots:
 		void out_handle_ptr_clkd();
-		void Ok();
+		void slotDone();
 };
 
 

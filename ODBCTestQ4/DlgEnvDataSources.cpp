@@ -61,7 +61,7 @@ void DlgEnvDataSources::nlp2_clkd()
 	    nlp2_valid->setText( "NameLengthPtr2: VALID" );
 }
 
-void DlgEnvDataSources::Ok()
+void DlgEnvDataSources::slotDone()
 {
     OdbcHandle *env = pOdbcTest->extract_handle_list( SQL_HANDLE_ENV, handles );
 	SQLHANDLE in_handle = SQL_NULL_HANDLE;
@@ -204,76 +204,63 @@ DlgEnvDataSources::DlgEnvDataSources( OdbcTest *pOdbcTest, QString name )
         : QDialog( pOdbcTest )
 {
 	setWindowTitle( name );
-    setModal( true );
 
 	this->pOdbcTest = pOdbcTest;
 
-    ok = new QPushButton( "OK", this );
-    ok->setGeometry( 190,10, 70,25 );
+    QVBoxLayout *playoutTop = new QVBoxLayout( this );
+    QGridLayout *pLayout 	= new QGridLayout;
 
-    cancel = new QPushButton( "Cancel", this );
-    cancel->setGeometry( 270,10, 70,25 );
+    playoutTop->addLayout( pLayout );
 
-    help = new QPushButton( "Help", this );
-    help->setGeometry( 350,10, 70,25 );
-
+    l_handles = new QLabel( "Environment Handle:", this );
 	handles = new QComboBox( this );
-	handles->setGeometry( 130, 50, 200, 20 );
 	pOdbcTest->fill_handle_list( SQL_HANDLE_ENV, handles );
+    pLayout->addWidget( l_handles, 0, 0 );
+    pLayout->addWidget( handles, 0, 1 );
 
-	l_handles = new QLabel( "Environment Handle:", this );
-	l_handles->setGeometry( 10, 50, 120, 20 );
-
+    l_direction = new QLabel( "Direction:", this );
 	direction = new QComboBox( this );
-	direction->setGeometry( 130, 80, 200, 20 );
 	pOdbcTest->fill_list_box( pEnvDataSourcesDirections, direction );
-
-	l_direction = new QLabel( "Direction:", this );
-	l_direction->setGeometry( 10, 80, 120, 20 );
+    pLayout->addWidget( l_direction, 1, 0 );
+    pLayout->addWidget( direction, 1, 1 );
 
 	server_valid = new QCheckBox( "ServerName: VALID", this );
-	server_valid->setGeometry( 10, 110, 300, 15 );
-
+    l_server_len = new QLabel( "BufferLength 1:", this );
 	server_len = new QLineEdit( this );
-    server_len->setGeometry( 350, 110, 70, 20 );
 	server_len->setMaxLength( 6 );
 	server_len->setText( "300" );
-
-	l_server_len = new QLabel( "BufferLength 1:", this );
-    l_server_len->setGeometry( 240, 110, 100, 20 );
-
 	nlp1_valid = new QCheckBox( "Name Length Ptr 1: VALID", this );
-	nlp1_valid->setGeometry( 10, 140, 300, 15 );
+    pLayout->addWidget( server_valid, 2, 0 );
+    pLayout->addWidget( l_server_len, 2, 1 );
+    pLayout->addWidget( server_len, 2, 2 );
+    pLayout->addWidget( nlp1_valid, 2, 3 );
 
 	description_valid = new QCheckBox( "Description: VALID", this );
-	description_valid->setGeometry( 10, 170, 300, 15 );
-
+    l_description_len = new QLabel( "BufferLength 2:", this );
 	description_len = new QLineEdit( this );
-    description_len->setGeometry( 350, 170, 70, 20 );
 	description_len->setMaxLength( 6 );
 	description_len->setText( "300" );
-
-	l_description_len = new QLabel( "BufferLength 2:", this );
-    l_description_len->setGeometry( 240, 170, 100, 20 );
-
 	nlp2_valid = new QCheckBox( "Name Length Ptr 2: VALID", this );
-	nlp2_valid->setGeometry( 10, 200, 300, 15 );
+    pLayout->addWidget( description_valid, 3, 0 );
+    pLayout->addWidget( l_description_len, 3, 1 );
+    pLayout->addWidget( description_len, 3, 2 );
+    pLayout->addWidget( nlp2_valid, 3, 3 );
 
-    connect( cancel, SIGNAL(clicked()), SLOT(reject()) );
-    connect( ok, SIGNAL(clicked()), SLOT(Ok()) );
-    connect( ok, SIGNAL(clicked()), SLOT(accept()) );
+    pDialogButtonBox = new QDialogButtonBox( QDialogButtonBox::Ok | QDialogButtonBox::Cancel | QDialogButtonBox::Help, Qt::Horizontal, this );
+    playoutTop->addWidget( pDialogButtonBox );
 
 	connect( server_valid, SIGNAL( clicked()), this, SLOT( server_clkd()));
 	connect( nlp1_valid, SIGNAL( clicked()), this, SLOT( nlp1_clkd()));
 	connect( description_valid, SIGNAL( clicked()), this, SLOT( description_clkd()));
 	connect( nlp2_valid, SIGNAL( clicked()), this, SLOT( nlp2_clkd()));
+
+    connect( pDialogButtonBox, SIGNAL(accepted()), this, SLOT(slotDone()) );
+    connect( pDialogButtonBox, SIGNAL(rejected()), this, SLOT(reject()) );
+//	connect( pDialogButtonBox, SIGNAL(helpRequested()), this, SLOT(slotHelp()) );
 }
 
 DlgEnvDataSources::~DlgEnvDataSources()
 {
-	delete ok;
-	delete cancel;
-	delete help;
 	delete handles;
 	delete l_handles;
     delete direction;

@@ -29,14 +29,14 @@
 #include "DlgEnvAllocHandle.h"
 #include "OdbcTest.h"
 
-void DlgEnvAllocHandle::Ok()
+void DlgEnvAllocHandle::slotDone()
 {
-SQLHANDLE out_handle, in_handle = SQL_NULL_HANDLE;
-SQLRETURN ret;
-SQLINTEGER type;
-const char *handle;
+	SQLHANDLE 	out_handle, in_handle = SQL_NULL_HANDLE;
+	SQLRETURN 	ret;
+	SQLINTEGER 	type;
+	const char *handle;
 
-	switch( types->currentIndex())
+	switch( types->currentIndex() )
 	{
 		case 0:
 			type = SQL_HANDLE_ENV;
@@ -109,6 +109,8 @@ const char *handle;
 	{
 	    pOdbcTest->listHandle.append( new OdbcHandle( type, out_handle, pOdbcTest->listHandle ));
 	}
+
+	accept();
 }
 
 void DlgEnvAllocHandle::out_handle_ptr_clkd()
@@ -123,53 +125,43 @@ DlgEnvAllocHandle::DlgEnvAllocHandle( OdbcTest *pOdbcTest, QString name )
         : QDialog( pOdbcTest )
 {
 	setWindowTitle( name );
-    setModal( true );
 
 	this->pOdbcTest = pOdbcTest;
 
-    ok = new QPushButton( "OK", this );
-    ok->setGeometry( 90,10, 70,25 );
+	QVBoxLayout *playoutTop = new QVBoxLayout( this );
+	QGridLayout *pLayout 	= new QGridLayout;
 
-    cancel = new QPushButton( "Cancel", this );
-    cancel->setGeometry( 170,10, 70,25 );
+	playoutTop->addLayout( pLayout );
 
-    help = new QPushButton( "Help", this );
-    help->setGeometry( 250,10, 70,25 );
-
+	l_handle = new QLabel( "InputHandle:", this );
 	handles = new QComboBox( this );
-	handles->setGeometry( 120, 80, 200, 20 );
-
 	pOdbcTest->fill_handle_list( -1, handles );
+	pLayout->addWidget( l_handle, 0, 0 );
+	pLayout->addWidget( handles, 0, 1 );
 
+	l_types = new QLabel( "HandleType:", this );
 	types = new QComboBox( this );
-	types->setGeometry( 120, 50, 200, 20 );
-
 	types->insertItem( 0, "SQL_HANDLE_ENV=1 (3.0)" );
 	types->insertItem( 1, "SQL_HANDLE_DBC=2 (3.0)" );
 	types->insertItem( 2, "SQL_HANDLE_STMT=3 (3.0)" );
 	types->insertItem( 3, "SQL_HANDLE_DESC=3 (3.0)" );
+	pLayout->addWidget( l_types, 1, 0 );
+	pLayout->addWidget( types, 1, 1 );
 
 	valid = new QCheckBox( "OutputHandlePtr: VALID", this );
-	valid->setGeometry( 10, 120, 200, 15 );
+	pLayout->addWidget( valid, 2, 1 );
+
+	pDialogButtonBox = new QDialogButtonBox( QDialogButtonBox::Ok | QDialogButtonBox::Cancel | QDialogButtonBox::Help, Qt::Horizontal, this );
+	playoutTop->addWidget( pDialogButtonBox );
 
 	connect( valid, SIGNAL( clicked()), this, SLOT( out_handle_ptr_clkd()));
-
-	l_handle = new QLabel( "InputHandle:", this );
-	l_handle->setGeometry( 10, 80, 70, 20 );
-
-	l_types = new QLabel( "HandleType:", this );
-	l_types->setGeometry( 10, 50, 70, 20 );
-
-    connect( cancel, SIGNAL(clicked()), SLOT(reject()) );
-    connect( ok, SIGNAL(clicked()), SLOT(Ok()) );
-    connect( ok, SIGNAL(clicked()), SLOT(accept()) );
+	connect( pDialogButtonBox, SIGNAL(accepted()), this, SLOT(slotDone()) );
+	connect( pDialogButtonBox, SIGNAL(rejected()), this, SLOT(reject()) );
+//	connect( pDialogButtonBox, SIGNAL(helpRequested()), this, SLOT(slotHelp()) );
 }
 
 DlgEnvAllocHandle::~DlgEnvAllocHandle()
 {
-	delete ok;
-	delete cancel;
-	delete help;
 	delete types;
 	delete handles;
 	delete l_handle;

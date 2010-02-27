@@ -32,31 +32,30 @@
 
 class OdbcTest;
 
-class DlgEnvDataSources : public QDialog 
-{
+class DlgEnvDataSources : public QDialog {
     Q_OBJECT
 
-    public:
-        DlgEnvDataSources( OdbcTest *pOdbcTest, QString name );
-        ~DlgEnvDataSources();
+public:
+    DlgEnvDataSources( OdbcTest *pOdbcTest, QString name );
+    ~DlgEnvDataSources();
 
-	protected:
-		QPushButton *ok, *cancel, *help;
-		QComboBox *handles, *direction;
-		QCheckBox *server_valid, *nlp1_valid, *description_valid, *nlp2_valid;
-		QLabel *l_handles, *l_direction, *l_server_len, *l_description_len;
-		QLineEdit *server_len, *description_len;
-		QTextEdit *in_win;
-		QTextEdit *out_win;
-		OdbcTest *pOdbcTest;
-		QString txt;
+protected:
+    QDialogButtonBox *pDialogButtonBox;
+    QComboBox *handles, *direction;
+    QCheckBox *server_valid, *nlp1_valid, *description_valid, *nlp2_valid;
+    QLabel *l_handles, *l_direction, *l_server_len, *l_description_len;
+    QLineEdit *server_len, *description_len;
+    QTextEdit *in_win;
+    QTextEdit *out_win;
+    OdbcTest *pOdbcTest;
+    QString txt;
 
-	protected slots:
-		void Ok();
-        void server_clkd();
-        void description_clkd();
-        void nlp1_clkd();
-        void nlp2_clkd();
+protected slots:
+    void slotDone();
+    void server_clkd();
+    void description_clkd();
+    void nlp1_clkd();
+    void nlp2_clkd();
 };
 
 

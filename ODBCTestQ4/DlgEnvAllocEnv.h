@@ -32,25 +32,24 @@
 
 class OdbcTest;
 
-class DlgEnvAllocEnv : public QDialog 
-{
+class DlgEnvAllocEnv : public QDialog {
     Q_OBJECT
 
-    public:
-        DlgEnvAllocEnv( OdbcTest *pOdbcTest, QString name );
-        ~DlgEnvAllocEnv();
+public:
+    DlgEnvAllocEnv( OdbcTest *pOdbcTest, QString name );
+    ~DlgEnvAllocEnv();
 
-	protected:
-		QPushButton *ok, *cancel, *help;
-		QTextEdit *in_win;
-		QCheckBox *handle_valid;
-		QTextEdit *out_win;
-		OdbcTest *pOdbcTest;
-		QString txt;
+protected:
+    QDialogButtonBox *  pDialogButtonBox;
+    QTextEdit *         in_win;
+    QCheckBox *         handle_valid;
+    QTextEdit *         out_win;
+    OdbcTest *          pOdbcTest;
+    QString             txt;
 
-	protected slots:
-		void Ok();
-        void handle_clkd();
+protected slots:
+    void slotDone();
+    void handle_clkd();
 };
 
 

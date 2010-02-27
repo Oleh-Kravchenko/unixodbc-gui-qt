@@ -188,8 +188,8 @@ OdbcHandle * OdbcTest::fill_handle_list( int type, QComboBox *lst )
 {
     QListIterator<OdbcHandle*>  it( listHandle );
     OdbcHandle *                match   = NULL;
-    int                     i       = 0;
-    char                    txt[128];
+    int                         i       = 0;
+    char                        txt[128];
 
     while ( it.hasNext() )
     {
@@ -218,9 +218,9 @@ OdbcHandle * OdbcTest::fill_handle_list( int type, QComboBox *lst )
 OdbcHandle *OdbcTest::extract_handle_list( int type, QComboBox *lst )
 {
     QListIterator<OdbcHandle*>  it( listHandle );
-    int                     index = lst->currentIndex(); 
-    int                     i = 0;
-    OdbcHandle *                hand = NULL;
+    int                         index   = lst->currentIndex(); 
+    int                         i       = 0;
+    OdbcHandle *                hand    = NULL;
 
     while ( it.hasNext() )
     {
