@@ -21,33 +21,90 @@ AC_DEFUN([FUN_CHECK_QT],
   MOC=""
   UIC=""
 
-  # Create configure option...
-  AC_ARG_WITH([qt_dir], AC_HELP_STRING([--with-qt-dir=DIR],
-                        [where the Qt package is installed ie /usr/lib/qt4]),
-    [ qt_dir="$withval"
+  #
+  # Create configure option for include location...
+  #
+  AC_ARG_WITH([qt_dir_include], AC_HELP_STRING([--with-qt-include=DIR],
+                        [location of Qt include files]),
+    [ qt_dir_include="$withval"
     ])
 
-  # If configure option not used - try to be smart.
-  if test "x$qt_dir" = x; then
-    if test -d "$QTDIR"; then
-      qt_dir=$QTDIR
-    elif test -d "/usr/lib64/qt4"; then
-      qt_dir="/usr/lib64/qt4"
-    elif test -d "/usr/lib/qt4"; then 
-      qt_dir="/usr/lib/qt4"
+  #
+  # Create configure option for lib location...
+  #
+  AC_ARG_WITH([qt_dir_lib], AC_HELP_STRING([--with-qt-lib=DIR],
+                        [location of Qt lib files]),
+    [ qt_dir_lib="$withval"
+    ])
+
+  #
+  # Create configure option for bin location...
+  #
+  AC_ARG_WITH([qt_dir_bin], AC_HELP_STRING([--with-qt-bin=DIR],
+                        [location of Qt bin files]),
+    [ qt_dir_bin="$withval"
+    ])
+
+  #
+  # No include location given? Lets check a few known places.
+  #
+  if test "x$qt_dir_include" = x; then
+    if test -d "/usr/include/QtCore"; then
+      qt_dir_include="/usr/include"
     fi
   fi
 
+  #
+  # No lib location given? Lets check a few known places.
+  #
+  if test "x$qt_dir_lib" = x; then
+    if test -e "/usr/lib64/libQtCore.so"; then
+      qt_dir_lib="/usr/lib64"
+    elif test -e "/usr/lib/libQtCore.so"; then 
+      qt_dir_lib="/usr/lib"
+    fi
+  fi
+
+  #
+  # No bin location given? Lets check a few known places.
+  #
+  if test "x$qt_dir_bin" = x; then
+    if test -e "/usr/bin/moc"; then
+      qt_dir_bin="/usr/bin"
+    fi
+  fi
+
+  #
   # Still not found - we fail.
-  if test "x$qt_dir" = x; then
-    AC_MSG_RESULT([no ($qt_dir try specifying with --with-qt-dir or try a different value)])
+  #
+  if test "x$qt_dir_include" = x; then
+    AC_MSG_RESULT([no (include try specifying with --with-qt-include or try a different value)])
     AC_MSG_ERROR([cannot find Qt!])
   fi
 
-  AC_MSG_RESULT([yes ($qt_dir)])
-  qt_dir_include="$qt_dir"/include
-  qt_dir_lib="$qt_dir"/lib
-  qt_dir_bin="$qt_dir"/bin
+  #
+  # Still not found - we fail.
+  #
+  if test "x$qt_dir_lib" = x; then
+    AC_MSG_RESULT([no (lib try specifying with --with-qt-lib or try a different value)])
+    AC_MSG_ERROR([cannot find Qt!])
+  fi
+
+  #
+  # Still not found - we fail.
+  #
+  if test "x$qt_dir_bin" = x; then
+    AC_MSG_RESULT([no (bin try specifying with --with-qt-bin or try a different value)])
+    AC_MSG_ERROR([cannot find Qt!])
+  fi
+
+  AC_MSG_RESULT([yes ($qt_dir_include)])
+  AC_MSG_RESULT([yes ($qt_dir_lib)])
+  AC_MSG_RESULT([yes ($qt_dir_bin)])
+
+  # qt_dir_include="$qt_dir"/include
+  # qt_dir_lib="$qt_dir"/lib
+  # qt_dir_bin="$qt_dir"/bin
 
   AC_CHECK_FILE([$qt_dir_include/QtGui/QWizard], [have_qtwizard=yes], [have_qtwizard=no])
   AC_CHECK_FILE([$qt_dir_include/QtGui/QMdiArea], [have_qtmdiarea=yes], [have_qtmdiarea=no])
