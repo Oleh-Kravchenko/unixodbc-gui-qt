@@ -25,7 +25,8 @@ Parts:
 	- a Qt based installer library/plugin (odbcinstQ4)
 	- ODBC Administrator (ODBCManageDataSourcesQ4)
 	- create Data Source Name wizard (ODBCCreateDataSourceQ4)
-	- Data Manager (ODBCDataManagerQ4 - not done)
+	- Data Manager (ODBCDataManagerQ4)
+        - test output library mostly used by unixODBC-Test (gtrtstQ4)
 	- an interactive test program (ODBCTestQ4)	
 
 How To Start:

@@ -7,6 +7,9 @@
 # UNIX'ism
 # --------
 #
+# NOTE: The gnu auto-tools method is the preferred method 
+# to build on UNIX. But, if you want, you can...
+#
 # Install unixODBC-Core and unixODBC-Dev. Set the following
 # environment variables to tell us where unixODBC was
 # installed;
@@ -31,7 +34,7 @@
 # Get unixODBC-Test (do not build it yet) and set the
 # following environment variable to tell us where it is;
 #
-# SET UNIXODBC_TEST_SRC=C:/unixodbc-test/trunk
+# SET UNIXODBC_TEST_SRC=C:\\unixodbc-test\\AutoTests
 #
 # Build This
 # 
@@ -45,9 +48,6 @@ TEMPLATE	= subdirs
 # WIN32
 # #########################################################
 win32 {
-        DEFINES -= UNICODE 
-        DEFINES += _CRT_SECURE_NO_WARNINGS
-
 	SUBDIRS	= \
 		gtrtstQ4 \
 		ODBCTestQ4

@@ -60,11 +60,31 @@ typedef BOOL (*AUTOTESTDESC)(UWORD,LPSTR,LPSTR);
 typedef void (*AUTOTESTFUNC)(SERVERINFO*);
 
 /* bring in more ODBC stuff */
-#include <sqlucode.h>
+// #include <sqlucode.h>
 #include <odbcinst.h>
 
-/* this brings in all of the Qt stuff we need */
+/* Qt */
 #include <QtGui>
+
+#ifdef Q_WS_WIN
+    #ifdef UNICODE
+        #define OtStringFromPlatform(x) QString::fromWCharArray(x)
+        #define OtStringToPlatform(x) (SQLTCHAR*)x.utf16()
+    #else
+        #define OtStringFromPlatform(x) QString(x)
+        #define OtStringToPlatform(x) QString(x)
+    #endif
+#else
+    #ifdef UNICODE
+        #define TEXT(x) Lx
+        #define OtStringFromPlatform(x) QString::fromWCharArray(x)
+        #define OtStringToPlatform(x) (SQLTCHAR*)x.ucs4()
+    #else
+        #define TEXT(x) (SQLTCHAR*)x
+        #define OtStringFromPlatform(x) QString((const char*)x)
+        #define OtStringToPlatform(x) (SQLTCHAR*)(QString(x).toLocal8Bit().data())
+    #endif
+#endif
 
 /*
  * structure that defines the options and values

@@ -14,7 +14,6 @@ DEFINES = V_MAJOUR=1 V_MINOR=0 V_RELEASE=1
 # WIN32
 # #########################################################
 win32 {
-        DEFINES -= UNICODE 
         DEFINES += _CRT_SECURE_NO_WARNINGS
 }
 

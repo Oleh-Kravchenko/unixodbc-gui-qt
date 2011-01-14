@@ -18,7 +18,7 @@ SOURCES = \
 # INSTALLS
 #
 !win32 {
-target.path = $$INSTALL_TARGET_LIB
-INSTALLS += target
+        target.path = $$INSTALL_TARGET_LIB
+        INSTALLS += target
 }
 

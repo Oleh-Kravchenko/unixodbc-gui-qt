@@ -5,17 +5,16 @@
 # \sa		*.pri *.pro
 #
 
-#
-# unixODBC-Test sources must be available so we can access autotest.h. unixODBC-Test
-# does not have to be built yet. This is needed for, at least, ODBCTestQ4.
-#
-INCLUDEPATH	+= $(UNIXODBC_TEST_SRC)/AutoTests/include
+# unixODBC-Test sources must be available so we can access 
+# autotest.h. This is needed for, at least, ODBCTestQ4.
+
+INCLUDEPATH	+= $(UNIXODBC_TEST_SRC)/include
 
 # #########################################################
 # WIN32
 # #########################################################
 win32 {
-        INCLUDEPATH     += ../../include
+#        INCLUDEPATH     += ../../include
 #
 #       We use MS's Driver Manager and Installer library.
 #

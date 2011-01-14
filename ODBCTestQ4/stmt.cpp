@@ -382,8 +382,8 @@ void dExecDirect::Ok()
 		pOdbcTest->out_win->append( "    Statement Handle: SQL_NULL_HSTMT" );
 
 	// text...
-	QString stringSQL = str->currentText();
-	const char *pszSQL = NULL;
+	QString 	stringSQL 	= str->currentText();
+	SQLTCHAR *	pszSQL 		= NULL;
 
 	if ( stringSQL == "<null ptr>" || stringSQL.isNull() )
 	{
@@ -392,20 +392,23 @@ void dExecDirect::Ok()
 	}
 	else if ( stringSQL == "<empty string>" || stringSQL.isEmpty() )
 	{
-		pszSQL = "";
+		QString s("");
+		pszSQL = OtStringToPlatform( s );
 		pOdbcTest->out_win->append( "    Text: <empty string>" );
 	}
 	else
 	{
 		if ( stringSQL == "<input window>" )
 			stringSQL = pOdbcTest->in_win->toPlainText();
+
 		if ( stringSQL.isEmpty())
-			pszSQL = "";
+			pszSQL = TEXT("");
 		else if ( stringSQL.isNull())
 			pszSQL = NULL;
 		else 
-			pszSQL = stringSQL.toAscii().constData();
-		pOdbcTest->out_win->append( QString( tr("    Text: %1") ).arg( pszSQL ) );
+			pszSQL = OtStringToPlatform( stringSQL );
+
+		pOdbcTest->out_win->append( "    Text: " + OtStringFromPlatform( pszSQL ) );
 	}
 
 	// length...
@@ -424,7 +427,7 @@ void dExecDirect::Ok()
 	}
 
 	// do it...
-	SQLRETURN nReturn = SQLExecDirect( hStatement, (SQLCHAR*)pszSQL, nSQL );
+	SQLRETURN nReturn = SQLExecDirect( hStatement, pszSQL, nSQL );
 
 	pOdbcTest->out_win->append( "  Return:" );
 	pOdbcTest->out_win->append( QString( "    %1=%2" ).arg( pOdbcTest->return_as_text( nReturn ) ).arg( nReturn ) );
