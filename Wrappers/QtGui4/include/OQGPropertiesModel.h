@@ -5,7 +5,7 @@
  * \author  \sa AUTHORS file
  * \version 2
  * \date    2007
- * \license Copyright unixODBC Project 2007-2008, LGPL
+ * \license Copyright unixODBC-GUI-Qt Project 2007-2008, LGPL
  */
 #ifndef OQGPROPERTIESMODEL_H
 #define OQGPROPERTIESMODEL_H

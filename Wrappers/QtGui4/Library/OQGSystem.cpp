@@ -19,6 +19,7 @@ OQGSystem::~OQGSystem()
 {
 }
 
+// WINDOWS
 #ifdef WIN32
 bool OQGSystem::doManageDataSources( QWidget *pwidget )
 {
@@ -33,6 +34,7 @@ bool OQGSystem::doManageDataSources( QWidget *pwidget )
     return true;
 }
 #else
+// OSX
 #ifdef Q_WS_MACX
 bool OQGSystem::doManageDataSources( QWidget * )
 {
@@ -45,6 +47,7 @@ bool OQGSystem::doManageDataSources( QWidget * )
 	return true;
 }
 #else
+// other UNIX, Linux, etc
 bool OQGSystem::doManageDataSources( QWidget *pwidgetParent )
 {
     if ( !OQSystem::doManageDataSources( (HWND)pwidgetParent ) )

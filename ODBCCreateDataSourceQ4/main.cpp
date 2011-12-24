@@ -5,7 +5,7 @@
  * \author  \sa AUTHORS file
  * \version 2
  * \date    2007
- * \license Copyright unixODBC-GUI-Qt Project 2009-2010, LGPL
+ * \license Copyright unixODBC-GUI-Qt Project 2009-2012, See GPL.txt
  */
 #include <odbcinst.h>
 #include <odbcinstext.h>

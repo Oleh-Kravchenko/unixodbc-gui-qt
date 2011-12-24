@@ -4,8 +4,8 @@
  * \author  Peter Harvey <pharvey@peterharvey.org>
  * \author  \sa AUTHORS file
  * \version 2
- * \date    2007
- * \license Copyright unixODBC-GUI-Qt Project 2003-2009, LGPL
+ * \date    2003
+ * \license Copyright unixODBC-GUI-Qt Project 2003-2012, See LGPL.txt
  */
 #pragma once
 
