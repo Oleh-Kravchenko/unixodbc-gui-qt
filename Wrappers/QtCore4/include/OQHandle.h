@@ -50,7 +50,7 @@ public:
     virtual void eventDiagnostic();
 
 protected:
-    OQHandle *phandleParent;
+    OQHandle *  phandleParent;
     Types       nType;
     SQLHANDLE   hHandle;
 };
