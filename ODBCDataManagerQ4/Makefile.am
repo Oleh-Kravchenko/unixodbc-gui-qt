@@ -167,8 +167,8 @@ mDNodeDriver.cpp: @srcdir@/DNodeDriver.h
 mDNodeDrivers.cpp: @srcdir@/DNodeDrivers.h
 	@MOC@ @srcdir@/DNodeDrivers.h -o mDNodeDrivers.cpp
 
-mDNodeODBC.cpp: @srcdir@/DNodeODBC.h
-	@MOC@ @srcdir@/DNodeODBC.h -o mDNodeODBC.cpp
+mDNodeODBC.cpp: @srcdir@/DNodeOQ.h
+	@MOC@ @srcdir@/DNodeOQ.h -o mDNodeODBC.cpp
 
 mDNodeStatement.cpp: @srcdir@/DNodeStatement.h
 	@MOC@ @srcdir@/DNodeStatement.h -o mDNodeStatement.cpp
@@ -224,7 +224,7 @@ EXTRA_DIST = \
 	DNodeDataSourceNameFile.h \
 	DNodeDriver.h \
 	DNodeDrivers.h \
-	DNodeODBC.h \
+	DNodeOQ.h \
 	DNodeSchema.h \
 	DNodeSchemas.h \
 	DNodeTable.h \

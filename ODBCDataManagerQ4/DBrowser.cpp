@@ -10,7 +10,7 @@
 #include "DBrowser.h"
 #include "DNodeWidget.h"
 #include "DPropWidget.h"
-#include "DNodeODBC.h"
+#include "DNodeOQ.h"
 
 DBrowser::DBrowser( const QString &stringTitle, QWidget *pwidgetParent, QWidget *pwidgetEditorParent, DPropWidget *pPropWidget )
     : QDockWidget( stringTitle, pwidgetParent )

@@ -25,7 +25,7 @@ HEADERS		= \
 	DNodeDataSourceNameUser.h \
 	DNodeDriver.h \
 	DNodeDrivers.h \
-	DNodeODBC.h \
+	DNodeOQ.h \
 	DNodeSchema.h \
 	DNodeSchemas.h \
 	DNodeStatement.h \

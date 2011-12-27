@@ -587,7 +587,7 @@ OQStatement *OQConnection::getProcedureColumns( const QString &stringProcedure, 
     getDataTypes
         
     Creates a result set (or NULL if there was an error).
-    See ODBCStatement::getypeInfo.
+    See OQStatement::getypeInfo.
 */
 OQStatement *OQConnection::getDataTypes()
 {

@@ -178,13 +178,13 @@ bool ODBCModelEnvironment::setData( const QModelIndex &index, const QVariant &va
         switch ( index.row() )
         {
             case 0:
-                nReturn = pEnvironment->setAttrConnectionPooling( (ODBCEnvironment::AttrConnectionPoolingTypes)p->Numeric.nUnsignedInteger );
+                nReturn = pEnvironment->setAttrConnectionPooling( (OQEnvironment::AttrConnectionPoolingTypes)p->Numeric.nUnsignedInteger );
                 break;
             case 1:
-                nReturn = pEnvironment->setAttrCPMatch( (ODBCEnvironment::AttrCPMatchTypes)p->Numeric.nUnsignedInteger );
+                nReturn = pEnvironment->setAttrCPMatch( (OQEnvironment::AttrCPMatchTypes)p->Numeric.nUnsignedInteger );
                 break;
             case 2:
-                nReturn = pEnvironment->setAttrODBCVersion( (ODBCEnvironment::AttrODBCVersionTypes)p->Numeric.nInteger );
+                nReturn = pEnvironment->setAttrODBCVersion( (OQEnvironment::AttrODBCVersionTypes)p->Numeric.nInteger );
                 break;
             case 3:
                 nReturn = pEnvironment->setAttrOutputNTS( (bool)p->Numeric.nSmallInteger );

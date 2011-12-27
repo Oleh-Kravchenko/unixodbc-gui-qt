@@ -7,7 +7,7 @@
  * \date    2007
  * \license Copyright unixODBC-GUI-Qt Project 2007-2012, See GPL.txt
  */
-#include "DNodeODBC.h"
+#include "DNodeOQ.h"
 
 #include "DNodeDrivers.h"
 #include "DNodeDataSourceNames.h"
