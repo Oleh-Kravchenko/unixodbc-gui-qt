@@ -126,7 +126,7 @@ class OdbcHandle
 {
 public:
 	OdbcHandle( int t, SQLHANDLE h, QList<OdbcHandle*> &list );
-	OdbcHandle( int t, SQLHANDLE h, QString desc = NULL, SQLHANDLE stmt = SQL_NULL_HANDLE );
+	OdbcHandle( int t, SQLHANDLE h, QString desc = QString::null, SQLHANDLE stmt = SQL_NULL_HANDLE );
 	OdbcHandle( OdbcHandle &e );
 	~OdbcHandle();
 	char * toStr( char * str );

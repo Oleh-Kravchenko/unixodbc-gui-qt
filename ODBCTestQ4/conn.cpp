@@ -3113,10 +3113,10 @@ void dFullConnect::Ok()
      */
     if ( !hand )
     {
-        pOdbcTest->listHandle.append( new OdbcHandle( SQL_HANDLE_ENV, henv ));
+        pOdbcTest->listHandle.append( new OdbcHandle( SQL_HANDLE_ENV, henv ) );
     }
-    pOdbcTest->listHandle.append( new OdbcHandle( SQL_HANDLE_DBC, hdbc ));
-    pOdbcTest->listHandle.append( new OdbcHandle( SQL_HANDLE_STMT, hstmt, pOdbcTest->listHandle  ));
+    pOdbcTest->listHandle.append( new OdbcHandle( SQL_HANDLE_DBC, hdbc ) );
+    pOdbcTest->listHandle.append( new OdbcHandle( SQL_HANDLE_STMT, hstmt, pOdbcTest->listHandle  ) );
 
     pOdbcTest->out_win->append( "Full Connect Succeeded\n" );
 }
