@@ -61,6 +61,7 @@ unix {
 		ini \
 		odbcinstQ4 \
 		gtrtstQ4 \
+		Wrappers \
 		ODBCCreateDataSourceQ4 \
 		ODBCManageDataSourcesQ4 \
 		ODBCTestQ4
